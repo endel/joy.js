@@ -1,0 +1,35 @@
+{
+  "name": "joy.js",
+  "title": "Joy",
+  "description": "A joyful JavaScript game engine",
+  "version": "0.0.1pre",
+  "homepage": "http://joyjs.org",
+  "author": {
+    "name": "Joy.js Foundation and other contributors",
+    "url": "https://github.com/joyjs/joy.js/blob/master/AUTHORS"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joyjs/joy.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/joyjs/joy.js/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/joyjs/joy.js/blob/master/LICENSE"
+    }
+  ],
+  "scripts": {
+    "test": "grunt travis --verbose"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "grunt-compare-size": "~0.2.0",
+    "grunt-git-authors": ">=1.0.0",
+    "grunt-update-submodules": ">=0.1.2",
+    "grunt": "~0.3.17"
+  },
+  "keywords": []
+}
