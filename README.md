@@ -10,15 +10,33 @@ feel free to test it if you are adventurous.
 History
 ---
 
-- **2012/12/11:** initial commit.
+- **2012/12/13:** Raw render engine, along with one example.
+- **2012/12/11:** Initial commit.
+
+To-do
+---
+
+- Render module
+- Input module
+- Sound module
+- Sprite module
+- Particle systems
+- Game manager
+
+Dependencies
+---
+
+This project is built using [GruntJS](http://gruntjs.com/) and the documentation
+is generated with [YUIDoc for Grunt](https://github.com/gruntjs/grunt-contrib-yuidoc). All of them run on top
+of [node.js](http://nodejs.org/), so use [npm](https://npmjs.org/) to install
+Grunt and YUIDoc.
 
 Contributing
 ---
 
 We use `npm` modules, such as `qunit` and `grunt` during development process.
 If you're under Windows platform, please take a look at
-[this](https://gist.github.com/2489540) guides to setup the environment.
-
+[this](https://gist.github.com/2489540) guide to setup the environment.
 
 License
 ---

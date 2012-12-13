@@ -1,5 +1,7 @@
 module.exports = function(grunt) {
 
+  grunt.loadNpmTasks('grunt-contrib-yuidoc');
+
   // Project configuration.
   grunt.initConfig({
     pkg: '<json:package.json>',
@@ -33,11 +35,28 @@ module.exports = function(grunt) {
         browser: true
       }
     },
+    yuidoc: {
+      compile: {
+        name: '<%= pkg.name %>',
+        description: '<%= pkg.description %>',
+        version: '<%= pkg.version %>',
+        url: '<%= pkg.homepage %>',
+        nocode: 'true',
+        themedir: 'doctheme/',
+        options: {
+          paths: 'lib/',
+          outdir: 'doc/'
+        }
+      }
+    }
   });
 
   // Default task.
-  grunt.registerTask('default', 'lint test concat min');
+  grunt.registerTask('default', 'lint test concat min yuidoc');
 
   // Travis CI task.
   grunt.registerTask('travis', 'lint qunit');
+
+  // Generate only documentation.
+  grunt.registerTask('gendocs', 'yuidoc');
 };

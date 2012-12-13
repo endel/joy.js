@@ -1,0 +1,54 @@
+<html>
+
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>Joy Example</title>
+
+        <script type="text/javascript" src="../../../dist/joy.min.js"></script>
+        <script type="text/javascript">
+            var readyStateInterval = setInterval(function () {
+                if (document.readyState === 'complete') {
+                    clearInterval(readyStateInterval);
+                }
+
+                var r = Joy.Render;
+                r.Setup(document.getElementById("joy"), 60);
+
+                var sp = {asset: null, x: 10, y: 10};
+                sp.asset = new Image();
+                sp.asset.src = "mario.png";
+
+                r.AddToBuffer(sp);
+
+                var hDir = 1;
+                var vDir = 1;
+
+                setInterval(function () {
+                    sp.x += 1 * hDir;
+                    sp.y += 1 * vDir;
+
+                    if ((sp.x + sp.asset.width) > 320) {
+                        hDir = -1;
+                    }
+                    else if (sp.x < 0) {
+                        hDir = 1;
+                    }
+
+                    if ((sp.y + sp.asset.height) > 240) {
+                        vDir = -1;
+                    }
+                    else if (sp.y < 0) {
+                        vDir = 1;
+                    }
+
+                    r.Render();
+                }, 1000 / r.rate);
+            }, 10);
+        </script>
+    </head>
+
+    <body>
+        <canvas id="joy" width=320 height=240 style="border: 1px solid #666;"></canvas>
+    </body>
+    
+</html>

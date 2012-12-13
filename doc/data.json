@@ -1,0 +1,158 @@
+{
+    "project": {
+        "name": "joy.js",
+        "description": "A joyful JavaScript game engine",
+        "version": "0.0.1pre",
+        "url": "http://joyjs.org",
+        "nocode": "true",
+        "themedir": "doctheme/"
+    },
+    "files": {
+        "lib/core/render.js": {
+            "name": "lib/core/render.js",
+            "modules": {},
+            "classes": {
+                "Render": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/joy.js": {
+            "name": "lib/joy.js",
+            "modules": {},
+            "classes": {
+                "Joy": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {},
+    "classes": {
+        "Render": {
+            "name": "Render",
+            "shortname": "Render",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "lib/core/render.js",
+            "line": 1,
+            "description": "The rendering class is responsible for drawing everything at the canvas.\nIt works using a buffer of sprites, so you can use it alone, adding sprites to it.\nSprites are arranged into layers, so to speed up the rendering process.\nYou can have as much layers as you wish, although remember that, the more layers you have, the slower the rendering will be.\nAnimations are also handled by the class."
+        },
+        "Joy": {
+            "name": "Joy",
+            "shortname": "Joy",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "lib/joy.js",
+            "line": 1,
+            "description": "This is the main class for the Joy engine.\nEverything will be loaded from here, to be used at full extent."
+        }
+    },
+    "classitems": [
+        {
+            "file": "lib/core/render.js",
+            "line": 17,
+            "description": "Initializes the renderer.",
+            "itemtype": "method",
+            "name": "Setup",
+            "params": [
+                {
+                    "name": "canvas",
+                    "description": "Canvas to be used on the rendering.",
+                    "type": "Object"
+                },
+                {
+                    "name": "fps",
+                    "description": "Number of Frames Per Second to be rendered.",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "class": "Render"
+        },
+        {
+            "file": "lib/core/render.js",
+            "line": 30,
+            "description": "Adds a sprite to the rendering buffer.",
+            "itemtype": "method",
+            "name": "AddToBuffer",
+            "params": [
+                {
+                    "name": "sprite",
+                    "description": "The sprite to be added.",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "asset",
+                            "description": "An Image object containing the sprite.",
+                            "type": "Object"
+                        },
+                        {
+                            "name": "x",
+                            "description": "The horizontal position.",
+                            "type": "Number"
+                        },
+                        {
+                            "name": "y",
+                            "description": "The vertical position.",
+                            "type": "Number"
+                        }
+                    ]
+                },
+                {
+                    "name": "layer",
+                    "description": "The layer where the sprite will be rendered. If none is specified, then the top layer is used.",
+                    "type": "Number",
+                    "optional": true
+                }
+            ],
+            "class": "Render"
+        },
+        {
+            "file": "lib/core/render.js",
+            "line": 55,
+            "description": "Clears the entire screen.",
+            "itemtype": "method",
+            "name": "Clear",
+            "class": "Render"
+        },
+        {
+            "file": "lib/core/render.js",
+            "line": 64,
+            "description": "Renders everything in the buffer to the screen.",
+            "itemtype": "method",
+            "name": "Render",
+            "class": "Render"
+        },
+        {
+            "file": "lib/core/render.js",
+            "line": 80,
+            "description": "Renders a single sprite.",
+            "itemtype": "method",
+            "name": "RenderSprite",
+            "params": [
+                {
+                    "name": "sprite",
+                    "description": "The sprite object.",
+                    "type": "Object"
+                }
+            ],
+            "class": "Render"
+        },
+        {
+            "file": "lib/joy.js",
+            "line": 8,
+            "description": "Initializes the engine and loads up a package.",
+            "itemtype": "method",
+            "name": "Setup",
+            "class": "Joy"
+        }
+    ],
+    "warnings": []
+}
