@@ -7,10 +7,11 @@ module.exports = function(grunt) {
     pkg: '<json:package.json>',
     meta: {
       name: "Joy.js",
-      banner: '/*! <%= meta.name %> - v<%= pkg.version %> - <%= grunt.template.today("m/d/yyyy") %>\n' +
-        '* <%= pkg.homepage %>\n' +
-        '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-        ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
+      banner: '/* \n' +
+        ' * <%= meta.name %> - v<%= pkg.version %> (<%= pkg.homepage %>)\n' +
+        ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %> \n' +
+        ' * Build date: <%= grunt.template.today("m/d/yyyy") %>\n' +
+        ' */'
     },
     concat: {
       dist: {
@@ -28,7 +29,7 @@ module.exports = function(grunt) {
       files: ['test/**/*.js']
     },
     lint: {
-      all: ['grunt.js', 'lib/**/*.js', 'test/**/*.js']
+      all: ['grunt.js', 'lib/**/*.js']
     },
     jshint: {
       options: {
@@ -58,5 +59,5 @@ module.exports = function(grunt) {
   grunt.registerTask('travis', 'lint qunit');
 
   // Generate only documentation.
-  grunt.registerTask('gendocs', 'yuidoc');
+  grunt.registerTask('docs', 'yuidoc');
 };
