@@ -11,36 +11,63 @@
                     clearInterval(readyStateInterval);
                 }
 
+                function checkBoundaries(s) {
+                    s.x += s.speed * s.hDir;
+                    s.y += s.speed * s.vDir;
+
+                    if ((s.x + s.asset.width) > 320) {
+                        s.hDir = -1;
+                    }
+                    else if (s.x < 0) {
+                        s.hDir = 1;
+                    }
+
+                    if ((s.y + s.asset.height) > 240) {
+                        s.vDir = -1;
+                    }
+                    else if (s.y < 0) {
+                        s.vDir = 1;
+                    }
+                }
+
                 var r = new Joy.Render({
                   canvas: document.getElementById("joy").getContext('2d')
                 });
 
-                var sprite = new Joy.Sprite({
+                var spriteSmall = new Joy.Sprite({
                   x: 10, y: 10, url: "mario.png"
                 });
+                spriteSmall.hDir = 1;
+                spriteSmall.vDir = 1;
+                spriteSmall.speed = 2;
 
-                r.addToBuffer(sprite);
+                var spriteNormal = new Joy.Sprite({
+                  x: 10, y: 10, url: "mario.png"
+                });
+                spriteNormal.hDir = -1;
+                spriteNormal.vDir = 1;
+                spriteNormal.speed = 1;
 
-                var hDir = 1;
-                var vDir = 1;
+                var spriteBig = new Joy.Sprite({
+                  x: 10, y: 10, url: "mario.png"
+                });
+                spriteBig.hDir = 1;
+                spriteBig.vDir = -1;
+                spriteBig.speed = 0.5;
+
+                spriteSmall.asset.width /= 2;
+                spriteSmall.asset.height /= 2;
+                spriteBig.asset.width *= 2;
+                spriteBig.asset.height *= 2;
+
+                r.addToBuffer(spriteBig);
+                r.addToBuffer(spriteNormal);
+                r.addToBuffer(spriteSmall);
 
                 setInterval(function () {
-                    sprite.x += 1 * hDir;
-                    sprite.y += 1 * vDir;
-
-                    if ((sprite.x + sprite.asset.width) > 320) {
-                        hDir = -1;
-                    }
-                    else if (sprite.x < 0) {
-                        hDir = 1;
-                    }
-
-                    if ((sprite.y + sprite.asset.height) > 240) {
-                        vDir = -1;
-                    }
-                    else if (sprite.y < 0) {
-                        vDir = 1;
-                    }
+                    checkBoundaries(spriteSmall);
+                    checkBoundaries(spriteNormal);
+                    checkBoundaries(spriteBig);
                 }, 1000 / 60);
             }, 10);
         </script>
