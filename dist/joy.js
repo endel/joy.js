@@ -33,8 +33,16 @@ window.onEnterFrame = (function(){
     window.mozRequestAnimationFrame    ||
     window.oRequestAnimationFrame      ||
     window.msRequestAnimationFrame     ||
-    function( callback ) { window.setTimeout(callback, 1000 / 60); };
+    function( callback ) { window.setTimeout(callback, 1000 / 60); };		// TODO: use FPS rate from render module
 })();
+
+(function(J) {
+  var Game = function(options) {
+    this.render = new J.Render();
+  };
+
+  J.Game = Game;
+})(Joy);
 
 (function(J) {
   var GameObject = function() {
@@ -60,6 +68,8 @@ window.onEnterFrame = (function(){
 (function(J) {
   'use strict';
 
+  // TODO: find a better way to reference renderer instance.
+  // What will happen when we have two canvas rendering at the same time? (like a mini-map?)
   var renderer = null;
 
   /**
@@ -71,6 +81,10 @@ window.onEnterFrame = (function(){
   var Render = function(options) {
     renderer = this;
     this.context = options.canvas;
+    this.context.imageSmoothingEnabled = false;
+    this.context.mozImageSmoothingEnabled = false;
+    this.context.oImageSmoothingEnabled = false;
+    this.context.webkitImageSmoothingEnabled = false;
     this.spriteBuffer = {};
     this.onEnterFrame();
   };
@@ -98,9 +112,6 @@ window.onEnterFrame = (function(){
 
   Render.prototype.removeFromBuffer = function() {
     // TODO
-  };
-
-  Render.prototype.render = function() {
   };
 
   /**
@@ -135,10 +146,10 @@ window.onEnterFrame = (function(){
    * @param sprite {Object} The sprite object.
    */
   Render.prototype.renderSprite = function (sprite) {
-    this.context.drawImage(sprite.asset, sprite.x, sprite.y);
+    this.context.drawImage(sprite.asset, sprite.x, sprite.y, sprite.asset.width, sprite.asset.height);
   };
 
-  Render.prototype.onEnterFrame = function() {
+  Render.prototype.onEnterFrame = function () {
     window.onEnterFrame(renderer.onEnterFrame);
     renderer.render();
   };
