@@ -155,13 +155,22 @@ window.onEnterFrame = (function(){
     renderer = this;
     this.canvas = options.canvas;
     this.context = this.canvas.getContext('2d');
-    this.context.imageSmoothingEnabled = false;
-    this.context.mozImageSmoothingEnabled = false;
-    this.context.oImageSmoothingEnabled = false;
-    this.context.webkitImageSmoothingEnabled = false;
+    this.setSmooth(false);
     this.spriteBuffer = {};
     this.onEnterFrame();
   };
+
+  /**
+   * setSmooth
+   * @param enabled {Boolean} Enable image smoothing?
+   */
+  Render.prototype.setSmooth = function(bool) {
+    this.context.imageSmoothingEnabled = bool;
+    this.context.mozImageSmoothingEnabled = bool;
+    this.context.oImageSmoothingEnabled = bool;
+    this.context.webkitImageSmoothingEnabled = bool;
+    return this;
+  }
 
   Render.prototype.setCanvas = function(canvas) {
     this.canvas = canvas;
