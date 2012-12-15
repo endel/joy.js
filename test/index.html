@@ -12,6 +12,19 @@
   <script type="text/javascript" src="../dist/sizzle.js"></script>
 
   <script type="text/javascript">
+  function getRenderer() {
+    var canvas = document.createElement('canvas');
+    document.body.appendChild(canvas);
+    canvas.width = 320;
+    canvas.width = 240;
+    return new Joy.Render({canvas: canvas});
+  }
+
+  function releaseRenderer(renderer) {
+    document.body.removeChild(renderer.canvas);
+    delete renderer;
+  }
+
   (function() {
     var src = "../dist/joy.js";
 
@@ -44,8 +57,10 @@
   </script>
 
   <script src="unit/sprite.js"></script>
+  <script src="unit/text.js"></script>
   <script src="unit/time.js"></script>
 
+  <!--
   <script>
   // html5shiv, enabling HTML5 elements to be used with jQuery
   ( "abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup " +
@@ -54,8 +69,10 @@
     document.createElement(n);
   });
   </script>
+  -->
 </head>
 
 <body id="body">
   <div id="qunit"></div>
+  <canvas></canvas>
 </html>

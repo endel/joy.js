@@ -62,6 +62,7 @@ window.onEnterFrame = (function(){
 
 (function(J) {
   var Sprite = function(options) {
+    this.ctx = null;
     this.asset = new Image();
     this.x = options.x || 0;
     this.y = options.y || 0;
@@ -71,15 +72,90 @@ window.onEnterFrame = (function(){
     }
   };
 
-  Sprite.prototype.load = function(url, onload) {
+  Sprite.prototype.load = function(src, onload) {
     if (onload) {
       this.asset.onload = onload;
     }
-    this.asset.src = url;
+    this.asset.src = src;
+  };
+
+  Sprite.prototype.render = function() {
+    this.ctx.drawImage(this.asset, this.x, this.y, this.asset.width, this.asset.height);
+  };
+
+  Sprite.prototype.setContext = function(ctx) {
+    this.ctx = ctx;
   };
 
   J.Sprite = Sprite;
 })(Joy);
+
+(function(J) {
+  /*
+   * Constants
+   */
+  var BASELINE = {
+    TOP : 'top',
+    HANGING : 'hanging',
+    MIDDLE : 'middle',
+    ALPHABETIC : 'alphabetic',
+    IDEOGRAPHIC : 'ideographic',
+    BOTTOM : 'bottom'
+  };
+
+  /*
+   * Default values
+   */
+  var
+    DEFAULT_FONT = "normal 12px Verdana",
+    DEFAULT_COLOR = "#000000",
+    DEFAULT_ALIGN = "left",
+    DEFAULT_BASELINE = BASELINE.TOP;
+
+  var Text = function(options) {
+    if (typeof(options)==="undefined") {
+      options = {};
+    }
+    this.ctx = null;
+    this.x = options.x || 0;
+    this.y = options.y || 0;
+    this.text = options.text || "";
+    this.font = options.font || DEFAULT_FONT;
+    this.color = options.color || DEFAULT_COLOR;
+    this.align = options.align || DEFAULT_ALIGN;
+    this.baseLine = options.baseLine || DEFAULT_BASELINE;
+    return this;
+  };
+
+  Text.prototype.setText = function(t) {
+    this.text = t;
+  };
+
+  Text.prototype.render = function() {
+    this.ctx.font = this.font;
+    this.ctx.fillStyle = this.color;
+    this.ctx.textAlign = this.align;
+    this.ctx.textBaseLine = this.baseLine;
+    this.ctx.fillText(this.text, this.x, this.y);
+  };
+
+  Text.prototype.setContext = function(ctx) {
+    this.ctx = ctx;
+  };
+
+  /**
+   * getMeasure
+   * @return {TextMetrics}
+   */
+  Text.prototype.getMeasure = function() {
+    this.ctx.measureText(this.text);
+  }
+
+  Text.BASELINE = BASELINE;
+
+  J.Text = Text;
+})(Joy);
+
 
 (function(J) {
   var Game = function(options) {
@@ -157,7 +233,18 @@ window.onEnterFrame = (function(){
     this.context = this.canvas.getContext('2d');
     this.setSmooth(false);
     this.spriteBuffer = {};
+    this.pipeline = [];
+
+    // requestAnimationFrame
     this.onEnterFrame();
+  };
+
+  Render.prototype.getHeight = function() {
+    return this.canvas.height;
+  };
+
+  Render.prototype.getWidth = function() {
+    return this.canvas.width;
   };
 
   /**
@@ -170,10 +257,11 @@ window.onEnterFrame = (function(){
     this.context.oImageSmoothingEnabled = bool;
     this.context.webkitImageSmoothingEnabled = bool;
     return this;
-  }
+  };
 
   Render.prototype.setCanvas = function(canvas) {
     this.canvas = canvas;
+    return this;
   };
 
   /**
@@ -195,6 +283,12 @@ window.onEnterFrame = (function(){
     }
 
     this.spriteBuffer[layer].push(sprite);
+    return this;
+  };
+
+  Render.prototype.addChild = function(node) {
+    node.setContext(this.context);
+    this.pipeline.push(node);
   };
 
   Render.prototype.removeFromBuffer = function() {
@@ -208,6 +302,7 @@ window.onEnterFrame = (function(){
    */
   Render.prototype.clear = function () {
     this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height);
+    return this;
   };
 
   /**
@@ -216,24 +311,13 @@ window.onEnterFrame = (function(){
    * @method render
    */
   Render.prototype.render = function () {
+    var len = this.pipeline.length, i = 0;
+
     this.clear();
 
-    for (var layer in this.spriteBuffer) {
-      for (var sprite in this.spriteBuffer[layer]) {
-        // TODO: check for visibility/position and render only what is needed.
-        this.renderSprite(this.spriteBuffer[layer][sprite]);
-      }
+    for (; i < len; ++i) {
+      this.pipeline[i].render();
     }
-  };
-
-  /**
-   * Renders a single sprite.
-   *
-   * @method renderSprite
-   * @param sprite {Object} The sprite object.
-   */
-  Render.prototype.renderSprite = function (sprite) {
-    this.context.drawImage(sprite.asset, sprite.x, sprite.y, sprite.asset.width, sprite.asset.height);
   };
 
   Render.prototype.onEnterFrame = function () {

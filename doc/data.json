@@ -8,6 +8,13 @@
         "themedir": "doctheme/"
     },
     "files": {
+        "lib/base/text.js": {
+            "name": "lib/base/text.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "lib/core/render.js": {
             "name": "lib/core/render.js",
             "modules": {},
@@ -23,6 +30,13 @@
             "classes": {
                 "Joy": 1
             },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/support.js": {
+            "name": "lib/support.js",
+            "modules": {},
+            "classes": {},
             "fors": {},
             "namespaces": {}
         }
@@ -56,29 +70,40 @@
     },
     "classitems": [
         {
+            "file": "lib/base/text.js",
+            "line": 50,
+            "description": "getMeasure",
+            "return": {
+                "description": "",
+                "type": "TextMetrics"
+            },
+            "class": "Render"
+        },
+        {
             "file": "lib/core/render.js",
             "line": 17,
             "description": "Initializes the renderer.",
             "itemtype": "method",
-            "name": "Setup",
+            "name": "constructor",
+            "option": "[context] {Object} 2d canvas context to be used on the rendering.",
+            "class": "Render"
+        },
+        {
+            "file": "lib/core/render.js",
+            "line": 35,
+            "description": "setSmooth",
             "params": [
                 {
-                    "name": "canvas",
-                    "description": "Canvas to be used on the rendering.",
-                    "type": "Object"
-                },
-                {
-                    "name": "fps",
-                    "description": "Number of Frames Per Second to be rendered.",
-                    "type": "Number",
-                    "optional": true
+                    "name": "enabled",
+                    "description": "Enable image smoothing?",
+                    "type": "Boolean"
                 }
             ],
             "class": "Render"
         },
         {
             "file": "lib/core/render.js",
-            "line": 30,
+            "line": 52,
             "description": "Adds a sprite to the rendering buffer.",
             "itemtype": "method",
             "name": "AddToBuffer",
@@ -116,33 +141,18 @@
         },
         {
             "file": "lib/core/render.js",
-            "line": 55,
+            "line": 82,
             "description": "Clears the entire screen.",
             "itemtype": "method",
-            "name": "Clear",
+            "name": "clear",
             "class": "Render"
         },
         {
             "file": "lib/core/render.js",
-            "line": 64,
+            "line": 92,
             "description": "Renders everything in the buffer to the screen.",
             "itemtype": "method",
-            "name": "Render",
-            "class": "Render"
-        },
-        {
-            "file": "lib/core/render.js",
-            "line": 80,
-            "description": "Renders a single sprite.",
-            "itemtype": "method",
-            "name": "RenderSprite",
-            "params": [
-                {
-                    "name": "sprite",
-                    "description": "The sprite object.",
-                    "type": "Object"
-                }
-            ],
+            "name": "render",
             "class": "Render"
         },
         {
@@ -152,7 +162,40 @@
             "itemtype": "method",
             "name": "Setup",
             "class": "Joy"
+        },
+        {
+            "file": "lib/joy.js",
+            "line": 17,
+            "description": "Class class",
+            "class": "Joy"
+        },
+        {
+            "file": "lib/support.js",
+            "line": 5,
+            "description": "window.onEnterFrame",
+            "class": ""
         }
     ],
-    "warnings": []
+    "warnings": [
+        {
+            "message": "unknown tag: option",
+            "line": " lib/core/render.js:17"
+        },
+        {
+            "message": "Missing item type\ngetMeasure",
+            "line": " lib/base/text.js:50"
+        },
+        {
+            "message": "Missing item type\nsetSmooth",
+            "line": " lib/core/render.js:35"
+        },
+        {
+            "message": "Missing item type\nClass class",
+            "line": " lib/joy.js:17"
+        },
+        {
+            "message": "Missing item type\nwindow.onEnterFrame",
+            "line": " lib/support.js:5"
+        }
+    ]
 }
