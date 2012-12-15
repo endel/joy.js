@@ -123,19 +123,15 @@ window.onEnterFrame = (function(){
     this.font = options.font || DEFAULT_FONT;
     this.color = options.color || DEFAULT_COLOR;
     this.align = options.align || DEFAULT_ALIGN;
-    this.baseLine = options.baseLine || DEFAULT_BASELINE;
+    this.baseline = options.baseline || DEFAULT_BASELINE;
     return this;
-  };
-
-  Text.prototype.setText = function(t) {
-    this.text = t;
   };
 
   Text.prototype.render = function() {
     this.ctx.font = this.font;
     this.ctx.fillStyle = this.color;
     this.ctx.textAlign = this.align;
-    this.ctx.textBaseLine = this.baseLine;
+    this.ctx.textBaseline = this.baseline;
     this.ctx.fillText(this.text, this.x, this.y);
   };
 
@@ -264,28 +260,6 @@ window.onEnterFrame = (function(){
     return this;
   };
 
-  /**
-   * Adds a sprite to the rendering buffer.
-   *
-   * @method AddToBuffer
-   * @param sprite {Object} The sprite to be added.
-   * @param sprite.asset {Object} An Image object containing the sprite.
-   * @param sprite.x {Number} The horizontal position.
-   * @param sprite.y {Number} The vertical position.
-   * @param [layer] {Number} The layer where the sprite will be rendered. If none is specified, then the top layer is used.
-   */
-  Render.prototype.addToBuffer = function(sprite, layer){
-    layer = typeof layer == 'undefined' ? this.spriteBuffer.length - 1 : layer;
-    var l = this.spriteBuffer[layer];
-
-    if (typeof this.spriteBuffer[layer] == 'undefined') {
-      this.spriteBuffer[layer] = [];
-    }
-
-    this.spriteBuffer[layer].push(sprite);
-    return this;
-  };
-
   Render.prototype.addChild = function(node) {
     node.setContext(this.context);
     this.pipeline.push(node);
@@ -312,7 +286,6 @@ window.onEnterFrame = (function(){
    */
   Render.prototype.render = function () {
     var len = this.pipeline.length, i = 0;
-
     this.clear();
 
     for (; i < len; ++i) {
