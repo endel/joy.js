@@ -17,7 +17,16 @@
                 baseline: Joy.Text.BASELINE.MIDDLE
               });
 
+              var toggle = false;
               setInterval(function() {
+                toggle = !toggle;
+
+                if (toggle) {
+                  text.useFill();
+                } else {
+                  text.useStroke();
+                }
+
                 text.color = "rgb(" + parseInt(Math.random() * 255, 10) + "," + parseInt(Math.random() * 255, 10) + "," + parseInt(Math.random() * 255, 10) + ")";
               }, 1000 / 60)
 

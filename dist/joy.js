@@ -124,15 +124,34 @@ window.onEnterFrame = (function(){
     this.color = options.color || DEFAULT_COLOR;
     this.align = options.align || DEFAULT_ALIGN;
     this.baseline = options.baseline || DEFAULT_BASELINE;
+
+    if (options.stroke) {
+      this.useStroke();
+    } else {
+      this.useFill();
+    }
     return this;
+  };
+
+  Text.prototype.useStroke = function() {
+    this.stroke = true;
+    this.fillMethod = "strokeText";
+    this.styleMethod = "strokeStyle";
+  };
+
+  Text.prototype.useFill = function() {
+    this.stroke = false;
+    this.fillMethod = "fillText";
+    this.styleMethod = "fillStyle";
   };
 
   Text.prototype.render = function() {
     this.ctx.font = this.font;
-    this.ctx.fillStyle = this.color;
     this.ctx.textAlign = this.align;
     this.ctx.textBaseline = this.baseline;
-    this.ctx.fillText(this.text, this.x, this.y);
+
+    this.ctx[this.styleMethod] = this.color;
+    this.ctx[this.fillMethod](this.text, this.x, this.y);
   };
 
   Text.prototype.setContext = function(ctx) {
