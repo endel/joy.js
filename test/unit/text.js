@@ -1,9 +1,9 @@
-test(Joy.Text, function() {
+test("Joy.Text", function() {
   var text = new Joy.Text({text: "Hello!"});
-  ok(text.x == 0);
-  ok(text.y == 0);
+  ok(text.x == 0 && text.y == 0, "Initialize with default values.");
 
-  var r = getRenderer();
-  r.addChild(text);
-  r.render();
+  withEngine(function(r) {
+    r.addChild(text);
+    r.render();
+  });
 });

@@ -12,48 +12,54 @@
   <script type="text/javascript" src="../dist/sizzle.js"></script>
 
   <script type="text/javascript">
-  function getRenderer() {
-    var canvas = document.createElement('canvas');
-    document.body.appendChild(canvas);
-    canvas.width = 320;
-    canvas.width = 240;
-    return new Joy.Render({canvas: canvas});
-  }
-
-  function releaseRenderer(renderer) {
-    document.body.removeChild(renderer.canvas);
-    delete renderer;
-  }
-
-  (function() {
-    var src = "../dist/joy.js";
-
-    // Config parameter to use minified jQuery
-    QUnit.config.urlConfig.push({
-      id: "min",
-      label: "Load minified",
-      tooltip: "Load the minified version of the jQuery build"
-    });
-    if ( QUnit.urlParams.min ) {
-      src = "../dist/joy.min.js";
+    function withEngine(func) {
+      var r = getEngine();
+      console.log("Context", r.context);
+      func.call(this, r);
+      releaseEngine(r);
+    }
+    function getEngine() {
+      var canvas = document.createElement('canvas');
+      document.body.appendChild(canvas);
+      canvas.width = 320;
+      canvas.width = 240;
+      return new Joy.Engine({canvas2d: canvas});
     }
 
-    // Config parameter to force basic code paths
-    QUnit.config.urlConfig.push({
-      id: "basic",
-      label: "Bypass optimizations",
-      tooltip: "Force use of the most basic code by disabling native querySelectorAll; contains; compareDocumentPosition"
-    });
-    if ( QUnit.urlParams.basic ) {
-      document.querySelectorAll = null;
-      document.documentElement.contains = null;
-      document.documentElement.compareDocumentPosition = null;
+    function releaseEngine(e) {
+      document.body.removeChild(e.context.canvas);
+      delete e;
     }
 
-    // Load jQuery
-    document.write( "<script src='" + src + "'><\/script>" );
-    QUnit.start();
-  })();
+    (function() {
+      var src = "../dist/joy.js";
+
+      // Config parameter to use minified jQuery
+      QUnit.config.urlConfig.push({
+        id: "min",
+        label: "Load minified",
+        tooltip: "Load the minified version of the jQuery build"
+      });
+      if ( QUnit.urlParams.min ) {
+        src = "../dist/joy.min.js";
+      }
+
+      // Config parameter to force basic code paths
+      QUnit.config.urlConfig.push({
+        id: "basic",
+        label: "Bypass optimizations",
+        tooltip: "Force use of the most basic code by disabling native querySelectorAll; contains; compareDocumentPosition"
+      });
+      if ( QUnit.urlParams.basic ) {
+        document.querySelectorAll = null;
+        document.documentElement.contains = null;
+        document.documentElement.compareDocumentPosition = null;
+      }
+
+      // Load jQuery
+      document.write( "<script src='" + src + "'><\/script>" );
+      QUnit.start();
+    })();
   </script>
 
   <script src="unit/sprite.js"></script>

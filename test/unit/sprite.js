@@ -1,8 +1,10 @@
-this.sprite = {
+test("Joy.Sprite", function() {
+  var sprite = new Joy.Sprite({url: "../examples/shared-assets/mario.png"});
+  ok(sprite.x == 0 && sprite.y == 0, "Initialize with default values.");
 
-  'initialize with default values' : function() {
-    var sprite = new Joy.Sprite();
-    eq(sprite.asset.url, null);
-  }
+  withEngine(function(r) {
+    r.addChild(sprite);
+    r.render();
+  });
+});
 
-}

@@ -3,6 +3,7 @@
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <title>Joy Example</title>
 
+        <script type="text/javascript" src="../../dist/sizzle.js"></script>
         <script type="text/javascript" src="../../../dist/joy.js"></script>
         <script type="text/javascript">
             function setup() {
@@ -27,10 +28,7 @@
                   }
               }
 
-              var r = new Joy.Render({
-                canvas: c
-              });
-              r.context.globalCompositeOperation = "darker";
+              var r = new Joy.Engine({ canvas2d: c });
 
               var spriteUrl = "../shared-assets/mario.png";
 
@@ -40,6 +38,7 @@
               spriteSmall.hDir = 1;
               spriteSmall.vDir = 1;
               spriteSmall.speed = 2;
+              spriteSmall.add
 
               var spriteNormal = new Joy.Sprite({
                 x: 10, y: 10, url: spriteUrl

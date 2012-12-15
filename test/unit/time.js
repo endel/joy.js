@@ -1,7 +1,4 @@
-this.time = {
+test("Joy.Time", function() {
+  ok(Joy.Time.deltaTime == 1);
+});
 
-  'deltaTime' : function() {
-    eq(Joy.Time.deltaTime, 1)
-  }
-
-}

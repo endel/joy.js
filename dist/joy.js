@@ -10,27 +10,17 @@
  *
  * @class Joy
  */
-var Joy = Joy || {
-  /**
-   * Initializes the engine and loads up a package.
-   * @method Setup
-   */
-  Setup: function(canvasId) {
-    //
-  }
-};
-
-/**
- * Class class
- */
-var Class = function(d){
-  d.constructor.extend = function(def){
-    for (var k in d) if (!def.hasOwnProperty(k)) def[k] = d[k];
-    return Class(def);
+(function(global) {
+  // Exports Joy engine.
+  var Joy = global.Joy || {
+    Init: {},
+    Render: {},
+    Input: {},
+    Context: {}
   };
-  return (d.constructor.prototype = d).constructor;
-};
 
+  global.Joy = Joy;
+})(window);
 
 /*
  * Normalizes browser support
@@ -48,6 +38,137 @@ window.onEnterFrame = (function(){
     function( callback ) { window.setTimeout(callback, 1000 / 60); };		// TODO: use FPS rate from render module
 })();
 
+/*
+ * Simple JavaScript Inheritance - http://ejohn.org/blog/simple-javascript-inheritance/
+ * By John Resig http://ejohn.org/
+ * MIT Licensed.
+ */
+// Inspired by base2 and Prototype
+/*jshint immed:true loopfunc:true*/
+(function(){
+  var initializing = false, fnTest = /xyz/.test(function(){'xyz';}) ? /\b_super\b/ : /.*/;
+
+  // The base Class implementation (does nothing)
+  this.Class = function(){};
+
+  // Create a new Class that inherits from this class
+  Class.extend = function(prop) {
+    var _super = this.prototype;
+
+    // Instantiate a base class (but only create the instance,
+    // don't run the init constructor)
+    initializing = true;
+    var prototype = new this();
+    initializing = false;
+
+    // Copy the properties over onto the new prototype
+    for (var name in prop) {
+      // Check if we're overwriting an existing function
+      prototype[name] = typeof prop[name] == "function" &&
+        typeof _super[name] == "function" && fnTest.test(prop[name]) ?
+        (function(name, fn){
+        return function() {
+          var tmp = this._super;
+
+          // Add a new ._super() method that is the same method
+          // but on the super-class
+          this._super = _super[name];
+
+          // The method only need to be bound temporarily, so we
+          // remove it when we're done executing
+          var ret = fn.apply(this, arguments);
+          this._super = tmp;
+
+          return ret;
+        };
+      })(name, prop[name]) :
+        prop[name];
+    }
+
+    // The dummy class constructor
+    function Class() {
+      // All construction is actually done in the init method
+      if ( !initializing && this.init )
+        this.init.apply(this, arguments);
+    }
+
+    // Populate our constructed prototype object
+    Class.prototype = prototype;
+
+    // Enforce the constructor to be what we expect
+    Class.prototype.constructor = Class;
+
+    // And make this class extendable
+    Class.extend = arguments.callee;
+
+    return Class;
+  };
+})();
+/*jshint immed:false loopfunc:false*/
+
+(function(J) {
+  var Engine = function(options) {
+    if (options.canvas2d) {
+      this.context = new Joy.Context.Context2d({canvas: options.canvas2d});
+    }
+
+    if (options.canvas3d) {
+      // OMG, there is no 3d yet (and shouldn't for long time...)
+    }
+
+    if (options.markup) {
+      this.useMarkup();
+    }
+
+    return this;
+  };
+
+  Engine.prototype.getHeight = function() {
+    return this.context.canvas.height;
+  };
+
+  Engine.prototype.getWidth = function() {
+    return this.context.canvas.width;
+  };
+
+  Engine.prototype.addChild = function(node) {
+    return this.context.addChild(node);
+  };
+
+  Engine.prototype.render = function() {
+    return this.context.render();
+  };
+
+  Engine.prototype.useMarkup = function() {
+    var markup = new J.Markup();
+    markup.analyse(this.context);
+  };
+
+  J.Engine = Engine;
+})(Joy);
+
+(function(J) {
+  var Renderable = Class.extend({
+    init: function() {
+      this.ctx = null;
+    },
+
+    setContext: function(ctx) {
+      this.ctx = ctx;
+    },
+
+    render: function() {
+      throw new Exception("You must override `render` method for `" + this.constructor + "`.");
+    }
+  });
+
+  J.Renderable = Renderable;
+})(Joy);
+
+Joy.Time = {
+  deltaTime: 1
+};
+
 (function(J) {
   var GameObject = function() {
     this.x = 0;
@@ -60,32 +181,235 @@ window.onEnterFrame = (function(){
 })(Joy);
 
 
+/**
+ * Markup class
+ *
+ * Analyses HTML tags inside <canvas> tag, and add those childs
+ * to Joy contexting pipeline.
+ *
+ * Dependency: Sizzle
+ */
+(function(J){
+  // Use Sizzle as CSS Selector Engine.
+  var $ = (typeof(Sizzle) !== "undefined") ? Sizzle : null;
+
+  var Markup = function() {};
+
+  Markup.prototype.analyse = function(context) {
+    that = this;
+
+    // Sprite
+    $('img', context.canvas).forEach(function(img) {
+      var dataset = that.evaluateDataset(img.dataset, context.context);
+      context.addChild(new Joy.Sprite({
+        x: img.dataset.x,
+        y: img.dataset.y,
+        asset: img
+      }));
+    });
+
+    // Text
+    $('label', context.canvas).forEach(function(label) {
+      var dataset = that.evaluateDataset(label.dataset, context.context);
+      dataset.text = label.innerHTML;
+      context.addChild(new Joy.Text(dataset));
+    });
+  };
+
+  Markup.prototype.evaluateDataset = function(dataset, context) {
+    var attr, matches,
+        width = context.width,
+        height = context.height;
+
+    for (var key in dataset) {
+      attr = dataset[key];
+      matches = attr.match(/\{\{([^\}]*)\}\}/)[1];
+
+      // Replace expression by the evaluation of it.
+      attr.replace(attr, eval(matches[1]));
+    }
+  };
+
+  J.Markup = Markup;
+})(Joy);
+
+/**
+ * Package class
+ *
+ * Reads a stand-alone package.
+ */
+(function(J){
+  // Use Sizzle as CSS Selector Engine.
+  var $ = Sizzle;
+
+  var Markup = function() {};
+
+  Markup.prototype.analyse = function(render) {
+    that = this;
+
+    // Sprite
+    $('img', render.canvas).forEach(function(img) {
+      var dataset = that.evaluateDataset(img.dataset, render.context);
+      render.addChild(new Joy.Sprite({
+        x: img.dataset.x,
+        y: img.dataset.y,
+        asset: img
+      }));
+    });
+
+    // Text
+    $('label', render.canvas).forEach(function(label) {
+      var dataset = that.evaluateDataset(label.dataset, render.context);
+      dataset.text = label.innerHTML;
+      render.addChild(new Joy.Text(dataset));
+    });
+  };
+
+  Markup.prototype.evaluateDataset = function(dataset, context) {
+    var attr, matches,
+        width = context.width,
+        height = context.height;
+
+    for (var key in dataset) {
+      attr = dataset[key];
+      matches = attr.match(/\{\{([^\}]*)\}\}/)[1];
+
+      // Replace expression by the evaluation of it.
+      attr.replace(attr, eval(matches[1]));
+    }
+  };
+
+  J.Markup = Markup;
+})(Joy);
+
+
+/**
+ * The Context2ding class is responsible for drawing everything at the canvas.
+ * It works using a buffer of sprites, so you can use it alone, adding sprites to it.
+ * Sprites are arranged into layers, so to speed up the Context2ding process.
+ * You can have as much layers as you wish, although remember that, the more layers you have, the slower the Context2ding will be.
+ * Animations are also handled by the class.
+ *
+ * @class Context2d
+*/
 (function(J) {
-  var Sprite = function(options) {
-    this.ctx = null;
-    this.asset = new Image();
-    this.x = options.x || 0;
-    this.y = options.y || 0;
+  // TODO: find a better way to reference currentContext instance.
+  // What will happen when we have two canvas contexts at the same time? (like a mini-map?)
+  var currentContext = null;
 
-    if (options.url) {
-      this.load(options.url);
+  /**
+   * Initializes the currentContext.
+   *
+   * @method constructor
+   * @option [context] {Object} 2d canvas context to be used on the Context2ding.
+   */
+  var Context2d = function(options) {
+    currentContext = this;
+    this.canvas = options.canvas;
+    this.context = this.canvas.getContext('2d');
+    this.setSmooth(false);
+    this.spriteBuffer = {};
+    this.pipeline = [];
+
+    // requestAnimationFrame
+    this.onEnterFrame();
+  };
+
+  /**
+   * setSmooth
+   * @param enabled {Boolean} Enable image smoothing?
+   */
+  Context2d.prototype.setSmooth = function(bool) {
+    this.context.imageSmoothingEnabled = bool;
+    this.context.mozImageSmoothingEnabled = bool;
+    this.context.oImageSmoothingEnabled = bool;
+    this.context.webkitImageSmoothingEnabled = bool;
+    return this;
+  };
+
+  Context2d.prototype.setCanvas = function(canvas) {
+    this.canvas = canvas;
+    return this;
+  };
+
+  Context2d.prototype.addChild = function(node) {
+    node.setContext(this.context);
+    this.pipeline.push(node);
+  };
+
+  Context2d.prototype.removeChild = function() {
+    // TODO
+  };
+
+  /**
+   * Clears the entire screen.
+   *
+   * @method clear
+   */
+  Context2d.prototype.clear = function () {
+    this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height);
+    return this;
+  };
+
+  /**
+   * Context2ds everything in the buffer to the screen.
+   *
+   * @method Context2d
+   */
+  Context2d.prototype.render = function () {
+    var len = this.pipeline.length, i = 0;
+    this.clear();
+
+    for (; i < len; ++i) {
+      this.pipeline[i].render();
     }
   };
 
-  Sprite.prototype.load = function(src, onload) {
-    if (onload) {
-      this.asset.onload = onload;
+  Context2d.prototype.onEnterFrame = function () {
+    window.onEnterFrame(currentContext.onEnterFrame);
+    currentContext.render();
+  };
+
+  // Exports Context2d module
+  J.Context.Context2d = Context2d;
+})(Joy);
+
+(function(J) {
+  var Shadow = J.Renderable.extend({
+    init: function() {
+    },
+
+    render: function() {
+      throw new Exception("You must override `render` method for `" + this.constructor + "`.");
     }
-    this.asset.src = src;
-  };
+  });
 
-  Sprite.prototype.render = function() {
-    this.ctx.drawImage(this.asset, this.x, this.y, this.asset.width, this.asset.height);
-  };
+  Joy.Render.Shadow = Shadow;
+})(Joy);
 
-  Sprite.prototype.setContext = function(ctx) {
-    this.ctx = ctx;
-  };
+
+(function(J) {
+  var Sprite = J.Renderable.extend({
+    init: function(options) {
+      this.ctx = null;
+      this.asset = options.asset || new Image();
+      this.x = options.x || 0;
+      this.y = options.y || 0;
+
+      if (options.url) {
+        this.load(options.url);
+      }
+    },
+    load: function(src, onload) {
+      if (onload) {
+        this.asset.onload = onload;
+      }
+      this.asset.src = src;
+    },
+    render: function() {
+      this.ctx.drawImage(this.asset, this.x, this.y, this.asset.width, this.asset.height);
+    }
+  });
 
   J.Sprite = Sprite;
 })(Joy);
@@ -112,224 +436,67 @@ window.onEnterFrame = (function(){
     DEFAULT_ALIGN = "left",
     DEFAULT_BASELINE = BASELINE.TOP;
 
-  var Text = function(options) {
-    if (typeof(options)==="undefined") {
-      options = {};
+  var Text = J.Renderable.extend({
+    init: function(options) {
+      if (typeof(options)==="undefined") {
+        options = {};
+      }
+      this.ctx = null;
+      this.x = options.x || 0;
+      this.y = options.y || 0;
+      this.text = options.text || "";
+      this.font = options.font || DEFAULT_FONT;
+      this.color = options.color || DEFAULT_COLOR;
+      this.align = options.align || DEFAULT_ALIGN;
+      this.baseline = options.baseline || DEFAULT_BASELINE;
+
+      if (options.stroke) {
+        this.useStroke();
+      } else {
+        this.useFill();
+      }
+      return this;
+    },
+
+    useStroke: function() {
+      this.stroke = true;
+      this.fillMethod = "strokeText";
+      this.styleMethod = "strokeStyle";
+    },
+
+    useFill: function() {
+      this.stroke = false;
+      this.fillMethod = "fillText";
+      this.styleMethod = "fillStyle";
+    },
+
+    render: function() {
+      this.ctx.font = this.font;
+      this.ctx.textAlign = this.align;
+      this.ctx.textBaseline = this.baseline;
+
+      this.ctx[this.styleMethod] = this.color;
+      this.ctx[this.fillMethod](this.text, this.x, this.y);
+    },
+
+    /**
+     * getMeasure
+     * @return {TextMetrics}
+     */
+    getMeasure: function() {
+      this.ctx.measureText(this.text);
     }
-    this.ctx = null;
-    this.x = options.x || 0;
-    this.y = options.y || 0;
-    this.text = options.text || "";
-    this.font = options.font || DEFAULT_FONT;
-    this.color = options.color || DEFAULT_COLOR;
-    this.align = options.align || DEFAULT_ALIGN;
-    this.baseline = options.baseline || DEFAULT_BASELINE;
 
-    if (options.stroke) {
-      this.useStroke();
-    } else {
-      this.useFill();
-    }
-    return this;
-  };
-
-  Text.prototype.useStroke = function() {
-    this.stroke = true;
-    this.fillMethod = "strokeText";
-    this.styleMethod = "strokeStyle";
-  };
-
-  Text.prototype.useFill = function() {
-    this.stroke = false;
-    this.fillMethod = "fillText";
-    this.styleMethod = "fillStyle";
-  };
-
-  Text.prototype.render = function() {
-    this.ctx.font = this.font;
-    this.ctx.textAlign = this.align;
-    this.ctx.textBaseline = this.baseline;
-
-    this.ctx[this.styleMethod] = this.color;
-    this.ctx[this.fillMethod](this.text, this.x, this.y);
-  };
-
-  Text.prototype.setContext = function(ctx) {
-    this.ctx = ctx;
-  };
-
-  /**
-   * getMeasure
-   * @return {TextMetrics}
-   */
-  Text.prototype.getMeasure = function() {
-    this.ctx.measureText(this.text);
-  }
+  });
 
   Text.BASELINE = BASELINE;
-
   J.Text = Text;
 })(Joy);
 
 
 (function(J) {
-  var Game = function(options) {
-    this.render = new J.Render();
-
-    if (options.canvas) {
-      this.setCanvas(options.canvas);
-    }
-
-    if (options.markup) {
-    }
-
-    return this;
+  var Keyboard = function() {
   };
 
-  Game.prototype.setCanvas = function(canvas) {
-    this.render.setCanvas(canvas);
-  };
-
-  Game.prototype.useMarkup = function() {
-    var markup = new J.Markup();
-    markup.setup(this);
-  };
-
-  J.Game = Game;
-})(Joy);
-
-(function(J) {
-  var Layer = function() {
-    this.children = [];
-  };
-
-  Layer.prototype.addChild = function(child) {
-    this.children.push(child);
-  };
-
-  J.Layer = Layer;
-})(Joy);
-
-(function(J){
-  var Markup = function() {};
-
-  Markup.prototype.analyse = function(game) {
-    console.log(game.render.canvas);
-  };
-
-  J.Markup = Markup;
-})(Joy);
-
-/**
- * The rendering class is responsible for drawing everything at the canvas.
- * It works using a buffer of sprites, so you can use it alone, adding sprites to it.
- * Sprites are arranged into layers, so to speed up the rendering process.
- * You can have as much layers as you wish, although remember that, the more layers you have, the slower the rendering will be.
- * Animations are also handled by the class.
- *
- * @class Render
-*/
-(function(J) {
-  'use strict';
-
-  // TODO: find a better way to reference renderer instance.
-  // What will happen when we have two canvas rendering at the same time? (like a mini-map?)
-  var renderer = null;
-
-  /**
-   * Initializes the renderer.
-   *
-   * @method constructor
-   * @option [context] {Object} 2d canvas context to be used on the rendering.
-   */
-  var Render = function(options) {
-    renderer = this;
-    this.canvas = options.canvas;
-    this.context = this.canvas.getContext('2d');
-    this.setSmooth(false);
-    this.spriteBuffer = {};
-    this.pipeline = [];
-
-    // requestAnimationFrame
-    this.onEnterFrame();
-  };
-
-  Render.prototype.getHeight = function() {
-    return this.canvas.height;
-  };
-
-  Render.prototype.getWidth = function() {
-    return this.canvas.width;
-  };
-
-  /**
-   * setSmooth
-   * @param enabled {Boolean} Enable image smoothing?
-   */
-  Render.prototype.setSmooth = function(bool) {
-    this.context.imageSmoothingEnabled = bool;
-    this.context.mozImageSmoothingEnabled = bool;
-    this.context.oImageSmoothingEnabled = bool;
-    this.context.webkitImageSmoothingEnabled = bool;
-    return this;
-  };
-
-  Render.prototype.setCanvas = function(canvas) {
-    this.canvas = canvas;
-    return this;
-  };
-
-  Render.prototype.addChild = function(node) {
-    node.setContext(this.context);
-    this.pipeline.push(node);
-  };
-
-  Render.prototype.removeFromBuffer = function() {
-    // TODO
-  };
-
-  /**
-   * Clears the entire screen.
-   *
-   * @method clear
-   */
-  Render.prototype.clear = function () {
-    this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height);
-    return this;
-  };
-
-  /**
-   * Renders everything in the buffer to the screen.
-   *
-   * @method render
-   */
-  Render.prototype.render = function () {
-    var len = this.pipeline.length, i = 0;
-    this.clear();
-
-    for (; i < len; ++i) {
-      this.pipeline[i].render();
-    }
-  };
-
-  Render.prototype.onEnterFrame = function () {
-    window.onEnterFrame(renderer.onEnterFrame);
-    renderer.render();
-  };
-
-  // Exports Render module
-  J.Render = Render;
-})(Joy);
-
-Joy.Time = {
-  deltaTime: 1
-};
-
-(function(J) {
-  var Transform = function() {
-    this.position = null;
-    this.localPosition = null;
-  };
-
-  J.Transform = Transform;
+  Joy.Input.Keyboard = Keyboard;
 })(Joy);

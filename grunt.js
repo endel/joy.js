@@ -15,7 +15,7 @@ module.exports = function(grunt) {
     },
     concat: {
       dist: {
-        src: ['<banner>', 'lib/*.js', 'lib/*/**.js'],
+        src: ['<banner>', 'lib/*.js', 'lib/core/**.js', 'lib/**/**.js'],
         dest: 'dist/joy.js'
       }
     },
@@ -33,7 +33,8 @@ module.exports = function(grunt) {
     },
     jshint: {
       options: {
-        browser: true
+        browser: true,
+        evil: true // Allow eval
       }
     },
     yuidoc: {
