@@ -58,6 +58,9 @@ module.exports = function(grunt) {
   // Test task
   grunt.registerTask('test', 'concat qunit'); //  yuidoc
 
+  // Dev build
+  grunt.registerTask('dev', 'lint concat min');
+
   // Travis CI task.
   grunt.registerTask('travis', 'lint test');
 

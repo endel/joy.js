@@ -6,42 +6,6 @@ create games, or any kind of web multimedia.
 It's currently on early development stage, the API could change at any time,
 feel free to test it if you are adventurous.
 
-## History
-
-- **2012/12/13:** Raw render engine, along with one example.
-- **2012/12/11:** Initial commit.
-
-## To-do
-
-### Render module
-
-- Animation handling
-
-### Input module
-
-- Handle keyboard input
-- Handle mouse input
-
-### Sound module
-
-- Load and play sounds
-
-### Entity module
-
-- TBD
-
-### Particle systems
-
-- Everything
-
-### Game manager
-
-- Everything
-
-### Packer
-
-- Everything
-
 ## Dependencies
 
 This project is built using [GruntJS](http://gruntjs.com/) and the documentation

@@ -45,7 +45,7 @@ window.onEnterFrame = (function(){
     window.mozRequestAnimationFrame    ||
     window.oRequestAnimationFrame      ||
     window.msRequestAnimationFrame     ||
-    function( callback ) { window.setTimeout(callback, 1000 / 60); };
+    function( callback ) { window.setTimeout(callback, 1000 / 60); };		// TODO: use FPS rate from render module
 })();
 
 (function(J) {
@@ -155,6 +155,10 @@ window.onEnterFrame = (function(){
     renderer = this;
     this.canvas = options.canvas;
     this.context = this.canvas.getContext('2d');
+    this.context.imageSmoothingEnabled = false;
+    this.context.mozImageSmoothingEnabled = false;
+    this.context.oImageSmoothingEnabled = false;
+    this.context.webkitImageSmoothingEnabled = false;
     this.spriteBuffer = {};
     this.onEnterFrame();
   };
@@ -188,16 +192,13 @@ window.onEnterFrame = (function(){
     // TODO
   };
 
-  Render.prototype.render = function() {
-  };
-
   /**
    * Clears the entire screen.
    *
    * @method clear
    */
   Render.prototype.clear = function () {
-    this.context.clearRect(0, 0, 320, 240);
+    this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height);
   };
 
   /**
@@ -223,10 +224,10 @@ window.onEnterFrame = (function(){
    * @param sprite {Object} The sprite object.
    */
   Render.prototype.renderSprite = function (sprite) {
-    this.context.drawImage(sprite.asset, sprite.x, sprite.y);
+    this.context.drawImage(sprite.asset, sprite.x, sprite.y, sprite.asset.width, sprite.asset.height);
   };
 
-  Render.prototype.onEnterFrame = function() {
+  Render.prototype.onEnterFrame = function () {
     window.onEnterFrame(renderer.onEnterFrame);
     renderer.render();
   };
