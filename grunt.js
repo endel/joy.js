@@ -25,8 +25,8 @@ module.exports = function(grunt) {
         dest: 'dist/joy.min.js'
       }
     },
-    test: {
-      files: ['test/**/*.js']
+    qunit: {
+      all: ['test/index.html']
     },
     lint: {
       all: ['grunt.js', 'lib/**/*.js']
@@ -53,10 +53,13 @@ module.exports = function(grunt) {
   });
 
   // Default task.
-  grunt.registerTask('default', 'lint test concat min yuidoc');
+  grunt.registerTask('default', 'lint concat min qunit'); //  yuidoc
+
+  // Test task
+  grunt.registerTask('test', 'concat qunit'); //  yuidoc
 
   // Travis CI task.
-  grunt.registerTask('travis', 'lint qunit');
+  grunt.registerTask('travis', 'lint test');
 
   // Generate only documentation.
   grunt.registerTask('docs', 'yuidoc');

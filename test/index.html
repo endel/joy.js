@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr" id="html">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+
+  <title>Joy.js Test Suite</title>
+  <link rel="Stylesheet" media="screen" href="qunit/qunit/qunit.css" />
+  <!-- Includes -->
+
+  <script type="text/javascript" src="qunit/qunit/qunit.js"></script>
+  <script type="text/javascript" src="../dist/sizzle.js"></script>
+
+  <script type="text/javascript">
+  (function() {
+    var src = "../dist/joy.js";
+
+    // Config parameter to use minified jQuery
+    QUnit.config.urlConfig.push({
+      id: "min",
+      label: "Load minified",
+      tooltip: "Load the minified version of the jQuery build"
+    });
+    if ( QUnit.urlParams.min ) {
+      src = "../dist/joy.min.js";
+    }
+
+    // Config parameter to force basic code paths
+    QUnit.config.urlConfig.push({
+      id: "basic",
+      label: "Bypass optimizations",
+      tooltip: "Force use of the most basic code by disabling native querySelectorAll; contains; compareDocumentPosition"
+    });
+    if ( QUnit.urlParams.basic ) {
+      document.querySelectorAll = null;
+      document.documentElement.contains = null;
+      document.documentElement.compareDocumentPosition = null;
+    }
+
+    // Load jQuery
+    document.write( "<script src='" + src + "'><\/script>" );
+    QUnit.start();
+  })();
+  </script>
+
+  <script src="unit/sprite.js"></script>
+  <script src="unit/time.js"></script>
+
+  <script>
+  // html5shiv, enabling HTML5 elements to be used with jQuery
+  ( "abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup " +
+   "mark meter nav output progress section summary time video"
+  ).replace(/\w+/g, function(n) {
+    document.createElement(n);
+  });
+  </script>
+</head>
+
+<body id="body">
+  <div id="qunit"></div>
+</html>

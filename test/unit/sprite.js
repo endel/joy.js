@@ -1,5 +1,3 @@
-var window = {}, Joy = require('../dist/joy.js');
-
 this.sprite = {
 
   'initialize with default values' : function() {

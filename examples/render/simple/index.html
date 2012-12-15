@@ -11,12 +11,11 @@
                     clearInterval(readyStateInterval);
                 }
 
-                var r = new Joy.Render({
-                  canvas: document.getElementById("joy").getContext('2d')
-                });
+                var r = new Joy.Render({canvas: document.getElementById("joy")});
 
                 var sprite = new Joy.Sprite({
-                  x: 10, y: 10, url: "mario.png"
+                  x: 10, y: 10,
+                  url: "../../shared-assets/mario.png"
                 });
 
                 r.addToBuffer(sprite);
@@ -47,7 +46,7 @@
     </head>
 
     <body>
-        <canvas id="joy" width=320 height=240 style="border: 1px solid #666;"></canvas>
+        <canvas id="joy" width='320' height='240' style="border: 1px solid #666;"></canvas>
     </body>
 
 </html>

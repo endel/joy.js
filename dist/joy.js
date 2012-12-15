@@ -1,7 +1,7 @@
 /* 
  * Joy.js - v0.0.1pre (http://joyjs.org)
  * Copyright (c) 2012 Joy.js Foundation and other contributors 
- * Build date: 12/14/2012
+ * Build date: 12/15/2012
  */
 
 /**
@@ -19,6 +19,18 @@ var Joy = Joy || {
     //
   }
 };
+
+/**
+ * Class class
+ */
+var Class = function(d){
+  d.constructor.extend = function(def){
+    for (var k in d) if (!def.hasOwnProperty(k)) def[k] = d[k];
+    return Class(def);
+  };
+  return (d.constructor.prototype = d).constructor;
+};
+
 
 /*
  * Normalizes browser support
@@ -48,6 +60,75 @@ window.onEnterFrame = (function(){
 })(Joy);
 
 
+(function(J) {
+  var Sprite = function(options) {
+    this.asset = new Image();
+    this.x = options.x || 0;
+    this.y = options.y || 0;
+
+    if (options.url) {
+      this.load(options.url);
+    }
+  };
+
+  Sprite.prototype.load = function(url, onload) {
+    if (onload) {
+      this.asset.onload = onload;
+    }
+    this.asset.src = url;
+  };
+
+  J.Sprite = Sprite;
+})(Joy);
+
+(function(J) {
+  var Game = function(options) {
+    this.render = new J.Render();
+
+    if (options.canvas) {
+      this.setCanvas(options.canvas);
+    }
+
+    if (options.markup) {
+    }
+
+    return this;
+  };
+
+  Game.prototype.setCanvas = function(canvas) {
+    this.render.setCanvas(canvas);
+  };
+
+  Game.prototype.useMarkup = function() {
+    var markup = new J.Markup();
+    markup.setup(this);
+  };
+
+  J.Game = Game;
+})(Joy);
+
+(function(J) {
+  var Layer = function() {
+    this.children = [];
+  };
+
+  Layer.prototype.addChild = function(child) {
+    this.children.push(child);
+  };
+
+  J.Layer = Layer;
+})(Joy);
+
+(function(J){
+  var Markup = function() {};
+
+  Markup.prototype.analyse = function(game) {
+    console.log(game.render.canvas);
+  };
+
+  J.Markup = Markup;
+})(Joy);
+
 /**
  * The rendering class is responsible for drawing everything at the canvas.
  * It works using a buffer of sprites, so you can use it alone, adding sprites to it.
@@ -60,6 +141,8 @@ window.onEnterFrame = (function(){
 (function(J) {
   'use strict';
 
+  // TODO: find a better way to reference renderer instance.
+  // What will happen when we have two canvas rendering at the same time? (like a mini-map?)
   var renderer = null;
 
   /**
@@ -70,9 +153,14 @@ window.onEnterFrame = (function(){
    */
   var Render = function(options) {
     renderer = this;
-    this.context = options.canvas;
+    this.canvas = options.canvas;
+    this.context = this.canvas.getContext('2d');
     this.spriteBuffer = {};
     this.onEnterFrame();
+  };
+
+  Render.prototype.setCanvas = function(canvas) {
+    this.canvas = canvas;
   };
 
   /**
@@ -145,27 +233,6 @@ window.onEnterFrame = (function(){
 
   // Exports Render module
   J.Render = Render;
-})(Joy);
-
-(function(J) {
-  var Sprite = function(options) {
-    this.asset = new Image();
-    this.x = options.x || 0;
-    this.y = options.y || 0;
-
-    if (options.url) {
-      this.load(options.url);
-    }
-  };
-
-  Sprite.prototype.load = function(url, onload) {
-    if (onload) {
-      this.asset.onload = onload;
-    }
-    this.asset.src = url;
-  };
-
-  J.Sprite = Sprite;
 })(Joy);
 
 Joy.Time = {

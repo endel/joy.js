@@ -1,0 +1,24 @@
+<html>
+
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>Joy Example: Markup</title>
+
+        <script type="text/javascript" src="../../dist/sizzle.js"></script>
+        <script type="text/javascript" src="../../dist/joy.js"></script>
+        <script type="text/javascript">
+            var renderer = new Joy.Render({
+              markup: true,
+              canvas: document.getElementById('joy')
+            });
+        </script>
+    </head>
+
+    <body>
+        <canvas id="joy" width='320' height='240' style="border: 1px solid #666;">
+          <img src="../shared-assets/mario.png" width="92" height="108" />
+        </canvas>
+    </body>
+
+</html>
+

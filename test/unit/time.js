@@ -1,5 +1,3 @@
-var Joy = require('../dist/joy.js');
-
 this.time = {
 
   'deltaTime' : function() {
