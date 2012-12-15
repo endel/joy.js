@@ -120,7 +120,7 @@ window.onEnterFrame = (function(){
    * @method clear
    */
   Render.prototype.clear = function () {
-    this.context.clearRect(0, 0, 320, 240);
+    this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height);
   };
 
   /**
