@@ -11,18 +11,20 @@
                     clearInterval(readyStateInterval);
                 }
 
+                var c = document.getElementById("joy");
+
                 function checkBoundaries(s) {
                     s.x += s.speed * s.hDir;
                     s.y += s.speed * s.vDir;
 
-                    if ((s.x + s.asset.width) > 320) {
+                    if ((s.x + s.asset.width) > c.width) {
                         s.hDir = -1;
                     }
                     else if (s.x < 0) {
                         s.hDir = 1;
                     }
 
-                    if ((s.y + s.asset.height) > 240) {
+                    if ((s.y + s.asset.height) > c.height) {
                         s.vDir = -1;
                     }
                     else if (s.y < 0) {
@@ -31,7 +33,7 @@
                 }
 
                 var r = new Joy.Render({
-                  canvas: document.getElementById("joy").getContext('2d')
+                  canvas: c.getContext('2d')
                 });
 
                 var spriteSmall = new Joy.Sprite({
@@ -73,8 +75,8 @@
         </script>
     </head>
 
-    <body>
-        <canvas id="joy" width=320 height=240 style="border: 1px solid #666;"></canvas>
+    <body style="margin: 0; padding: 0;">
+        <canvas id="joy" width=480 height=320 style="border: 1px solid #000000;"></canvas>
     </body>
 
 </html>
