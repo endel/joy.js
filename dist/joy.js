@@ -1,7 +1,7 @@
 /* 
  * Joy.js - v0.0.1pre (http://joyjs.org)
  * Copyright (c) 2012 Joy.js Foundation and other contributors 
- * Build date: 12/15/2012
+ * Build date: 12/16/2012
  */
 
 /**
@@ -38,10 +38,12 @@ window.onEnterFrame = (function(){
     function( callback ) { window.setTimeout(callback, 1000 / 60); };		// TODO: use FPS rate from render module
 })();
 
-/*
+/**
  * Simple JavaScript Inheritance - http://ejohn.org/blog/simple-javascript-inheritance/
  * By John Resig http://ejohn.org/
  * MIT Licensed.
+ *
+ * @class Class
  */
 // Inspired by base2 and Prototype
 /*jshint immed:true loopfunc:true*/
@@ -106,6 +108,9 @@ window.onEnterFrame = (function(){
 })();
 /*jshint immed:false loopfunc:false*/
 
+/**
+ * @class Engine
+ */
 (function(J) {
   var Engine = function(options) {
     if (options.canvas2d) {
@@ -147,14 +152,56 @@ window.onEnterFrame = (function(){
   J.Engine = Engine;
 })(Joy);
 
+/**
+ * Base class for rendering.
+ * @class Renderable
+ */
 (function(J) {
   var Renderable = Class.extend({
     init: function() {
       this.ctx = null;
+      this.plugins = [];
+      this._preRender = [];
+      this._postRender = [];
     },
 
     setContext: function(ctx) {
+      var i = 0,
+          length = this.plugins.length;
+
       this.ctx = ctx;
+
+      for (;i<length;++i) {
+        this.plugins[i].setContext(ctx);
+      }
+    },
+
+    addPlugin: function(plugin) {
+      if (plugin.preRender) {
+        this._preRender.push(plugin);
+      }
+
+      if (plugin.postRender) {
+        this._postRender.push(plugin);
+      }
+
+      this.plugins.push(plugin);
+    },
+
+    preRender: function() {
+      var i = 0,
+          length = this._preRender.length;
+      for (;i<length;++i) {
+        this._preRender[i].preRender();
+      }
+    },
+
+    postRender: function() {
+      var i = 0,
+          length = this._postRender.length;
+      for (;i<length;++i) {
+        this._postRender[i].postRender();
+      }
     },
 
     render: function() {
@@ -165,29 +212,48 @@ window.onEnterFrame = (function(){
   J.Renderable = Renderable;
 })(Joy);
 
+/**
+ * Singleton time variables.
+ * @class Time
+ */
 Joy.Time = {
   deltaTime: 1
 };
 
+/**
+ * @class Behaviour
+ */
 (function(J) {
-  var GameObject = function() {
+  var Behaviour = Class.extend({
+    init: function() {
+    }
+  });
+
+  Joy.Behaviour = Behaviour;
+})(Joy);
+
+/**
+ * @class GameObject
+ */
+(function(J) {
+  var GameObject = function(options) {
     this.x = 0;
     this.y = 0;
-    this.sprite = null;
-    this.transform = null;
+    this.graphic = options.graphic || null;
   };
+
+  GameObject.prototype.addBehaviour = function() {};
 
   J.GameObject = GameObject;
 })(Joy);
 
 
 /**
- * Markup class
- *
  * Analyses HTML tags inside <canvas> tag, and add those childs
  * to Joy contexting pipeline.
  *
  * Dependency: Sizzle
+ * @class Markup
  */
 (function(J){
   // Use Sizzle as CSS Selector Engine.
@@ -234,9 +300,8 @@ Joy.Time = {
 })(Joy);
 
 /**
- * Package class
- *
  * Reads a stand-alone package.
+ * @class Package
  */
 (function(J){
   // Use Sizzle as CSS Selector Engine.
@@ -284,7 +349,7 @@ Joy.Time = {
 
 
 /**
- * The Context2ding class is responsible for drawing everything at the canvas.
+ * The Context2d class is responsible for drawing everything at the canvas.
  * It works using a buffer of sprites, so you can use it alone, adding sprites to it.
  * Sprites are arranged into layers, so to speed up the Context2ding process.
  * You can have as much layers as you wish, although remember that, the more layers you have, the slower the Context2ding will be.
@@ -299,9 +364,8 @@ Joy.Time = {
 
   /**
    * Initializes the currentContext.
-   *
-   * @method constructor
-   * @option [context] {Object} 2d canvas context to be used on the Context2ding.
+   * @param {Object} options
+   * @constructor
    */
   var Context2d = function(options) {
     currentContext = this;
@@ -317,7 +381,7 @@ Joy.Time = {
 
   /**
    * setSmooth
-   * @param enabled {Boolean} Enable image smoothing?
+   * @param {Boolean} enabled Enable image smoothing?
    */
   Context2d.prototype.setSmooth = function(bool) {
     this.context.imageSmoothingEnabled = bool;
@@ -332,9 +396,16 @@ Joy.Time = {
     return this;
   };
 
+  /**
+   * Add a graphic object to enqueue to rendering pipeline.
+   * @param {GameObject, Renderable} node
+   */
   Context2d.prototype.addChild = function(node) {
-    node.setContext(this.context);
-    this.pipeline.push(node);
+    var renderable = (node instanceof J.GameObject) ? node.graphic : node;
+    if (renderable) {
+      renderable.setContext(this.context);
+      this.pipeline.push(renderable);
+    }
   };
 
   Context2d.prototype.removeChild = function() {
@@ -361,13 +432,28 @@ Joy.Time = {
     this.clear();
 
     for (; i < len; ++i) {
+      /*
+       * TODO: Improve pre/post rendering performance.
+       */
+      if (this.pipeline[i]._preRender.length > 0) {
+        this.pipeline[i].preRender();
+      }
+
       this.pipeline[i].render();
+
+      if (this.pipeline[i]._postRender.length > 0) {
+        this.pipeline[i].postRender();
+      }
     }
   };
 
+  /**
+   * Call window's requestAnimationFrame.
+   * @method onEnterFrame
+   */
   Context2d.prototype.onEnterFrame = function () {
-    window.onEnterFrame(currentContext.onEnterFrame);
     currentContext.render();
+    window.onEnterFrame(currentContext.onEnterFrame);
   };
 
   // Exports Context2d module
@@ -375,12 +461,27 @@ Joy.Time = {
 })(Joy);
 
 (function(J) {
+  var DEFAULT_COLOR = "#000000";
+
   var Shadow = J.Renderable.extend({
-    init: function() {
+    init: function(options) {
+      this.color = options.color || DEFAULT_COLOR;
+      this.offsetX = options.offsetX || 0;
+      this.offsetY = options.offsetY || 0;
+      this.blur = options.blur || 0;
+      this._super();
     },
 
-    render: function() {
-      throw new Exception("You must override `render` method for `" + this.constructor + "`.");
+    preRender: function() {
+      this.ctx.save();
+      this.ctx.shadowColor = this.color;
+      this.ctx.shadowBlur = this.blur;
+      this.ctx.shadowOffsetX = this.offsetX;
+      this.ctx.shadowOffsetY = this.offsetY;
+    },
+
+    postRender: function() {
+      this.ctx.restore();
     }
   });
 
@@ -388,10 +489,12 @@ Joy.Time = {
 })(Joy);
 
 
+/**
+ * @class Sprite
+ */
 (function(J) {
   var Sprite = J.Renderable.extend({
     init: function(options) {
-      this.ctx = null;
       this.asset = options.asset || new Image();
       this.x = options.x || 0;
       this.y = options.y || 0;
@@ -399,13 +502,17 @@ Joy.Time = {
       if (options.url) {
         this.load(options.url);
       }
+
+      this._super();
     },
+
     load: function(src, onload) {
       if (onload) {
         this.asset.onload = onload;
       }
       this.asset.src = src;
     },
+
     render: function() {
       this.ctx.drawImage(this.asset, this.x, this.y, this.asset.width, this.asset.height);
     }
@@ -414,6 +521,9 @@ Joy.Time = {
   J.Sprite = Sprite;
 })(Joy);
 
+/**
+ * @class Text
+ */
 (function(J) {
   /*
    * Constants
@@ -431,7 +541,7 @@ Joy.Time = {
    * Default values
    */
   var
-    DEFAULT_FONT = "normal 12px Verdana",
+    DEFAULT_FONT = "Normal 12px Verdana",
     DEFAULT_COLOR = "#000000",
     DEFAULT_ALIGN = "left",
     DEFAULT_BASELINE = BASELINE.TOP;
@@ -441,7 +551,6 @@ Joy.Time = {
       if (typeof(options)==="undefined") {
         options = {};
       }
-      this.ctx = null;
       this.x = options.x || 0;
       this.y = options.y || 0;
       this.text = options.text || "";
@@ -455,7 +564,8 @@ Joy.Time = {
       } else {
         this.useFill();
       }
-      return this;
+
+      this._super();
     },
 
     useStroke: function() {
@@ -480,8 +590,8 @@ Joy.Time = {
     },
 
     /**
-     * getMeasure
-     * @return {TextMetrics}
+     * @method getMeasure
+     * @return {TextMetrics} text metrics
      */
     getMeasure: function() {
       this.ctx.measureText(this.text);
@@ -494,9 +604,109 @@ Joy.Time = {
 })(Joy);
 
 
+/**
+ * @class Keyboard
+ * Singleton keyboard constants.
+ */
 (function(J) {
-  var Keyboard = function() {
+  var Keyboard = {
+    ENTER:13,
+    BACKSPACE:8,
+    TAB:9,
+    SHIFT:16,
+    CTRL:17,
+    ALT:18,
+    PAUSE:19,
+    CAPSLOCK:20,
+    ESCAPE:27,
+    PAGEUP:33,
+    PAGEDOWN:34,
+    END:35,
+    HOME:36,
+    LEFT:37,
+    UP:38,
+    RIGHT:39,
+    DOWN:40,
+    INSERT:45,
+    DELETE:46,
+    0:48,
+    1:49,
+    2:50,
+    3:51,
+    4:52,
+    5:53,
+    6:54,
+    7:55,
+    8:56,
+    9:57,
+    A:65,
+    B:66,
+    C:67,
+    D:68,
+    E:69,
+    F:70,
+    G:71,
+    H:72,
+    I:73,
+    J:74,
+    K:75,
+    L:76,
+    M:77,
+    N:78,
+    O:79,
+    P:80,
+    Q:81,
+    R:82,
+    S:83,
+    T:84,
+    U:85,
+    V:86,
+    W:87,
+    X:88,
+    Y:89,
+    Z:90,
+    SELECT:93,
+    NUMPAD0:96,
+    NUMPAD1:97,
+    NUMPAD2:98,
+    NUMPAD3:99,
+    NUMPAD4:100,
+    NUMPAD5:101,
+    NUMPAD6:102,
+    NUMPAD7:103,
+    NUMPAD8:104,
+    NUMPAD9:105,
+    MULTIPLY:106,
+    ADD:107,
+    SUBTRACT:109,
+    DECIMALPOINT:110,
+    DIVIDE:111,
+    F1:112,
+    F2:113,
+    F3:114,
+    F4:115,
+    F5:116,
+    F6:117,
+    F7:118,
+    F8:119,
+    F9:120,
+    F10:121,
+    F11:122,
+    F12:123,
+    NUMLOCK:144,
+    SCROLLLOCK:145,
+    SEMICOLON:186,
+    EQUALSIGN:187,
+    COMMA:188,
+    DASH:189,
+    PERIOD:190,
+    FORWARDSLASH:191,
+    GRAVEACCENT:192,
+    OPENBRACKET:219,
+    BACKSLASH:220,
+    CLOSEBRAKET:221,
+    SINGLEQUOTE:222
   };
 
-  Joy.Input.Keyboard = Keyboard;
+  Joy.Keyboard = Keyboard;
 })(Joy);

@@ -58,6 +58,12 @@
               spriteBig.asset.width *= 2;
               spriteBig.asset.height *= 2;
 
+              spriteBig.addPlugin(new Joy.Render.Shadow({
+                offsetX: 10,
+                offsetY: 10,
+                blur: 20
+              }));
+
               r.addChild(spriteBig);
               r.addChild(spriteNormal);
               r.addChild(spriteSmall);
@@ -76,3 +82,4 @@
     </body>
 
 </html>
+

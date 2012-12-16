@@ -14,7 +14,6 @@
   <script type="text/javascript">
     function withEngine(func) {
       var r = getEngine();
-      console.log("Context", r.context);
       func.call(this, r);
       releaseEngine(r);
     }
