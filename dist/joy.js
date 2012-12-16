@@ -136,7 +136,14 @@ window.onEnterFrame = (function(){
     }
 
     // requestAnimationFrame
-    this.onEnterFrame();
+    if (Joy.debug) {
+      this._lastRenderTime = new Date();
+      this._frameRateText = new Joy.Text({x: 4, y: 4, font: "12px Verdana", color: "red"});
+      this.addChild(this._frameRateText);
+      this.onEnterFrameDebug();
+    } else {
+      this.onEnterFrame();
+    }
   };
 
   Engine.prototype.getHeight = function() {
@@ -182,6 +189,19 @@ window.onEnterFrame = (function(){
     window.onEnterFrame(currentEngine.onEnterFrame);
   };
 
+  /**
+   * Inspect application frame rate. Call window's requestAnimationFrame
+   * @method onEnterFrameDebug
+   */
+  Engine.prototype.onEnterFrameDebug = function () {
+    var thisRenderTime = new Date();
+    currentEngine._frameRateText.text = (1000 / (thisRenderTime - currentEngine._lastRenderTime)).toFixed(1).toString() + " FPS";
+    currentEngine.render();
+    currentEngine._lastRenderTime = thisRenderTime;
+
+    window.onEnterFrame(currentEngine.onEnterFrameDebug);
+  };
+
   J.Engine = Engine;
 })(Joy);
 
@@ -193,52 +213,53 @@ window.onEnterFrame = (function(){
   var Renderable = Class.extend({
     init: function() {
       this.ctx = null;
-      this.plugins = [];
-      this._preRender = [];
-      this._postRender = [];
+
+      this.scaleX = 1;
+      this.scaleY = 1;
+
+      this._contextOperations = {};
     },
 
     setContext: function(ctx) {
-      var i = 0,
-          length = this.plugins.length;
-
       this.ctx = ctx;
-
-      for (;i<length;++i) {
-        this.plugins[i].setContext(ctx);
-      }
     },
 
-    addPlugin: function(plugin) {
-      if (plugin.preRender) {
-        this._preRender.push(plugin);
-      }
-
-      if (plugin.postRender) {
-        this._postRender.push(plugin);
-      }
-
-      this.plugins.push(plugin);
+    /**
+     * Register scale context operations
+     * @method scale
+     * @param {Number} scaleX
+     * @param {Number} scaleY
+     */
+    scale: function(scaleX, scaleY) {
+      this.scaleX = scaleX;
+      this.scaleY = scaleY;
+      this._contextOperations.scale = [this.scaleX, this.scaleY];
     },
 
-    preRender: function() {
-      var i = 0,
-          length = this._preRender.length;
-      for (;i<length;++i) {
-        this._preRender[i].preRender();
-      }
+    /**
+     * Register shadow context operations
+     * @method shadow
+     * @param {Object} options
+     */
+    shadow: function(options) {
+      this._contextOperations.shadowColor   = options.color || "#000";
+      this._contextOperations.shadowOffsetX = options.offsetX || 0;
+      this._contextOperations.shadowOffsetY = options.offsetY || 0;
+      this._contextOperations.shadowBlur    = options.blur || 1;
     },
 
-    postRender: function() {
-      var i = 0,
-          length = this._postRender.length;
-      for (;i<length;++i) {
-        this._postRender[i].postRender();
-      }
-    },
-
+    /**
+     * Apply all custom context operations.
+     * @method render
+     */
     render: function() {
-      throw new Exception("You must override `render` method for `" + this.constructor + "`.");
+      for (var operation in this._contextOperations) {
+        if (this._contextOperations[operation] instanceof Array) {
+          this.ctx[operation].apply(this.ctx, this._contextOperations[operation]);
+        } else {
+          this.ctx[operation] = this._contextOperations[operation];
+        }
+      }
     }
   });
 
@@ -504,18 +525,9 @@ Joy.Time = {
     this.clear();
 
     for (; i < len; ++i) {
-      /*
-       * TODO: Improve pre/post rendering performance.
-       */
-      if (this.pipeline[i]._preRender.length > 0) {
-        this.pipeline[i].preRender();
-      }
-
+      this.context.save();
       this.pipeline[i].render();
-
-      if (this.pipeline[i]._postRender.length > 0) {
-        this.pipeline[i].postRender();
-      }
+      this.context.restore();
     }
   };
 
@@ -523,49 +535,28 @@ Joy.Time = {
   J.Context.Context2d = Context2d;
 })(Joy);
 
-(function(J) {
-  var DEFAULT_COLOR = "#000000";
-
-  var Shadow = J.Renderable.extend({
-    init: function(options) {
-      this.color = options.color || DEFAULT_COLOR;
-      this.offsetX = options.offsetX || 0;
-      this.offsetY = options.offsetY || 0;
-      this.blur = options.blur || 0;
-      this._super();
-    },
-
-    preRender: function() {
-      this.ctx.save();
-      this.ctx.shadowColor = this.color;
-      this.ctx.shadowBlur = this.blur;
-      this.ctx.shadowOffsetX = this.offsetX;
-      this.ctx.shadowOffsetY = this.offsetY;
-    },
-
-    postRender: function() {
-      this.ctx.restore();
-    }
-  });
-
-  Joy.Render.Shadow = Shadow;
-})(Joy);
-
-
 /**
  * @class Sprite
  */
 (function(J) {
   var Sprite = J.Renderable.extend({
     init: function(options) {
+      this._super();
+
       // Asset
       this.asset = options.asset || new Image();
 
       // Position / Dimensions
-      this.x = options.x || 0;
-      this.y = options.y || 0;
-      this.width = options.width;
-      this.height = options.height;
+      this.x = this._x = options.x || 0;
+      this.y = this._y = options.y || 0;
+
+      // Real dimensions (without scale)
+      this._width = options.width;
+      this._height = options.height;
+
+      // Public dimensions (with scale)
+      this.width = this._width;
+      this.height = this._height;
 
       // flip
       this.flipX = false;
@@ -579,9 +570,26 @@ Joy.Time = {
         this.load(options.src);
       }
 
-      this._super();
+      // Use 1x1 scale by default.
+      this.scale(1, 1);
     },
 
+    /**
+     * Set sprite scale
+     * @method scale
+     * @param {Number} scaleX
+     * @param {Number} scaleY
+     */
+    scale: function (scaleX, scaleY) {
+      this._super(scaleX, scaleY);
+      this.width = this._width * this.scaleX;
+      this.height = this._height * this.scaleY;
+    },
+
+    /**
+     * @method load
+     * @param {String} src image source
+     */
     load: function(src) {
       var self = this;
 
@@ -592,34 +600,45 @@ Joy.Time = {
     },
 
     onLoad: function() {
-      if (!this.width) { this.width = this.asset.width; }
-      if (!this.height) { this.height = this.asset.height; }
+      if (!this._width) {
+        this._width = this.asset.width;
+      }
+      if (!this._height) {
+        this._height = this.asset.height;
+      }
+
+      // We may have discovered sprite size for the first time here.
+      // Re-calculate it's width based on scale.
+      this.scale(this.scaleX, this.scaleY);
 
       // Check frames
-      if (this.width < this.asset.width) {
-        this.frames = Math.ceil(this.asset.width / this.width);
+      if (this._width < this.asset.width) {
+        this.frames = Math.ceil(this.asset.width / this._width);
       }
-      console.log("Number of frames: " + this.frames);
     },
 
     render: function() {
-      this.ctx.save();
+      this._super();
 
       if (this.flipX === true || this.flipY === true) {
         // TODO: I'm weird and not working as expected
-        this.ctx.translate((this.flipX - 0) * this.width, (this.flipY - 0) * this.height);
+        this.ctx.translate((this.flipX - 0) * this._width, (this.flipY - 0) * this._height);
         this.ctx.scale((this.flipX === true) ? -1 : 1 , (this.flipY === true) ? -1 : 1);
       }
 
-      this.ctx.drawImage(this.asset, this.width * this.currentFrame, 0, this.width, this.height, this.x, this.y, this.width, this.height);
+      // Normalize coordinates according to current scale.
+      this._x = (this.x * this.ctx.canvas.width / (this.scaleX * this.ctx.canvas.width));
+      this._y = (this.y * this.ctx.canvas.height / (this.scaleY * this.ctx.canvas.height));
+
+      // Don't use scale-corrected dimensions on draw.
+      this.ctx.drawImage(this.asset, this._width * this.currentFrame, 0, this._width, this._height, this._x, this._y, this._width, this._height);
 
       // Draw debugging rectangle around sprite
       if (J.debug) {
         this.ctx.strokeStyle = "red";
-        this.ctx.strokeRect(this.x, this.y, this.width, this.height);
+        this.ctx.strokeRect(this._x, this._y, this._width, this._height);
       }
 
-      this.ctx.restore();
     }
   });
 
