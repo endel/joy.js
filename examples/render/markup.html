@@ -18,9 +18,9 @@
 
     <body onload="setup();">
         <canvas id="joy" width='320' height='240' style="border: 1px solid #666;">
-          <img width="92" height="108" src="../shared-assets/mario.png" />
-          <label data-x="{{width/2}}" data-y="{{height/2}}" data-baseline="middle" data-font="16pt Trebuchet MS" data-align="center">It supposed to be HTML.</label>
-          <label data-x="{{width/2}}" data-y="{{(height/2)+26}}" data-baseline="middle" data-font="16pt Trebuchet MS" data-align="center">But, OMG. I'm on Canvas.</label>
+          <img width="92" height="108" data-x="{{width/2 - (this.width/2)}}" data-y="26" src="../shared-assets/mario.png" />
+          <label data-x="{{width/2}}" data-y="{{height/2 + 40}}" data-baseline="middle" data-font="16pt Trebuchet MS" data-align="center">It supposed to be HTML.</label>
+          <label data-x="{{width/2}}" data-y="{{(height/2)+66}}" data-baseline="middle" data-font="16pt Trebuchet MS" data-align="center">But, OMG. I'm on Canvas.</label>
         </canvas>
     </body>
 

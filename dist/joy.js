@@ -366,38 +366,49 @@ Joy.Time = {
   var Markup = function() {};
 
   Markup.prototype.analyse = function(context) {
-    that = this;
+    var i, length, dataset;
 
     // Sprite
-    $('img', context.canvas).forEach(function(img) {
-      var dataset = that.evaluateDataset(img.dataset, context.context);
+    var imgs = $('img', context.canvas);
+    length = imgs.length;
+    for (i=0; i<length; ++i) {
+      dataset = this.evaluateDataset.call(imgs[i], imgs[i].dataset, context.context);
       context.addChild(new Joy.Sprite({
-        x: img.dataset.x,
-        y: img.dataset.y,
-        asset: img
+        x: imgs[i].dataset.x,
+        y: imgs[i].dataset.y,
+        asset: imgs[i]
       }));
-    });
+    }
 
     // Text
-    $('label', context.canvas).forEach(function(label) {
-      var dataset = that.evaluateDataset(label.dataset, context.context);
-      dataset.text = label.innerHTML;
+    var labels = $('label', context.canvas);
+    length = labels.length;
+    for (i=0; i<length; ++i) {
+      dataset = this.evaluateDataset(labels[i].dataset, context.context);
+      dataset.text = labels[i].innerHTML;
       context.addChild(new Joy.Text(dataset));
-    });
+    }
   };
 
   Markup.prototype.evaluateDataset = function(dataset, context) {
     var attr, matches,
-        width = context.width,
-        height = context.height;
+        width = context.canvas.width,
+        height = context.canvas.height;
 
     for (var key in dataset) {
+      console.log(key, dataset, dataset[key]);
       attr = dataset[key];
-      matches = attr.match(/\{\{([^\}]*)\}\}/)[1];
-
-      // Replace expression by the evaluation of it.
-      attr.replace(attr, eval(matches[1]));
+      console.log("Match? ", attr);
+      matches = attr.match(/\{\{([^\}]*)\}\}/);
+      if (matches) {
+        // Replace expression by the evaluation of it.
+        console.log("Matched!", matches, "width: ", width, "height: ", height);
+        console.log("Attr: ", attr, "Evaluate: ", matches[1]);
+        console.log("Replace by: ", eval(matches[1]));
+        dataset[key] = attr.replace(attr, eval(matches[1]));
+      }
     }
+    return dataset;
   };
 
   J.Markup = Markup;
@@ -408,47 +419,8 @@ Joy.Time = {
  * @class Package
  */
 (function(J){
-  // Use Sizzle as CSS Selector Engine.
-  var $ = Sizzle;
-
-  var Markup = function() {};
-
-  Markup.prototype.analyse = function(render) {
-    that = this;
-
-    // Sprite
-    $('img', render.canvas).forEach(function(img) {
-      var dataset = that.evaluateDataset(img.dataset, render.context);
-      render.addChild(new Joy.Sprite({
-        x: img.dataset.x,
-        y: img.dataset.y,
-        asset: img
-      }));
-    });
-
-    // Text
-    $('label', render.canvas).forEach(function(label) {
-      var dataset = that.evaluateDataset(label.dataset, render.context);
-      dataset.text = label.innerHTML;
-      render.addChild(new Joy.Text(dataset));
-    });
-  };
-
-  Markup.prototype.evaluateDataset = function(dataset, context) {
-    var attr, matches,
-        width = context.width,
-        height = context.height;
-
-    for (var key in dataset) {
-      attr = dataset[key];
-      matches = attr.match(/\{\{([^\}]*)\}\}/)[1];
-
-      // Replace expression by the evaluation of it.
-      attr.replace(attr, eval(matches[1]));
-    }
-  };
-
-  J.Markup = Markup;
+  var Package = function() {};
+  J.Package = Package;
 })(Joy);
 
 
@@ -507,7 +479,6 @@ Joy.Time = {
 
   /**
    * Clears the entire screen.
-   *
    * @method clear
    */
   Context2d.prototype.clear = function () {
@@ -517,7 +488,6 @@ Joy.Time = {
 
   /**
    * Context2ds everything in the buffer to the screen.
-   *
    * @method Context2d
    */
   Context2d.prototype.render = function () {
@@ -525,6 +495,10 @@ Joy.Time = {
     this.clear();
 
     for (; i < len; ++i) {
+      //
+      // TODO: save/restore bottleneck.
+      // Removing save/restore increases ~10fps, rendering 1000 sprites on sprite-benchmark.html example.
+      //
       this.context.save();
       this.pipeline[i].render();
       this.context.restore();
@@ -551,8 +525,8 @@ Joy.Time = {
       this.y = this._y = options.y || 0;
 
       // Real dimensions (without scale)
-      this._width = options.width;
-      this._height = options.height;
+      this._width = this.asset.width || options.width;
+      this._height = this.asset.height || options.height;
 
       // Public dimensions (with scale)
       this.width = this._width;
