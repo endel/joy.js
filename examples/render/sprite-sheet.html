@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>Joy Example</title>
+
+        <script type="text/javascript" src="../../dist/sizzle.js"></script>
+        <script type="text/javascript" src="../../../dist/joy.js"></script>
+        <script type="text/javascript">
+
+            function setup() {
+              Joy.debug = true;
+
+              var engine = new Joy.Engine({ canvas2d: document.getElementById("joy") });
+              var sprite = new Joy.Sprite({
+                x: 10, y: 10, width: 35,
+                src: "../shared-assets/nyan-cat.png",
+              });
+
+              var nyan = new Joy.Actor({graphic : sprite});
+              nyan.bind('update', function() {
+                if (this.graphic.currentFrame == this.graphic.frames-1) {
+                  this.graphic.currentFrame = 0;
+                  this.graphic.flipX = !this.graphic.flipX;
+                } else {
+                  this.graphic.currentFrame += 1;
+                }
+              });
+
+              engine.addChild(nyan);
+            }
+        </script>
+    </head>
+
+    <body onload="setup();" style="margin: 0; padding: 0;">
+        <canvas id="joy" width=480 height=320 style="border: 1px solid #000000;"></canvas>
+    </body>
+
+    <footer>
+      Thanks <a href="http://s1037.beta.photobucket.com/user/DryBowser455/library/">DryBowser455</a> for nyan cat spritesheet.
+    </footer>
+
+</html>
+
