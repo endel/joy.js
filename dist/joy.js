@@ -642,17 +642,77 @@ Joy.Time = {
     DEFAULT_BASELINE = BASELINE.TOP;
 
   var Text = J.Renderable.extend({
+    /**
+     * Create Text instance
+     * @param {Object} options any attribute may be initialized by option
+     * @constructor
+     */
     init: function(options) {
       if (typeof(options)==="undefined") {
         options = {};
       }
+
+      /**
+       * X position
+       * @property x
+       * @default 0
+       * @type {Number}
+       */
       this.x = options.x || 0;
+
+      /**
+       * Y position
+       * @property y
+       * @default 0
+       * @type {Number}
+       */
       this.y = options.y || 0;
+
+      /**
+       * Text to be displayed
+       * @property text
+       * @default ""
+       * @type {String}
+       */
       this.text = options.text || "";
+
+      /**
+       * Font family and size
+       * @property font
+       * @default "Normal 12px Verdana"
+       * @type {String}
+       */
       this.font = options.font || DEFAULT_FONT;
-      this.color = options.color || DEFAULT_COLOR;
+
+      /**
+       * Text horizontal alignment
+       * @property align
+       * @default "left"
+       * @type {String}
+       */
       this.align = options.align || DEFAULT_ALIGN;
+
+      /**
+       * Text vertical baseline
+       * @property baseline
+       * @default Joy.Text.BASELINE.TOP
+       * @type {String}
+       */
       this.baseline = options.baseline || DEFAULT_BASELINE;
+
+      /**
+       * Color of the text
+       * @property color
+       * @default "#000000"
+       * @type {String, Joy.Color}
+       */
+      this._color = options.color || DEFAULT_COLOR;
+      this.__defineGetter__('color', function() {
+        return this._color;
+      });
+      this.__defineSetter__('color', function(color) {
+        this._color = color.toString();
+      });
 
       if (options.stroke) {
         this.useStroke();
@@ -663,18 +723,27 @@ Joy.Time = {
       this._super();
     },
 
+    /**
+     * @method useStroke
+     */
     useStroke: function() {
       this.stroke = true;
       this.fillMethod = "strokeText";
       this.styleMethod = "strokeStyle";
     },
 
+    /**
+     * @method useFill
+     */
     useFill: function() {
       this.stroke = false;
       this.fillMethod = "fillText";
       this.styleMethod = "fillStyle";
     },
 
+    /**
+     * @method render
+     */
     render: function() {
       this.ctx.font = this.font;
       this.ctx.textAlign = this.align;
@@ -727,16 +796,16 @@ Joy.Time = {
    */
   var Color = function(r, g, b, a) {
     if (!g && !b) {
-      this.color = r;
+      this.value = r;
     } else if (a) {
-      this.color = "rgba("+r+","+g+","+b+","+a+")";
+      this.value = "rgba("+r+","+g+","+b+","+a+")";
     } else {
-      this.color = "rgb("+r+","+g+","+b+")";
+      this.value = "rgb("+r+","+g+","+b+")";
     }
   };
 
   Color.prototype.toString = function() {
-    return this.color;
+    return this.value;
   };
 
   J.Color = Color;
