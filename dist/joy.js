@@ -1,7 +1,7 @@
 /* 
  * Joy.js - v0.0.1pre (http://joyjs.org)
  * Copyright (c) 2012 Joy.js Foundation and other contributors 
- * Build date: 12/16/2012
+ * Build date: 12/17/2012
  */
 
 /**
@@ -356,6 +356,8 @@ Joy.Time = {
  * Analyses HTML tags inside <canvas> tag, and add those childs
  * to Joy contexting pipeline.
  *
+ * TODO: This feature is extremely experimental.
+ *
  * Dependency: Sizzle
  * @class Markup
  */
@@ -396,15 +398,10 @@ Joy.Time = {
         height = context.canvas.height;
 
     for (var key in dataset) {
-      console.log(key, dataset, dataset[key]);
       attr = dataset[key];
-      console.log("Match? ", attr);
       matches = attr.match(/\{\{([^\}]*)\}\}/);
       if (matches) {
         // Replace expression by the evaluation of it.
-        console.log("Matched!", matches, "width: ", width, "height: ", height);
-        console.log("Attr: ", attr, "Evaluate: ", matches[1]);
-        console.log("Replace by: ", eval(matches[1]));
         dataset[key] = attr.replace(attr, eval(matches[1]));
       }
     }
@@ -701,6 +698,49 @@ Joy.Time = {
   J.Text = Text;
 })(Joy);
 
+
+/**
+ * Color utility class
+ * @class Color
+ */
+(function(J) {
+  /**
+   * Create a color.
+   * @param {String, Number} HEX_or_RED hexadecimal color (String), or red (Number)
+   * @param {Number} green
+   * @param {Number} blue
+   * @param {Number} alpha
+   *
+   * @example Color name
+   *  var color = new Joy.Color("red");
+   *
+   * @example Hexadecimal
+   *  var color = new Joy.Color("#fff");
+   *
+   * @example RGB
+   *  var color = new Joy.Color(255, 50, 255);
+   *
+   * @example RGBA
+   *  var color = new Joy.Color(255, 50, 255, 100);
+   *
+   * @constructor
+   */
+  var Color = function(r, g, b, a) {
+    if (!g && !b) {
+      this.color = r;
+    } else if (a) {
+      this.color = "rgba("+r+","+g+","+b+","+a+")";
+    } else {
+      this.color = "rgb("+r+","+g+","+b+")";
+    }
+  };
+
+  Color.prototype.toString = function() {
+    return this.color;
+  };
+
+  J.Color = Color;
+})(Joy);
 
 /**
  * @class Keyboard
