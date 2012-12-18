@@ -9,12 +9,12 @@
         <script type="text/javascript">
             function setup() {
               Joy.debug = true;
-              var render = new Joy.Engine({
-                canvas2d: document.getElementById("joy")
-              });
+              var render = new Joy.Engine({ canvas2d: document.getElementById("joy") })
+              var scene = render.createScene();
+
               var text = new Joy.Text({
-                x: render.getWidth() / 2,
-                y: render.getHeight() / 2,
+                x: render.width / 2,
+                y: render.height / 2,
                 text: "Enjoy joy.js",
                 align: "center",
                 font: "30pt Merienda",
@@ -34,7 +34,7 @@
                 text.color = new Joy.Color(parseInt(Math.random() * 255, 10), parseInt(Math.random() * 255, 10), parseInt(Math.random() * 255, 10));
               }, 1000 / 60)
 
-              render.addChild(text);
+              scene.addChild(text);
             }
         </script>
     </head>

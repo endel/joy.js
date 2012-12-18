@@ -1,7 +1,7 @@
 /* 
  * Joy.js - v0.0.1pre (http://joyjs.org)
  * Copyright (c) 2012 Joy.js Foundation and other contributors 
- * Build date: 12/17/2012
+ * Build date: 12/18/2012
  */
 
 /**
@@ -22,22 +22,6 @@
 
   global.Joy = Joy;
 })(window);
-
-/*
- * Normalizes browser support
- */
-
-/**
- * window.onEnterFrame
- */
-window.onEnterFrame = (function(){
-  return  window.requestAnimationFrame ||
-    window.webkitRequestAnimationFrame ||
-    window.mozRequestAnimationFrame    ||
-    window.oRequestAnimationFrame      ||
-    window.msRequestAnimationFrame     ||
-    function( callback ) { window.setTimeout(callback, 1000 / 60); };		// TODO: use FPS rate from render module
-})();
 
 /**
  * Simple JavaScript Inheritance - http://ejohn.org/blog/simple-javascript-inheritance/
@@ -110,112 +94,106 @@ window.onEnterFrame = (function(){
 /*jshint immed:false loopfunc:false*/
 
 /**
- * @class Engine
- */
+ * The Context2d class is responsible for drawing everything at the canvas.
+ * It works using a buffer of sprites, so you can use it alone, adding sprites to it.
+ * Sprites are arranged into layers, so to speed up the Context2ding process.
+ * You can have as much layers as you wish, although remember that, the more layers you have, the slower the Context2ding will be.
+ * Animations are also handled by the class.
+ *
+ * @class Context2d
+*/
 (function(J) {
-  // TODO: find a better way to reference currentEngine instance.
-  // What will happen when we have two canvas contexts at the same time? (like a mini-map?)
-  var currentEngine = null;
-
-  var Engine = function(options) {
-    currentEngine = this;
-
-    // Active actors list
-    this.actors = [];
-
-    if (options.canvas2d) {
-      this.context = new Joy.Context.Context2d({canvas: options.canvas2d});
-    }
-
-    if (options.canvas3d) {
-      // OMG, there is no 3d yet (and shouldn't for long time...)
-    }
-
-    if (options.markup) {
-      this.useMarkup();
-    }
-
-    // requestAnimationFrame
-    if (Joy.debug) {
-      this._lastRenderTime = new Date();
-      this._frameRateText = new Joy.Text({x: 4, y: 4, font: "12px Verdana", color: "red"});
-      this.addChild(this._frameRateText);
-      this.onEnterFrameDebug();
-    } else {
-      this.onEnterFrame();
-    }
-  };
-
-  Engine.prototype.getHeight = function() {
-    return this.context.canvas.height;
-  };
-
-  Engine.prototype.getWidth = function() {
-    return this.context.canvas.width;
+  /**
+   * Initializes 2d context
+   * @param {Object} options
+   * @constructor
+   */
+  var Context2d = function(options) {
+    this.setCanvas(options.canvas);
+    this.setSmooth(false);
   };
 
   /**
-   * Add a graphic object into context rendering pipeline
-   * @param {Actor, Renderable} node
+   * setSmooth
+   * @param {Boolean} enabled Enable image smoothing?
    */
-  Engine.prototype.addChild = function(node) {
-    var renderable;
+  Context2d.prototype.setSmooth = function(bool) {
+    this.ctx.imageSmoothingEnabled = bool;
+    this.ctx.mozImageSmoothingEnabled = bool;
+    this.ctx.oImageSmoothingEnabled = bool;
+    this.ctx.webkitImageSmoothingEnabled = bool;
+    return this;
+  };
 
-    if (node instanceof J.Actor) {
-      this.actors.push(node);
-      renderable = node.graphic;
-    } else {
-      renderable = node;
+  Context2d.prototype.setCanvas = function(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+    return this;
+  };
+
+  /**
+   * Clears the entire screen.
+   * @method clear
+   */
+  Context2d.prototype.clear = function () {
+    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+    return this;
+  };
+
+  /**
+   * Render everything in the buffer to the screen.
+   * @method Context2d
+   */
+  Context2d.prototype.render = function (scenes) {
+    var len = scenes.length, i = 0;
+    this.clear();
+
+    for (; i < len; ++i) {
+      //
+      // TODO: save/restore bottleneck.
+      // Removing save/restore increases ~10fps, rendering 1000 sprites on sprite-benchmark.html example.
+      //
+      scenes[i].render();
     }
-
-    return this.context.addChild(renderable);
   };
 
-  Engine.prototype.render = function() {
-    this.context.render();
-  };
-
-  Engine.prototype.useMarkup = function() {
-    var markup = new J.Markup();
-    markup.analyse(this.context);
-  };
-
-  /**
-   * Call window's requestAnimationFrame.
-   * @method onEnterFrame
-   */
-  Engine.prototype.onEnterFrame = function () {
-    currentEngine.render();
-    window.onEnterFrame(currentEngine.onEnterFrame);
-  };
-
-  /**
-   * Inspect application frame rate. Call window's requestAnimationFrame
-   * @method onEnterFrameDebug
-   */
-  Engine.prototype.onEnterFrameDebug = function () {
-    var thisRenderTime = new Date();
-    currentEngine._frameRateText.text = (1000 / (thisRenderTime - currentEngine._lastRenderTime)).toFixed(1).toString() + " FPS";
-    currentEngine.render();
-    currentEngine._lastRenderTime = thisRenderTime;
-
-    window.onEnterFrame(currentEngine.onEnterFrameDebug);
-  };
-
-  J.Engine = Engine;
+  // Exports Context2d module
+  J.Context.Context2d = Context2d;
 })(Joy);
 
 /**
  * Base class for rendering.
- * @class Renderable
+ * @class DisplayObject
  */
 (function(J) {
-  var Renderable = Class.extend({
+  var DisplayObject = Class.extend({
     init: function() {
       this.ctx = null;
+      this.index = null;
+      this._parent = null;
 
+      this.alpha = 1;
       this.scaleX = 1;
       this.scaleY = 1;
+      this._visible = false;
+
+      /**
+       * Parent DisplayObject
+       * @property parent
+       * @readonly
+       * @type {DisplayObject, DisplayObjectContainer}
+       */
+      this.__defineGetter__('parent', function() {
+        return this._parent;
+      });
+
+      this.__defineSetter__('visible', function(visible) {
+        this._visible = visible;
+      });
+
+      this.__defineGetter__('visible', function() {
+        return this._visible && this.alpha > 0 && this.scaleX !== 0 && this.scaleY !== 0;
+      });
 
       this._contextOperations = {};
     },
@@ -234,6 +212,14 @@ window.onEnterFrame = (function(){
       this.scaleX = scaleX;
       this.scaleY = scaleY;
       this._contextOperations.scale = [this.scaleX, this.scaleY];
+    },
+
+    fillStyle: function(color) {
+      this._contextOperations.fillStyle = color.toString();
+    },
+
+    fillRect: function(x, y, width, height) {
+      this._contextOperations.fillRect = [x, y, width, height];
     },
 
     /**
@@ -263,254 +249,78 @@ window.onEnterFrame = (function(){
     }
   });
 
-  J.Renderable = Renderable;
+  J.DisplayObject = DisplayObject;
 })(Joy);
 
 /**
- * Singleton time variables.
- * @class Time
- */
-Joy.Time = {
-  deltaTime: 1
-};
-
-/**
- * @class GameObject
+ * @class DisplayObjectContainer
  */
 (function(J) {
-  var Actor = Class.extend({
-    init: function (options) {
-      this.engine = null;
-      this.x = 0;
-      this.y = 0;
-      this.graphic = options.graphic || null;
+  var DisplayObjectContainer = J.DisplayObject.extend({
+    init: function() {
+      this._super();
+      this.displayObjects = [];
+    },
 
-      this._intervals = {};
-      this._behaviours = [];
+    render: function() {
+      var i = 0, length = this.displayObjects.length;
+      this._super();
+
+      for (; i<length; ++i) {
+        if (!this.displayObjects[i].visible) { continue; }
+        this.ctx.save();
+        this.displayObjects[i].render();
+        this.ctx.restore();
+      }
     },
 
     /**
-     * @method bind
-     * @param {String} action action name (update, key, keypress, keyrelease)
-     * @param {Function} callback
+     * Swap index of two DisplayObjects
+     * @method swapChildren
+     * @param {DisplayObject} child1
+     * @param {DisplayObject} child2
      */
-    bind: function(action, func) {
-      var behaviour = J.Behaviour.extend({});
-      behaviour.prototype[action] = func;
-      this.addBehaviour(behaviour);
+    swapChildren: function(child1, child2) {
+      var child1Index = child1.index;
+
+      // Swap child references
+      this.displayObjects[ child1Index ] = child2;
+      this.displayObjects[ child2.index ] = child1;
+
+      // Swap indexes
+      child1.index = child2.index;
+      child2.index = child1Index;
+      return this;
     },
 
     /**
-     * @method addBehaviour
-     * @param {Joy.Behaviour} behaviour behaviour class
+     * Add a display object in the list.
+     * @method addChild
+     * @param {DisplayObject, DisplayObjectContainer}
      */
-    addBehaviour: function (b) {
-      var self = this,
-          behaviour = new b();
-      if (behaviour.update && !this._intervals.update) {
-        this.addInterval('update', function() {
-          behaviour.update.apply(self);
-        }, 100);
-      }
-      this._behaviours.push(behaviour);
+    addChild: function(displayObject) {
+      displayObject.index = this.displayObjects.push(displayObject) - 1;
+      displayObject._parent = this;
     },
 
-    /**
-     * @method addInterval
-     * @param {String} id
-     * @param {Function} callback
-     * @param {Number} interval in milliseconds
-     */
-    addInterval: function (id, callback, interval) {
-      // Prevent lost interval reference to keep running.
-      if (this._intervals[id]) {
-        clearInterval(this._intervals[id]);
-      }
-      this._intervals[id] = setInterval(callback, interval);
+    removeChild: function(displayObject) {
+      // TODO
     },
 
-    update: function() {
-      var i=0, totalBehaviours = this._behaviours.length;
-      for (;i<totalBehaviours;++i) {
-        this._behaviours[i].update.apply(this);
-      }
+    removeChildAt: function(index) {
+      // TODO
     }
   });
 
-  J.Actor = Actor;
-})(Joy);
-
-
-/**
- * @class Behaviour
- */
-(function(J) {
-  var Behaviour = Class.extend({
-    init: function() {}
-  });
-
-  Joy.Behaviour = Behaviour;
-})(Joy);
-
-/**
- * Analyses HTML tags inside <canvas> tag, and add those childs
- * to Joy contexting pipeline.
- *
- * TODO: This feature is extremely experimental.
- *
- * Dependency: Sizzle
- * @class Markup
- */
-(function(J){
-  // Use Sizzle as CSS Selector Engine.
-  var $ = (typeof(Sizzle) !== "undefined") ? Sizzle : null;
-
-  var Markup = function() {};
-
-  Markup.prototype.analyse = function(context) {
-    var i, length, dataset;
-
-    // Sprite
-    var imgs = $('img', context.canvas);
-    length = imgs.length;
-    for (i=0; i<length; ++i) {
-      dataset = this.evaluateDataset.call(imgs[i], imgs[i].dataset, context.context);
-      context.addChild(new Joy.Sprite({
-        x: imgs[i].dataset.x,
-        y: imgs[i].dataset.y,
-        asset: imgs[i]
-      }));
-    }
-
-    // Text
-    var labels = $('label', context.canvas);
-    length = labels.length;
-    for (i=0; i<length; ++i) {
-      dataset = this.evaluateDataset(labels[i].dataset, context.context);
-      dataset.text = labels[i].innerHTML;
-      context.addChild(new Joy.Text(dataset));
-    }
-  };
-
-  Markup.prototype.evaluateDataset = function(dataset, context) {
-    var attr, matches,
-        width = context.canvas.width,
-        height = context.canvas.height;
-
-    for (var key in dataset) {
-      attr = dataset[key];
-      matches = attr.match(/\{\{([^\}]*)\}\}/);
-      if (matches) {
-        // Replace expression by the evaluation of it.
-        dataset[key] = attr.replace(attr, eval(matches[1]));
-      }
-    }
-    return dataset;
-  };
-
-  J.Markup = Markup;
-})(Joy);
-
-/**
- * Reads a stand-alone package.
- * @class Package
- */
-(function(J){
-  var Package = function() {};
-  J.Package = Package;
-})(Joy);
-
-
-/**
- * The Context2d class is responsible for drawing everything at the canvas.
- * It works using a buffer of sprites, so you can use it alone, adding sprites to it.
- * Sprites are arranged into layers, so to speed up the Context2ding process.
- * You can have as much layers as you wish, although remember that, the more layers you have, the slower the Context2ding will be.
- * Animations are also handled by the class.
- *
- * @class Context2d
-*/
-(function(J) {
-  /**
-   * Initializes 2d context
-   * @param {Object} options
-   * @constructor
-   */
-  var Context2d = function(options) {
-    this.canvas = options.canvas;
-    this.context = this.canvas.getContext('2d');
-    this.setSmooth(false);
-    this.spriteBuffer = {};
-    this.pipeline = [];
-  };
-
-  /**
-   * setSmooth
-   * @param {Boolean} enabled Enable image smoothing?
-   */
-  Context2d.prototype.setSmooth = function(bool) {
-    this.context.imageSmoothingEnabled = bool;
-    this.context.mozImageSmoothingEnabled = bool;
-    this.context.oImageSmoothingEnabled = bool;
-    this.context.webkitImageSmoothingEnabled = bool;
-    return this;
-  };
-
-  Context2d.prototype.setCanvas = function(canvas) {
-    this.canvas = canvas;
-    return this;
-  };
-
-  /**
-   * Add a graphic object into context rendering pipeline
-   * @param {Renderable} node
-   */
-  Context2d.prototype.addChild = function(node) {
-    node.setContext(this.context);
-    this.pipeline.push(node);
-  };
-
-  Context2d.prototype.removeChild = function() {
-    // TODO
-  };
-
-  /**
-   * Clears the entire screen.
-   * @method clear
-   */
-  Context2d.prototype.clear = function () {
-    this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height);
-    return this;
-  };
-
-  /**
-   * Context2ds everything in the buffer to the screen.
-   * @method Context2d
-   */
-  Context2d.prototype.render = function () {
-    var len = this.pipeline.length, i = 0;
-    this.clear();
-
-    for (; i < len; ++i) {
-      //
-      // TODO: save/restore bottleneck.
-      // Removing save/restore increases ~10fps, rendering 1000 sprites on sprite-benchmark.html example.
-      //
-      this.context.save();
-      this.pipeline[i].render();
-      this.context.restore();
-    }
-  };
-
-  // Exports Context2d module
-  J.Context.Context2d = Context2d;
+  // Export module
+  J.DisplayObjectContainer = DisplayObjectContainer;
 })(Joy);
 
 /**
  * @class Sprite
  */
 (function(J) {
-  var Sprite = J.Renderable.extend({
+  var Sprite = J.DisplayObject.extend({
     init: function(options) {
       this._super();
 
@@ -617,6 +427,17 @@ Joy.Time = {
 })(Joy);
 
 /**
+ * Handles spritesheet animations
+ * @class SpriteSheet
+ */
+(function(J) {
+  var SpriteSheet = function() {
+  };
+
+  J.SpriteSheet = SpriteSheet;
+})(Joy);
+
+/**
  * @class Text
  */
 (function(J) {
@@ -641,7 +462,7 @@ Joy.Time = {
     DEFAULT_ALIGN = "left",
     DEFAULT_BASELINE = BASELINE.TOP;
 
-  var Text = J.Renderable.extend({
+  var Text = J.DisplayObject.extend({
     /**
      * Create Text instance
      * @param {Object} options any attribute may be initialized by option
@@ -767,6 +588,284 @@ Joy.Time = {
   J.Text = Text;
 })(Joy);
 
+
+/**
+ * @class GameObject
+ */
+(function(J) {
+  var Actor = Class.extend({
+    init: function (options) {
+      this.engine = null;
+      this.visible = true;
+
+      this.x = 0;
+      this.y = 0;
+      this.graphic = options.graphic || null;
+
+      this._intervals = {};
+      this._behaviours = [];
+    },
+
+    /**
+     * @method bind
+     * @param {String} action action name (update, key, keypress, keyrelease)
+     * @param {Function} callback
+     */
+    bind: function(action, func) {
+      var behaviour = J.Behaviour.extend({});
+      behaviour.prototype[action] = func;
+      this.addBehaviour(behaviour);
+    },
+
+    /**
+     * @method addBehaviour
+     * @param {Joy.Behaviour} behaviour behaviour class
+     */
+    addBehaviour: function (b) {
+      var self = this,
+          behaviour = new b();
+      if (behaviour.update && !this._intervals.update) {
+        this.addInterval('update', function() {
+          behaviour.update.apply(self);
+        }, 100);
+      }
+      this._behaviours.push(behaviour);
+    },
+
+    /**
+     * @method addInterval
+     * @param {String} id
+     * @param {Function} callback
+     * @param {Number} interval in milliseconds
+     */
+    addInterval: function (id, callback, interval) {
+      // Prevent lost interval reference to keep running.
+      if (this._intervals[id]) {
+        clearInterval(this._intervals[id]);
+      }
+      this._intervals[id] = setInterval(callback, interval);
+    },
+
+    update: function() {
+      var i=0, totalBehaviours = this._behaviours.length;
+      for (;i<totalBehaviours;++i) {
+        this._behaviours[i].update.apply(this);
+      }
+    }
+  });
+
+  J.Actor = Actor;
+})(Joy);
+
+
+/**
+ * @class Behaviour
+ */
+(function(J) {
+  var Behaviour = Class.extend({
+    init: function() {}
+  });
+
+  Joy.Behaviour = Behaviour;
+})(Joy);
+
+/**
+ * @class Scene
+ */
+(function(J) {
+  var Scene = J.DisplayObjectContainer.extend({
+    init: function(context) {
+      this._super();
+      this.actors = [];
+    },
+
+    addChild: function(node) {
+      var displayObject;
+
+      if (node instanceof J.Actor) {
+        this.actors.push(node);
+        displayObject = node.graphic;
+      } else {
+        displayObject = node;
+      }
+
+      displayObject.setContext(this.ctx);
+      this._super(displayObject);
+    }
+  });
+
+  J.Scene = Scene;
+})(Joy);
+
+/**
+ * @class Engine
+ */
+(function(J) {
+  // TODO: find a better way to reference currentEngine instance.
+  // What will happen when we have two canvas contexts at the same time? (like a mini-map?)
+  var currentEngine = null;
+
+  var Engine = function(options) {
+    currentEngine = this;
+
+    // Active actors list
+    this.scenes = [];
+
+    if (options.canvas2d) {
+      this.context = new Joy.Context.Context2d({canvas: options.canvas2d});
+    }
+
+    if (options.canvas3d) {
+      // OMG, there is no 3d yet (and shouldn't for long time...)
+    }
+
+    if (options.markup) {
+      this.useMarkup();
+    }
+
+    this.__defineGetter__('width', function() {
+      return this.context.canvas.width;
+    });
+    this.__defineGetter__('height', function() {
+      return this.context.canvas.height;
+    });
+
+    // requestAnimationFrame
+    if (Joy.debug) {
+      this._lastRenderTime = new Date();
+      this._frameRateText = new Joy.Text({x: 4, y: 4, font: "12px Verdana", color: "red"});
+      this.onEnterFrameDebug();
+    } else {
+      this.onEnterFrame();
+    }
+  };
+
+  Engine.prototype.createScene = function() {
+    var scene = new J.Scene();
+    this.addScene(scene);
+    return scene;
+  };
+
+  Engine.prototype.addScene = function(scene) {
+    scene.setContext(this.context.ctx);
+
+    if (Joy.debug) {
+      scene.addChild(this._frameRateText);
+    }
+
+    this.scenes.push(scene);
+  };
+
+  Engine.prototype.render = function() {
+    this.context.render(this.scenes);
+  };
+
+  Engine.prototype.useMarkup = function() {
+    var markup = new J.Markup();
+    markup.analyse(this.context);
+  };
+
+  /**
+   * Call window's requestAnimationFrame.
+   * @method onEnterFrame
+   */
+  Engine.prototype.onEnterFrame = function () {
+    currentEngine.render();
+    window.onEnterFrame(currentEngine.onEnterFrame);
+  };
+
+  /**
+   * Inspect application frame rate. Call window's requestAnimationFrame
+   * @method onEnterFrameDebug
+   */
+  Engine.prototype.onEnterFrameDebug = function () {
+    var thisRenderTime = new Date();
+    currentEngine._frameRateText.text = (1000 / (thisRenderTime - currentEngine._lastRenderTime)).toFixed(1).toString() + " FPS";
+    currentEngine.render();
+    currentEngine._lastRenderTime = thisRenderTime;
+
+    window.onEnterFrame(currentEngine.onEnterFrameDebug);
+  };
+
+  J.Engine = Engine;
+})(Joy);
+
+/**
+ * Analyses HTML tags inside <canvas> tag, and add those childs
+ * to Joy contexting pipeline.
+ *
+ * TODO: This feature is extremely experimental.
+ *
+ * Dependency: Sizzle
+ * @class Markup
+ */
+(function(J){
+  // Use Sizzle as CSS Selector Engine.
+  var $ = (typeof(Sizzle) !== "undefined") ? Sizzle : null;
+
+  var Markup = function() {};
+
+  Markup.prototype.analyse = function(context) {
+    var i, length, dataset;
+
+    // Sprite
+    var imgs = $('img', context.canvas);
+    length = imgs.length;
+    for (i=0; i<length; ++i) {
+      dataset = this.evaluateDataset.call(imgs[i], imgs[i].dataset, context.context);
+      context.addChild(new Joy.Sprite({
+        x: imgs[i].dataset.x,
+        y: imgs[i].dataset.y,
+        asset: imgs[i]
+      }));
+    }
+
+    // Text
+    var labels = $('label', context.canvas);
+    length = labels.length;
+    for (i=0; i<length; ++i) {
+      dataset = this.evaluateDataset(labels[i].dataset, context.context);
+      dataset.text = labels[i].innerHTML;
+      context.addChild(new Joy.Text(dataset));
+    }
+  };
+
+  Markup.prototype.evaluateDataset = function(dataset, context) {
+    var attr, matches,
+        width = context.canvas.width,
+        height = context.canvas.height;
+
+    for (var key in dataset) {
+      attr = dataset[key];
+      matches = attr.match(/\{\{([^\}]*)\}\}/);
+      if (matches) {
+        // Replace expression by the evaluation of it.
+        dataset[key] = attr.replace(attr, eval(matches[1]));
+      }
+    }
+    return dataset;
+  };
+
+  J.Markup = Markup;
+})(Joy);
+
+/**
+ * Reads a stand-alone package.
+ * @class Package
+ */
+(function(J){
+  var Package = function() {};
+  J.Package = Package;
+})(Joy);
+
+
+/**
+ * Singleton time variables.
+ * @class Time
+ */
+Joy.Time = {
+  deltaTime: 1
+};
 
 /**
  * Color utility class
@@ -917,3 +1016,19 @@ Joy.Time = {
 
   Joy.Keyboard = Keyboard;
 })(Joy);
+
+/*
+ * Normalizes browser support
+ */
+
+/**
+ * window.onEnterFrame
+ */
+window.onEnterFrame = (function(){
+  return  window.requestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.mozRequestAnimationFrame    ||
+    window.oRequestAnimationFrame      ||
+    window.msRequestAnimationFrame     ||
+    function( callback ) { window.setTimeout(callback, 1000 / 60); };		// TODO: use FPS rate from render module
+})();

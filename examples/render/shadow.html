@@ -29,6 +29,7 @@
               }
 
               var r = new Joy.Engine({ canvas2d: c });
+              var scene = r.createScene();
 
               var spriteUrl = "../shared-assets/mario.png";
 
@@ -56,9 +57,9 @@
               spriteBig.scale(2, 2);
               spriteBig.shadow({offsetX: 10, offsetY: 10, blur: 20});
 
-              r.addChild(spriteBig);
-              r.addChild(spriteNormal);
-              r.addChild(spriteSmall);
+              scene.addChild(spriteBig);
+              scene.addChild(spriteNormal);
+              scene.addChild(spriteSmall);
 
               setInterval(function () {
                   checkBoundaries(spriteSmall);

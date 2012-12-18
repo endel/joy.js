@@ -14,6 +14,8 @@
                   s.x += s.speed * s.hDir;
                   s.y += s.speed * s.vDir;
 
+                  console.log(s.x + s.width, c.width);
+
                   if ((s.x + s.width) > c.width) {
                       s.hDir = -1;
                   } else if (s.x < 0) {
@@ -28,7 +30,8 @@
                   }
               }
 
-              var r = new Joy.Engine({ canvas2d: c });
+              var engine = new Joy.Engine({ canvas2d: c });
+              var scene = engine.createScene();
 
               var spriteUrl = "../shared-assets/mario.png";
 
@@ -64,16 +67,16 @@
               spriteBig.speed = 1;
               spriteBig.scale(2, 2);
 
-              r.addChild(spriteBig);
-              r.addChild(spriteNormal);
-              r.addChild(spriteSmall);
-              r.addChild(spriteSmallFlipped);
+              scene.addChild(spriteBig);
+              scene.addChild(spriteNormal);
+              scene.addChild(spriteSmall);
+              scene.addChild(spriteSmallFlipped);
 
               setInterval(function () {
-                  checkBoundaries(spriteSmall);
-                  checkBoundaries(spriteSmallFlipped);
-                  checkBoundaries(spriteNormal);
-                  checkBoundaries(spriteBig);
+                 checkBoundaries(spriteSmall);
+                 checkBoundaries(spriteSmallFlipped);
+                 checkBoundaries(spriteNormal);
+                 checkBoundaries(spriteBig);
               }, 1000 / 60);
             }
         </script>

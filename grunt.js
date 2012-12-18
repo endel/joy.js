@@ -15,7 +15,13 @@ module.exports = function(grunt) {
     },
     concat: {
       dist: {
-        src: ['<banner>', 'lib/*.js', 'lib/core/**.js', 'lib/**/**.js'],
+        src: [
+          '<banner>',
+          'lib/joy.js',
+          'lib/core/class.js',
+          'lib/core/render/*.js',
+          'lib/**/**.js'
+        ],
         dest: 'dist/joy.js'
       }
     },

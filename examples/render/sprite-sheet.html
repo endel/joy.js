@@ -11,6 +11,7 @@
               Joy.debug = true;
 
               var engine = new Joy.Engine({ canvas2d: document.getElementById("joy") });
+              var scene = engine.createScene();
               var sprite = new Joy.Sprite({
                 x: 0, y: 0, width: 35,
                 src: "../shared-assets/nyan-cat.png",
@@ -26,7 +27,7 @@
                 }
               });
 
-              engine.addChild(nyan);
+              scene.addChild(nyan);
             }
         </script>
     </head>
