@@ -1,7 +1,7 @@
 /* 
  * Joy.js - v0.0.1pre (http://joyjs.org)
  * Copyright (c) 2012 Joy.js Foundation and other contributors 
- * Build date: 12/18/2012
+ * Build date: 12/19/2012
  */
 
 /**
@@ -175,7 +175,7 @@
       this.alpha = 1;
       this.scaleX = 1;
       this.scaleY = 1;
-      this._visible = false;
+      this._visible = true;
 
       /**
        * Parent DisplayObject
@@ -212,6 +212,17 @@
       this.scaleX = scaleX;
       this.scaleY = scaleY;
       this._contextOperations.scale = [this.scaleX, this.scaleY];
+      return this;
+    },
+
+    /**
+     * @method translate
+     * @param {Number} x
+     * @param {Number} y
+     */
+    translate: function(x, y) {
+      this._contextOperations.translate = [x, y];
+      return this;
     },
 
     fillStyle: function(color) {
@@ -264,6 +275,7 @@
 
     render: function() {
       var i = 0, length = this.displayObjects.length;
+      this.ctx.save();
       this._super();
 
       for (; i<length; ++i) {
@@ -272,6 +284,7 @@
         this.displayObjects[i].render();
         this.ctx.restore();
       }
+      this.ctx.restore();
     },
 
     /**
@@ -399,7 +412,6 @@
     },
 
     render: function() {
-      this._super();
 
       if (this.flipX === true || this.flipY === true) {
         // TODO: I'm weird and not working as expected
@@ -410,6 +422,8 @@
       // Normalize coordinates according to current scale.
       this._x = (this.x * this.ctx.canvas.width / (this.scaleX * this.ctx.canvas.width));
       this._y = (this.y * this.ctx.canvas.height / (this.scaleY * this.ctx.canvas.height));
+
+      this._super();
 
       // Don't use scale-corrected dimensions on draw.
       this.ctx.drawImage(this.asset, this._width * this.currentFrame, 0, this._width, this._height, this._x, this._y, this._width, this._height);

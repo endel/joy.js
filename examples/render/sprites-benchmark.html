@@ -28,7 +28,8 @@
 
             var r = new Joy.Engine({ canvas2d: c }),
                 sprites = [],
-                total = 1000;
+                total = 1000,
+                scene = r.createScene();
 
             for (var i =0;i<total; ++i) {
               var sprite = new Joy.Sprite({
@@ -40,7 +41,7 @@
               sprite.vDir = 1;
               sprite.speed = Math.ceil(Math.random() * 3);
               sprites.push(sprite);
-              r.addChild(sprite);
+              scene.addChild(sprite);
             }
 
             setInterval(function () {
