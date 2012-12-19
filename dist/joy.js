@@ -136,7 +136,7 @@
    * @method clear
    */
   Context2d.prototype.clear = function () {
-    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+    this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     return this;
   };
 
@@ -290,6 +290,7 @@
         if (this.displayObjects[i].hasContextOperations) { this.ctx.save(); }
         this.displayObjects[i].render();
         if (this.displayObjects[i].hasContextOperations) { this.ctx.restore(); }
+
       }
       this.ctx.restore();
     },
@@ -716,17 +717,6 @@
   });
 
   J.Scene = Scene;
-})(Joy);
-
-/**
- * @class Parallax
- */
-(function(J) {
-  var Parallax = J.DisplayObjectContainer.extend({
-    init: function() {}
-  });
-
-  J.Parallax = Parallax;
 })(Joy);
 
 /**
