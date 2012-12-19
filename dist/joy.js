@@ -195,6 +195,7 @@
         return this._visible && this.alpha > 0 && this.scaleX !== 0 && this.scaleY !== 0;
       });
 
+      this.hasContextOperations = false;
       this._contextOperations = {};
     },
 
@@ -209,6 +210,7 @@
      * @param {Number} scaleY
      */
     scale: function(scaleX, scaleY) {
+      this.hasContextOperations = true;
       this.scaleX = scaleX;
       this.scaleY = scaleY;
       this._contextOperations.scale = [this.scaleX, this.scaleY];
@@ -221,15 +223,18 @@
      * @param {Number} y
      */
     translate: function(x, y) {
+      this.hasContextOperations = true;
       this._contextOperations.translate = [x, y];
       return this;
     },
 
     fillStyle: function(color) {
+      this.hasContextOperations = true;
       this._contextOperations.fillStyle = color.toString();
     },
 
     fillRect: function(x, y, width, height) {
+      this.hasContextOperations = true;
       this._contextOperations.fillRect = [x, y, width, height];
     },
 
@@ -239,6 +244,7 @@
      * @param {Object} options
      */
     shadow: function(options) {
+      this.hasContextOperations = true;
       this._contextOperations.shadowColor   = options.color || "#000";
       this._contextOperations.shadowOffsetX = options.offsetX || 0;
       this._contextOperations.shadowOffsetY = options.offsetY || 0;
@@ -280,9 +286,10 @@
 
       for (; i<length; ++i) {
         if (!this.displayObjects[i].visible) { continue; }
-        this.ctx.save();
+
+        if (this.displayObjects[i].hasContextOperations) { this.ctx.save(); }
         this.displayObjects[i].render();
-        this.ctx.restore();
+        if (this.displayObjects[i].hasContextOperations) { this.ctx.restore(); }
       }
       this.ctx.restore();
     },
@@ -709,6 +716,17 @@
   });
 
   J.Scene = Scene;
+})(Joy);
+
+/**
+ * @class Parallax
+ */
+(function(J) {
+  var Parallax = J.DisplayObjectContainer.extend({
+    init: function() {}
+  });
+
+  J.Parallax = Parallax;
 })(Joy);
 
 /**
