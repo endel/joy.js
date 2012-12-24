@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>Event handling</title>
+        <script type="text/javascript" src="../../../dist/sizzle.js"></script>
+        <script type="text/javascript" src="../../../dist/joy.js"></script>
+        <script type="text/javascript">
+          function setup() {
+            Joy.debug = true;
+
+            var engine = new Joy.Engine({ canvas2d: document.getElementById('joy') });
+
+            var scene = engine.createScene();
+            scene.fillStyle("#BFE5E5");
+            scene.fillRect(0, 0, engine.width, engine.height);
+
+            var block = new Joy.DisplayObject({x: 0, y: engine.height-20});
+            block.fillStyle("#000");
+            block.fillRect(0,0,1,1);
+            block.scale(engine.width, 20);
+            scene.addChild(block);
+
+            var mario = new Joy.Sprite({ x: engine.width / 2, y: engine.height / 2, src: "../shared-assets/mario.png" });
+            mario.vspeed = 0;
+            mario.hspeed = 1;
+
+            mario.bind(Joy.Events.KEY, function(evt) {
+              console.log(evt);
+            });
+
+            mario.bind(Joy.Events.UPDATE, function() {
+              if (!this.grounded) {
+                if (this.vspeed < 5)  {
+                  this.vspeed += 0.1;
+                }
+                this.y += this.vspeed;
+              }
+            });
+
+            mario.onCollide(block, function() {
+              // console.log("Colliding with block...");
+              this.grounded = true;
+            });
+            scene.addChild(mario);
+          }
+        </script>
+    </head>
+
+    <body onload="setup();">
+        <canvas id="joy" width='800' height='600' style="border: 1px solid #666;"></canvas>
+    </body>
+
+</html>

@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>Event handling</title>
+        <script type="text/javascript" src="../../../dist/sizzle.js"></script>
+        <script type="text/javascript" src="../../../dist/joy.js"></script>
+        <script type="text/javascript">
+          function setup() {
+            Joy.debug = true;
+
+            var engine = new Joy.Engine({ canvas2d: document.getElementById('joy') });
+
+            var scene = engine.createScene();
+            scene.fillStyle("#BFE5E5");
+            scene.fillRect(0, 0, engine.width, engine.height);
+
+            var black = new Joy.DisplayObjectContainer();
+            black.fillStyle("#000");
+            black.fillRect(100,100,200,200);
+            black.bind(Joy.Events.MOUSE_DOWN, function() {
+              this.fillStyle("#CCC");
+            });
+            black.bind(Joy.Events.MOUSE_RELEASE, function() {
+              this.fillStyle("#000");
+            });
+            scene.addChild(black);
+
+            var white = new Joy.DisplayObject();
+            white.fillStyle("#fff");
+            white.fillRect(50,50,200,200);
+            scene.addChild(white);
+
+            setInterval(function() {
+              scene.swapChildren(black, white);
+            }, 500)
+          }
+        </script>
+    </head>
+
+    <body onload="setup();">
+        <canvas id="joy" width='960' height='640' style="border: 1px solid #666;"></canvas>
+    </body>
+
+</html>
+
+
+

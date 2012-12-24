@@ -8,11 +8,20 @@
         <script type="text/javascript">
             function setup() {
               Joy.debug = true;
+
               var c = document.getElementById("joy");
+
+              var rotation = 0;
+              function rotate(s) {
+                rotation = rotation + 0.05;
+                s.rotate(rotation);
+              }
 
               function checkBoundaries(s) {
                   s.x += s.speed * s.hDir;
                   s.y += s.speed * s.vDir;
+
+                  // console.log(s.x + s.width, c.width);
 
                   if ((s.x + s.width) > c.width) {
                       s.hDir = -1;
@@ -28,48 +37,34 @@
                   }
               }
 
-              var r = new Joy.Engine({ canvas2d: c });
-              var scene = r.createScene();
-
+              var engine = new Joy.Engine({ canvas2d: c });
+              var scene = engine.createScene();
               var spriteUrl = "../shared-assets/mario.png";
 
-              var spriteSmall = new Joy.Sprite({
-                x: 10, y: 10, src: spriteUrl
-              });
-              spriteSmall.hDir = 1;
-              spriteSmall.vDir = 1;
-              spriteSmall.speed = 2;
-              spriteSmall.scale(0.5, 0.5);
-
-              var spriteNormal = new Joy.Sprite({
-                x: 10, y: 10, src: spriteUrl
-              });
+              var spriteNormal = new Joy.Sprite({ x: 10, y: 10, src: spriteUrl });
               spriteNormal.hDir = -1;
               spriteNormal.vDir = 1;
               spriteNormal.speed = 1;
+              spriteNormal.smooth = true;
 
-              var spriteBig = new Joy.Sprite({
-                x: 10, y: 10, src: spriteUrl
+              var rotation = new Joy.Actor();
+              rotation.addChild(spriteNormal);
+              rotation.bind('collide', function(other) {
               });
+
+              var spriteBig = new Joy.Sprite({ x: 10, y: 10, src: spriteUrl });
               spriteBig.hDir = 1;
               spriteBig.vDir = -1;
-              spriteBig.speed = 0.5;
+              spriteBig.speed = 1;
               spriteBig.scale(2, 2);
-              spriteBig.shadow({
-                color: "#000",
-                offsetX: 10,
-                offsetY: 10,
-                blur: 20
-              });
 
               scene.addChild(spriteBig);
-              scene.addChild(spriteNormal);
-              scene.addChild(spriteSmall);
+              scene.addChild(rotation);
 
               setInterval(function () {
-                  checkBoundaries(spriteSmall);
-                  checkBoundaries(spriteNormal);
-                  checkBoundaries(spriteBig);
+                rotate(spriteNormal);
+                checkBoundaries(spriteNormal);
+                checkBoundaries(spriteBig);
               }, 1000 / 60);
             }
         </script>
@@ -80,4 +75,5 @@
     </body>
 
 </html>
+
 

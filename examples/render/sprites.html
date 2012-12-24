@@ -6,6 +6,7 @@
         <script type="text/javascript" src="../../dist/sizzle.js"></script>
         <script type="text/javascript" src="../../dist/joy.js"></script>
         <script type="text/javascript">
+  var scene ;
             function setup() {
               Joy.debug = true;
               var c = document.getElementById("joy");
@@ -31,37 +32,29 @@
               }
 
               var engine = new Joy.Engine({ canvas2d: c });
-              var scene = engine.createScene();
+              scene = engine.createScene();
 
               var spriteUrl = "../shared-assets/mario.png";
 
-              var spriteSmallFlipped = new Joy.Sprite({
-                x: 10, y: 10, src: spriteUrl
-              });
+              var spriteSmallFlipped = new Joy.Sprite({ x: 10, y: 10, src: spriteUrl });
               spriteSmallFlipped.hDir = 1;
               spriteSmallFlipped.vDir = 1;
               spriteSmallFlipped.speed = 1;
               spriteSmallFlipped.scale(0.2, 0.2);
               spriteSmallFlipped.flipX = true;
 
-              var spriteSmall = new Joy.Sprite({
-                x: 10, y: 10, src: spriteUrl
-              });
+              var spriteSmall = new Joy.Sprite({ x: 10, y: 10, src: spriteUrl });
               spriteSmall.hDir = 1;
               spriteSmall.vDir = 1;
               spriteSmall.speed = 1;
               spriteSmall.scale(0.5, 0.5);
 
-              var spriteNormal = new Joy.Sprite({
-                x: 10, y: 10, src: spriteUrl
-              });
+              var spriteNormal = new Joy.Sprite({ x: 10, y: 10, src: spriteUrl });
               spriteNormal.hDir = -1;
               spriteNormal.vDir = 1;
               spriteNormal.speed = 1;
 
-              var spriteBig = new Joy.Sprite({
-                x: 10, y: 10, src: spriteUrl
-              });
+              var spriteBig = new Joy.Sprite({ x: 10, y: 10, src: spriteUrl });
               spriteBig.hDir = 1;
               spriteBig.vDir = -1;
               spriteBig.speed = 1;

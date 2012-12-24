@@ -19,6 +19,8 @@ module.exports = function(grunt) {
           '<banner>',
           'lib/joy.js',
           'lib/core/class.js',
+          'lib/core/geom/matrix2d.js',
+          'lib/core/behaviour/triggerable.js',
           'lib/core/render/*.js',
           'lib/**/**.js'
         ],
