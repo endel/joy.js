@@ -9,12 +9,14 @@
         <script type="text/javascript">
             function setup() {
               Joy.debug = true;
-              var render = new Joy.Engine({ canvas2d: document.getElementById("joy") })
-              var scene = render.createScene();
+              var engine = new Joy.Engine({ canvas2d: document.getElementById("joy") })
+              var scene = engine.createScene();
+
+              console.log(engine.width);
 
               var text = new Joy.Text({
-                x: render.width / 2,
-                y: render.height / 2,
+                x: engine.width / 2,
+                y: engine.height / 2,
                 text: "Enjoy joy.js",
                 align: "center",
                 font: "30pt Merienda",
