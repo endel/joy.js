@@ -20,28 +20,51 @@
             block.scale(engine.width, 20);
             scene.addChild(block);
 
-            var mario = new Joy.Sprite({ x: engine.width / 2, y: engine.height / 2, src: "../shared-assets/mario.png" });
-            mario.vspeed = 0;
-            mario.hspeed = 1;
+            var mario1 = new Joy.Sprite({ x: engine.width / 2, y: engine.height / 2, src: "../shared-assets/mario.png" });
+            mario1.vspeed = 0;
+            mario1.hspeed = 0;
+            mario1.maxHSpeed = 3;
+            mario1.maxVSpeed = 5;
 
-            mario.bind(Joy.Events.KEY, function(evt) {
-              console.log(evt);
-            });
-
-            mario.bind(Joy.Events.UPDATE, function() {
-              if (!this.grounded) {
-                if (this.vspeed < 5)  {
-                  this.vspeed += 0.1;
+            mario1.bind(Joy.Events.KEY_PRESS, function(evt) {
+              console.log("Key press!", evt.keyCode, this.hspeed);
+              if (evt.keyCode === Joy.Keyboard.LEFT) {
+                if (this.hspeed > -this.maxHSpeed) {
+                  this.hspeed -= 0.2;
                 }
-                this.y += this.vspeed;
+              } else if (evt.keyCode === Joy.Keyboard.RIGHT) {
+                if (this.hspeed < this.maxHSpeed) {
+                  this.hspeed += 0.2;
+                }
               }
             });
 
-            mario.onCollide(block, function() {
+            mario1.bind(Joy.Events.UPDATE, function() {
+              if (!this.grounded) {
+
+                // Limit vspeed
+                if (this.vspeed < this.maxVSpeed)  {
+                  this.vspeed += 0.1;
+                }
+
+                this.y += this.vspeed;
+              }
+
+              // Reduce hspeed
+              if (this.hspeed > 0.05) {
+                this.hspeed -= 0.05;
+              } else if (this.hspeed < -0.05) {
+                this.hspeed += 0.05;
+              }
+
+              this.x += this.hspeed;
+            });
+
+            mario1.onCollide(block, function() {
               // console.log("Colliding with block...");
               this.grounded = true;
             });
-            scene.addChild(mario);
+            scene.addChild(mario1);
           }
         </script>
     </head>

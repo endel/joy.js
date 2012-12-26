@@ -13,15 +13,25 @@
 
               var rotation = 0;
               function rotate(s) {
-                rotation = rotation + 0.05;
+                rotation = rotation + 0.5;
                 s.rotate(rotation);
+              }
+
+              var scaleXY = 1;
+              var scaleUp = false;
+              function scale(s) {
+                if (scaleXY > 2) {
+                  scaleUp = false;
+                } else if (scaleXY < 1) {
+                  scaleUp = true;
+                }
+                if (scaleUp) { scaleXY += 0.01; } else  { scaleXY -= 0.01; }
+                s.scale(scaleXY, scaleXY);
               }
 
               function checkBoundaries(s) {
                   s.x += s.speed * s.hDir;
                   s.y += s.speed * s.vDir;
-
-                  // console.log(s.x + s.width, c.width);
 
                   if ((s.x + s.width) > c.width) {
                       s.hDir = -1;
@@ -47,11 +57,6 @@
               spriteNormal.speed = 1;
               spriteNormal.smooth = true;
 
-              var rotation = new Joy.Actor();
-              rotation.addChild(spriteNormal);
-              rotation.bind('collide', function(other) {
-              });
-
               var spriteBig = new Joy.Sprite({ x: 10, y: 10, src: spriteUrl });
               spriteBig.hDir = 1;
               spriteBig.vDir = -1;
@@ -59,10 +64,11 @@
               spriteBig.scale(2, 2);
 
               scene.addChild(spriteBig);
-              scene.addChild(rotation);
+              scene.addChild(spriteNormal);
 
               setInterval(function () {
                 rotate(spriteNormal);
+                scale(spriteBig);
                 checkBoundaries(spriteNormal);
                 checkBoundaries(spriteBig);
               }, 1000 / 60);

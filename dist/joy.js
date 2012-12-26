@@ -1,7 +1,7 @@
 /* 
  * Joy.js - v0.0.1pre (http://joyjs.org)
  * Copyright (c) 2012 Joy.js Foundation and other contributors 
- * Build date: 12/24/2012
+ * Build date: 12/26/2012
  */
 
 /**
@@ -255,8 +255,6 @@
   /**
    * Event triggering and handling.
    *
-   * Based on [@mrdoob's](https://github.com/mrdoob/eventdispatcher.js) implementation.
-   *
    * @class Triggerable
    * @constructor
    */
@@ -272,26 +270,39 @@
      * @return this
      */
     bind: function (type, handler) {
+      var data = handler;
+
+      // Custom bind
+      if (Triggerable._custom.bind[type] !== undefined) {
+        data = { target: this, handler: handler };
+        Triggerable._custom.bind[type].call(this, data);
+      }
+
+      // Register bind in the instance
       if (this._handlers[type] === undefined) {
         this._handlers[type] = [];
       }
-      if (this._handlers[type].indexOf(handler) === -1) {
-        this._handlers[type].push(handler);
+      if (this._handlers[type].indexOf(data) === -1) {
+        this._handlers[type].push(data);
       }
       return this;
     },
 
     /**
-     * Remove event handler
+     * Remove event handlers
      * @param {String} type event type
-     * @param {Function} handler
      * @return this
      */
-    unbind: function (type, handler) {
-      var index = this._handlers[type].indexOf(handler);
-      if (index !== - 1) {
-        this._handlers[ type ].splice( index, 1 );
+    unbind: function (type) {
+      // Custom unbind
+      if (Triggerable._custom.unbind[type] !== undefined) {
+        for (var i=0, length=this._handlers[type].length; i<length;++i) {
+          Triggerable._custom.unbind[type].call(this, this._handlers[type][i]);
+        }
       }
+
+      // Unbind from this instance
+      this._handlers[type] = null;
       return this;
     },
 
@@ -318,6 +329,26 @@
       }
     }
   });
+
+  Triggerable._custom = {
+    'bind': {},
+    'unbind' : {}
+  };
+
+  /**
+   * Register default method handler.
+   * @method register
+   * @param {String} type
+   * @param {Function} bindCallback
+   * @param {Function} unbindCallback
+   *
+   * @static
+   */
+  Triggerable.register = function(type, bindCallback, unbindCallback) {
+    Triggerable._custom.bind[type] = bindCallback;
+    Triggerable._custom.unbind[type] = unbindCallback;
+    return this;
+  };
 
   // Exports module
   J.Triggerable = Triggerable;
@@ -942,21 +973,7 @@
         options = {};
       }
 
-      /**
-       * X position
-       * @property x
-       * @default 0
-       * @type {Number}
-       */
-      this.x = options.x || 0;
-
-      /**
-       * Y position
-       * @property y
-       * @default 0
-       * @type {Number}
-       */
-      this.y = options.y || 0;
+      this._super(options);
 
       /**
        * Text to be displayed
@@ -1010,7 +1027,6 @@
         this.useFill();
       }
 
-      this._super();
     },
 
     /**
@@ -1031,16 +1047,15 @@
       this.styleMethod = "fillStyle";
     },
 
-    /**
-     * @method render
-     */
-    render: function() {
+    updateContext: function() {
       this.ctx.font = this.font;
       this.ctx.textAlign = this.align;
       this.ctx.textBaseline = this.baseline;
 
       this.ctx[this.styleMethod] = this.color;
       this.ctx[this.fillMethod](this.text, this.x, this.y);
+
+      this._super();
     },
 
     /**
@@ -1439,14 +1454,10 @@ Joy.Time = {
 })(Joy);
 
 (function(J) {
-  J.Events.KEY_PRESS = 'keyPress';
-  J.Events.KEY_RELEASE = 'keyRelease';
-  J.Events.KEY_UP = 'keyUp';
-  J.Events.KEY = 'key';
-
   /**
-   * @static
    * Singleton keyboard finals.
+   * @static
+   * @readonly
    * @class Keyboard
    */
   var Keyboard = {
@@ -1458,6 +1469,7 @@ Joy.Time = {
      * @final
      */
     ENTER:13,
+
     /**
      * BACKSPACE keycode
      * @property BACKSPACE
@@ -1466,6 +1478,7 @@ Joy.Time = {
      * @final
      */
     BACKSPACE:8,
+
     /**
      * TAB keycode
      * @property TAB
@@ -1474,6 +1487,7 @@ Joy.Time = {
      * @final
      */
     TAB:9,
+
     /**
      * SHIFT keycode
      * @property SHIFT
@@ -1482,6 +1496,7 @@ Joy.Time = {
      * @final
      */
     SHIFT:16,
+
     /**
      * CTRL keycode
      * @property CTRL
@@ -1490,6 +1505,7 @@ Joy.Time = {
      * @final
      */
     CTRL:17,
+
     /**
      * ALT keycode
      * @property ALT
@@ -1498,6 +1514,7 @@ Joy.Time = {
      * @final
      */
     ALT:18,
+
     /**
      * PAUSE keycode
      * @property PAUSE
@@ -1506,6 +1523,7 @@ Joy.Time = {
      * @final
      */
     PAUSE:19,
+
     /**
      * CAPSLOCK keycode
      * @property CAPSLOCK
@@ -1514,6 +1532,7 @@ Joy.Time = {
      * @final
      */
     CAPSLOCK:20,
+
     /**
      * ESCAPE keycode
      * @property ESCAPE
@@ -1522,6 +1541,7 @@ Joy.Time = {
      * @final
      */
     ESCAPE:27,
+
     /**
      * PAGEUP keycode
      * @property PAGEUP
@@ -1530,6 +1550,7 @@ Joy.Time = {
      * @final
      */
     PAGEUP:33,
+
     /**
      * PAGEDOWN keycode
      * @property PAGEDOWN
@@ -1538,6 +1559,7 @@ Joy.Time = {
      * @final
      */
     PAGEDOWN:34,
+
     /**
      * END keycode
      * @property END
@@ -1546,6 +1568,7 @@ Joy.Time = {
      * @final
      */
     END:35,
+
     /**
      * HOME keycode
      * @property HOME
@@ -1554,6 +1577,7 @@ Joy.Time = {
      * @final
      */
     HOME:36,
+
     /**
      * LEFT keycode
      * @property LEFT
@@ -1562,6 +1586,7 @@ Joy.Time = {
      * @final
      */
     LEFT:37,
+
     /**
      * UP keycode
      * @property UP
@@ -1570,6 +1595,7 @@ Joy.Time = {
      * @final
      */
     UP:38,
+
     /**
      * RIGHT keycode
      * @property RIGHT
@@ -1578,6 +1604,7 @@ Joy.Time = {
      * @final
      */
     RIGHT:39,
+
     /**
      * DOWN keycode
      * @property DOWN
@@ -1586,6 +1613,7 @@ Joy.Time = {
      * @final
      */
     DOWN:40,
+
     /**
      * INSERT keycode
      * @property INSERT
@@ -1594,6 +1622,7 @@ Joy.Time = {
      * @final
      */
     INSERT:45,
+
     /**
      * DELETE keycode
      * @property DELETE
@@ -1602,6 +1631,7 @@ Joy.Time = {
      * @final
      */
     DELETE:46,
+
     /**
      * KEY_0 keycode
      * @property KEY_0
@@ -1610,6 +1640,7 @@ Joy.Time = {
      * @final
      */
     KEY_0:48,
+
     /**
      * KEY_1 keycode
      * @property KEY_1
@@ -1618,6 +1649,7 @@ Joy.Time = {
      * @final
      */
     KEY_1:49,
+
     /**
      * KEY_2 keycode
      * @property KEY_2
@@ -1626,6 +1658,7 @@ Joy.Time = {
      * @final
      */
     KEY_2:50,
+
     /**
      * KEY_3 keycode
      * @property KEY_3
@@ -1634,6 +1667,7 @@ Joy.Time = {
      * @final
      */
     KEY_3:51,
+
     /**
      * KEY_4 keycode
      * @property KEY_4
@@ -1642,6 +1676,7 @@ Joy.Time = {
      * @final
      */
     KEY_4:52,
+
     /**
      * KEY_5 keycode
      * @property KEY_5
@@ -1650,6 +1685,7 @@ Joy.Time = {
      * @final
      */
     KEY_5:53,
+
     /**
      * KEY_6 keycode
      * @property KEY_6
@@ -1658,6 +1694,7 @@ Joy.Time = {
      * @final
      */
     KEY_6:54,
+
     /**
      * KEY_7 keycode
      * @property KEY_7
@@ -1666,6 +1703,7 @@ Joy.Time = {
      * @final
      */
     KEY_7:55,
+
     /**
      * KEY_8 keycode
      * @property KEY_8
@@ -1674,6 +1712,7 @@ Joy.Time = {
      * @final
      */
     KEY_8:56,
+
     /**
      * KEY_9 keycode
      * @property KEY_9
@@ -1682,6 +1721,7 @@ Joy.Time = {
      * @final
      */
     KEY_9:57,
+
     /**
      * KEY_A keycode
      * @property KEY_A
@@ -1690,6 +1730,7 @@ Joy.Time = {
      * @final
      */
     KEY_A:65,
+
     /**
      * KEY_B keycode
      * @property KEY_B
@@ -1698,6 +1739,7 @@ Joy.Time = {
      * @final
      */
     KEY_B:66,
+
     /**
      * KEY_C keycode
      * @property KEY_C
@@ -1706,6 +1748,7 @@ Joy.Time = {
      * @final
      */
     KEY_C:67,
+
     /**
      * KEY_D keycode
      * @property KEY_D
@@ -1714,6 +1757,7 @@ Joy.Time = {
      * @final
      */
     KEY_D:68,
+
     /**
      * KEY_E keycode
      * @property KEY_E
@@ -1722,6 +1766,7 @@ Joy.Time = {
      * @final
      */
     KEY_E:69,
+
     /**
      * KEY_F keycode
      * @property KEY_F
@@ -1730,6 +1775,7 @@ Joy.Time = {
      * @final
      */
     KEY_F:70,
+
     /**
      * KEY_G keycode
      * @property KEY_G
@@ -1738,6 +1784,7 @@ Joy.Time = {
      * @final
      */
     KEY_G:71,
+
     /**
      * KEY_H keycode
      * @property KEY_H
@@ -1746,6 +1793,7 @@ Joy.Time = {
      * @final
      */
     KEY_H:72,
+
     /**
      * KEY_I keycode
      * @property KEY_I
@@ -1754,6 +1802,7 @@ Joy.Time = {
      * @final
      */
     KEY_I:73,
+
     /**
      * KEY_J keycode
      * @property KEY_J
@@ -1762,6 +1811,7 @@ Joy.Time = {
      * @final
      */
     KEY_J:74,
+
     /**
      * KEY_K keycode
      * @property KEY_K
@@ -1770,6 +1820,7 @@ Joy.Time = {
      * @final
      */
     KEY_K:75,
+
     /**
      * KEY_L keycode
      * @property KEY_L
@@ -1778,6 +1829,7 @@ Joy.Time = {
      * @final
      */
     KEY_L:76,
+
     /**
      * KEY_M keycode
      * @property KEY_M
@@ -1786,6 +1838,7 @@ Joy.Time = {
      * @final
      */
     KEY_M:77,
+
     /**
      * KEY_N keycode
      * @property KEY_N
@@ -1794,6 +1847,7 @@ Joy.Time = {
      * @final
      */
     KEY_N:78,
+
     /**
      * KEY_O keycode
      * @property KEY_O
@@ -1802,6 +1856,7 @@ Joy.Time = {
      * @final
      */
     KEY_O:79,
+
     /**
      * KEY_P keycode
      * @property KEY_P
@@ -1810,6 +1865,7 @@ Joy.Time = {
      * @final
      */
     KEY_P:80,
+
     /**
      * KEY_Q keycode
      * @property KEY_Q
@@ -1818,6 +1874,7 @@ Joy.Time = {
      * @final
      */
     KEY_Q:81,
+
     /**
      * KEY_R keycode
      * @property KEY_R
@@ -1826,6 +1883,7 @@ Joy.Time = {
      * @final
      */
     KEY_R:82,
+
     /**
      * KEY_S keycode
      * @property KEY_S
@@ -1834,6 +1892,7 @@ Joy.Time = {
      * @final
      */
     KEY_S:83,
+
     /**
      * KEY_T keycode
      * @property KEY_T
@@ -1842,6 +1901,7 @@ Joy.Time = {
      * @final
      */
     KEY_T:84,
+
     /**
      * KEY_U keycode
      * @property KEY_U
@@ -1850,6 +1910,7 @@ Joy.Time = {
      * @final
      */
     KEY_U:85,
+
     /**
      * KEY_V keycode
      * @property KEY_V
@@ -1858,6 +1919,7 @@ Joy.Time = {
      * @final
      */
     KEY_V:86,
+
     /**
      * KEY_W keycode
      * @property KEY_W
@@ -1866,6 +1928,7 @@ Joy.Time = {
      * @final
      */
     KEY_W:87,
+
     /**
      * KEY_X keycode
      * @property KEY_X
@@ -1874,6 +1937,7 @@ Joy.Time = {
      * @final
      */
     KEY_X:88,
+
     /**
      * KEY_Y keycode
      * @property KEY_Y
@@ -1882,6 +1946,7 @@ Joy.Time = {
      * @final
      */
     KEY_Y:89,
+
     /**
      * KEY_Z keycode
      * @property KEY_Z
@@ -1890,6 +1955,7 @@ Joy.Time = {
      * @final
      */
     KEY_Z:90,
+
     /**
      * SELECT keycode
      * @property SELECT
@@ -1898,6 +1964,7 @@ Joy.Time = {
      * @final
      */
     SELECT:93,
+
     /**
      * NUMPAD0 keycode
      * @property NUMPAD0
@@ -1906,6 +1973,7 @@ Joy.Time = {
      * @final
      */
     NUMPAD0:96,
+
     /**
      * NUMPAD1 keycode
      * @property NUMPAD1
@@ -1914,6 +1982,7 @@ Joy.Time = {
      * @final
      */
     NUMPAD1:97,
+
     /**
      * NUMPAD2 keycode
      * @property NUMPAD2
@@ -1922,6 +1991,7 @@ Joy.Time = {
      * @final
      */
     NUMPAD2:98,
+
     /**
      * NUMPAD3 keycode
      * @property NUMPAD3
@@ -1930,6 +2000,7 @@ Joy.Time = {
      * @final
      */
     NUMPAD3:99,
+
     /**
      * NUMPAD4 keycode
      * @property NUMPAD4
@@ -1938,6 +2009,7 @@ Joy.Time = {
      * @final
      */
     NUMPAD4:100,
+
     /**
      * NUMPAD5 keycode
      * @property NUMPAD5
@@ -1946,6 +2018,7 @@ Joy.Time = {
      * @final
      */
     NUMPAD5:101,
+
     /**
      * NUMPAD6 keycode
      * @property NUMPAD6
@@ -1954,6 +2027,7 @@ Joy.Time = {
      * @final
      */
     NUMPAD6:102,
+
     /**
      * NUMPAD7 keycode
      * @property NUMPAD7
@@ -1962,6 +2036,7 @@ Joy.Time = {
      * @final
      */
     NUMPAD7:103,
+
     /**
      * NUMPAD8 keycode
      * @property NUMPAD8
@@ -1970,6 +2045,7 @@ Joy.Time = {
      * @final
      */
     NUMPAD8:104,
+
     /**
      * NUMPAD9 keycode
      * @property NUMPAD9
@@ -1978,6 +2054,7 @@ Joy.Time = {
      * @final
      */
     NUMPAD9:105,
+
     /**
      * MULTIPLY keycode
      * @property MULTIPLY
@@ -1986,6 +2063,7 @@ Joy.Time = {
      * @final
      */
     MULTIPLY:106,
+
     /**
      * ADD keycode
      * @property ADD
@@ -1994,6 +2072,7 @@ Joy.Time = {
      * @final
      */
     ADD:107,
+
     /**
      * SUBTRACT keycode
      * @property SUBTRACT
@@ -2002,6 +2081,7 @@ Joy.Time = {
      * @final
      */
     SUBTRACT:109,
+
     /**
      * DECIMALPOINT keycode
      * @property DECIMALPOINT
@@ -2010,6 +2090,7 @@ Joy.Time = {
      * @final
      */
     DECIMALPOINT:110,
+
     /**
      * DIVIDE keycode
      * @property DIVIDE
@@ -2018,6 +2099,7 @@ Joy.Time = {
      * @final
      */
     DIVIDE:111,
+
     /**
      * F1 keycode
      * @property F1
@@ -2026,6 +2108,7 @@ Joy.Time = {
      * @final
      */
     F1:112,
+
     /**
      * F2 keycode
      * @property F2
@@ -2034,6 +2117,7 @@ Joy.Time = {
      * @final
      */
     F2:113,
+
     /**
      * F3 keycode
      * @property F3
@@ -2042,6 +2126,7 @@ Joy.Time = {
      * @final
      */
     F3:114,
+
     /**
      * F4 keycode
      * @property F4
@@ -2050,6 +2135,7 @@ Joy.Time = {
      * @final
      */
     F4:115,
+
     /**
      * F5 keycode
      * @property F5
@@ -2058,6 +2144,7 @@ Joy.Time = {
      * @final
      */
     F5:116,
+
     /**
      * F6 keycode
      * @property F6
@@ -2066,6 +2153,7 @@ Joy.Time = {
      * @final
      */
     F6:117,
+
     /**
      * F7 keycode
      * @property F7
@@ -2074,6 +2162,7 @@ Joy.Time = {
      * @final
      */
     F7:118,
+
     /**
      * F8 keycode
      * @property F8
@@ -2082,6 +2171,7 @@ Joy.Time = {
      * @final
      */
     F8:119,
+
     /**
      * F9 keycode
      * @property F9
@@ -2090,6 +2180,7 @@ Joy.Time = {
      * @final
      */
     F9:120,
+
     /**
      * F10 keycode
      * @property F10
@@ -2098,6 +2189,7 @@ Joy.Time = {
      * @final
      */
     F10:121,
+
     /**
      * F11 keycode
      * @property F11
@@ -2106,6 +2198,7 @@ Joy.Time = {
      * @final
      */
     F11:122,
+
     /**
      * F12 keycode
      * @property F12
@@ -2114,6 +2207,7 @@ Joy.Time = {
      * @final
      */
     F12:123,
+
     /**
      * NUMLOCK keycode
      * @property NUMLOCK
@@ -2122,6 +2216,7 @@ Joy.Time = {
      * @final
      */
     NUMLOCK:144,
+
     /**
      * SCROLLLOCK keycode
      * @property SCROLLLOCK
@@ -2130,6 +2225,7 @@ Joy.Time = {
      * @final
      */
     SCROLLLOCK:145,
+
     /**
      * SEMICOLON keycode
      * @property SEMICOLON
@@ -2138,6 +2234,7 @@ Joy.Time = {
      * @final
      */
     SEMICOLON:186,
+
     /**
      * EQUALSIGN keycode
      * @property EQUALSIGN
@@ -2146,6 +2243,7 @@ Joy.Time = {
      * @final
      */
     EQUALSIGN:187,
+
     /**
      * COMMA keycode
      * @property COMMA
@@ -2154,6 +2252,7 @@ Joy.Time = {
      * @final
      */
     COMMA:188,
+
     /**
      * DASH keycode
      * @property DASH
@@ -2162,6 +2261,7 @@ Joy.Time = {
      * @final
      */
     DASH:189,
+
     /**
      * PERIOD keycode
      * @property PERIOD
@@ -2170,6 +2270,7 @@ Joy.Time = {
      * @final
      */
     PERIOD:190,
+
     /**
      * FORWARDSLASH keycode
      * @property FORWARDSLASH
@@ -2178,6 +2279,7 @@ Joy.Time = {
      * @final
      */
     FORWARDSLASH:191,
+
     /**
      * GRAVEACCENT keycode
      * @property GRAVEACCENT
@@ -2186,6 +2288,7 @@ Joy.Time = {
      * @final
      */
     GRAVEACCENT:192,
+
     /**
      * OPENBRACKET keycode
      * @property OPENBRACKET
@@ -2194,6 +2297,7 @@ Joy.Time = {
      * @final
      */
     OPENBRACKET:219,
+
     /**
      * BACKSLASH keycode
      * @property BACKSLASH
@@ -2202,6 +2306,7 @@ Joy.Time = {
      * @final
      */
     BACKSLASH:220,
+
     /**
      * CLOSEBRAKET keycode
      * @property CLOSEBRAKET
@@ -2210,6 +2315,7 @@ Joy.Time = {
      * @final
      */
     CLOSEBRAKET:221,
+
     /**
      * SINGLEQUOTE keycode
      * @property SINGLEQUOTE
@@ -2220,12 +2326,65 @@ Joy.Time = {
     SINGLEQUOTE:222
   };
 
-  document.onkeydown = function(e) {
-    console.log(e);
+  J.Events.KEY_DOWN = 'onkeydown';
+  J.Events.KEY_UP = 'onkeyup';
+  J.Events.KEY_PRESS = 'key';
+
+  Keyboard.handlers = {};
+  Keyboard.timers = {};
+
+  function triggerKeyEvent(type, evt) {
+    var i, length, handlers = Keyboard.handlers[type];
+
+    for (var i=0, length=handlers.length; i<length; ++i) {
+      handlers[i].handler.apply(handlers[i].target, [evt]);
+    }
   };
-  //document.onkeypress = function(e) {
-    //console.log(e);
-  //};
+
+  [J.Events.KEY_DOWN, J.Events.KEY_UP, J.Events.KEY_PRESS].forEach(function(eventType) {
+    Keyboard.handlers[eventType] = [];
+
+    J.Triggerable.register(eventType, function(evt) {
+      if (Keyboard.handlers[eventType].indexOf(evt) === -1) {
+        Keyboard.handlers[eventType].push(evt);
+      }
+    }, function(evt) {
+      var index = Keyboard.handlers[eventType].indexOf(evt);
+      if (index !== -1) {
+        Keyboard.handlers[eventType].splice(index, 1);
+      }
+    });
+  });
+
+  var repeat = 50;
+
+  // Bind document key down
+  document.onkeydown = function(e) {
+    var key = (e || window.event).keyCode;
+    if (Keyboard.timers[key] == null) {
+      triggerKeyEvent(J.Events.KEY_DOWN, e);
+      triggerKeyEvent(J.Events.KEY_PRESS, e);
+
+      if (repeat !== 0) {
+        Keyboard.timers[key] = setInterval(function() {
+          triggerKeyEvent(J.Events.KEY_PRESS, e);
+        }, repeat);
+      }
+    }
+    return false;
+  };
+
+  // Bind document key up
+  document.onkeyup = function(e) {
+    var key = (e || window.event).keyCode;
+    if (key in Keyboard.timers) {
+      triggerKeyEvent(J.Events.KEY_UP, e);
+      if (Keyboard.timers[key] != null) {
+        clearInterval(Keyboard.timers[key]);
+      }
+      delete Keyboard.timers[key];
+    }
+  };
 
   Joy.Keyboard = Keyboard;
 })(Joy);
