@@ -1,7 +1,7 @@
 /* 
  * Joy.js - v0.0.1pre (http://joyjs.org)
  * Copyright (c) 2012 Joy.js Foundation and other contributors 
- * Build date: 12/29/2012
+ * Build date: 12/30/2012
  */
 
 /**
@@ -449,7 +449,6 @@
        */
       this._height = options.height || 0;
 
-
       /**
        * @property pivotX
        * @type {Number}
@@ -643,16 +642,32 @@
      */
     transform: function(m11, m12, m21, m22, dx, dy) {
       this._contextOperations.transform = [m11, m12, m21, m22, dx, dy];
+      return this;
     },
 
+    /**
+     * @method fillStyle
+     * @param {Color, String} color
+     * @return this
+     */
     fillStyle: function(color) {
       this._hasContextOperations = true;
       this._contextOperations.fillStyle = color.toString();
+      return this;
     },
 
+    /**
+     * @method fillRect
+     * @param {Number} x
+     * @param {Number} y
+     * @param {Number} width
+     * @param {Number} height
+     * @return this
+     */
     fillRect: function(x, y, width, height) {
       this._hasContextOperations = true;
       this._contextOperations.fillRect = [x, y, width, height];
+      return this;
     },
 
     /**
@@ -663,6 +678,7 @@
      *  @param {Number} [options.offsetX] shadow x offset
      *  @param {Number} [options.offsetY] shadow y offset
      *  @param {Number} [options.blur] shadow blur ratio
+     * @return this
      */
     shadow: function(options) {
       if (options) {
@@ -675,6 +691,7 @@
       } else {
         this._shadow = null;
       }
+      return this;
     },
 
     /**
@@ -901,6 +918,54 @@
   J.DisplayObjectContainer = DisplayObjectContainer;
 })(Joy);
 
+(function(J) {
+  /**
+   * @class Shape
+   * @constructor
+   */
+  var Shape = J.DisplayObject.extend({
+    init: function (options) {
+      if (!options) {
+        options = {};
+      }
+
+      /**
+       * Geometry
+       * @property geom
+       * @type {Rect, Polygon, Circle}
+       */
+      this.__defineSetter__('geom', function(geom) {
+        this._geom = geom;
+      });
+      this.__defineGetter__('geom', function() { return this._geom; });
+
+      if (options.geom) {
+        this.geom = options.geom;
+      }
+
+      this._super(options);
+
+      // Override DisplayObject width getter
+      this.__defineGetter__('width', function() {
+        return this._geom.width;
+      });
+      // Override DisplayObject height getter
+      this.__defineGetter__('height', function() {
+        return this._geom.height;
+      });
+
+    },
+
+    render: function() {
+      this._super();
+      this._geom.render(this.ctx);
+    }
+  });
+
+
+  J.Shape = Shape;
+})(Joy);
+
 /**
  * @class Sprite
  * @extends DisplayObject
@@ -918,6 +983,8 @@
       this._super(options);
 
       /**
+       * TODO: Currently it's only drawing a flipped sprite. Other features should respect the fliped position.
+       *
        * @property flipX
        * @type {Boolean}
        * @default false
@@ -935,6 +1002,8 @@
       });
 
       /**
+       * TODO: Currently it's only drawing a flipped sprite. Other features should respect the fliped position.
+       *
        * @property flipY
        * @type {Boolean}
        * @default false
@@ -1239,12 +1308,25 @@
 (function(J) {
   var Scene = J.DisplayObjectContainer.extend({
     init: function(options) {
-      this._super(options || {});
+      options = options || {};
+      this.engine = options.engine;
+      this._super(options);
     },
 
     addChild: function(displayObject) {
       displayObject.setContext(this.ctx);
       this._super(displayObject);
+    },
+
+    /**
+     * Set background
+     * @method background
+     * @param {Color, String} color
+     */
+    background: function (color) {
+      this.fillStyle(color.toString());
+      this.fillRect(0, 0, this.engine.width, this.engine.height);
+      return this;
     }
   });
 
@@ -1323,6 +1405,7 @@
   };
 
   Engine.prototype.addScene = function(scene) {
+    scene.engine = this;
     scene.setContext(this.context.ctx);
 
     if (Joy.debug) {
@@ -1378,24 +1461,59 @@
    * @constructor
    */
   var Circle = function(x, y, radius) {
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
   };
 
-  Circle.prototype.collide = function(collider) {
+  Circle.prototype.render = function(ctx) {
+    // TODO
   };
 
   J.Circle = Circle;
 })(Joy);
 
-(function(J){
-  var Rect = function (x,y,width,height) {
-    this.x = x;
-    this.y = y;
-    this.width = width;
-    this.height = height;
+(function(J) {
+  /**
+   * @class Polygon
+   * @constructor
+   * @param {Array} Array of Point's.
+   */
+  var Polygon = function(points) {
+    this.points = [];
+
+    if (points) {
+      for (var i=0, length=points.length; i < length; ++i) {
+        this.addPoint(points[i][0], points[i][1]);
+      }
+    }
   };
 
-  Rect.prototype.collide = function(collider) {
-    // collision detection
+  Polygon.prototype.addPoint = function (x, y) {
+    this.points.push([x, y]);
+  };
+
+  Polygon.prototype.render = function(ctx) {
+    // TODO
+  };
+
+  J.Polygon = Polygon;
+})(Joy);
+
+(function(J){
+  /**
+   * @class Rect
+   * @constructor
+   * @param {Number} width
+   * @param {Number} height
+   */
+  var Rect = function(width, height) {
+    this.width = width || 0;
+    this.height = height || 0;
+  };
+
+  Rect.prototype.render = function(ctx) {
+    ctx.fillRect(0, 0, this.width, this.height);
   };
 
   J.Rect = Rect;
@@ -1546,6 +1664,15 @@ Joy.Time = {
      * @final
      */
     ENTER:13,
+
+    /**
+     * SPACE keycode
+     * @property SPACE
+     * @type {Number}
+     * @static
+     * @final
+     */
+    SPACE:32,
 
     /**
      * BACKSPACE keycode
@@ -2413,10 +2540,10 @@ Joy.Time = {
   function triggerKeyEvent(type, evt) {
     var i, length, handlers = Keyboard.handlers[type];
 
-    for (var i=0, length=handlers.length; i<length; ++i) {
+    for (i=0, length=handlers.length; i<length; ++i) {
       handlers[i].handler.apply(handlers[i].target, [evt]);
     }
-  };
+  }
 
   [J.Events.KEY_DOWN, J.Events.KEY_UP, J.Events.KEY_PRESS].forEach(function(eventType) {
     Keyboard.handlers[eventType] = [];
@@ -2433,12 +2560,12 @@ Joy.Time = {
     });
   });
 
-  var repeat = 50;
+  var repeat = 1;
 
   // Bind document key down
   document.onkeydown = function(e) {
    var key = (e || window.event).keyCode;
-    if (Keyboard.timers[key] == null) {
+    if (Keyboard.timers[key] === null) {
       triggerKeyEvent(J.Events.KEY_DOWN, e);
       triggerKeyEvent(J.Events.KEY_PRESS, e);
 
@@ -2456,7 +2583,7 @@ Joy.Time = {
     var key = (e || window.event).keyCode;
     if (key in Keyboard.timers) {
       triggerKeyEvent(J.Events.KEY_UP, e);
-      if (Keyboard.timers[key] != null) {
+      if (Keyboard.timers[key] !== null) {
         clearInterval(Keyboard.timers[key]);
       }
       delete Keyboard.timers[key];

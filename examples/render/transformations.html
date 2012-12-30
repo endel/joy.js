@@ -29,6 +29,17 @@
                 s.scale(scaleXY, scaleXY);
               }
 
+              var _alpha = 0.5, _alphaUp;
+              function alpha(s) {
+                if (_alpha > 1) {
+                  _alphaUp = false;
+                } else if (_alpha < 0) {
+                  _alphaUp = true;
+                }
+                if (_alphaUp) { _alpha += 0.02; } else { _alpha -= 0.02; }
+                s.alpha = _alpha;
+              };
+
               function checkBoundaries(s) {
                   s.x += s.speed * s.hDir;
                   s.y += s.speed * s.vDir;
@@ -69,6 +80,7 @@
               setInterval(function () {
                 rotate(spriteNormal);
                 scale(spriteBig);
+                alpha(spriteBig);
                 checkBoundaries(spriteNormal);
                 checkBoundaries(spriteBig);
               }, 1000 / 60);
