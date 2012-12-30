@@ -6,6 +6,10 @@ create games, or any kind of web multimedia.
 It's currently on early development stage, the API could change at any time,
 feel free to test it if you are adventurous.
 
+## Resources
+
+[Google Group](https://groups.google.com/forum/#!forum/joyjs)
+
 ## Dependencies
 
 This project is built using [GruntJS](http://gruntjs.com/) and the documentation

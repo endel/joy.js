@@ -6,23 +6,29 @@
         <script type="text/javascript" src="../../dist/sizzle.js"></script>
         <script type="text/javascript" src="../../dist/joy.js"></script>
         <script type="text/javascript">
+            var engine, sprite, nyan, scene;
             function setup() {
               Joy.debug = true;
 
-              var engine = new Joy.Engine({ canvas2d: document.getElementById("joy") });
-              var scene = engine.createScene();
-              var sprite = new Joy.Sprite({
-                x: 0, y: 0, width: 35,
+              engine = new Joy.Engine({ canvas2d: document.getElementById("joy") });
+              scene = engine.createScene();
+
+              sprite = new Joy.Sprite({
+                width: 35,
                 src: "../shared-assets/nyan-cat.png",
               });
 
-              var nyan = new Joy.Actor({graphic : sprite});
+              nyan = new Joy.Actor({
+                x: engine.width / 2,
+                y: engine.height / 2,
+                children: [sprite]
+              });
               nyan.bind('update', function() {
-                if (this.graphic.currentFrame == this.graphic.frames-1) {
-                  this.graphic.currentFrame = 0;
-                  this.graphic.flipX = !this.graphic.flipX;
+                if (sprite.currentFrame == sprite.frames-1) {;
+                  sprite.currentFrame = 0;
+                  sprite.flipX = !sprite.flipX;
                 } else {
-                  this.graphic.currentFrame += 1;
+                  sprite.currentFrame += 1;
                 }
               });
 

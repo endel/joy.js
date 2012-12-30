@@ -1,7 +1,7 @@
 /* 
  * Joy.js - v0.0.1pre (http://joyjs.org)
  * Copyright (c) 2012 Joy.js Foundation and other contributors 
- * Build date: 12/26/2012
+ * Build date: 12/29/2012
  */
 
 /**
@@ -31,11 +31,11 @@
  * By John Resig http://ejohn.org/
  * MIT Licensed.
  *
- * @class Class
+ * @class Object
  */
 // Inspired by base2 and Prototype
 /*jshint immed:true loopfunc:true*/
-(function(){
+(function(J){
   var initializing = false, fnTest = /xyz/.test(function(){'xyz';}) ? /\b_super\b/ : /.*/;
 
   // The base Class implementation (does nothing)
@@ -93,7 +93,9 @@
 
     return Class;
   };
-})();
+
+  Joy.Object = Class;
+})(Joy);
 /*jshint immed:false loopfunc:false*/
 
 (function(J) {
@@ -258,7 +260,7 @@
    * @class Triggerable
    * @constructor
    */
-  var Triggerable = Class.extend({
+  var Triggerable = J.Object.extend({
     init: function() {
       this._handlers = {};
     },
@@ -434,6 +436,21 @@
       this.y = options.y || 0;
 
       /**
+       * @property width
+       * @type {Number}
+       * @default 0
+       */
+      this._width = options.width || 0;
+
+      /**
+       * @property height
+       * @type {Number}
+       * @default 0
+       */
+      this._height = options.height || 0;
+
+
+      /**
        * @property pivotX
        * @type {Number}
        * @default 0
@@ -561,6 +578,15 @@
         return this._matrix;
       });
 
+      this.__defineGetter__('width', function() {
+        return this._width * this.scaleX;
+      });
+
+      this.__defineGetter__('height', function() {
+        return this._height * this.scaleY;
+      });
+
+
       this._super();
     },
 
@@ -573,9 +599,6 @@
         this._collisionTargets.push(displayObject);
         this.bind('collide', callback);
       }
-    },
-
-    onKey: function() {
     },
 
     /**
@@ -738,10 +761,18 @@
      * @extends DisplayObject
      * @constructor
      */
-    init: function() {
-      this._super();
+    init: function(options) {
+      if (!options) {
+        options = {};
+      }
+
       this.displayObjects = [];
 
+      if (options.children) {
+        for (var i=0,length=options.children.length; i<length; ++i) {
+          this.addChild(options.children[i]);
+        }
+      }
       /**
        * Number of children displayObject's attached to the container.
        * @property numChildren
@@ -751,6 +782,30 @@
       this.__defineGetter__('numChildren', function() {
         return this.displayObjects.length;
       });
+
+      this.__defineGetter__('width', function() {
+        // Get child with greater width
+        var width = 0;
+        for (var i=0, length = this.displayObjects.length; i<length; ++i) {
+          if (this.displayObjects[i].width > width) {
+            width = this.displayObjects[i].width;
+          }
+        }
+        return width;
+      });
+
+      this.__defineGetter__('height', function() {
+        // Get child with greater height
+        var height = 0;
+        for (var i=0, length = this.displayObjects.length; i<length; ++i) {
+          if (this.displayObjects[i].height > height) {
+            height = this.displayObjects[i].height;
+          }
+        }
+        return height;
+      });
+
+      this._super(options);
     },
 
     setContext: function(ctx) {
@@ -778,6 +833,12 @@
         this.displayObjects[i].trigger('update');
         this.ctx.restore();
       }
+
+      // Draw debugging rectangle around sprite
+      //if (J.debug) {
+        //this.ctx.strokeStyle = "red";
+        //this.ctx.strokeRect(this.x, this.y, this.width, this.height);
+      //}
 
       this.ctx.restore();
     },
@@ -833,6 +894,7 @@
       this.displayObjects.splice(index, index+1);
       return this;
     }
+
   });
 
   // Export module
@@ -846,22 +908,48 @@
 (function(J) {
   var Sprite = J.DisplayObject.extend({
     init: function(options) {
-      this._super();
-
       // Asset
       this.asset = options.asset || new Image();
 
-      // Position / Dimensions
-      this.x = this._x = options.x || 0;
-      this.y = this._y = options.y || 0;
-
       // Real dimensions (without scale)
-      this.width = this.asset.width || options.width;
-      this.height = this.asset.height || options.height;
+      options.width = this.asset.width || options.width;
+      options.height = this.asset.height || options.height;
 
-      // flip
-      this.flipX = false;
-      this.flipY = false;
+      this._super(options);
+
+      /**
+       * @property flipX
+       * @type {Boolean}
+       * @default false
+       */
+      this._flipX = false;
+      this.__defineSetter__('flipX', function(flipX) {
+        this.scaleX *= (flipX != this._flipX) ? -1 : 1;
+        this._flipX = flipX;
+        if (this._flipX) {
+          this.pivotX = -this._width;
+        } else { }
+      });
+      this.__defineGetter__('flipX', function() {
+        return this._flipX;
+      });
+
+      /**
+       * @property flipY
+       * @type {Boolean}
+       * @default false
+       */
+      this._flipY = false;
+      this.__defineSetter__('flipY', function(flipY) {
+        this.scaleY *= (flipY != this._flipY) ? -1 : 1;
+        this._flipY = flipY;
+        if (this._flipY) {
+          this.pivotY = -this._height;
+        } else { }
+      });
+      this.__defineGetter__('flipY', function() {
+        return this._flipY;
+      });
 
       // Frames
       this.frames = 1;
@@ -889,34 +977,27 @@
     },
 
     onLoad: function() {
-      if (!this.width) { this.width = this.asset.width; }
-      if (!this.height) { this.height = this.asset.height; }
+      if (!this._width) { this._width = this.asset.width; }
+      if (!this._height) { this._height = this.asset.height; }
 
       // Check for spritesheet
-      if (this.width < this.asset.width) {
-        this.frames = Math.ceil(this.asset.width / this.width);
+      if (this._width < this.asset.width) {
+        this.frames = Math.ceil(this.asset.width / this._width);
       }
 
-      // Update pivot
-      this.pivotX = this.width / 2;
-      this.pivotY = this.height / 2;
+      this.flipX = this._flipX;
+      this.flipY = this._flipY;
     },
 
     render: function() {
-      if (this.flipX === true || this.flipY === true) {
-        // TODO: I'm weird and not working as expected
-        this.ctx.translate((this.flipX - 0) * this._width, (this.flipY - 0) * this._height);
-        this.ctx.scale((this.flipX === true) ? -1 : 1 , (this.flipY === true) ? -1 : 1);
-      }
-
       this._super();
 
-      this.ctx.drawImage(this.asset, this.width * this.currentFrame, 0, this.width, this.height, 0, 0, this.width, this.height);
+      this.ctx.drawImage(this.asset, this._width * this.currentFrame, 0, this._width, this._height, 0, 0, this._width, this._height);
 
       // Draw debugging rectangle around sprite
       if (J.debug) {
         this.ctx.strokeStyle = "red";
-        this.ctx.strokeRect(0, 0, this.width, this.height);
+        this.ctx.strokeRect(0, 0, this._width, this._height);
       }
 
     }
@@ -1079,14 +1160,10 @@
 (function(J) {
   var Actor = J.DisplayObjectContainer.extend({
     init: function (options) {
-      if (!options) {
-        options = {};
-      }
-
       this._intervals = {};
       this._behaviours = [];
 
-      this._super();
+      this._super(options || {});
     },
 
     /**
@@ -1145,7 +1222,7 @@
  * @class Behaviour
  */
 (function(J) {
-  var Behaviour = Class.extend({
+  var Behaviour = J.Object.extend({
     init: function() {
     },
 
@@ -1161,8 +1238,8 @@
  */
 (function(J) {
   var Scene = J.DisplayObjectContainer.extend({
-    init: function(context) {
-      this._super();
+    init: function(options) {
+      this._super(options || {});
     },
 
     addChild: function(displayObject) {
@@ -2360,7 +2437,7 @@ Joy.Time = {
 
   // Bind document key down
   document.onkeydown = function(e) {
-    var key = (e || window.event).keyCode;
+   var key = (e || window.event).keyCode;
     if (Keyboard.timers[key] == null) {
       triggerKeyEvent(J.Events.KEY_DOWN, e);
       triggerKeyEvent(J.Events.KEY_PRESS, e);
