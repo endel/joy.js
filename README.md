@@ -23,6 +23,7 @@ We use `npm` modules, such as `qunit` and `grunt` during development process.
 If you're under Windows platform, please take a look at
 [this](https://gist.github.com/2489540) guide to setup the environment.
 
+
 ## License
 
 Please see LICENSE file.
