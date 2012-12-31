@@ -1,7 +1,7 @@
 /* 
  * Joy.js - v0.0.1pre (http://joyjs.org)
  * Copyright (c) 2012 Joy.js Foundation and other contributors 
- * Build date: 12/30/2012
+ * Build date: 12/31/2012
  */
 
 /**
@@ -373,6 +373,7 @@
    */
   var Context2d = function(options) {
     this.setCanvas(options.canvas);
+    this.shaders = [];
   };
 
   Context2d.prototype.setCanvas = function(canvas) {
@@ -395,14 +396,14 @@
    * @method Context2d
    */
   Context2d.prototype.render = function (scenes) {
-    var len = scenes.length, i = 0;
+    var len = scenes.length, i = 0,
+        totalShaders = this.shaders.length;
     this.clear();
 
-    this.ctx.save();
     for (; i < len; ++i) {
       scenes[i].render();
     }
-    this.ctx.restore();
+
   };
 
   // Exports Context2d module
@@ -1122,7 +1123,7 @@
       this._currentAnimation = null;
       this.__defineGetter__('currentAnimation', function () {
         return this._currentAnimation;
-      })
+      });
 
       // framesPerSecond alias
       this.__defineGetter__('fps', function () {
@@ -1136,7 +1137,7 @@
     _update: function() {
       var currentAnimation = this._animations[this._currentAnimation];
 
-      if (this.currentFrame == currentAnimation.lastFrame) {;
+      if (this.currentFrame == currentAnimation.lastFrame) {
         this.trigger('animationEnd');
         this.currentFrame = currentAnimation.firstFrame;
       } else {
@@ -1176,9 +1177,7 @@
         totalFrames = totalFrames * (this._rows = Math.ceil(this.image.height / this._height));
       }
 
-      console.log("Columns / Rows: ", this._columns, this._rows);
-
-      if (this._animations.length == 0 || this._currentAnimation === null) {
+      if (this._animations.length === 0 || this._currentAnimation === null) {
         this.addAnimation('default', [0, totalFrames-1]);
         this.play('default');
       }
@@ -1436,6 +1435,9 @@
     init: function(options) {
       options = options || {};
       this.engine = options.engine;
+
+      this.shaders = [];
+
       this._super(options);
     },
 
@@ -1453,6 +1455,29 @@
       this.fillStyle(color.toString());
       this.fillRect(0, 0, this.engine.width, this.engine.height);
       return this;
+    },
+
+    render: function () {
+      this._super();
+
+      // Experimental: apply shaders
+      if (this.shaders.length > 0) {
+        for (var i=0, length = this.shaders.length; i < length; ++i) {
+          var imageData = this.ctx.getImageData(0, 0, this.engine.width, this.engine.height);
+          this.shaders[i].call(this, imageData);
+          this.ctx.putImageData(imageData, 0, 0);
+        }
+      }
+
+    },
+
+    /**
+     * Experimental: add post-processing pixel effect.
+     * @method applyShader
+     * @param {Function} shader
+     */
+    addShader: function(shader) {
+      this.shaders.push(shader);
     }
   });
 

@@ -1,0 +1,96 @@
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>Joy Example</title>
+
+        <script type="text/javascript" src="../../dist/sizzle.js"></script>
+        <script type="text/javascript" src="../../dist/joy.js"></script>
+        <script type="text/javascript">
+            function setup() {
+              Joy.debug = true;
+              var c = document.getElementById("joy");
+
+              function checkBoundaries(s) {
+                  s.x += s.speed * s.hDir;
+                  s.y += s.speed * s.vDir;
+
+                  if ((s.x + s.width) > c.width) {
+                      s.hDir = -1;
+                  } else if (s.x < 0) {
+                      s.hDir = 1;
+                  }
+
+                  if ((s.y + s.height) > c.height) {
+                      s.vDir = -1;
+                  }
+                  else if (s.y < 0) {
+                      s.vDir = 1;
+                  }
+              }
+
+              var r = new Joy.Engine({ canvas2d: c });
+              var scene = r.createScene();
+
+              var spriteUrl = "../shared-assets/mario.png";
+
+              var spriteSmall = new Joy.Sprite({
+                x: 10, y: 10, src: spriteUrl
+              });
+              spriteSmall.hDir = 1;
+              spriteSmall.vDir = 1;
+              spriteSmall.speed = 2;
+              spriteSmall.scale(0.5, 0.5);
+
+              var spriteNormal = new Joy.Sprite({
+                x: 10, y: 10, src: spriteUrl
+              });
+              spriteNormal.hDir = -1;
+              spriteNormal.vDir = 1;
+              spriteNormal.speed = 1;
+
+              var spriteBig = new Joy.Sprite({
+                x: 10, y: 10, src: spriteUrl
+              });
+              spriteBig.hDir = 1;
+              spriteBig.vDir = -1;
+              spriteBig.speed = 0.5;
+              spriteBig.scale(2, 2);
+              spriteBig.shadow({
+                color: "#000",
+                offsetX: 10,
+                offsetY: 10,
+                blur: 20
+              });
+
+              scene.addChild(spriteBig);
+              scene.addChild(spriteNormal);
+              scene.addChild(spriteSmall);
+
+              scene.addShader(function(imageData) {
+                var index = 0, x, y, random;
+                for (var x=0; x < imageData.width; ++x) {
+                  for (var y=0; y < imageData.height; ++y) {
+                    random = Math.random() * 0.8;
+                    index = (x * 4) + (y * (imageData.width * 4));
+                    imageData.data[index] *= random; // red channel
+                    imageData.data[index+1] *= random; // green channel
+                    imageData.data[index+2] *= random; // blue channel
+                  }
+                }
+              });
+
+              setInterval(function () {
+                  checkBoundaries(spriteSmall);
+                  checkBoundaries(spriteNormal);
+                  checkBoundaries(spriteBig);
+              }, 1000 / 60);
+            }
+        </script>
+    </head>
+
+    <body onload="setup();" style="margin: 0; padding: 0;">
+        <canvas id="joy" width=480 height=320 style="border: 1px solid #000000;"></canvas>
+    </body>
+
+</html>
+
