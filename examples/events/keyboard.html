@@ -21,10 +21,11 @@
             mario1.maxVSpeed = 5;
 
             mario1.bind(Joy.Events.KEY_PRESS, function(evt) {
+              console.log("Key press!", evt.keyCode);
               if (evt.keyCode == Joy.Keyboard.SPACE && this.grounded) {
                 this.vspeed = -4;
                 this.grounded = false;
-              } else if (evt.keyCode === Joy.Keyboard.LEFT) {
+              } if (evt.keyCode === Joy.Keyboard.LEFT) {
                 this.x -= 1;
               } else if (evt.keyCode === Joy.Keyboard.RIGHT) {
                 this.x += 1;

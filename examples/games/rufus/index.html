@@ -9,26 +9,15 @@
             Joy.debug = true;
 
             var engine = new Joy.Engine({ canvas2d: document.getElementById('joy') });
-
             var scene = engine.createScene();
-            scene.fillStyle("#BFE5E5");
-            scene.fillRect(0, 0, engine.width, engine.height);
+            scene.background("#BFE5E5");
 
-            var black = new Joy.DisplayObjectContainer();
-            black.fillStyle("#000");
-            black.fillRect(100,100,200,200);
-            black.bind(Joy.Events.CLICK, function() {
+            var rufus = new Joy.SpriteSheet({
+              src: "assets/spritesheets/rufus.png"
+              animations:
             });
-            scene.addChild(black);
 
-            var white = new Joy.DisplayObject();
-            white.fillStyle("#fff");
-            white.fillRect(50,50,200,200);
-            scene.addChild(white);
-
-            setInterval(function() {
-              scene.swapChildren(black, white);
-            }, 500)
+            setInterval(function() {}, 500)
           }
         </script>
     </head>

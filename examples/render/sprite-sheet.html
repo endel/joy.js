@@ -6,44 +6,51 @@
         <script type="text/javascript" src="../../dist/sizzle.js"></script>
         <script type="text/javascript" src="../../dist/joy.js"></script>
         <script type="text/javascript">
-            var engine, sprite, nyan, scene;
+            var rufus;
             function setup() {
               Joy.debug = true;
 
-              engine = new Joy.Engine({ canvas2d: document.getElementById("joy") });
-              scene = engine.createScene();
+              var engine = new Joy.Engine({ canvas2d: document.getElementById("joy") });
+              var scene = engine.createScene();
 
-              sprite = new Joy.Sprite({
-                width: 35,
-                src: "../shared-assets/nyan-cat.png",
-              });
-
-              nyan = new Joy.Actor({
+              rufus = new Joy.SpriteSheet({
                 x: engine.width / 2,
                 y: engine.height / 2,
-                children: [sprite]
-              });
-              nyan.bind('update', function() {
-                if (sprite.currentFrame == sprite.frames-1) {;
-                  sprite.currentFrame = 0;
-                  sprite.flipX = !sprite.flipX;
-                } else {
-                  sprite.currentFrame += 1;
+                src: "../games/rufus/assets/spritesheets/rufus.png",
+                width: 120,
+                height: 120,
+                animations: {
+                  "walking": [0, 30],
+                  "idle": [31, 39],
+                  "jumping": [40, 59],
+                  "falling": [60, 67],
                 }
               });
+              rufus.bind('load', function() {
+                this.x -= this.width / 2;
+                this.y -= this.height / 2;
+              });
 
-              scene.addChild(nyan);
+              rufus.play("walking");
+              scene.addChild(rufus);
             }
         </script>
     </head>
 
     <body onload="setup();" style="margin: 0; padding: 0;">
         <canvas id="joy" width=480 height=320 style="border: 1px solid #000000;"></canvas>
+
+        <h2>Play animation:</h2>
+        <ul>
+          <li><a href="#" onclick="rufus.play('walking'); return false;">Walking</a></li>
+          <li><a href="#" onclick="rufus.play('idle'); return false;">Idle</a></li>
+          <li><a href="#" onclick="rufus.play('jumping'); return false;">Jumping</a></li>
+          <li><a href="#" onclick="rufus.play('falling'); return false;">Falling</a></li>
+        </ul>
+
+        <footer>
+          Thanks <a href="http://s1037.beta.photobucket.com/user/DryBowser455/library/">DryBowser455</a> for nyan cat spritesheet.
+        </footer>
     </body>
-
-    <footer>
-      Thanks <a href="http://s1037.beta.photobucket.com/user/DryBowser455/library/">DryBowser455</a> for nyan cat spritesheet.
-    </footer>
-
 </html>
 
