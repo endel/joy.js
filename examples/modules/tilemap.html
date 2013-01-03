@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>Joy Example</title>
+        <script type="text/javascript" src="../../dist/sizzle.js"></script>
+        <script type="text/javascript" src="../../dist/joy.js"></script>
+        <script type="text/javascript">
+            function setup() {
+              Joy.debug = true;
+              var engine = new Joy.Engine({ canvas2d: document.getElementById("joy") })
+              var scene = engine.createScene();
+
+              var texture = new Joy.Sprite("../games/rufus/assets/texture.jpg");
+              scene.addChild(texture);
+
+              var tileset = new Joy.Tileset({
+                src: "../games/rufus/assets/tileset.png",
+                width: 64,
+                height: 64
+              });
+
+              var tilemap = new Joy.Tilemap({
+                tileset: tileset,
+                lines: 10,
+                columns: 12,
+                data: [
+                  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 25,
+                  0, 0, 0, 0, 0, 0, 28, 0, 0, 13, 35, 31,
+                  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 9,
+                  0, 0, 0, 0, 1, 3, 3, 2, 4, 4, 20, 11,
+                  0, 0, 0, 0, 29, 26, 24, 24, 23, 24, 21, 11,
+                  0, 0, 28, 0, 0, 32, 0, 0, 0, 0, 29, 23,
+                  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                  1, 3, 5, 2, 3, 3, 4, 3, 3, 4, 6, 0,
+                  7, 8, 8, 9, 10, 11, 8, 8, 8, 10, 19, 5
+                ]
+              });
+
+              scene.addChild(tilemap);
+            }
+        </script>
+    </head>
+
+    <body onload="setup();" style="margin: 0; padding: 0;">
+        <canvas id="joy" width="768" height="640" style="border: 1px solid #000000;"></canvas>
+    </body>
+
+</html>
