@@ -11,66 +11,36 @@
 
               var c = document.getElementById("joy");
 
-              function checkBoundaries(s) {
-                  s.x += s.speed * s.hDir;
-                  s.y += s.speed * s.vDir;
-
-                  // console.log(s.x + s.width, c.width);
-
-                  if ((s.x + s.width) > c.width) {
-                      s.hDir = -1;
-                  } else if (s.x < 0) {
-                      s.hDir = 1;
-                  }
-
-                  if ((s.y + s.height) > c.height) {
-                      s.vDir = -1;
-                  }
-                  else if (s.y < 0) {
-                      s.vDir = 1;
-                  }
+              var rotation = 0;
+              function rotate(s) {
+                rotation = rotation + 0.5;
+                s.rotate(rotation);
               }
 
               var engine = new Joy.Engine({ canvas2d: c });
               var scene = engine.createScene();
-
               var spriteUrl = "../shared-assets/mario.png";
 
-              var spriteSmallFlipped = new Joy.Sprite({ x: 10, y: 10, src: spriteUrl });
-              spriteSmallFlipped.hDir = 1;
-              spriteSmallFlipped.vDir = 1;
-              spriteSmallFlipped.speed = 1;
-              spriteSmallFlipped.scale(0.2, 0.2);
-              spriteSmallFlipped.flipX = true;
+              var sprite = new Joy.Sprite({
+                x: engine.width / 2,
+                y: engine.height / 2,
+                src: spriteUrl
+              });
+              sprite.smooth = true;
+              sprite.bind('load', function () {
+                this.pivotX = (this.width / 2);
+                this.pivotY = (this.height / 2);
+              });
 
-              var spriteSmall = new Joy.Sprite({ x: 10, y: 10, src: spriteUrl });
-              spriteSmall.hDir = 1;
-              spriteSmall.vDir = 1;
-              spriteSmall.speed = 1;
-              spriteSmall.scale(0.5, 0.5);
+              var spriteChild = new Joy.Sprite({ x: 0, y: 0, src: spriteUrl });
+              spriteChild.smooth = true;
+              spriteChild.scale(0.5, 0.5);
 
-              var spriteNormal = new Joy.Sprite({ x: 10, y: 10, src: spriteUrl });
-              spriteNormal.hDir = -1;
-              spriteNormal.vDir = 1;
-              spriteNormal.speed = 1;
-              spriteNormal.addChild(spriteSmall);
-
-              var spriteBig = new Joy.Sprite({ x: 10, y: 10, src: spriteUrl });
-              spriteBig.hDir = 1;
-              spriteBig.vDir = -1;
-              spriteBig.speed = 1;
-              spriteBig.scale(2, 2);
-
-              scene.addChild(spriteBig);
-              scene.addChild(spriteNormal);
-              scene.addChild(spriteSmall);
-              scene.addChild(spriteSmallFlipped);
+              sprite.addChild(spriteChild);
+              scene.addChild(sprite);
 
               setInterval(function () {
-                 // checkBoundaries(spriteSmall);
-                 checkBoundaries(spriteSmallFlipped);
-                 checkBoundaries(spriteNormal);
-                 checkBoundaries(spriteBig);
+                rotate(sprite);
               }, 1000 / 60);
             }
         </script>
@@ -81,4 +51,6 @@
     </body>
 
 </html>
+
+
 

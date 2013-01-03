@@ -12,8 +12,9 @@
             var scene = engine.createScene();
             scene.background("#BFE5E5");
 
-            var block = new Joy.Shape({geom: new Joy.Rect(engine.width, 20)}).fillStyle("#000");
+            var block = new Joy.Shape({geom: new Joy.Rect(engine.width - 100, 20)}).fillStyle("#000");
             block.y = engine.height - 20;
+            block.x = 50;
             scene.addChild(block);
 
             var mario1 = new Joy.Sprite({ x: engine.width / 2, y: engine.height / 2, src: "../shared-assets/mario.png" });
@@ -45,7 +46,6 @@
             });
 
             mario1.onCollide(block, function() {
-              console.log("Collide with block!");
               this.y -= 1;
               this.grounded = true;
             });
