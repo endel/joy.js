@@ -87,7 +87,7 @@ module.exports = function(grunt) {
   grunt.registerTask('min', ['concat', 'uglify']);
 
   // Travis CI task.
-  grunt.registerTask('travis', ['lint', 'qunit']);
+  grunt.registerTask('travis', 'default');
 
   // Generate only documentation.
   grunt.registerTask('docs', 'yuidoc');
