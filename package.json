@@ -5,7 +5,7 @@
   "version": "0.0.1pre",
   "homepage": "http://joyjs.org",
   "author": {
-    "name": "Joy.js Foundation and other contributors",
+    "name": "Endel Dreyer",
     "url": "https://github.com/joyjs/joy.js/blob/master/AUTHORS"
   },
   "repository": {
@@ -28,12 +28,15 @@
     "sizzle": "1.1.0"
   },
   "devDependencies": {
-    "grunt-compare-size": "~0.2.0",
-    "grunt-git-authors": ">=1.0.0",
-    "grunt-update-submodules": ">=0.1.2",
-    "grunt": "~0.3.17",
+    "grunt": "0.4.0rc4",
+    "grunt-contrib-watch": "~0.1.4",
+    "grunt-contrib-jshint": "~0.1.0",
     "grunt-contrib-yuidoc": "~0.3.2",
-    "qunitjs" : ">=1.10.0"
+    "grunt-contrib-concat": "~0.1.1",
+    "grunt-contrib-qunit": "~0.1.0",
+    "grunt-contrib-uglify": "~0.1.0",
+    "qunitjs" : ">=1.10.0",
+    "appjs" : ">= 0.0.20"
   },
   "keywords": []
 }

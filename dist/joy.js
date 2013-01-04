@@ -1,7 +1,8 @@
 /* 
- * Joy.js - v0.0.1pre (http://joyjs.org)
- * Copyright (c) 2012 Joy.js Foundation and other contributors 
- * Build date: 12/31/2012
+ * joy.js v0.0.1pre - http://joyjs.org
+ * @copyright 2012-2013 Endel Dreyer 
+ * @license MIT
+ * @build 1/3/2013
  */
 
 /**
@@ -356,6 +357,98 @@
   J.Triggerable = Triggerable;
 })(Joy);
 
+(function(J) {
+  J.Composite = {
+    /**
+     * @property SOURCE_OVER
+     * @static
+     * @final
+     * @type {String}
+     */
+    SOURCE_OVER: 'source-over',
+
+    /**
+     * @property SOURCE_IN
+     * @static
+     * @final
+     * @type {String}
+     */
+    SOURCE_IN: 'source-in',
+
+    /**
+     * @property SOURCE_OUT
+     * @static
+     * @final
+     * @type {String}
+     */
+    SOURCE_OUT: 'source-out',
+
+    /**
+     * @property SOURCE_ATOP
+     * @static
+     * @final
+     * @type {String}
+     */
+    SOURCE_ATOP: 'source-atop',
+
+    /**
+     * @property LIGHTER
+     * @static
+     * @final
+     * @type {String}
+     */
+    LIGHTER: 'lighter',
+
+    /**
+     * @property XOR
+     * @static
+     * @final
+     * @type {String}
+     */
+    XOR: 'xor',
+
+    /**
+     * @property DESTINATION_OVER
+     * @static
+     * @final
+     * @type {String}
+     */
+    DESTINATION_OVER: 'destination-over',
+
+    /**
+     * @property DESTINATION_IN
+     * @static
+     * @final
+     * @type {String}
+     */
+    DESTINATION_IN: 'destination-in',
+
+    /**
+     * @property DESTINATION_OUT
+     * @static
+     * @final
+     * @type {String}
+     */
+    DESTINATION_OUT: 'destination-out',
+
+    /**
+     * @property DESTINATION_ATOP
+     * @static
+     * @final
+     * @type {String}
+     */
+    DESTINATION_ATOP: 'destination-atop',
+
+    /**
+     * @property DESTINATION_COPY
+     * @static
+     * @final
+     * @type {String}
+     */
+    DESTINATION_COPY: 'copy'
+  };
+})(Joy);
+
 /**
  * The Context2d class is responsible for drawing everything at the canvas.
  * It works using a buffer of sprites, so you can use it alone, adding sprites to it.
@@ -373,7 +466,6 @@
    */
   var Context2d = function(options) {
     this.setCanvas(options.canvas);
-    this.shaders = [];
   };
 
   Context2d.prototype.setCanvas = function(canvas) {
@@ -396,14 +488,12 @@
    * @method Context2d
    */
   Context2d.prototype.render = function (scenes) {
-    var len = scenes.length, i = 0,
-        totalShaders = this.shaders.length;
+    var len = scenes.length, i = 0;
     this.clear();
 
     for (; i < len; ++i) {
       scenes[i].render();
     }
-
   };
 
   // Exports Context2d module
@@ -643,6 +733,17 @@
      */
     transform: function(m11, m12, m21, m22, dx, dy) {
       this._contextOperations.transform = [m11, m12, m21, m22, dx, dy];
+      return this;
+    },
+
+    /**
+     * Apply composite operation on DisplayObject's canvas.
+     * @method composite
+     * @param {String} compositeOperation
+     * @return this
+     */
+    composite: function (compositeOperation) {
+      this.compositeOperation = compositeOperation;
       return this;
     },
 
@@ -970,15 +1071,19 @@
 (function(J) {
   /**
    * @class Sprite
-   * @extends DisplayObject
+   * @extends DisplayObjectContainer
    * @constructor
    *
-   * @param {Object} options
+   * @param {String, Object} data src (String) or options (Object)
    *  @param {Number} width
    *  @param {Number} height
    */
-  var Sprite = J.DisplayObject.extend({
+  var Sprite = J.DisplayObjectContainer.extend({
     init: function(options) {
+      if (typeof(options)==="string") {
+        options = { src: options };
+      }
+
       // Asset
       this.image = options.image || new Image();
 
@@ -1197,7 +1302,15 @@
     render: function() {
       //this._super();
 
-      this.ctx.drawImage(this.image, this._width * (this.currentFrame % this._columns), this._height * ((this.currentFrame / this._columns) >> 0), this._width, this._height, 0, 0, this._width, this._height);
+      this.ctx.drawImage(this.image,
+                         this._width * (this.currentFrame % this._columns),
+                         this._height * ((this.currentFrame / this._columns) >> 0),
+                         this._width,
+                         this._height,
+                         0,
+                         0,
+                         this._width,
+                         this._height);
 
       // Draw debugging rectangle around sprite
       if (J.debug) {
@@ -1473,7 +1586,7 @@
 
     /**
      * Experimental: add post-processing pixel effect.
-     * @method applyShader
+     * @method addShader
      * @param {Function} shader
      */
     addShader: function(shader) {
@@ -2754,6 +2867,95 @@ Joy.Time = {
   var Mouse = {};
 
   J.Mouse = Mouse;
+})(Joy);
+
+(function(J) {
+  var Tilemap = J.DisplayObject.extend({
+    /**
+     * @class TileMap
+     * @constructor
+     * @param {Object} options
+     */
+    init: function (options) {
+      if (!(options.tileset instanceof J.Tileset)) {
+        throw new Error("'tileset' must be given on Tilemap constructor, as Sprite instance.");
+      }
+      this._super(options);
+
+      /**
+       * @property tileset
+       * @type {Tileset}
+       */
+      this.tileset = options.tileset;
+
+      /**
+       * @property lines
+       * @type {Number}
+       */
+      this.lines = options.lines || 1;
+
+      /**
+       * @property columns
+       * @type {Number}
+       */
+      this.columns = options.columns || 1;
+
+      /**
+       * @property data
+       * @type {Array}
+       */
+      this.data = options.data;
+    },
+
+    render: function() {
+      for (var i=0, length = this.data.length; i < length; ++i) {
+        if (this.data[i] === 0) { continue; }
+
+        this.ctx.drawImage(this.tileset.image,
+                           this.tileset.tileWidth * ((this.data[i]-1) % this.tileset.columns),
+                           this.tileset.tileHeight * (((this.data[i]-1) / this.tileset.columns) >> 0),
+                           this.tileset.tileWidth,
+                           this.tileset.tileHeight,
+                           this.tileset.tileWidth * (i % this.columns),
+                           this.tileset.tileHeight * ((i / this.columns) >> 0),
+                           this.tileset.tileWidth,
+                           this.tileset.tileHeight);
+      }
+    }
+  });
+
+  J.Tilemap = Tilemap;
+})(Joy);
+
+(function(J) {
+  var Tileset = J.Sprite.extend({
+    /**
+     * @class Tileset
+     * @constructor
+     * @param {Object} options
+     *   @param {String} src
+     *   @param {Number} width tile width
+     *   @param {Number} height tile height
+     */
+    init: function(options) {
+      this.tileWidth = options.width;
+      this.tileHeight = options.height;
+
+      delete options.width;
+      delete options.height;
+
+      this._super(options);
+    },
+
+    onLoad: function() {
+      this._super();
+
+      this.columns = (this._width / this.tileWidth) >> 0;
+      this.lines = (this._height / this.tileHeight) >> 0;
+    }
+  });
+
+  J.Tileset = Tileset;
 })(Joy);
 
 /*
