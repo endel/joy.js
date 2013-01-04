@@ -13,7 +13,9 @@ module.exports = function(grunt) {
     meta: {
       name: "joy.js",
       banner: '/* \n' +
-        ' * <%= meta.name %> v<%= pkg.version %> - <%= pkg.homepage %>\n' +
+        ' * <%= meta.name %> v<%= pkg.version %> \n' +
+        ' * <%= pkg.homepage %>\n' +
+        ' * \n' +
         ' * @copyright 2012-<%= grunt.template.today("yyyy") %> <%= pkg.author.name %> \n' +
         ' * @license <%= pkg.licenses[0].type %>\n' +
         ' * @build <%= grunt.template.today("m/d/yyyy") %>\n' +
@@ -57,8 +59,11 @@ module.exports = function(grunt) {
     },
     watch: {
       scripts: {
-        files: '<config:concat.dist.src>',
-        tasks: 'jshint concat uglify'
+        files: '<%= concat.dist.src %>',
+        tasks: ['jshint', 'concat'],
+        options: {
+          interrupt: true
+        }
       }
     },
     yuidoc: {

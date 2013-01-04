@@ -1,5 +1,7 @@
 /* 
- * joy.js v0.0.1pre - http://joyjs.org
+ * joy.js v0.0.1pre 
+ * http://joyjs.org
+ * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
  * @build 1/3/2013
