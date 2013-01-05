@@ -8,6 +8,19 @@
         <script type="text/javascript">
             var engine, scene;
 
+            function togglePause() {
+              console.log(this.innerHTML, engine.paused);
+              if (engine.paused) {
+                this.innerHTML = "Pause";
+                engine.resume();
+              } else {
+                this.innerHTML = "Resume";
+                Joy.Shader.process(scene.ctx, Joy.Shader.blur, 10);
+                engine.pause();
+              }
+              return false;
+            };
+
             function setup() {
               Joy.debug = true;
               var c = document.getElementById("joy");
@@ -32,6 +45,7 @@
 
               engine = new Joy.Engine({ canvas2d: c });
               scene = engine.createScene();
+              scene.background("#BFE5E5");
 
               var spriteUrl = "../shared-assets/mario.png";
 
@@ -68,8 +82,6 @@
               scene.addChild(spriteNormal);
               scene.addChild(spriteSmall);
 
-              scene.addShader(Joy.Shader.noise);
-
               setInterval(function () {
                   checkBoundaries(spriteSmall);
                   checkBoundaries(spriteNormal);
@@ -81,7 +93,9 @@
 
     <body onload="setup();" style="margin: 0; padding: 0;">
         <canvas id="joy" width=480 height=320 style="border: 1px solid #000000;"></canvas>
+        <ul>
+          <li><a href="#" onclick="togglePause.apply(this);">Pause</a></li>
+        </ul>
     </body>
 
 </html>
-

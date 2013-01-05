@@ -4,26 +4,47 @@
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 1/3/2013
+ * @build 1/5/2013
  */
 
-/**
- * This is the main class for the Joy engine.
- * Everything will be loaded from here, to be used at full extent.
- *
- * @class Joy
- */
 (function(global) {
-  // Exports Joy engine.
+  /**
+   * Joy namespace
+   * @class Joy
+   */
   var Joy = global.Joy || {
     Init: {},
     Render: {},
     Input: {},
     Context: {},
+
     Events: {
       UPDATE: 'update'
     },
-    debug: false
+
+    /**
+     * @property debug
+     * @type {Boolean}
+     * @static
+     * @default false
+     */
+    debug: false,
+
+    /**
+     * @property deltaTime
+     * @type {Number}
+     * @default 1
+     * @static
+     */
+    deltaTime: 1,
+
+    /**
+     * @method ready
+     * @static
+     */
+    ready: function(callback) {
+      document.onload = callback;
+    }
   };
 
   global.Joy = Joy;
@@ -359,98 +380,6 @@
   J.Triggerable = Triggerable;
 })(Joy);
 
-(function(J) {
-  J.Composite = {
-    /**
-     * @property SOURCE_OVER
-     * @static
-     * @final
-     * @type {String}
-     */
-    SOURCE_OVER: 'source-over',
-
-    /**
-     * @property SOURCE_IN
-     * @static
-     * @final
-     * @type {String}
-     */
-    SOURCE_IN: 'source-in',
-
-    /**
-     * @property SOURCE_OUT
-     * @static
-     * @final
-     * @type {String}
-     */
-    SOURCE_OUT: 'source-out',
-
-    /**
-     * @property SOURCE_ATOP
-     * @static
-     * @final
-     * @type {String}
-     */
-    SOURCE_ATOP: 'source-atop',
-
-    /**
-     * @property LIGHTER
-     * @static
-     * @final
-     * @type {String}
-     */
-    LIGHTER: 'lighter',
-
-    /**
-     * @property XOR
-     * @static
-     * @final
-     * @type {String}
-     */
-    XOR: 'xor',
-
-    /**
-     * @property DESTINATION_OVER
-     * @static
-     * @final
-     * @type {String}
-     */
-    DESTINATION_OVER: 'destination-over',
-
-    /**
-     * @property DESTINATION_IN
-     * @static
-     * @final
-     * @type {String}
-     */
-    DESTINATION_IN: 'destination-in',
-
-    /**
-     * @property DESTINATION_OUT
-     * @static
-     * @final
-     * @type {String}
-     */
-    DESTINATION_OUT: 'destination-out',
-
-    /**
-     * @property DESTINATION_ATOP
-     * @static
-     * @final
-     * @type {String}
-     */
-    DESTINATION_ATOP: 'destination-atop',
-
-    /**
-     * @property DESTINATION_COPY
-     * @static
-     * @final
-     * @type {String}
-     */
-    DESTINATION_COPY: 'copy'
-  };
-})(Joy);
-
 /**
  * The Context2d class is responsible for drawing everything at the canvas.
  * It works using a buffer of sprites, so you can use it alone, adding sprites to it.
@@ -740,7 +669,7 @@
 
     /**
      * Apply composite operation on DisplayObject's canvas.
-     * @method composite
+     * @method blend
      * @param {String} compositeOperation
      * @return this
      */
@@ -1464,70 +1393,6 @@
 
 
 /**
- * @class GameObject
- */
-(function(J) {
-  var Actor = J.DisplayObjectContainer.extend({
-    init: function (options) {
-      this._intervals = {};
-      this._behaviours = [];
-
-      this._super(options || {});
-    },
-
-    /**
-     * @method bind
-     * @param {String} action action name (update, key, keypress, keyrelease)
-     * @param {Function} callback
-     */
-    bind: function(action, func) {
-      var behaviour = J.Behaviour.extend({});
-      behaviour.prototype[action] = func;
-      this.addBehaviour(behaviour);
-    },
-
-    /**
-     * @method addBehaviour
-     * @param {Joy.Behaviour} behaviour behaviour class
-     */
-    addBehaviour: function (b) {
-      var self = this,
-          behaviour = new b();
-      if (behaviour.update && !this._intervals.update) {
-        this.addInterval('update', function() {
-          behaviour.update.apply(self);
-        }, 100);
-      }
-      this._behaviours.push(behaviour);
-    },
-
-    /**
-     * @method addInterval
-     * @param {String} id
-     * @param {Function} callback
-     * @param {Number} interval in milliseconds
-     */
-    addInterval: function (id, callback, interval) {
-      // Prevent lost interval reference to keep running.
-      if (this._intervals[id]) {
-        clearInterval(this._intervals[id]);
-      }
-      this._intervals[id] = setInterval(callback, interval);
-    },
-
-    update: function() {
-      var i=0, totalBehaviours = this._behaviours.length;
-      for (;i<totalBehaviours;++i) {
-        this._behaviours[i].update.apply(this);
-      }
-    }
-  });
-
-  J.Actor = Actor;
-})(Joy);
-
-
-/**
  * @class Behaviour
  */
 (function(J) {
@@ -1543,6 +1408,20 @@
 })(Joy);
 
 /**
+ * @class GameObject
+ */
+(function(J) {
+  var GameObject = J.Object.extend({
+    init: function (options) {
+      this.displayObject = options.displayObject;
+    },
+  });
+
+  J.GameObject = GameObject;
+})(Joy);
+
+
+/**
  * @class Scene
  */
 (function(J) {
@@ -1550,9 +1429,8 @@
     init: function(options) {
       options = options || {};
       this.engine = options.engine;
-
+      this.paused = false;
       this.shaders = [];
-
       this._super(options);
     },
 
@@ -1572,15 +1450,26 @@
       return this;
     },
 
+    pause: function (options) {
+      options = options || {};
+      if (options.blur) {
+        this.render();
+        J.Shader.process(this.ctx, J.Shader.blur, options.blur);
+        this.trigger('pause');
+      }
+      this.paused = true;
+    },
+
     render: function () {
+      // Don't render when paused
+      if (this.paused) { return; }
+
       this._super();
 
       // Experimental: apply shaders
       if (this.shaders.length > 0) {
         for (var i=0, length = this.shaders.length; i < length; ++i) {
-          var imageData = this.ctx.getImageData(0, 0, this.engine.width, this.engine.height);
-          this.shaders[i].call(this, imageData);
-          this.ctx.putImageData(imageData, 0, 0);
+          J.Shader.process(this.ctx, this.shaders[i][0], this.shaders[i][1]);
         }
       }
 
@@ -1591,37 +1480,115 @@
      * @method addShader
      * @param {Function} shader
      */
-    addShader: function(shader) {
-      this.shaders.push(shader);
+    addShader: function(shader, arguments) {
+      this.shaders.push([shader, arguments]);
     }
   });
 
   J.Scene = Scene;
 })(Joy);
 
-/**
- * @class Parallax
- */
 (function(J) {
-  var Parallax = J.DisplayObjectContainer.extend({
-    init: function() {
-      var i = 0, length = arguments.length;
-      for (; i<length; ++i) {
-        this.addChild(arguments[i]);
-      }
-    },
+  /**
+   * Used on DisplayObject#composite
+   * @class CompositeOperation
+   * @static
+   */
+  J.CompositeOperation = {
+    /**
+     * @property SOURCE_OVER
+     * @static
+     * @final
+     * @type {String}
+     */
+    SOURCE_OVER: 'source-over',
 
-    render: function() {
-    }
-  });
+    /**
+     * @property SOURCE_IN
+     * @static
+     * @final
+     * @type {String}
+     */
+    SOURCE_IN: 'source-in',
 
-  J.Parallax = Parallax;
+    /**
+     * @property SOURCE_OUT
+     * @static
+     * @final
+     * @type {String}
+     */
+    SOURCE_OUT: 'source-out',
+
+    /**
+     * @property SOURCE_ATOP
+     * @static
+     * @final
+     * @type {String}
+     */
+    SOURCE_ATOP: 'source-atop',
+
+    /**
+     * @property LIGHTER
+     * @static
+     * @final
+     * @type {String}
+     */
+    LIGHTER: 'lighter',
+
+    /**
+     * @property XOR
+     * @static
+     * @final
+     * @type {String}
+     */
+    XOR: 'xor',
+
+    /**
+     * @property DESTINATION_OVER
+     * @static
+     * @final
+     * @type {String}
+     */
+    DESTINATION_OVER: 'destination-over',
+
+    /**
+     * @property DESTINATION_IN
+     * @static
+     * @final
+     * @type {String}
+     */
+    DESTINATION_IN: 'destination-in',
+
+    /**
+     * @property DESTINATION_OUT
+     * @static
+     * @final
+     * @type {String}
+     */
+    DESTINATION_OUT: 'destination-out',
+
+    /**
+     * @property DESTINATION_ATOP
+     * @static
+     * @final
+     * @type {String}
+     */
+    DESTINATION_ATOP: 'destination-atop',
+
+    /**
+     * @property DESTINATION_COPY
+     * @static
+     * @final
+     * @type {String}
+     */
+    DESTINATION_COPY: 'copy'
+  };
 })(Joy);
 
 (function(J) {
   // TODO: find a better way to reference currentEngine instance.
   // What will happen when we have two canvas contexts at the same time? (like a mini-map?)
-  var currentEngine = null;
+  J.currentEngine = null;
 
   /**
    * Engine context. Start your application from here.
@@ -1630,10 +1597,17 @@
    * @constructor
    */
   var Engine = function(options) {
-    currentEngine = this;
+    J.currentEngine = this;
 
     // Active actors list
     this.scenes = [];
+
+    /**
+     * Is engine paused?
+     * @property paused
+     * @type {Boolean}
+     */
+    this.paused = false;
 
     if (options.canvas2d) {
       this.context = new Joy.Context.Context2d({canvas: options.canvas2d});
@@ -1643,8 +1617,27 @@
       // OMG, there is no 3d yet (and shouldn't for long time...)
     }
 
+    // Create canvas and context, if it isn't set.
+    if (!this.context) {
+      var contextKlass = options.context || Joy.Context.Context2d;
+      this.context = new contextKlass({canvas: document.createElement('canvas')});
+      document.body.appendChild(this.context.canvas);
+    }
+
+    if (options.width) {
+      this.context.canvas.width = options.width;
+    }
+
+    if (options.height) {
+      this.context.canvas.height = options.height;
+    }
+
     if (options.markup) {
       this.useMarkup();
+    }
+
+    if (options.debug) {
+      Joy.debug = true;
     }
 
     this.__defineGetter__('width', function() {
@@ -1664,11 +1657,36 @@
     }
   };
 
+  /**
+   * Create a new scene
+   * @method createScene
+   * @return {Scene}
+   */
   Engine.prototype.createScene = function() {
     var scene = new J.Scene();
     this.addScene(scene);
     return scene;
   };
+
+  /**
+   * Pause engine
+   * @method pause
+   * @param {Object} options
+   */
+  Engine.prototype.pause = function() {
+    this._deltaTime = J.deltaTime;
+    J.deltaTime = 0;
+    this.paused = true;
+  };
+
+  /**
+   * Resume if engine is paused.
+   * @method resume
+   */
+  Engine.prototype.resume = function() {
+    J.deltaTime = this._deltaTime;
+    this.paused = false;
+  }
 
   Engine.prototype.addScene = function(scene) {
     scene.engine = this;
@@ -1695,8 +1713,8 @@
    * @method onEnterFrame
    */
   Engine.prototype.onEnterFrame = function () {
-    currentEngine.render();
-    window.onEnterFrame(currentEngine.onEnterFrame);
+    if (!J.currentEngine.paused) { J.currentEngine.render(); }
+    window.onEnterFrame(J.currentEngine.onEnterFrame);
   };
 
   /**
@@ -1705,11 +1723,11 @@
    */
   Engine.prototype.onEnterFrameDebug = function () {
     var thisRenderTime = new Date();
-    currentEngine._frameRateText.text = (1000 / (thisRenderTime - currentEngine._lastRenderTime)).toFixed(1).toString() + " FPS";
-    currentEngine.render();
-    currentEngine._lastRenderTime = thisRenderTime;
+    J.currentEngine._frameRateText.text = (1000 / (thisRenderTime - J.currentEngine._lastRenderTime)).toFixed(1).toString() + " FPS";
+    if (!J.currentEngine.paused) { J.currentEngine.render(); }
+    J.currentEngine._lastRenderTime = thisRenderTime;
 
-    window.onEnterFrame(currentEngine.onEnterFrameDebug);
+    window.onEnterFrame(J.currentEngine.onEnterFrameDebug);
   };
 
   J.Engine = Engine;
@@ -1854,14 +1872,6 @@
 })(Joy);
 
 
-/**
- * Singleton time variables.
- * @class Time
- */
-Joy.Time = {
-  deltaTime: 1
-};
-
 (function(J) {
   /**
    * Create a color.
@@ -1886,13 +1896,10 @@ Joy.Time = {
    * @constructor
    */
   var Color = function(r, g, b, a) {
-    if (!g && !b) {
-      this.value = r;
-    } else if (a) {
-      this.value = "rgba("+r+","+g+","+b+","+a+")";
-    } else {
-      this.value = "rgb("+r+","+g+","+b+")";
-    }
+    this.red = r;
+    this.green = g;
+    this.blue = b;
+    this.alpha = a;
   };
 
   /**
@@ -1901,7 +1908,13 @@ Joy.Time = {
    * @return {String}
    */
   Color.prototype.toString = function() {
-    return this.value;
+    if (!this.green && !this.blue) {
+      return this.red;
+    } else if (this.alpha) {
+      return "rgba(" + this.red + "," + this.green + "," + this.blue + "," + this.alpha + ")";
+    } else {
+      return "rgb(" + this.red + "," + this.green + "," + this.blue + ")";
+    }
   };
 
   J.Color = Color;
@@ -2872,6 +2885,294 @@ Joy.Time = {
 })(Joy);
 
 (function(J) {
+  var Parallax = J.DisplayObjectContainer.extend({
+    /**
+     * @class Parallax
+     * @constructor
+     * @param {Object} options
+     */
+    init: function(options) {
+      if (!(options.target instanceof J.DisplayObject)) {
+        throw new Error("'target' must be given on Parallax constructor, as DisplayObject instance.");
+      }
+      this._super(options);
+    },
+
+    render: function() {
+    }
+  });
+
+  J.Parallax = Parallax;
+})(Joy);
+
+(function(J) {
+  var ParticleEmitter = J.DisplayObject.extend({
+    /**
+     * @class ParticleEmitter
+     * @constructor
+     * @param {Object} options
+     */
+    init: function (options) {
+
+      // position         The position of the particle.
+      // velocity         The velocity of the particle.
+      // energy           The energy of the particle.
+      // startEnergy      The starting energy of the particle.
+      // size             The size of the particle.
+      // rotation         The rotation of the particle.
+      // angularVelocity  The angular velocity of the particle.
+      // color            The color of the particle.
+
+      this._super(options);
+    }
+  });
+
+  J.ParticleEmitter = ParticleEmitter;
+})(Joy);
+
+(function(J) {
+  var Shader = function() {};
+
+  /**
+   * Process
+   * @method process
+   * @param {CanvasRenderingContext2D} ctx
+   * @param {Function} method
+   * @static
+   */
+  Shader.process = function(ctx, method) {
+    var imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
+    method.call(this, imageData);
+    ctx.putImageData(imageData, 0, 0);
+  };
+
+  var blur_mul_table = [ 512,512,456,512,328,456,335,512,405,328,271,456,388,335,292,512, 454,405,364,328,298,271,496,456,420,388,360,335,312,292,273,512, 482,454,428,405,383,364,345,328,312,298,284,271,259,496,475,456, 437,420,404,388,374,360,347,335,323,312,302,292,282,273,265,512, 497,482,468,454,441,428,417,405,394,383,373,364,354,345,337,328, 320,312,305,298,291,284,278,271,265,259,507,496,485,475,465,456, 446,437,428,420,412,404,396,388,381,374,367,360,354,347,341,335, 329,323,318,312,307,302,297,292,287,282,278,273,269,265,261,512, 505,497,489,482,475,468,461,454,447,441,435,428,422,417,411,405, 399,394,389,383,378,373,368,364,359,354,350,345,341,337,332,328, 324,320,316,312,309,305,301,298,294,291,287,284,281,278,274,271, 268,265,262,259,257,507,501,496,491,485,480,475,470,465,460,456, 451,446,442,437,433,428,424,420,416,412,408,404,400,396,392,388, 385,381,377,374,370,367,363,360,357,354,350,347,344,341,338,335, 332,329,326,323,320,318,315,312,310,307,304,302,299,297,294,292, 289,287,285,282,280,278,275,273,271,269,267,265,263,261,259];
+  var blur_shg_table = [ 9, 11, 12, 13, 13, 14, 14, 15, 15, 15, 15, 16, 16, 16, 16, 17, 17, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24 ];
+
+  Shader.blur = function(imageData) {
+    var index = 0, next, x, y;
+    var BlurStack = function () {
+      this.r = 0;
+      this.g = 0;
+      this.b = 0;
+      this.a = 0;
+      this.next = null;
+    };
+
+    var x, y, i, p, yp, yi, yw, r_sum, g_sum, b_sum,
+        r_out_sum, g_out_sum, b_out_sum,
+        r_in_sum, g_in_sum, b_in_sum,
+        pixels = imageData.data,
+        pr, pg, pb, rbs, radius = 5, width = imageData.width, height = imageData.height;
+
+    var div = radius + radius + 1;
+    var w4 = width << 2;
+    var widthMinus1  = width - 1;
+    var heightMinus1 = height - 1;
+    var radiusPlus1  = radius + 1;
+    var sumFactor = radiusPlus1 * ( radiusPlus1 + 1 ) / 2;
+
+    var stackStart = new BlurStack();
+    var stack = stackStart;
+    for ( i = 1; i < div; i++ )
+    {
+      stack = stack.next = new BlurStack();
+      if ( i == radiusPlus1 ) var stackEnd = stack;
+    }
+    stack.next = stackStart;
+    var stackIn = null;
+    var stackOut = null;
+
+    yw = yi = 0;
+
+    var mul_sum = blur_mul_table[radius];
+    var shg_sum = blur_shg_table[radius];
+
+    for ( y = 0; y < height; y++ )
+  {
+    r_in_sum = g_in_sum = b_in_sum = r_sum = g_sum = b_sum = 0;
+
+    r_out_sum = radiusPlus1 * ( pr = pixels[yi] );
+    g_out_sum = radiusPlus1 * ( pg = pixels[yi+1] );
+    b_out_sum = radiusPlus1 * ( pb = pixels[yi+2] );
+
+    r_sum += sumFactor * pr;
+    g_sum += sumFactor * pg;
+    b_sum += sumFactor * pb;
+
+    stack = stackStart;
+
+    for( i = 0; i < radiusPlus1; i++ )
+    {
+      stack.r = pr;
+      stack.g = pg;
+      stack.b = pb;
+      stack = stack.next;
+    }
+
+    for( i = 1; i < radiusPlus1; i++ )
+    {
+      p = yi + (( widthMinus1 < i ? widthMinus1 : i ) << 2 );
+      r_sum += ( stack.r = ( pr = pixels[p])) * ( rbs = radiusPlus1 - i );
+      g_sum += ( stack.g = ( pg = pixels[p+1])) * rbs;
+      b_sum += ( stack.b = ( pb = pixels[p+2])) * rbs;
+
+      r_in_sum += pr;
+      g_in_sum += pg;
+      b_in_sum += pb;
+
+      stack = stack.next;
+    }
+
+
+    stackIn = stackStart;
+    stackOut = stackEnd;
+    for ( x = 0; x < width; x++ )
+    {
+      pixels[yi]   = (r_sum * mul_sum) >> shg_sum;
+      pixels[yi+1] = (g_sum * mul_sum) >> shg_sum;
+      pixels[yi+2] = (b_sum * mul_sum) >> shg_sum;
+
+      r_sum -= r_out_sum;
+      g_sum -= g_out_sum;
+      b_sum -= b_out_sum;
+
+      r_out_sum -= stackIn.r;
+      g_out_sum -= stackIn.g;
+      b_out_sum -= stackIn.b;
+
+      p =  ( yw + ( ( p = x + radius + 1 ) < widthMinus1 ? p : widthMinus1 ) ) << 2;
+
+      r_in_sum += ( stackIn.r = pixels[p]);
+      g_in_sum += ( stackIn.g = pixels[p+1]);
+      b_in_sum += ( stackIn.b = pixels[p+2]);
+
+      r_sum += r_in_sum;
+      g_sum += g_in_sum;
+      b_sum += b_in_sum;
+
+      stackIn = stackIn.next;
+
+      r_out_sum += ( pr = stackOut.r );
+      g_out_sum += ( pg = stackOut.g );
+      b_out_sum += ( pb = stackOut.b );
+
+      r_in_sum -= pr;
+      g_in_sum -= pg;
+      b_in_sum -= pb;
+
+      stackOut = stackOut.next;
+
+      yi += 4;
+    }
+    yw += width;
+  }
+
+
+  for ( x = 0; x < width; x++ )
+  {
+    g_in_sum = b_in_sum = r_in_sum = g_sum = b_sum = r_sum = 0;
+
+    yi = x << 2;
+    r_out_sum = radiusPlus1 * ( pr = pixels[yi]);
+    g_out_sum = radiusPlus1 * ( pg = pixels[yi+1]);
+    b_out_sum = radiusPlus1 * ( pb = pixels[yi+2]);
+
+    r_sum += sumFactor * pr;
+    g_sum += sumFactor * pg;
+    b_sum += sumFactor * pb;
+
+    stack = stackStart;
+
+    for( i = 0; i < radiusPlus1; i++ )
+    {
+      stack.r = pr;
+      stack.g = pg;
+      stack.b = pb;
+      stack = stack.next;
+    }
+
+    yp = width;
+
+    for( i = 1; i <= radius; i++ )
+    {
+      yi = ( yp + x ) << 2;
+
+      r_sum += ( stack.r = ( pr = pixels[yi])) * ( rbs = radiusPlus1 - i );
+      g_sum += ( stack.g = ( pg = pixels[yi+1])) * rbs;
+      b_sum += ( stack.b = ( pb = pixels[yi+2])) * rbs;
+
+      r_in_sum += pr;
+      g_in_sum += pg;
+      b_in_sum += pb;
+
+      stack = stack.next;
+
+      if( i < heightMinus1 )
+        {
+          yp += width;
+        }
+    }
+
+    yi = x;
+    stackIn = stackStart;
+    stackOut = stackEnd;
+    for ( y = 0; y < height; y++ )
+    {
+      p = yi << 2;
+      pixels[p]   = (r_sum * mul_sum) >> shg_sum;
+      pixels[p+1] = (g_sum * mul_sum) >> shg_sum;
+      pixels[p+2] = (b_sum * mul_sum) >> shg_sum;
+
+      r_sum -= r_out_sum;
+      g_sum -= g_out_sum;
+      b_sum -= b_out_sum;
+
+      r_out_sum -= stackIn.r;
+      g_out_sum -= stackIn.g;
+      b_out_sum -= stackIn.b;
+
+      p = ( x + (( ( p = y + radiusPlus1) < heightMinus1 ? p : heightMinus1 ) * width )) << 2;
+
+      r_sum += ( r_in_sum += ( stackIn.r = pixels[p]));
+      g_sum += ( g_in_sum += ( stackIn.g = pixels[p+1]));
+      b_sum += ( b_in_sum += ( stackIn.b = pixels[p+2]));
+
+      stackIn = stackIn.next;
+
+      r_out_sum += ( pr = stackOut.r );
+      g_out_sum += ( pg = stackOut.g );
+      b_out_sum += ( pb = stackOut.b );
+
+      r_in_sum -= pr;
+      g_in_sum -= pg;
+      b_in_sum -= pb;
+
+      stackOut = stackOut.next;
+
+      yi += width;
+    }
+  }
+
+  };
+
+  Shader.noise = function(imageData) {
+    var index = 0, x, y, random;
+    for (var x=0; x < imageData.width; ++x) {
+      for (var y=0; y < imageData.height; ++y) {
+        random = Math.random() * 0.8;
+        index = (x * 4) + (y * (imageData.width * 4));
+        imageData.data[index] *= random; // red channel
+        imageData.data[index+1] *= random; // green channel
+        imageData.data[index+2] *= random; // blue channel
+      }
+    }
+  };
+
+  J.Shader = Shader;
+})(Joy);
+
+(function(J) {
   var Tilemap = J.DisplayObject.extend({
     /**
      * @class TileMap
@@ -2906,7 +3207,13 @@ Joy.Time = {
        * @property data
        * @type {Array}
        */
+      this.__defineSetter__('data', function(data) {
+        this._data = data;
+      });
       this.data = options.data;
+      this.__defineGetter__('data', function() {
+        return this._data;
+      });
     },
 
     render: function() {

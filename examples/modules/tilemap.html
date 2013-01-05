@@ -5,16 +5,19 @@
         <script type="text/javascript" src="../../dist/sizzle.js"></script>
         <script type="text/javascript" src="../../dist/joy.js"></script>
         <script type="text/javascript">
+
             function setup() {
               Joy.debug = true;
               var engine = new Joy.Engine({ canvas2d: document.getElementById("joy") })
               var scene = engine.createScene();
+              scene.background(new Joy.Color(70, 40, 15));
 
               var texture = new Joy.Sprite("../games/rufus/assets/texture.jpg");
               scene.addChild(texture);
+              texture.composite(Joy.CompositeOperation.LIGHTER);
 
               var tileset = new Joy.Tileset({
-                src: "../games/rufus/assets/tileset.png",
+                src: "../games/rufus/assets/tilesets/bright.png",
                 width: 64,
                 height: 64
               });
@@ -36,7 +39,6 @@
                   7, 8, 8, 9, 10, 11, 8, 8, 8, 10, 19, 5
                 ]
               });
-              tilemap.composite(Joy.Composite.SOURCE_OVER);
 
               scene.addChild(tilemap);
             }
