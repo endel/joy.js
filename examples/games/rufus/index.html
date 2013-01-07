@@ -44,6 +44,7 @@
           scene.background("#BFE5E5");
 
           var rufus = new Joy.SpriteSheet({
+            id: "rufus",
             x: engine.width / 2,
             y: engine.height / 2,
             src: "assets/spritesheets/rufus.png",
@@ -101,7 +102,6 @@
             if (other instanceof Joy.Tilemap) {
               this.grounded = true;
               this.vspeed = 0;
-              this.y -= 1;
             }
           });
 

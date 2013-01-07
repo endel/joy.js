@@ -4,7 +4,7 @@
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 1/6/2013
+ * @build 1/7/2013
  */
 
 (function(global) {
@@ -75,6 +75,14 @@
     ready: function(callback) {
       document.onload = callback;
     }
+  };
+
+  /**
+   * @method generateUniqueId
+   * @return {String}
+   */
+  Joy.generateUniqueId = function () {
+    return "joy" + (new Date().getTime());
   };
 
   global.Joy = Joy;
@@ -474,6 +482,13 @@
       if (!options) { options = {}; }
 
       /**
+       * @property id
+       * @type {String}
+       * @default "joy..."
+       */
+      this.id = options.id || Joy.generateUniqueId();
+
+      /**
        * @property x
        * @type {Number}
        * @default 0
@@ -666,6 +681,20 @@
         return this.y + this.height;
       });
 
+      /**
+       * @property flipX
+       * @type {Boolean}
+       * @default false
+       */
+      this.flipX = false;
+
+      /**
+       * @property flipY
+       * @type {Boolean}
+       * @default false
+       */
+      this.flipY = false;
+
       this._super();
 
       // Bind UPDATE event to check collisions
@@ -799,7 +828,18 @@
      * @return {DisplayObject} this
      */
     updateContext: function() {
-      var mtx = this._matrix.identity().appendTransform(this.x, this.y, this.scaleX, this.scaleY, this.rotation, this.skewX, this.skewY, this.pivotX, this.pivotY);
+      if (this.id === "rufus") {
+        console.log("rufus => flipX?", this.flipX, this.x - (this.width * (this.flipX+0)));
+      }
+
+      var bit = {false: -1, true: 1};
+
+      var mtx = this._matrix.identity().appendTransform(this.x + (this.width * (this.flipX+0)),
+                                                        this.y + (this.height * (this.flipY+0)),
+                                                        this.scaleX * (bit[!this.flipX]), this.scaleY * (bit[!this.flipY]),
+                                                        this.rotation,
+                                                        this.skewX, this.skewY,
+                                                        this.pivotX, this.pivotY);
 
       this.ctx.transform(mtx.m11, mtx.m12, mtx.m21, mtx.m22, mtx.dx, mtx.dy);
       this.ctx.globalAlpha *= this.alpha;
@@ -1113,41 +1153,6 @@
 
       this._super(options);
 
-      /**
-       * TODO: Currently it's only drawing a flipped sprite. Other features should respect the fliped position.
-       *
-       * @property flipX
-       * @type {Boolean}
-       * @default false
-       */
-      this._flipX = false;
-      this.__defineSetter__('flipX', function(flipX) {
-        this.scaleX *= (flipX != this._flipX) ? -1 : 1;
-        this._flipX = flipX;
-      });
-      this.__defineGetter__('flipX', function() {
-        return this._flipX;
-      });
-
-      /**
-       * TODO: Currently it's only drawing a flipped sprite. Other features should respect the fliped position.
-       *
-       * @property flipY
-       * @type {Boolean}
-       * @default false
-       */
-      this._flipY = false;
-      this.__defineSetter__('flipY', function(flipY) {
-        this.scaleY *= (flipY != this._flipY) ? -1 : 1;
-        this._flipY = flipY;
-        if (this._flipY) {
-          this.pivotY = -this._height;
-        } else { }
-      });
-      this.__defineGetter__('flipY', function() {
-        return this._flipY;
-      });
-
       // Bind on load trigger.
       this.bind('load', this.onLoad);
       if (options.src) {
@@ -1176,9 +1181,6 @@
     onLoad: function() {
       if (!this._width) { this._width = this.image.width; }
       if (!this._height) { this._height = this.image.height; }
-
-      this.flipX = this._flipX;
-      this.flipY = this._flipY;
     },
 
     render: function() {
