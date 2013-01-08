@@ -30,7 +30,7 @@ module.exports = function(grunt) {
           'lib/joy.js',
           'lib/core/object.js',
           'lib/core/geom/matrix2d.js',
-          'lib/core/behaviour/triggerable.js',
+          'lib/core/triggerable.js',
           'lib/core/render/*.js',
           'lib/**/**.js'
         ],
