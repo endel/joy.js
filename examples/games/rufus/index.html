@@ -43,7 +43,7 @@
           var scene = engine.createScene();
           scene.background("#BFE5E5");
 
-          var RufusBehaviour = {
+          var RufusBehaviour = Joy.Behaviour.extend({
             INIT: function() {
               this.vspeedMax = 10;
               this.vspeed = 0;
@@ -94,7 +94,7 @@
                 this.play("walking");
               }
             }
-          };
+          });
 
           var rufus = new Joy.SpriteSheet({
             id: "rufus",
