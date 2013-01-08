@@ -45,12 +45,15 @@
 
           var RufusBehaviour = Joy.Behaviour.extend({
             INIT: function() {
+              this.behave(Joy.Behaviour.Movimentation);
+              this.maxVelocity = new Joy.Vector2d(2, 2);
               this.vspeedMax = 10;
               this.vspeed = 0;
               this.grounded = false;
             },
 
             UPDATE: function() {
+              console.log("Update");
               if (!this.grounded) {
                 this.vspeed += 0.5;
               }
@@ -85,11 +88,11 @@
 
             KEY_PRESS: function(evt) {
               if (evt.keyCode == Joy.Keyboard.LEFT) {
-                this.x -= 1;
+                this.acceleration.x = -1;
                 this.flipX = false;
                 this.play("walking");
               } else if (evt.keyCode == Joy.Keyboard.RIGHT) {
-                this.x += 1;
+                this.acceleration.x = 1;
                 this.flipX = true;
                 this.play("walking");
               }
@@ -109,8 +112,7 @@
               "jumping": [40, 59],
               "falling": [60, 67],
             }
-          });
-          rufus.behave(RufusBehaviour);
+          }).behave(RufusBehaviour);
 
           var parallax = new Joy.Parallax({
             pivot: rufus,

@@ -4,7 +4,7 @@
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 1/7/2013
+ * @build 1/8/2013
  */
 
 (function(global) {
@@ -19,6 +19,14 @@
     Context: {},
 
     Events: {
+      /**
+       * @property Events.INIT
+       * @type {String}
+       * @static
+       * @readonly
+       */
+      INIT: 'init',
+
       /**
        * @property Events.UPDATE
        * @type {String}
@@ -328,6 +336,25 @@
     },
 
     /**
+     * Behave like a {Behaviour}
+     * @param {Behaviour}
+     * @return this
+     */
+    behave: function (Behaviour) {
+      var behaviour = new Behaviour();
+      for (var i in behaviour) {
+        if (typeof(Joy.Events[i])==="string") {
+          this.bind(Joy.Events[i], behaviour[i]);
+
+        } else if (i !== "constructor") { // Deny 'constructor' method of being overwritten
+          // Define methods on this instance
+          this[i] = behaviour[i];
+        }
+      }
+      return this;
+    },
+
+    /**
      * Bind event handler
      * @param {String} type event type
      * @param {Function} handler
@@ -378,18 +405,13 @@
      *  @optional
      */
     trigger: function (type, args, delay) {
-      var handlers = this._handlers[type] || [],
-          i = 0,
-          length = handlers.length,
-          self = this;
+      var handlers = this._handlers[type] || [];
 
       args = args || [];
       delay = delay || 0;
 
-      if (length > 0) {
-        for (; i<length; ++i) {
-          handlers[i].apply(this, args);
-        }
+      for (var i = 0, length = handlers.length; i<length; ++i) {
+        handlers[i].apply(this, args);
       }
     }
   });
@@ -413,6 +435,11 @@
     Triggerable._custom.unbind[type] = unbindCallback;
     return this;
   };
+
+  // 'init' is triggered right when it's binded.
+  Triggerable.register(Joy.Events.INIT, function(evt) {
+    evt.handler.call(this);
+  });
 
   // Exports module
   J.Triggerable = Triggerable;
@@ -608,7 +635,6 @@
       this._matrix = J.Matrix2D.identity.clone();
       this._collisionTargets = [];
       this._collisionActive = {};
-
 
       // Custom context operations
       this._hasContextOperations = false;
@@ -828,11 +854,9 @@
      * @return {DisplayObject} this
      */
     updateContext: function() {
-      if (this.id === "rufus") {
-        console.log("rufus => flipX?", this.flipX, this.x - (this.width * (this.flipX+0)));
-      }
-
-      var bit = {false: -1, true: 1};
+      var bit = {};
+      bit[false] = -1;
+      bit[true] = 1;
 
       var mtx = this._matrix.identity().appendTransform(this.x + (this.width * (this.flipX+0)),
                                                         this.y + (this.height * (this.flipY+0)),
@@ -1487,34 +1511,13 @@
 })(Joy);
 
 
-/**
- * @class Behaviour
- */
 (function(J) {
-  var Behaviour = J.Object.extend({
-    init: function() {
-    },
-
-    collide: function() {
-    }
-  });
-
+  /**
+   * @class Behaviour
+   */
+  var Behaviour = J.Object.extend({});
   Joy.Behaviour = Behaviour;
 })(Joy);
-
-/**
- * @class GameObject
- */
-(function(J) {
-  var GameObject = J.Object.extend({
-    init: function (options) {
-      this.displayObject = options.displayObject;
-    }
-  });
-
-  J.GameObject = GameObject;
-})(Joy);
-
 
 /**
  * @class Scene
@@ -1581,6 +1584,65 @@
   });
 
   J.Scene = Scene;
+})(Joy);
+
+(function(J) {
+  var Movimentation = J.Behaviour.extend({
+    INIT: function (options) {
+      /**
+       * @property velocity
+       * @type {Vector2d}
+       */
+      this.velocity = new J.Vector2d();
+
+      /**
+       * @property maxVelocity
+       * @type {Vector2d}
+       * @default Joy.Vector2d(500,500)
+       */
+      this.maxVelocity = new J.Vector2d(500, 500);
+
+      /**
+       * @property acceleration
+       * @type {Vector2d}
+       */
+      this.acceleration = new J.Vector2d();
+
+      /**
+       * @property friction
+       * @type {Vector2d}
+       */
+      this.friction = new J.Vector2d();
+    },
+
+    UPDATE: function () {
+      console.log("Velocity: ", this.velocity.x, this.velocity.y);
+
+      this.velocity.x += this.acceleration.x * J.deltaTime;
+      this.velocity.y += this.acceleration.y * J.deltaTime;
+
+      // if (this.friction.x) {
+      //   this.velocity.x
+      // }
+
+      // if (this.friction.y) {
+      //   this.velocity.y
+      // }
+
+      if (this.velocity.x !== 0) {
+        this.velocity.x = Math.clamp(this.velocity.x, -this.maxVelocity.x, this.maxVelocity.x);
+      }
+
+      if (this.velocity.y !== 0) {
+        this.velocity.y = Math.clamp(this.velocity.y, -this.maxVelocity.y, this.maxVelocity.y);
+      }
+
+      this.x += this.velocity.x;
+      this.y += this.velocity.y;
+    }
+  });
+
+  J.Behaviour.Movimentation = Movimentation;
 })(Joy);
 
 (function(J) {
@@ -1883,6 +1945,8 @@
   /**
    * @class Rect
    * @constructor
+   * @param {Number} x
+   * @param {Number} y
    * @param {Number} width
    * @param {Number} height
    */
@@ -1912,6 +1976,26 @@
   };
 
   J.Rect = Rect;
+})(Joy);
+
+(function(J){
+  /**
+   * @class Vector2d
+   * @constructor
+   * @param {Number} x
+   * @param {Number} y
+   */
+  var Vector2d = function(x, y) {
+    this.x = x || 0;
+    this.y = y || 0;
+  };
+
+  Vector2d.LEFT = new Vector2d(-1, 0);
+  Vector2d.RIGHT = new Vector2d(1, 0);
+  Vector2d.TOP = new Vector2d(0, -1);
+  Vector2d.BOTTOM = new Vector2d(0, 1);
+
+  J.Vector2d = Vector2d;
 })(Joy);
 
 /**
@@ -2029,6 +2113,31 @@
   };
 
   J.Color = Color;
+})(Joy);
+
+(function(J) {
+  /**
+   * @method clamp
+   * @param {Number} number
+   * @param {Number} low
+   * @param {Number} high
+   */
+  Math.clamp = function(number, low, high) {
+    return ((number < low) ? low : ((number > high) ? high : +number));
+  };
+})(Joy);
+
+(function(J) {
+  /**
+   * Utility class
+   * @class Utils
+   * @static
+   */
+  J.Utils = {
+    applyFriction: function(v, f) {
+      return (v + f < 0) ? v + (f * J.deltaTime) : (v - f > 0) ? v - (f * J.deltaTime) : 0;
+    }
+  };
 })(Joy);
 
 (function(J) {
