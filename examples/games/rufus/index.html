@@ -57,6 +57,7 @@
               if (!this.grounded) {
                 this.vspeed += 0.5;
               }
+
               if (this.y > engine.height - this.height) {
                 this.vspeed = 0;
               }
@@ -97,11 +98,15 @@
               if (evt.keyCode == Joy.Keyboard.LEFT) {
                 this.acceleration.x = -2;
                 this.flipX = false;
-                this.play("walking");
+                if (this.grounded) {
+                  this.play("walking");
+                }
               } else if (evt.keyCode == Joy.Keyboard.RIGHT) {
                 this.acceleration.x = 2;
                 this.flipX = true;
-                this.play("walking");
+                if (this.grounded) {
+                  this.play("walking");
+                }
               }
             }
           });
@@ -134,6 +139,12 @@
 
           rufus.allowCollisionFrom(parallax.displayObjects[3]);
           rufus.play("walking");
+
+          scene.createViewport({
+            follow: rufus,
+            width: 480,
+            height: 320
+          });
 
           scene.addChild(parallax);
           scene.addChild(rufus);
