@@ -1342,6 +1342,9 @@
     play: function (animationName) {
       if (this._currentAnimation != animationName) {
         this._currentAnimation = animationName;
+        if (!this._animations[animationName]) {
+          throw new Error("Animation '" + animationName + "' not found on '" + this.id + "'");
+        }
         this.currentFrame = this._animations[animationName].firstFrame;
       }
       return this;
@@ -1616,18 +1619,18 @@
     },
 
     UPDATE: function () {
-      console.log("Velocity: ", this.velocity.x, this.velocity.y);
+      if (this.friction.x) {
+        console.log("Apply friction!", this.velocity.x, this.friction.x, J.Utils.applyFriction(this.velocity.x, this.friction.x));
+        this.velocity.x = J.Utils.applyFriction(this.velocity.x, this.friction.x);
+      }
 
+      if (this.friction.y) {
+        this.velocity.y = J.Utils.applyFriction(this.velocity.y, this.friction.y);
+      }
+
+      console.log("Acceleration x: ", this.acceleration.x);
       this.velocity.x += this.acceleration.x * J.deltaTime;
       this.velocity.y += this.acceleration.y * J.deltaTime;
-
-      // if (this.friction.x) {
-      //   this.velocity.x
-      // }
-
-      // if (this.friction.y) {
-      //   this.velocity.y
-      // }
 
       if (this.velocity.x !== 0) {
         this.velocity.x = Math.clamp(this.velocity.x, -this.maxVelocity.x, this.maxVelocity.x);
@@ -1636,6 +1639,8 @@
       if (this.velocity.y !== 0) {
         this.velocity.y = Math.clamp(this.velocity.y, -this.maxVelocity.y, this.maxVelocity.y);
       }
+
+      console.log("Velocity x", this.velocity.x);
 
       this.x += this.velocity.x;
       this.y += this.velocity.y;

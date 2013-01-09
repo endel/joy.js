@@ -47,28 +47,35 @@
             INIT: function() {
               this.behave(Joy.Behaviour.Movimentation);
               this.maxVelocity = new Joy.Vector2d(2, 2);
+              this.friction.x = 0.1;
               this.vspeedMax = 10;
               this.vspeed = 0;
               this.grounded = false;
             },
 
             UPDATE: function() {
-              console.log("Update");
               if (!this.grounded) {
                 this.vspeed += 0.5;
               }
               if (this.y > engine.height - this.height) {
                 this.vspeed = 0;
               }
+
+              // Play idle animation
+              if (this.grounded && Math.abs(this.velocity.x) < 1) {
+                this.play("idle");
+              }
+
               this.y += this.vspeed;
             },
 
             KEY_UP: function(evt) {
-              this.play("idle");
+              this.acceleration.x = 0;
             },
 
             KEY_DOWN: function(evt) {
               if (evt.keyCode == Joy.Keyboard.SPACE && this.grounded) {
+                this.play("jumping");
                 this.grounded = false;
                 this.vspeed = -10;
               }
@@ -88,11 +95,11 @@
 
             KEY_PRESS: function(evt) {
               if (evt.keyCode == Joy.Keyboard.LEFT) {
-                this.acceleration.x = -1;
+                this.acceleration.x = -2;
                 this.flipX = false;
                 this.play("walking");
               } else if (evt.keyCode == Joy.Keyboard.RIGHT) {
-                this.acceleration.x = 1;
+                this.acceleration.x = 2;
                 this.flipX = true;
                 this.play("walking");
               }
@@ -126,7 +133,6 @@
           });
 
           rufus.allowCollisionFrom(parallax.displayObjects[3]);
-
           rufus.play("walking");
 
           scene.addChild(parallax);
