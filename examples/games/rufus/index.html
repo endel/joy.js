@@ -58,10 +58,6 @@
                 this.vspeed += 0.5;
               }
 
-              if (this.y > engine.height - this.height) {
-                this.vspeed = 0;
-              }
-
               // Play idle animation
               if (this.grounded && Math.abs(this.velocity.x) < 1) {
                 this.play("idle");
@@ -137,7 +133,8 @@
             ]
           });
 
-          rufus.allowCollisionFrom(parallax.displayObjects[3]);
+          rufus.collider = new Joy.Rect(10, 10, 60, 60);
+          rufus.allowCollisionFrom(parallax.getChildAt(3));
           rufus.play("walking");
 
           scene.createViewport({

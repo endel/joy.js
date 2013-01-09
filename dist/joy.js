@@ -4,7 +4,7 @@
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 1/8/2013
+ * @build 1/9/2013
  */
 
 (function(global) {
@@ -900,6 +900,11 @@
     checkCollisions: function() {
       var collider, active = false;
 
+      if (this.collider !== this) {
+        this.collider.x = this.x;
+        this.collider.y = this.y;
+      }
+
       // Check collisions
       for (var i = 0, length = this._collisionTargets.length; i < length; ++i) {
         collider = this._collisionTargets[i].collider;
@@ -969,7 +974,11 @@
         options = {};
       }
 
-      this.displayObjects = [];
+      /**
+       * @property children
+       * @type {Array}
+       */
+      this.children = [];
 
       if (options.children) {
         for (var i=0,length=options.children.length; i<length; ++i) {
@@ -983,15 +992,15 @@
        * @readonly
        */
       this.__defineGetter__('numChildren', function() {
-        return this.displayObjects.length;
+        return this.children.length;
       });
 
       this.__defineGetter__('width', function() {
         // Get child with greater width
         var width = 0;
-        for (var i=0, length = this.displayObjects.length; i<length; ++i) {
-          if (this.displayObjects[i].width > width) {
-            width = this.displayObjects[i].width;
+        for (var i=0, length = this.children.length; i<length; ++i) {
+          if (this.children[i].width > width) {
+            width = this.children[i].width;
           }
         }
         return width;
@@ -1000,9 +1009,9 @@
       this.__defineGetter__('height', function() {
         // Get child with greater height
         var height = 0;
-        for (var i=0, length = this.displayObjects.length; i<length; ++i) {
-          if (this.displayObjects[i].height > height) {
-            height = this.displayObjects[i].height;
+        for (var i=0, length = this.children.length; i<length; ++i) {
+          if (this.children[i].height > height) {
+            height = this.children[i].height;
           }
         }
         return height;
@@ -1013,27 +1022,27 @@
 
     setContext: function(ctx) {
       this.ctx = ctx;
-      var i = 0, length = this.displayObjects.length;
+      var i = 0, length = this.children.length;
       for (; i<length; ++i) {
-        this.displayObjects[i].setContext(ctx);
+        this.children[i].setContext(ctx);
       }
     },
 
     render: function() {
       if (!this.visible) { return; }
 
-      var i = 0, length = this.displayObjects.length;
+      var i = 0, length = this.children.length;
       this.ctx.save();
 
       this.updateContext();
       this._super();
 
       for (; i<length; ++i) {
-        if (!this.displayObjects[i].visible) { continue; }
+        if (!this.children[i].visible) { continue; }
         this.ctx.save();
-        this.displayObjects[i].updateContext();
-        this.displayObjects[i].render();
-        this.displayObjects[i].trigger('update');
+        this.children[i].updateContext();
+        this.children[i].render();
+        this.children[i].trigger('update');
         this.ctx.restore();
       }
 
@@ -1047,7 +1056,7 @@
     },
 
     /**
-     * Swap index of two DisplayObjects
+     * Swap index of two children
      * @method swapChildren
      * @param {DisplayObject} child1
      * @param {DisplayObject} child2
@@ -1060,8 +1069,8 @@
       var child1Index = child1.index;
 
       // Swap child references
-      this.displayObjects[ child1Index ] = child2;
-      this.displayObjects[ child2.index ] = child1;
+      this.children[ child1Index ] = child2;
+      this.children[ child2.index ] = child1;
 
       // Swap indexes
       child1.index = child2.index;
@@ -1075,8 +1084,17 @@
      * @param {DisplayObject, DisplayObjectContainer}
      */
     addChild: function(displayObject) {
-      displayObject.index = this.displayObjects.push(displayObject) - 1;
+      displayObject.index = this.children.push(displayObject) - 1;
       displayObject._parent = this;
+    },
+
+    /**
+     * @method getChildAt
+     * @param {Number} index
+     * @return {DisplayObject}
+     */
+    getChildAt: function (index) {
+      return this.children[index];
     },
 
     /**
@@ -1094,7 +1112,7 @@
      * @return this
      */
     removeChildAt: function(index) {
-      this.displayObjects.splice(index, index+1);
+      this.children.splice(index, index+1);
       return this;
     }
 
@@ -1368,7 +1386,7 @@
       // Draw debugging rectangle around sprite
       if (J.debug) {
         this.ctx.strokeStyle = "red";
-        this.ctx.strokeRect(0, 0, this._width, this._height);
+        this.ctx.strokeRect(0, 0, this.collider.width, this.collider.height);
       }
 
     }
@@ -1522,17 +1540,48 @@
   Joy.Behaviour = Behaviour;
 })(Joy);
 
-/**
- * @class Scene
- */
 (function(J) {
   var Scene = J.DisplayObjectContainer.extend({
+    /**
+     * @class Scene
+     * @constructor
+     * @param {Object} options
+     */
     init: function(options) {
       options = options || {};
       this.engine = options.engine;
+
+      /**
+       * @property viewport
+       * @type {Viewport}
+       */
+      this.viewport = options.viewport || null;
+
+      /**
+       * Is the scene on paused state?
+       * @property paused
+       * @type {Boolean}
+       */
       this.paused = false;
+
+      /**
+       * List of active shaders on the scene.
+       * @property shaders
+       * @type {Array}
+       */
       this.shaders = [];
+
       this._super(options);
+    },
+
+    /**
+     * @method createViewport
+     * @see Viewport.constructor
+     */
+    createViewport: function (options) {
+      options.scene = this;
+      this.viewport = new J.Viewport(options);
+      return this;
     },
 
     addChild: function(displayObject) {
@@ -1551,14 +1600,21 @@
       return this;
     },
 
+    /**
+     * @method pause
+     * @param {Object} options
+     * @param {Number} options.blur radius for gaussian blur filter (optional)
+     * @return this
+     */
     pause: function (options) {
       options = options || {};
       if (options.blur) {
         this.render();
         J.Shader.process(this.ctx, J.Shader.blur, options.blur);
-        this.trigger('pause');
       }
       this.paused = true;
+      this.trigger('pause');
+      return this;
     },
 
     render: function () {
@@ -1566,6 +1622,11 @@
       if (this.paused) { return; }
 
       this._super();
+
+      // Update viewport context, if it's set.
+      if (this.viewport !== null) {
+        this.viewport.updateContext(this.ctx);
+      }
 
       // Experimental: apply shaders
       if (this.shaders.length > 0) {
@@ -1580,9 +1641,12 @@
      * Experimental: add post-processing pixel effect.
      * @method addShader
      * @param {Function} shader
+     * @param {Object} options shader options (optional)
+     * @return this
      */
     addShader: function(shader, args) {
       this.shaders.push([shader, args]);
+      return this;
     }
   });
 
@@ -1590,15 +1654,78 @@
 })(Joy);
 
 (function(J) {
+  /**
+   * @class Viewport
+   * @constructor
+   *
+   * @param {Object} options
+   * @param {DisplayObject} options.follow
+   * @param {Number} options.width
+   * @param {Number} options.height
+   */
+  var Viewport = function(options) {
+    /**
+     * Container DisplayObject
+     * @property scene
+     * @type {DisplayObject}
+     */
+    this.scene = options.scene;
+
+    /**
+     * DisplayObject that will be followed.
+     * @property follow
+     * @type {DisplayObject}
+     */
+    this.follow = options.follow;
+
+    /**
+     * @property width
+     * @type {Number}
+     */
+    this.width = options.width;
+
+    /**
+     * @property height
+     * @type {Number}
+     */
+    this.height = options.height;
+  };
+
+  Viewport.prototype.updateContext = function(ctx) {
+    console.log(this.follow.x, this.scene.width);
+    //Math.clamp(, ctx.canvas.width / 2, )
+    if (this.follow.x > ctx.canvas.width / 2) {
+      ctx.translate( -(this.follow.x - (ctx.canvas.width / 2)), 0  );
+    }
+  };
+
+  J.Viewport = Viewport;
+})(Joy);
+
+(function(J) {
+  /**
+   * Built-in behaviour that have acceleration / friction / velocity control.
+   * May be appended to any DisplayObject, by `behave` method.
+   *
+   * @example Append Movimentation behavior into player instance.
+   *   player.behave(Joy.Behaviour.Movimentation);
+   *   player.acceleration.x = 5;
+   *   player.friction.x = 5;
+   *
+   * @class Behaviour.Movimentation
+   */
   var Movimentation = J.Behaviour.extend({
     INIT: function (options) {
       /**
+       * Current object's velocity
        * @property velocity
        * @type {Vector2d}
+       * @readonly
        */
       this.velocity = new J.Vector2d();
 
       /**
+       * Max velocity control.
        * @property maxVelocity
        * @type {Vector2d}
        * @default Joy.Vector2d(500,500)
@@ -1606,12 +1733,14 @@
       this.maxVelocity = new J.Vector2d(500, 500);
 
       /**
+       * Acceleration by frame, in pixels.
        * @property acceleration
        * @type {Vector2d}
        */
       this.acceleration = new J.Vector2d();
 
       /**
+       * Friction for velocity.
        * @property friction
        * @type {Vector2d}
        */
@@ -1620,7 +1749,6 @@
 
     UPDATE: function () {
       if (this.friction.x) {
-        console.log("Apply friction!", this.velocity.x, this.friction.x, J.Utils.applyFriction(this.velocity.x, this.friction.x));
         this.velocity.x = J.Utils.applyFriction(this.velocity.x, this.friction.x);
       }
 
@@ -1628,7 +1756,6 @@
         this.velocity.y = J.Utils.applyFriction(this.velocity.y, this.friction.y);
       }
 
-      console.log("Acceleration x: ", this.acceleration.x);
       this.velocity.x += this.acceleration.x * J.deltaTime;
       this.velocity.y += this.acceleration.y * J.deltaTime;
 
@@ -1639,8 +1766,6 @@
       if (this.velocity.y !== 0) {
         this.velocity.y = Math.clamp(this.velocity.y, -this.maxVelocity.y, this.maxVelocity.y);
       }
-
-      console.log("Velocity x", this.velocity.x);
 
       this.x += this.velocity.x;
       this.y += this.velocity.y;
@@ -2139,6 +2264,13 @@
    * @static
    */
   J.Utils = {
+
+    /**
+     * @method applyFriction
+     * @param {Number} v velocity
+     * @param {Number} f friction
+     * @return {Number}
+     */
     applyFriction: function(v, f) {
       return (v + f < 0) ? v + (f * J.deltaTime) : (v - f > 0) ? v - (f * J.deltaTime) : 0;
     }
@@ -3490,7 +3622,8 @@
                            this.tileset.tileHeight);
       }
 
-      this.collider.render(this.ctx);
+      // Debug collision boxes
+      // this.collider.render(this.ctx);
     }
   });
 
