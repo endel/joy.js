@@ -11,7 +11,7 @@ test("Joy.SpriteSheet", function() {
     }
   });
 
-  ok(sprite.x == 0 && sprite.y == 0, "Initialize with default values.");
+  ok(sprite.position.x == 0 && sprite.position.y == 0, "Initialize with default values.");
 });
 
 
