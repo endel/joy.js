@@ -133,7 +133,7 @@
             ]
           });
 
-          rufus.collider = new Joy.Rect(new Joy.Vector2d(30, 40), 60, 45);
+          rufus.collider = new Joy.RectCollider(new Joy.Vector2d(30, 40), 60, 45);
           rufus.allowCollisionFrom(parallax.getChildAt(3));
           rufus.play("walking");
 

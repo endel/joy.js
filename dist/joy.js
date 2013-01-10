@@ -4,7 +4,7 @@
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 1/9/2013
+ * @build 1/10/2013
  */
 
 (function(global) {
@@ -521,6 +521,9 @@
        * @default 0,0
        */
       this.position = new J.Vector2d(options.x || 0, options.y || 0);
+      this.__defineGetter__('collidePosition', function() {
+        return this.position;
+      });
 
       /**
        * @property pivot
@@ -584,17 +587,7 @@
        * @type {DisplayObject, Rect, Circle}
        * @default this
        */
-      this._collider = options.collider || this;
-      this.__defineSetter__('collider', function(collider) {
-        if (collider instanceof J.Rect) {
-          console.log(collider.position.x, collider.position.y);
-          collider.positionCache = new J.Vector2d(collider.position.x, collider.position.y);
-        }
-        this._collider = collider;
-      });
-      this.__defineGetter__('collider', function() {
-        return this._collider;
-      });
+      this.collider = options.collider || this;
 
       /**
        * Index of this DisplayObject on the DisplayObjectContainer
@@ -860,20 +853,25 @@
      */
     collide: function(collider) {
       return !(
-        this.position.x      >= collider.position.x + collider.width  ||
-        collider.position.x  >= this.position.x + this.width          ||
-        this.position.y      >= collider.position.y + collider.height ||
-        collider.position.y  >= this.position.y + this.height
+        this.collidePosition.x      >= collider.collidePosition.x + collider.width  ||
+        collider.collidePosition.x  >= this.collidePosition.x + this.width          ||
+        this.collidePosition.y      >= collider.collidePosition.y + collider.height ||
+        collider.collidePosition.y  >= this.collidePosition.y + this.height
       );
     },
+
+    // updateColliderPosition: function() {},
 
     checkCollisions: function() {
       var collider, active = false;
 
-      // TODO: improve collider position update
-      if (this.collider instanceof J.Rect) {
-        this.collider.position.x = this.position.x + this.collider.positionCache.x;
-        this.collider.position.y = this.position.y + this.collider.positionCache.y;
+      if (this.collider.updateColliderPosition !== undefined) {
+        this.collider.updateColliderPosition(this);
+      }
+
+      // Draw debugging stroke around sprite
+      if (J.debug) {
+        this.collider.renderStroke(this.ctx);
       }
 
       // Check collisions
@@ -910,6 +908,11 @@
           }
         }
       }
+    },
+
+    renderStroke: function (ctx) {
+      ctx.strokeStyle = "red";
+      ctx.strokeRect(0, 0, this.width, this.height);
     },
 
     /**
@@ -1353,13 +1356,6 @@
                          0,
                          this._width,
                          this._height);
-
-      // Draw debugging rectangle around sprite
-      if (J.debug) {
-        this.ctx.strokeStyle = "red";
-        this.ctx.strokeRect(this.collider.position.x, this.collider.position.y, this.collider.width, this.collider.height);
-      }
-
     }
   });
 
@@ -1747,6 +1743,31 @@
 })(Joy);
 
 (function(J) {
+  var RectCollider = function(position, width, height) {
+    this.position = position;
+    this.collidePosition = this.position.clone();
+    this.width = width;
+    this.height = height;
+  };
+
+  RectCollider.prototype.updateColliderPosition = function(target) {
+    this.collidePosition.x = target.position.x + this.position.x;
+    this.collidePosition.y = target.position.y + this.position.y;
+  };
+
+  RectCollider.prototype.renderStroke = function(ctx) {
+    ctx.strokeStyle = "red";
+    ctx.strokeRect(this.position.x, this.position.y, this.width, this.height);
+  };
+
+  RectCollider.prototype.render = function(ctx) {
+    ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+  };
+
+  J.RectCollider = RectCollider;
+})(Joy);
+
+(function(J) {
   /**
    * Used on DisplayObject#composite
    * @class CompositeOperation
@@ -2058,7 +2079,7 @@
    * @param {DisplayObject, Circle, Rectangle}
    * @return {Boolean} is colliding
    */
-  Rect.prototype.collide = function (collider) {
+  Rect.prototype.collide = function(collider) {
     return !(
       this.position.x      >= collider.position.x + collider.width  ||
       collider.position.x  >= this.position.x + this.width          ||
@@ -2087,6 +2108,16 @@
   };
 
   /**
+   * @method sum
+   * @param {Number} x
+   * @param {Number} y
+   */
+  Vector2d.prototype.sum = function (vector2d) {
+    this.x += vector2d.x;
+    this.y += vector2d.y;
+  };
+
+  /**
    * @method set
    * @param {Number} x
    * @param {Number} y
@@ -2094,6 +2125,14 @@
   Vector2d.prototype.set = function (x, y) {
     this.x = x;
     this.y = y;
+  };
+
+  /**
+   * @method clone
+   * @return {Vector2d}
+   */
+  Vector2d.prototype.clone = function() {
+    return new Vector2d(this.x, this.y);
   };
 
   /**
@@ -3591,7 +3630,6 @@
     },
 
     render: function() {
-      this.checkCollisions();
       for (var i=0, length = this.data.length; i < length; ++i) {
         if (this.data[i] === 0) { continue; }
 
@@ -3605,9 +3643,6 @@
                            this.tileset.tileWidth,
                            this.tileset.tileHeight);
       }
-
-      // Debug collision boxes
-      this.collider.render(this.ctx);
     }
   });
 
@@ -3621,30 +3656,31 @@
     for (var i=0, length=tilemap.data.length; i<length; ++i) {
       if (tilemap.data[i] === 0) { continue; }
 
-      this.blocks.push(new Joy.Rect(new J.Vector2d(tilemap.tileset.tileWidth * (i % tilemap.columns), tilemap.tileset.tileHeight * ((i / tilemap.columns) >> 0)),
-                                    tilemap.tileset.tileWidth,
-                                    tilemap.tileset.tileHeight));
+      this.blocks.push(new Joy.RectCollider(new J.Vector2d(tilemap.tileset.tileWidth * (i % tilemap.columns), tilemap.tileset.tileHeight * ((i / tilemap.columns) >> 0)),
+                                            tilemap.tileset.tileWidth,
+                                            tilemap.tileset.tileHeight));
     }
 
     this.length = this.blocks.length;
   };
 
+  TilemapCollider.prototype.renderStroke = function(ctx) {
+    for (var i=0; i<this.length; ++i) {
+      ctx.strokeRect(this.blocks[i].position.x, this.blocks[i].position.y, this.blocks[i].width, this.blocks[i].height);
+    }
+  };
+
+
   TilemapCollider.prototype.collide = function(collider) {
     for (var i=0; i<this.length; ++i) {
-      if (!( this.blocks[i].position.x  >= collider.position.x + collider.width     ||
-             collider.position.x        >= this.blocks[i].position.x + this.blocks[i].width  ||
-             this.blocks[i].position.y  >= collider.position.y + collider.height    ||
-             collider.position.y        >= this.blocks[i].position.y + this.blocks[i].height)) {
+      if (!( this.blocks[i].collidePosition.x  >= collider.collidePosition.x + collider.width     ||
+             collider.collidePosition.x        >= this.blocks[i].collidePosition.x + this.blocks[i].width  ||
+             this.blocks[i].collidePosition.y  >= collider.collidePosition.y + collider.height    ||
+             collider.collidePosition.y        >= this.blocks[i].collidePosition.y + this.blocks[i].height)) {
         return true;
       }
     }
     return false;
-  };
-
-  TilemapCollider.prototype.render = function(ctx) {
-    for (var i=0; i<this.length; ++i) {
-      ctx.strokeRect(this.blocks[i].position.x, this.blocks[i].position.y, this.blocks[i].width, this.blocks[i].height);
-    }
   };
 
   J.TilemapCollider = TilemapCollider;
