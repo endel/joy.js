@@ -584,7 +584,17 @@
        * @type {DisplayObject, Rect, Circle}
        * @default this
        */
-      this.collider = options.collider || this;
+      this._collider = options.collider || this;
+      this.__defineSetter__('collider', function(collider) {
+        if (collider instanceof J.Rect) {
+          console.log(collider.position.x, collider.position.y);
+          collider.positionCache = new J.Vector2d(collider.position.x, collider.position.y);
+        }
+        this._collider = collider;
+      });
+      this.__defineGetter__('collider', function() {
+        return this._collider;
+      });
 
       /**
        * Index of this DisplayObject on the DisplayObjectContainer
@@ -859,6 +869,12 @@
 
     checkCollisions: function() {
       var collider, active = false;
+
+      // TODO: improve collider position update
+      if (this.collider instanceof J.Rect) {
+        this.collider.position.x = this.position.x + this.collider.positionCache.x;
+        this.collider.position.y = this.position.y + this.collider.positionCache.y;
+      }
 
       // Check collisions
       for (var i = 0, length = this._collisionTargets.length; i < length; ++i) {
@@ -1328,8 +1344,6 @@
     render: function() {
       if (!this.visible) { return; }
 
-      this.checkCollisions();
-
       this.ctx.drawImage(this.image,
                          this._width * (this.currentFrame % this._columns),
                          this._height * ((this.currentFrame / this._columns) >> 0),
@@ -1343,7 +1357,7 @@
       // Draw debugging rectangle around sprite
       if (J.debug) {
         this.ctx.strokeStyle = "red";
-        this.ctx.strokeRect(0, 0, this.collider.width, this.collider.height);
+        this.ctx.strokeRect(this.collider.position.x, this.collider.position.y, this.collider.width, this.collider.height);
       }
 
     }
@@ -2040,10 +2054,6 @@
     this.height = height;
   };
 
-  Rect.prototype.render = function(ctx) {
-    ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-  };
-
   /**
    * @param {DisplayObject, Circle, Rectangle}
    * @return {Boolean} is colliding
@@ -2055,6 +2065,10 @@
       this.position.y      >= collider.position.y + collider.height ||
       collider.position.y  >= this.position.y + this.height
     );
+  };
+
+  Rect.prototype.render = function(ctx) {
+    ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
   };
 
   J.Rect = Rect;
