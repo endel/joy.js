@@ -516,74 +516,32 @@
       this.id = options.id || Joy.generateUniqueId();
 
       /**
-       * @property x
-       * @type {Number}
-       * @default 0
+       * @property position
+       * @type {Vector2d}
+       * @default 0,0
        */
-      this.x = options.x || 0;
+      this.position = new J.Vector2d(options.x || 0, options.y || 0);
 
       /**
-       * @property y
-       * @type {Number}
-       * @default 0
+       * @property pivot
+       * @type {Vector2d}
+       * @default 0,0
        */
-      this.y = options.y || 0;
-
-      /**
-       * @property width
-       * @type {Number}
-       * @default 0
-       */
-      this._width = options.width || 0;
-
-      /**
-       * @property height
-       * @type {Number}
-       * @default 0
-       */
-      this._height = options.height || 0;
-
-      /**
-       * @property pivotX
-       * @type {Number}
-       * @default 0
-       */
-      this.pivotX = options.pivotX || 0;
-
-      /**
-       * @property pivotY
-       * @type {Number}
-       * @default 0
-       */
-      this.pivotY = options.pivotY || 0;
+      this.pivot = new J.Vector2d(options.pivotX || 0, options.pivotY || 0);
 
       /**
        * @property skewX
        * @type {Number}
        * @default 0
        */
-      this.skewX = options.skewX || 0;
+      this.skew = new J.Vector2d(options.skewX || 0, options.skewY || 0);
 
       /**
-       * @property skewY
-       * @type {Number}
-       * @default 0
+       * @property scale
+       * @type {Vector2d}
+       * @default 1,1
        */
-      this.skewY = options.skewY || 0;
-
-      /**
-       * @property scaleX
-       * @type {Number}
-       * @default 1
-       */
-      this.scaleX = options.scaleX || 1;
-
-      /**
-       * @property scaleY
-       * @type {Number}
-       * @default 1
-       */
-      this.scaleY = options.scaleY || 1;
+      this.scale = new J.Vector2d(options.scaleX || 1, options.scaleY || 1);
 
       /**
        * @property alpha
@@ -605,6 +563,20 @@
        * @default false
        */
       this.smooth = options.smooth || false;
+
+      /**
+       * @property width
+       * @type {Number}
+       * @default 0
+       */
+      this._width = options.width || 0;
+
+      /**
+       * @property height
+       * @type {Number}
+       * @default 0
+       */
+      this._height = options.height || 0;
 
       /**
        * Collider object. Can be a DisplayObject, or a geometry.
@@ -656,7 +628,7 @@
        * @type {Boolean}
        */
       this.__defineGetter__('visible', function() {
-        return this._visible && this.alpha > 0 && this.scaleX !== 0 && this.scaleY !== 0;
+        return this._visible && this.alpha > 0 && this.scale.y !== 0 && this.scale.y !== 0;
       });
       this.__defineSetter__('visible', function(visible) {
         this._visible = visible;
@@ -677,7 +649,7 @@
        * @type {Number}
        */
       this.__defineGetter__('width', function() {
-        return this._width * Math.abs(this.scaleX);
+        return this._width * Math.abs(this.scale.x);
       });
 
       /**
@@ -686,7 +658,7 @@
        * @type {Number}
        */
       this.__defineGetter__('height', function() {
-        return this._height * Math.abs(this.scaleY);
+        return this._height * Math.abs(this.scale.y);
       });
 
       /**
@@ -695,7 +667,7 @@
        * @type {Number}
        */
       this.__defineGetter__('right', function () {
-        return this.x + this.width;
+        return this.position.x + this.width;
       });
 
       /**
@@ -704,7 +676,7 @@
        * @type {Number}
        */
       this.__defineGetter__('bottom', function () {
-        return this.y + this.height;
+        return this.position.y + this.height;
       });
 
       /**
@@ -740,18 +712,6 @@
      */
     allowCollisionFrom: function (displayObject) {
       this._collisionTargets.push(displayObject);
-      return this;
-    },
-
-    /**
-     * Register scale context operations
-     * @method scale
-     * @param {Number} scaleX
-     * @param {Number} scaleY
-     */
-    scale: function(scaleX, scaleY) {
-      this.scaleX = scaleX;
-      this.scaleY = scaleY;
       return this;
     },
 
@@ -858,12 +818,12 @@
       bit[false] = -1;
       bit[true] = 1;
 
-      var mtx = this._matrix.identity().appendTransform(this.x + (this.width * (this.flipX+0)),
-                                                        this.y + (this.height * (this.flipY+0)),
-                                                        this.scaleX * (bit[!this.flipX]), this.scaleY * (bit[!this.flipY]),
+      var mtx = this._matrix.identity().appendTransform(this.position.x + (this.width * (this.flipX+0)),
+                                                        this.position.y + (this.height * (this.flipY+0)),
+                                                        this.scale.x * (bit[!this.flipX]), this.scale.y * (bit[!this.flipY]),
                                                         this.rotation,
-                                                        this.skewX, this.skewY,
-                                                        this.pivotX, this.pivotY);
+                                                        this.skew.x, this.skew.y,
+                                                        this.pivot.x, this.pivot.y);
 
       this.ctx.transform(mtx.m11, mtx.m12, mtx.m21, mtx.m22, mtx.dx, mtx.dy);
       this.ctx.globalAlpha *= this.alpha;
@@ -890,20 +850,15 @@
      */
     collide: function(collider) {
       return !(
-        this.x      >= collider.x + collider.width  ||
-        collider.x  >= this.x + this.width          ||
-        this.y      >= collider.y + collider.height ||
-        collider.y  >= this.y + this.height
+        this.position.x      >= collider.position.x + collider.width  ||
+        collider.position.x  >= this.position.x + this.width          ||
+        this.position.y      >= collider.position.y + collider.height ||
+        collider.position.y  >= this.position.y + this.height
       );
     },
 
     checkCollisions: function() {
       var collider, active = false;
-
-      if (this.collider !== this) {
-        this.collider.x = this.x;
-        this.collider.y = this.y;
-      }
 
       // Check collisions
       for (var i = 0, length = this._collisionTargets.length; i < length; ++i) {
@@ -955,7 +910,7 @@
      * @return {Rect}
      */
     getBounds: function () {
-      return new J.Rect(this.x, this.y, this.width, this.height);
+      return new J.Rect(this.position.x, this.position.y, this.width, this.height);
     }
   });
 
@@ -970,9 +925,7 @@
      * @constructor
      */
     init: function(options) {
-      if (!options) {
-        options = {};
-      }
+      if (!options) { options = {}; }
 
       /**
        * @property children
@@ -1200,9 +1153,6 @@
       if (options.src) {
         this.load(options.src);
       }
-
-      // Use 1x1 scale by default.
-      this.scale(1, 1);
     },
 
     /**
@@ -1307,10 +1257,17 @@
       var currentAnimation = this._animations[this._currentAnimation];
 
       if (this.currentFrame == currentAnimation.lastFrame) {
-        this.trigger('animationEnd');
         this.currentFrame = currentAnimation.firstFrame;
+
+        // Reached the first frame, trigger animation start callback.
+        this.trigger('animationStart');
       } else {
         this.currentFrame = this.currentFrame + 1;
+
+        // Reached the last frame, trigger animation end callback.
+        if (this.currentFrame == currentAnimation.lastFrame) {
+          this.trigger('animationEnd');
+        }
       }
     },
 
@@ -1512,7 +1469,7 @@
       this.ctx.textBaseline = this.baseline;
 
       this.ctx[this.styleMethod] = this.color;
-      this.ctx[this.fillMethod](this.text, this.x, this.y);
+      this.ctx[this.fillMethod](this.text, this.position.x, this.position.y);
 
       this._super();
     },
@@ -1621,12 +1578,12 @@
       // Don't render when paused
       if (this.paused) { return; }
 
-      this._super();
-
       // Update viewport context, if it's set.
       if (this.viewport !== null) {
         this.viewport.updateContext(this.ctx);
       }
+
+      this._super();
 
       // Experimental: apply shaders
       if (this.shaders.length > 0) {
@@ -1689,13 +1646,13 @@
      * @type {Number}
      */
     this.height = options.height;
+    this.lastTranslateX = 0;
   };
 
   Viewport.prototype.updateContext = function(ctx) {
-    console.log(this.follow.x, this.scene.width);
-    //Math.clamp(, ctx.canvas.width / 2, )
     if (this.follow.x > ctx.canvas.width / 2) {
-      ctx.translate( -(this.follow.x - (ctx.canvas.width / 2)), 0  );
+      ctx.translate(  -(this.follow.x) - this.lastTranslateX, 0  );
+      this.lastTranslateX = -this.follow.x;
     }
   };
 
@@ -1767,8 +1724,8 @@
         this.velocity.y = Math.clamp(this.velocity.y, -this.maxVelocity.y, this.maxVelocity.y);
       }
 
-      this.x += this.velocity.x;
-      this.y += this.velocity.y;
+      this.position.x += this.velocity.x;
+      this.position.y += this.velocity.y;
     }
   });
 
@@ -2024,16 +1981,14 @@
   /**
    * Initialize a Circle
    *
-   * @param {Number} x
-   * @param {Number} y
+   * @param {Vector2d} position
    * @param {Number} radius
    *
    * @class Circle
    * @constructor
    */
-  var Circle = function(x, y, radius) {
-    this.x = x;
-    this.y = y;
+  var Circle = function(position, radius) {
+    this.position = position;
     this.radius = radius;
   };
 
@@ -2048,20 +2003,20 @@
   /**
    * @class Polygon
    * @constructor
-   * @param {Array} Array of Point's.
+   * @param {Array} Array of Vector2d's.
    */
   var Polygon = function(points) {
     this.points = [];
 
     if (points) {
       for (var i=0, length=points.length; i < length; ++i) {
-        this.addPoint(points[i][0], points[i][1]);
+        this.addPoint(points[i]);
       }
     }
   };
 
-  Polygon.prototype.addPoint = function (x, y) {
-    this.points.push([x, y]);
+  Polygon.prototype.addPoint = function(point) {
+    this.points.push(point);
   };
 
   Polygon.prototype.render = function(ctx) {
@@ -2075,33 +2030,30 @@
   /**
    * @class Rect
    * @constructor
-   * @param {Number} x
-   * @param {Number} y
+   * @param {Vector2d} position
    * @param {Number} width
    * @param {Number} height
    */
-  var Rect = function(x, y, width, height) {
-    this.x = x;
-    this.y = y;
+  var Rect = function(position, width, height) {
+    this.position = position;
     this.width = width;
     this.height = height;
   };
 
   Rect.prototype.render = function(ctx) {
-    ctx.fillRect(this.x, this.y, this.width, this.height);
+    ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
   };
 
   /**
-   * Is this DisplayObject colliding with {Object}?
    * @param {DisplayObject, Circle, Rectangle}
    * @return {Boolean} is colliding
    */
   Rect.prototype.collide = function (collider) {
     return !(
-      this.x      >= collider.x + collider.width  ||
-      collider.x  >= this.x + this.width          ||
-      this.y      >= collider.y + collider.height ||
-      collider.y  >= this.y + this.height
+      this.position.x      >= collider.position.x + collider.width  ||
+      collider.position.x  >= this.position.x + this.width          ||
+      this.position.y      >= collider.position.y + collider.height ||
+      collider.position.y  >= this.position.y + this.height
     );
   };
 
@@ -2118,6 +2070,24 @@
   var Vector2d = function(x, y) {
     this.x = x || 0;
     this.y = y || 0;
+  };
+
+  /**
+   * @method set
+   * @param {Number} x
+   * @param {Number} y
+   */
+  Vector2d.prototype.set = function (x, y) {
+    this.x = x;
+    this.y = y;
+  };
+
+  /**
+   * @method toString
+   * @return {String}
+   */
+  Vector2d.prototype.toString = function () {
+    return "#<Vector2d @x=" + this.x + ", @y=" + this.y + ">";
   };
 
   Vector2d.LEFT = new Vector2d(-1, 0);
@@ -3623,7 +3593,7 @@
       }
 
       // Debug collision boxes
-      // this.collider.render(this.ctx);
+      this.collider.render(this.ctx);
     }
   });
 
@@ -3637,8 +3607,7 @@
     for (var i=0, length=tilemap.data.length; i<length; ++i) {
       if (tilemap.data[i] === 0) { continue; }
 
-      this.blocks.push(new Joy.Rect(tilemap.tileset.tileWidth * (i % tilemap.columns),
-                                    tilemap.tileset.tileHeight * ((i / tilemap.columns) >> 0),
+      this.blocks.push(new Joy.Rect(new J.Vector2d(tilemap.tileset.tileWidth * (i % tilemap.columns), tilemap.tileset.tileHeight * ((i / tilemap.columns) >> 0)),
                                     tilemap.tileset.tileWidth,
                                     tilemap.tileset.tileHeight));
     }
@@ -3648,10 +3617,10 @@
 
   TilemapCollider.prototype.collide = function(collider) {
     for (var i=0; i<this.length; ++i) {
-      if (!( this.blocks[i].x >= collider.x + collider.width  ||
-             collider.x       >= this.blocks[i].x + this.blocks[i].width          ||
-             this.blocks[i].y >= collider.y + collider.height ||
-             collider.y       >= this.blocks[i].y + this.blocks[i].height)) {
+      if (!( this.blocks[i].position.x  >= collider.position.x + collider.width     ||
+             collider.position.x        >= this.blocks[i].position.x + this.blocks[i].width  ||
+             this.blocks[i].position.y  >= collider.position.y + collider.height    ||
+             collider.position.y        >= this.blocks[i].position.y + this.blocks[i].height)) {
         return true;
       }
     }
@@ -3660,7 +3629,7 @@
 
   TilemapCollider.prototype.render = function(ctx) {
     for (var i=0; i<this.length; ++i) {
-      ctx.strokeRect(this.blocks[i].x, this.blocks[i].y, this.blocks[i].width, this.blocks[i].height);
+      ctx.strokeRect(this.blocks[i].position.x, this.blocks[i].position.y, this.blocks[i].width, this.blocks[i].height);
     }
   };
 

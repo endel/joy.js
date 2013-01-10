@@ -13,21 +13,21 @@
               var c = document.getElementById("joy");
 
               function checkBoundaries(s) {
-                  s.x += s.speed * s.hDir;
-                  s.y += s.speed * s.vDir;
+                  s.position.x += s.speed * s.hDir;
+                  s.position.y += s.speed * s.vDir;
 
-                  // console.log(s.x + s.width, c.width);
+                  // console.log(s.position.x + s.width, c.width);
 
-                  if ((s.x + s.width) > c.width) {
+                  if ((s.position.x + s.width) > c.width) {
                       s.hDir = -1;
-                  } else if (s.x < 0) {
+                  } else if (s.position.x < 0) {
                       s.hDir = 1;
                   }
 
-                  if ((s.y + s.height) > c.height) {
+                  if ((s.position.y + s.height) > c.height) {
                       s.vDir = -1;
                   }
-                  else if (s.y < 0) {
+                  else if (s.position.y < 0) {
                       s.vDir = 1;
                   }
               }
@@ -41,14 +41,14 @@
               spriteSmallFlipped.hDir = 1;
               spriteSmallFlipped.vDir = 1;
               spriteSmallFlipped.speed = 1;
-              spriteSmallFlipped.scale(0.2, 0.2);
+              spriteSmallFlipped.scale.set(0.2, 0.2);
               spriteSmallFlipped.flipX = true;
 
               var spriteSmall = new Joy.Sprite({ x: 10, y: 10, src: spriteUrl });
               spriteSmall.hDir = 1;
               spriteSmall.vDir = 1;
               spriteSmall.speed = 1;
-              spriteSmall.scale(0.5, 0.5);
+              spriteSmall.scale.set(0.5, 0.5);
 
               var spriteNormal = new Joy.Sprite({ x: 10, y: 10, src: spriteUrl });
               spriteNormal.hDir = -1;
@@ -59,7 +59,7 @@
               spriteBig.hDir = 1;
               spriteBig.vDir = -1;
               spriteBig.speed = 1;
-              spriteBig.scale(2, 2);
+              spriteBig.scale.set(2, 2);
 
               scene.addChild(spriteBig);
               scene.addChild(spriteNormal);

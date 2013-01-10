@@ -27,8 +27,8 @@
                 }
               });
               rufus.bind('load', function() {
-                this.x -= this.width / 2;
-                this.y -= this.height / 2;
+                this.position.x -= this.width / 2;
+                this.position.y -= this.height / 2;
               });
 
               rufus.play("walking");
@@ -46,6 +46,12 @@
           <li><a href="#" onclick="rufus.play('idle'); return false;">Idle</a></li>
           <li><a href="#" onclick="rufus.play('jumping'); return false;">Jumping</a></li>
           <li><a href="#" onclick="rufus.play('falling'); return false;">Falling</a></li>
+        </ul>
+
+        <h2>Flip</h2>
+        <ul>
+          <li><a href="#" onclick="rufus.flipX = !rufus.flipX; return false;">Flip X</a></li>
+          <li><a href="#" onclick="rufus.flipY = !rufus.flipY; return false;">Flip Y</a></li>
         </ul>
     </body>
 </html>

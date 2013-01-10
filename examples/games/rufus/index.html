@@ -63,7 +63,7 @@
                 this.play("idle");
               }
 
-              this.y += this.vspeed;
+              this.position.y += this.vspeed;
             },
 
             KEY_UP: function(evt) {
@@ -133,7 +133,7 @@
             ]
           });
 
-          rufus.collider = new Joy.Rect(10, 10, 60, 60);
+          //rufus.collider = new Joy.Rect(rufus.pivot, 60, 60);
           rufus.allowCollisionFrom(parallax.getChildAt(3));
           rufus.play("walking");
 
