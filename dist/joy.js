@@ -1760,10 +1760,6 @@
     ctx.strokeRect(this.position.x, this.position.y, this.width, this.height);
   };
 
-  RectCollider.prototype.render = function(ctx) {
-    ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-  };
-
   J.RectCollider = RectCollider;
 })(Joy);
 
