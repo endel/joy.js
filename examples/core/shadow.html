@@ -39,7 +39,7 @@
               spriteSmall.hDir = 1;
               spriteSmall.vDir = 1;
               spriteSmall.speed = 2;
-              spriteSmall.scale(0.5, 0.5);
+              spriteSmall.scale.set(0.5, 0.5);
 
               var spriteNormal = new Joy.Sprite({
                 x: 10, y: 10, src: spriteUrl
@@ -54,7 +54,7 @@
               spriteBig.hDir = 1;
               spriteBig.vDir = -1;
               spriteBig.speed = 0.5;
-              spriteBig.scale(2, 2);
+              spriteBig.scale.set(2, 2);
               spriteBig.shadow({
                 color: "#000",
                 offsetX: 10,

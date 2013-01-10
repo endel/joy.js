@@ -863,7 +863,9 @@
     // updateColliderPosition: function() {},
 
     checkCollisions: function() {
-      var collider, active = false;
+      var collider, active = false, totalTargets = this._collisionTargets.length;
+      // if (totalTargets == 0) { return ; }
+
 
       if (this.collider.updateColliderPosition !== undefined) {
         this.collider.updateColliderPosition(this);
@@ -875,7 +877,7 @@
       }
 
       // Check collisions
-      for (var i = 0, length = this._collisionTargets.length; i < length; ++i) {
+      for (var i = 0; i < totalTargets; ++i) {
         collider = this._collisionTargets[i].collider;
 
         if (collider.collide(this.collider)) {
@@ -912,7 +914,7 @@
 
     renderStroke: function (ctx) {
       ctx.strokeStyle = "red";
-      ctx.strokeRect(0, 0, this.width, this.height);
+      ctx.strokeRect(0, 0, this._width, this._height);
     },
 
     /**
@@ -3660,13 +3662,6 @@
     this.length = this.blocks.length;
   };
 
-  TilemapCollider.prototype.renderStroke = function(ctx) {
-    for (var i=0; i<this.length; ++i) {
-      ctx.strokeRect(this.blocks[i].position.x, this.blocks[i].position.y, this.blocks[i].width, this.blocks[i].height);
-    }
-  };
-
-
   TilemapCollider.prototype.collide = function(collider) {
     for (var i=0; i<this.length; ++i) {
       if (!( this.blocks[i].collidePosition.x  >= collider.collidePosition.x + collider.width     ||
@@ -3677,6 +3672,12 @@
       }
     }
     return false;
+  };
+
+  TilemapCollider.prototype.renderStroke = function(ctx) {
+    for (var i=0; i<this.length; ++i) {
+      ctx.strokeRect(this.blocks[i].position.x, this.blocks[i].position.y, this.blocks[i].width, this.blocks[i].height);
+    }
   };
 
   J.TilemapCollider = TilemapCollider;

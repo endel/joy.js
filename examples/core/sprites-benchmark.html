@@ -11,17 +11,17 @@
             var c = document.getElementById("joy");
 
             function checkBoundaries(s) {
-              s.x += s.speed * s.hDir;
-              s.y += s.speed * s.vDir;
-              if ((s.x + s.width) > c.width) {
+              s.position.x += s.speed * s.hDir;
+              s.position.y += s.speed * s.vDir;
+              if ((s.position.x + s.width) > c.width) {
                 s.hDir = -1;
-              } else if (s.x < 0) {
+              } else if (s.position.x < 0) {
                 s.hDir = 1;
               }
-              if ((s.y + s.height) > c.height) {
+              if ((s.position.y + s.height) > c.height) {
                 s.vDir = -1;
               }
-              else if (s.y < 0) {
+              else if (s.position.y < 0) {
                 s.vDir = 1;
               }
             }
