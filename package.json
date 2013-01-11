@@ -6,7 +6,8 @@
   "homepage": "http://joyjs.org",
   "author": {
     "name": "Endel Dreyer",
-    "url": "https://github.com/joyjs/joy.js/blob/master/AUTHORS"
+    "email": "endel.dreyer@gmail.com",
+    "url": "http://endel.me"
   },
   "repository": {
     "type": "git",
