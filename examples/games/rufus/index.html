@@ -80,6 +80,7 @@
 
             COLLISION_ENTER: function(other) {
               if (other instanceof Joy.Tilemap) {
+                console.log("Collision enter");
                 this.grounded = true;
                 this.vspeed = 0;
               }
@@ -92,16 +93,22 @@
 
             KEY_PRESS: function(evt) {
               if (evt.keyCode == Joy.Keyboard.LEFT) {
-                this.acceleration.x = -2;
-                this.flipX = false;
-                if (this.grounded) {
-                  this.play("walking");
+                if (!this.willCollideAt(new Joy.Vector2d(-3, -3))) {
+                  this.acceleration.x = -2;
+                  this.flipX = false;
+                  if (this.grounded) {
+                    this.play("walking");
+                  }
                 }
               } else if (evt.keyCode == Joy.Keyboard.RIGHT) {
-                this.acceleration.x = 2;
-                this.flipX = true;
-                if (this.grounded) {
-                  this.play("walking");
+                if (!this.willCollideAt(new Joy.Vector2d(this.collider.width + 3, -3))) {
+                  this.acceleration.x = 2;
+                  this.flipX = true;
+                  if (this.grounded) {
+                    this.play("walking");
+                  }
+                } else {
+                  this.acceleration.x = 0;
                 }
               }
             }

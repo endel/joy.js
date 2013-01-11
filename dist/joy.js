@@ -4,7 +4,7 @@
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 1/10/2013
+ * @build 1/11/2013
  */
 
 (function(global) {
@@ -862,13 +862,16 @@
 
     // updateColliderPosition: function() {},
 
+    /**
+     * Called on UPDATE, triggers COLLISION_ENTER, COLLISION_EXIT and COLLISION events.
+     * @method checkCollisions
+     */
     checkCollisions: function() {
-      var collider, active = false, totalTargets = this._collisionTargets.length;
+      var collider, totalTargets = this._collisionTargets.length;
       // if (totalTargets == 0) { return ; }
 
-
       if (this.collider.updateColliderPosition !== undefined) {
-        this.collider.updateColliderPosition(this);
+        this.collider.updateColliderPosition(this.position);
       }
 
       // Draw debugging stroke around sprite
@@ -894,6 +897,32 @@
           this.trigger(J.Events.COLLISION_EXIT, [ this._collisionTargets[i] ]);
         }
       }
+    },
+
+    /**
+     * @method willCollisionAt
+     * @param {Vector2d} projection
+     * @return {Boolean}
+     */
+    willCollideAt: function (projection) {
+      var tmpCollider = new J.RectCollider(this.collider.position.clone().sum(projection), 1, 1),
+          totalTargets = this._collisionTargets.length;
+
+      if (totalTargets == 0) { return ; }
+
+      tmpCollider.updateColliderPosition( this.position );
+
+      if (this.id === "rufus") {
+        console.log(tmpCollider.collidePosition);
+        tmpCollider.renderStroke(this.ctx, true);
+      }
+
+      for (var i = 0; i < totalTargets; ++i) {
+        if (this._collisionTargets[i].collider.collide(tmpCollider)) {
+          return true;
+        }
+      }
+      return false;
     },
 
     /**
@@ -1745,6 +1774,13 @@
 })(Joy);
 
 (function(J) {
+  /**
+   * @class RectCollider
+   * @param {Vector2d} position
+   * @param {Number} width
+   * @param {Number} height
+   * @constructor
+   */
   var RectCollider = function(position, width, height) {
     this.position = position;
     this.collidePosition = this.position.clone();
@@ -1752,14 +1788,25 @@
     this.height = height;
   };
 
-  RectCollider.prototype.updateColliderPosition = function(target) {
-    this.collidePosition.x = target.position.x + this.position.x;
-    this.collidePosition.y = target.position.y + this.position.y;
+  RectCollider.prototype.updateColliderPosition = function(position) {
+    this.collidePosition.x = position.x + this.position.x;
+    this.collidePosition.y = position.y + this.position.y;
   };
 
-  RectCollider.prototype.renderStroke = function(ctx) {
-    ctx.strokeStyle = "red";
+  RectCollider.prototype.renderStroke = function(ctx, s) {
+    if (s!==undefined) {
+      ctx.strokeStyle = "blue";
+    }
     ctx.strokeRect(this.position.x, this.position.y, this.width, this.height);
+    ctx.strokeStyle = "black";
+  };
+
+  /**
+   * @method clone
+   * @return {RectCollider}
+   */
+  RectCollider.prototype.clone = function() {
+    return new RectCollider(this.position.clone(), this.width, this.height);
   };
 
   J.RectCollider = RectCollider;
@@ -2107,22 +2154,25 @@
 
   /**
    * @method sum
-   * @param {Number} x
-   * @param {Number} y
+   * @param {Vector2d} vector2d
+   * @return {Vector2d}
    */
   Vector2d.prototype.sum = function (vector2d) {
     this.x += vector2d.x;
     this.y += vector2d.y;
+    return this;
   };
 
   /**
    * @method set
    * @param {Number} x
    * @param {Number} y
+   * @return {Vector2d}
    */
   Vector2d.prototype.set = function (x, y) {
     this.x = x;
     this.y = y;
+    return this;
   };
 
   /**
