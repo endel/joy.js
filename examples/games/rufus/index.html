@@ -32,6 +32,7 @@
           ];
 
           var tilemap = new Joy.Tilemap({
+            id: "Tilemap",
             tileset: tileset,
             columns: 60,
             lines: 10,
@@ -39,7 +40,6 @@
           });
 
           var engine = new Joy.Engine({debug: true, width: 960, height: 640});
-
           var scene = engine.createScene();
           scene.background("#BFE5E5");
 
@@ -97,16 +97,19 @@
 
             KEY_PRESS: function(evt) {
               if (evt.keyCode == Joy.Keyboard.LEFT) {
-                if (!this.willCollideAt(new Joy.Vector2d(-3, this.collider.height / 2))) {
+                if (!this.willCollideAt(new Joy.Vector2d(0, this.collider.height / 2))) {
                   this.acceleration.x = -2;
                   this.flipX = false;
                   if (this.grounded) {
                     this.play("walking");
                   }
+                } else {
+                  this.acceleration.x = 0;
+                  this.velocity.x = 0;
                 }
 
               } else if (evt.keyCode == Joy.Keyboard.RIGHT) {
-                if (!this.willCollideAt(new Joy.Vector2d(this.collider.width + 3, this.collider.height / 2))) {
+                if (!this.willCollideAt(new Joy.Vector2d(this.collider.width, this.collider.height / 2))) {
                   this.acceleration.x = 2;
                   this.flipX = true;
                   if (this.grounded) {
@@ -114,6 +117,7 @@
                   }
                 } else {
                   this.acceleration.x = 0;
+                  this.velocity.x = 0;
                 }
               }
             }
@@ -135,7 +139,7 @@
           }).behave(RufusBehaviour);
 
           var parallax = new Joy.Parallax({
-            pivot: rufus,
+            id: "Parallax",
             distance: 1,
             children: [
               new Joy.Sprite("assets/background/parallax-3.png"),
@@ -149,14 +153,15 @@
           rufus.allowCollisionFrom(parallax.getChildAt(3));
           rufus.play("walking");
 
-          scene.createViewport({
+          scene.addChild(parallax);
+          scene.addChild(rufus);
+
+          scene.viewport.setup({
             follow: rufus,
             width: 480,
             height: 320
           });
 
-          scene.addChild(parallax);
-          scene.addChild(rufus);
       </script>
     </body>
 </html>

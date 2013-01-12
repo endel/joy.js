@@ -4,7 +4,7 @@
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 1/11/2013
+ * @build 1/12/2013
  */
 
 (function(global) {
@@ -20,6 +20,7 @@
 
     Events: {
       /**
+       * Triggered when DisplayObject is initialized.
        * @property Events.INIT
        * @type {String}
        * @static
@@ -28,6 +29,25 @@
       INIT: 'init',
 
       /**
+       * Triggered when DisplayObject is added into DisplayObjectContainer.
+       * @property Events.ADDED
+       * @type {String}
+       * @static
+       * @readonly
+       */
+      ADDED: 'added',
+
+      /**
+       * Triggered when DisplayObject is removed from DisplayObjectContainer.
+       * @property Events.REMOVED
+       * @type {String}
+       * @static
+       * @readonly
+       */
+      REMOVED: 'removed',
+
+      /**
+       * Triggered at every frame.
        * @property Events.UPDATE
        * @type {String}
        * @static
@@ -36,6 +56,7 @@
       UPDATE: 'update',
 
       /**
+       * Triggered on collision update.
        * @property Events.COLLISION
        * @type {String}
        * @static
@@ -44,6 +65,7 @@
       COLLISION: 'collision',
 
       /**
+       * Triggered at the moment collision starts.
        * @property Events.COLLISION_START
        * @type {String}
        * @static
@@ -52,6 +74,7 @@
       COLLISION_ENTER: 'collisionEnter',
 
       /**
+       * Triggered at the moment collision ends.
        * @property Events.COLLISION_EXIT
        * @type {String}
        * @static
@@ -603,7 +626,7 @@
        * @type {Canvas2D, Canvas3D}
        * @readonly
        */
-      this.ctx = null;
+      this.ctx = options.ctx || null;
       this._shadow = null;
       this._parent = null;
       this._visible = options.visible || true;
@@ -981,6 +1004,7 @@
           this.addChild(options.children[i]);
         }
       }
+
       /**
        * Number of children displayObject's attached to the container.
        * @property numChildren
@@ -1042,12 +1066,6 @@
         this.ctx.restore();
       }
 
-      // Draw debugging rectangle around sprite
-      //if (J.debug) {
-        //this.ctx.strokeStyle = "red";
-        //this.ctx.strokeRect(this.x, this.y, this.width, this.height);
-      //}
-
       this.ctx.restore();
     },
 
@@ -1078,10 +1096,16 @@
      * Add a display object in the list.
      * @method addChild
      * @param {DisplayObject, DisplayObjectContainer}
+     * @return {DisplayObject} this
      */
     addChild: function(displayObject) {
       displayObject.index = this.children.push(displayObject) - 1;
       displayObject._parent = this;
+
+      // Trigger ADDED event on target DisplayObject.
+      displayObject.trigger(J.Events.ADDED, [this]);
+
+      return this;
     },
 
     /**
@@ -1108,7 +1132,11 @@
      * @return this
      */
     removeChildAt: function(index) {
-      this.children.splice(index, index+1);
+      var displayObject = this.children.splice(index, index+1)[0];
+
+      // Trigger REMOVED event on target DisplayObject.
+      displayObject.trigger(J.Events.REMOVED, [this]);
+
       return this;
     }
 
@@ -1539,14 +1567,8 @@
      * @param {Object} options
      */
     init: function(options) {
-      options = options || {};
-      this.engine = options.engine;
-
-      /**
-       * @property viewport
-       * @type {Viewport}
-       */
-      this.viewport = options.viewport || null;
+      if (!options) { options = {}; }
+      this._super(options);
 
       /**
        * Is the scene on paused state?
@@ -1562,22 +1584,23 @@
        */
       this.shaders = [];
 
-      this._super(options);
-    },
-
-    /**
-     * @method createViewport
-     * @see Viewport.constructor
-     */
-    createViewport: function (options) {
-      options.scene = this;
-      this.viewport = new J.Viewport(options);
-      return this;
+      /**
+       * @property viewport
+       * @type {Viewport}
+       */
+      this.viewport = options.viewport || new J.Viewport({scene: this});
     },
 
     addChild: function(displayObject) {
       displayObject.setContext(this.ctx);
       this._super(displayObject);
+
+      // TODO: De-couple me, please.
+      if (this._backgroundColor) {
+        this.background(this._backgroundColor);
+      }
+
+      return this;
     },
 
     /**
@@ -1586,8 +1609,10 @@
      * @param {Color, String} color
      */
     background: function (color) {
+      this._backgroundColor = color;
       this.fillStyle(color.toString());
-      this.fillRect(0, 0, this.engine.width, this.engine.height);
+      console.log("Reset background", this.width, this.height);
+      this.fillRect(0, 0, this.width, this.height);
       return this;
     },
 
@@ -1655,38 +1680,59 @@
    * @param {Number} options.height
    */
   var Viewport = function(options) {
+    this.setup(options);
+    this.lastTranslateX = 0;
+  };
+
+  Viewport.prototype.setup = function(options) {
     /**
-     * Container DisplayObject
-     * @property scene
-     * @type {DisplayObject}
+     * @property position
+     * @type {Vector2d}
      */
-    this.scene = options.scene;
+    this.position = new J.Vector2d();
 
     /**
      * DisplayObject that will be followed.
      * @property follow
      * @type {DisplayObject}
      */
-    this.follow = options.follow;
+    if (options.follow) {
+      this.follow = options.follow;
+    }
+
+    console.log("Setup viewport!", options, options.scene);
+
+    /**
+     * Container DisplayObject
+     * @property scene
+     * @type {DisplayObject}
+     */
+    if (options.scene) {
+      this.scene = options.scene;
+      this.ctx = this.scene.ctx;
+    }
 
     /**
      * @property width
      * @type {Number}
      */
-    this.width = options.width;
+    if (options.width) {
+      this.width = options.width;
+    }
 
     /**
      * @property height
      * @type {Number}
      */
-    this.height = options.height;
-    this.lastTranslateX = 0;
+    if (options.height) {
+      this.height = options.height;
+    }
   };
 
-  Viewport.prototype.updateContext = function(ctx) {
-    if (this.follow.x > ctx.canvas.width / 2) {
-      ctx.translate(  -(this.follow.x) - this.lastTranslateX, 0  );
-      this.lastTranslateX = -this.follow.x;
+  Viewport.prototype.updateContext = function() {
+    if (this.follow.position.x > this.ctx.canvas.width / 2) {
+      this.ctx.translate(  -(this.follow.position.x) - this.position.x, 0  );
+      this.position.x = -this.follow.position.x;
     }
   };
 
@@ -1990,7 +2036,7 @@
    * @return {Scene}
    */
   Engine.prototype.createScene = function() {
-    var scene = new J.Scene();
+    var scene = new J.Scene({ctx: this.context.ctx});
     this.addScene(scene);
     return scene;
   };
@@ -3383,11 +3429,24 @@
      * @param {Object} options
      */
     init: function(options) {
-      if (!(options.pivot instanceof J.DisplayObject)) {
-        throw new Error("'pivot' must be given on Parallax constructor, as a DisplayObject instance.");
-      }
-
       this._super(options);
+
+      /**
+       * Viewport that parallax effect will be based on.
+       * @property viewport
+       * @type {Viewport}
+       */
+      this.viewport = options.viewport || null;
+
+      // Bind on added to Container
+      this.bind(J.Events.ADDED, this._setup);
+    },
+
+    _setup: function (scene) {
+      if (!(scene instanceof J.Scene)) {
+        throw new Error("'Parallax' instance must be added into a 'Scene'.");
+      }
+      this.viewport = scene.viewport;
     },
 
     render: function() {
