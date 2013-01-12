@@ -900,29 +900,22 @@
     },
 
     /**
-     * @method willCollisionAt
+     * @method willCollideAt
      * @param {Vector2d} projection
-     * @return {Boolean}
+     * @return {DisplayObject, null}
      */
     willCollideAt: function (projection) {
       var tmpCollider = new J.RectCollider(this.collider.position.clone().sum(projection), 1, 1),
           totalTargets = this._collisionTargets.length;
 
       if (totalTargets == 0) { return ; }
-
       tmpCollider.updateColliderPosition( this.position );
-
-      if (this.id === "rufus") {
-        console.log(tmpCollider.collidePosition);
-        tmpCollider.renderStroke(this.ctx, true);
-      }
-
       for (var i = 0; i < totalTargets; ++i) {
         if (this._collisionTargets[i].collider.collide(tmpCollider)) {
-          return true;
+          return this._collisionTargets[i];
         }
       }
-      return false;
+      return null;
     },
 
     /**
@@ -1723,6 +1716,16 @@
       this.velocity = new J.Vector2d();
 
       /**
+       * Current object's direction
+       * @property direction
+       * @type {Vector2d}
+       * @readonly
+       */
+      this.__defineGetter__('direction', function () {
+        return this.velocity.normalized;
+      })
+
+      /**
        * Max velocity control.
        * @property maxVelocity
        * @type {Vector2d}
@@ -2150,17 +2153,25 @@
   var Vector2d = function(x, y) {
     this.x = x || 0;
     this.y = y || 0;
-  };
 
-  /**
-   * @method sum
-   * @param {Vector2d} vector2d
-   * @return {Vector2d}
-   */
-  Vector2d.prototype.sum = function (vector2d) {
-    this.x += vector2d.x;
-    this.y += vector2d.y;
-    return this;
+    /**
+     * Get the magnitude of this vector
+     * @property length
+     * @readonly
+     */
+    this.__defineGetter__('length', function () {
+      return Math.sqrt((this.x * this.x) + (this.y * this.y));
+    })
+
+    /**
+     * Get this vector with a magnitude of 1.
+     * @property normalized
+     * @readonly
+     */
+    this.__defineGetter__('normalized', function () {
+      var magnitude = this.length;
+      return new Vector2d(this.x / magnitude, this.y / magnitude);
+    })
   };
 
   /**
@@ -2176,11 +2187,63 @@
   };
 
   /**
+   * @method sum
+   * @param {Vector2d} vector2d
+   * @return {Vector2d}
+   */
+  Vector2d.prototype.sum = function (vector2d) {
+    this.x += vector2d.x;
+    this.y += vector2d.y;
+    return this;
+  };
+
+  /**
+   * @method scale
+   * @param {Number} x
+   * @param {Number} y
+   * @return {Vector2d}
+   */
+  Vector2d.prototype.scale = function (x, y) {
+    this.x *= x;
+    this.y *= y;
+    return this;
+  };
+
+  /**
    * @method clone
    * @return {Vector2d}
    */
   Vector2d.prototype.clone = function() {
     return new Vector2d(this.x, this.y);
+  };
+
+  /**
+   * Return unit vector
+   * @return {Vector2d}
+   */
+  Vector2d.prototype.unit = function() {
+    return new Vector2d( Math.cos(this.x), Math.sin(this.y) );
+  };
+
+  /**
+   * Normalize this vector
+   * @return {Vector2d}
+   */
+  Vector2d.prototype.normalize = function() {
+    var normal = this.normalized;
+    this.x = normal.x;
+    this.y = normal.y;
+    return this;
+  };
+
+  /**
+   * Get the distance between this vector and the argument vector
+   * @param {Vector2d} vector
+   * @return {Number}
+   */
+  Vector2d.distance = function(vector) {
+    var xdiff = this.x - vector.x, ydiff = this.y - vector.y;
+    return Math.sqrt(xdiff * xdiff + ydiff * ydiff);
   };
 
   /**

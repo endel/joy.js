@@ -48,22 +48,19 @@
               this.behave(Joy.Behaviour.Movimentation);
               this.maxVelocity = new Joy.Vector2d(2, 2);
               this.friction.x = 0.1;
-              this.vspeedMax = 10;
-              this.vspeed = 0;
+              this.maxVelocity.y = 10;
               this.grounded = false;
             },
 
             UPDATE: function() {
-              if (!this.grounded) {
-                this.vspeed += 0.5;
-              }
-
               // Play idle animation
               if (this.grounded && Math.abs(this.velocity.x) < 1) {
                 this.play("idle");
               }
 
-              this.position.y += this.vspeed;
+              if (!this.grounded) {
+                this.acceleration.y = 0.5;
+              }
             },
 
             KEY_UP: function(evt) {
@@ -71,37 +68,45 @@
             },
 
             KEY_DOWN: function(evt) {
-              if (evt.keyCode == Joy.Keyboard.SPACE && this.grounded) {
+              // console.log("Grounded: ", this.grounded);
+              if (evt.keyCode == Joy.Keyboard.SPACE && this.direction.y === 0) {
                 this.play("jumping");
                 this.grounded = false;
-                this.vspeed = -10;
+                this.acceleration.y = -10;
+                this.position.y -= 1;
               }
             },
 
-            COLLISION_ENTER: function(other) {
-              if (other instanceof Joy.Tilemap) {
-                console.log("Collision enter");
+            COLLISION: function (other) {
+              if (other instanceof Joy.Tilemap &&
+                  this.willCollideAt(new Joy.Vector2d(this.collider.width / 2, this.collider.height)) &&
+                  this.direction.y > 0) {
+                // console.log("Collision enter");
                 this.grounded = true;
-                this.vspeed = 0;
+                this.acceleration.y = 0;
+                this.velocity.y = 0;
               }
             },
 
             COLLISION_EXIT: function (other) {
-              this.grounded = false;
-              console.log("Collision exit: ", other);
+              // console.log("Collision exit: ", other);
+              if (other instanceof Joy.Tilemap) {
+                this.grounded = false;
+              }
             },
 
             KEY_PRESS: function(evt) {
               if (evt.keyCode == Joy.Keyboard.LEFT) {
-                if (!this.willCollideAt(new Joy.Vector2d(-3, -3))) {
+                if (!this.willCollideAt(new Joy.Vector2d(-3, this.collider.height / 2))) {
                   this.acceleration.x = -2;
                   this.flipX = false;
                   if (this.grounded) {
                     this.play("walking");
                   }
                 }
+
               } else if (evt.keyCode == Joy.Keyboard.RIGHT) {
-                if (!this.willCollideAt(new Joy.Vector2d(this.collider.width + 3, -3))) {
+                if (!this.willCollideAt(new Joy.Vector2d(this.collider.width + 3, this.collider.height / 2))) {
                   this.acceleration.x = 2;
                   this.flipX = true;
                   if (this.grounded) {
