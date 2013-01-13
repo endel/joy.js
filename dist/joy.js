@@ -1687,6 +1687,22 @@
      */
     this.position = new J.Vector2d();
 
+    /**
+     * Current viewport translation offset
+     * @property translation
+     * @type {Vector2d}
+     */
+    this.translation = new J.Vector2d();
+
+    /**
+     * @property active
+     * @type {Boolean}
+     * @readonly
+     */
+    this.__defineGetter__('active', function () {
+      return (this.translation.x !== 0 || this.translation.y !== 0);
+    });
+
     this.setup(options);
   };
 
@@ -1742,26 +1758,24 @@
   };
 
   Viewport.prototype.updateContext = function() {
-    var translateX = 0,
-        translateY = 0,
-        widthLimit = this.ctx.canvas.width / 2,
+    var widthLimit = this.ctx.canvas.width / 2,
         heightLimit = this.ctx.canvas.height / 2;
 
     if (this.follow.position.x > widthLimit) {
       this.position.x += this.follow.velocity.x / 2;
-      translateX = this.follow.velocity.x;
+      this.translation.x = this.follow.velocity.x;
     } else {
-      this.position.x = 0;
+      this.translation.x = this.position.x = 0;
     }
 
     if (this.follow.position.y > heightLimit) {
       this.position.y += this.follow.velocity.y / 2;
-      translateY = this.follow.velocity.y;
+      this.translation.y =this.follow.velocity.y;
     } else {
-      this.position.y = 0;
+      this.translation.y = this.position.y = 0;
     }
 
-    this.ctx.translate(translateX * -1, translateY * -1);
+    this.ctx.translate(this.translation.x * -1, this.translation.y * -1);
   };
 
   J.Viewport = Viewport;
@@ -3469,6 +3483,20 @@
        */
       this.viewport = options.viewport || null;
 
+      /**
+       * Distance between each parallax child.
+       * @property distance
+       * @type {Number}
+       */
+      this.distance = options.distance || 1;
+
+      /**
+       * Amount of velocity that will increase by child.
+       * @property velocity
+       * @type {Number}
+       */
+      this.velocity = options.velocity || 1;
+
       // Bind on added to Container
       this.bind(J.Events.ADDED, this._setup);
     },
@@ -3481,6 +3509,16 @@
     },
 
     render: function() {
+      var velocity = this.distance;
+
+      if (this.viewport && this.viewport.active) {
+        for (var i=0, length=this.numChildren; i < length; ++i) {
+          velocity *= this.velocity;
+          this.getChildAt(i).position.x -= (this.viewport.translation.x * velocity) / this.viewport.width;
+          this.getChildAt(i).position.y -= (this.viewport.translation.y * velocity) / this.viewport.height;
+        }
+      }
+
       this._super();
     }
   });

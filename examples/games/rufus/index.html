@@ -145,23 +145,32 @@
             }
           }).behave(RufusBehaviour);
 
-          var parallax = new Joy.Parallax({
+          var backgroundParallax = new Joy.Parallax({
             id: "Parallax",
-            distance: 1,
+            distance: 10,
+            velocity: 2,
             children: [
               new Joy.Sprite("assets/background/parallax-3.png"),
-              new Joy.Sprite("assets/background/parallax-2.png"),
-              new Joy.Sprite("assets/background/parallax-1.png"),
-              tilemap,
+              new Joy.Sprite("assets/background/parallax-2.png")
             ]
           });
 
+          var foregroundParallax = new Joy.Parallax({
+            distance: 0,
+            velocity: 10,
+            children: [
+              new Joy.Sprite("assets/background/parallax-1.png")
+            ]
+          })
+
           rufus.collider = new Joy.RectCollider(new Joy.Vector2d(30, 40), 60, 45);
-          rufus.allowCollisionFrom(parallax.getChildAt(3));
+          rufus.allowCollisionFrom(tilemap);
           rufus.play("walking");
 
-          scene.addChild(parallax);
+          scene.addChild(backgroundParallax);
+          scene.addChild(tilemap);
           scene.addChild(rufus);
+          scene.addChild(foregroundParallax);
 
           scene.viewport.setup({
             follow: rufus,
