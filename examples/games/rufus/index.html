@@ -41,7 +41,14 @@
 
           var engine = new Joy.Engine({debug: true, width: 960, height: 640});
           var scene = engine.createScene();
-          scene.background("#BFE5E5");
+
+          var background = new Joy.Rect({
+            position: scene.viewport.position,
+            width: engine.width,
+            height: engine.height
+          });
+          background.colorize("#BFE5E5");
+          scene.addChild(background);
 
           var RufusBehaviour = Joy.Behaviour.extend({
             INIT: function() {

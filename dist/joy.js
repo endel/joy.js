@@ -4,7 +4,7 @@
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 1/12/2013
+ * @build 1/13/2013
  */
 
 (function(global) {
@@ -543,7 +543,7 @@
        * @type {Vector2d}
        * @default 0,0
        */
-      this.position = new J.Vector2d(options.x || 0, options.y || 0);
+      this.position = options.position || new J.Vector2d(options.x || 0, options.y || 0);
       this.__defineGetter__('collidePosition', function() {
         return this.position;
       });
@@ -930,9 +930,10 @@
     willCollideAt: function (projection) {
       var tmpCollider = new J.RectCollider(this.collider.position.clone().sum(projection), 1, 1),
           totalTargets = this._collisionTargets.length;
+      if (totalTargets === 0) { return; }
 
-      if (totalTargets == 0) { return ; }
       tmpCollider.updateColliderPosition( this.position );
+
       for (var i = 0; i < totalTargets; ++i) {
         if (this._collisionTargets[i].collider.collide(tmpCollider)) {
           return this._collisionTargets[i];
@@ -1595,11 +1596,6 @@
       displayObject.setContext(this.ctx);
       this._super(displayObject);
 
-      // TODO: De-couple me, please.
-      if (this._backgroundColor) {
-        this.background(this._backgroundColor);
-      }
-
       return this;
     },
 
@@ -1633,15 +1629,20 @@
       return this;
     },
 
+    updateContext: function () {
+      this._super();
+
+      // Update viewport context, if it's set.
+      if (this.viewport !== null) {
+        this.viewport.updateContext();
+      }
+    },
+
     render: function () {
       // Don't render when paused
       if (this.paused) { return; }
 
-      // Update viewport context, if it's set.
-      if (this.viewport !== null) {
-        this.viewport.updateContext(this.ctx);
-      }
-
+      this.updateContext();
       this._super();
 
       // Experimental: apply shaders
@@ -1680,17 +1681,16 @@
    * @param {Number} options.height
    */
   var Viewport = function(options) {
-    this.setup(options);
-    this.lastTranslateX = 0;
-  };
-
-  Viewport.prototype.setup = function(options) {
     /**
      * @property position
      * @type {Vector2d}
      */
     this.position = new J.Vector2d();
 
+    this.setup(options);
+  };
+
+  Viewport.prototype.setup = function(options) {
     /**
      * DisplayObject that will be followed.
      * @property follow
@@ -1699,8 +1699,6 @@
     if (options.follow) {
       this.follow = options.follow;
     }
-
-    console.log("Setup viewport!", options, options.scene);
 
     /**
      * Container DisplayObject
@@ -1727,13 +1725,43 @@
     if (options.height) {
       this.height = options.height;
     }
+
+    //this.ctx.scale(this.ctx.canvas.width / this.width, this.ctx.canvas.height / this.height);
+  };
+
+  /**
+   * TODO: not supported yet
+   * @method setDeadzone
+   * @param {Number} width
+   * @param {Number} height
+   * @return {Viewport} this
+   */
+  Viewport.prototype.setDeadzone = function(width, height) {
+    this.deadzone = new J.Vector2d(width, height);
+    return this;
   };
 
   Viewport.prototype.updateContext = function() {
-    if (this.follow.position.x > this.ctx.canvas.width / 2) {
-      this.ctx.translate(  -(this.follow.position.x) - this.position.x, 0  );
-      this.position.x = -this.follow.position.x;
+    var translateX = 0,
+        translateY = 0,
+        widthLimit = this.ctx.canvas.width / 2,
+        heightLimit = this.ctx.canvas.height / 2;
+
+    if (this.follow.position.x > widthLimit) {
+      this.position.x += this.follow.velocity.x / 2;
+      translateX = this.follow.velocity.x;
+    } else {
+      this.position.x = 0;
     }
+
+    if (this.follow.position.y > heightLimit) {
+      this.position.y += this.follow.velocity.y / 2;
+      translateY = this.follow.velocity.y;
+    } else {
+      this.position.y = 0;
+    }
+
+    this.ctx.translate(translateX * -1, translateY * -1);
   };
 
   J.Viewport = Viewport;
@@ -1769,7 +1797,7 @@
        */
       this.__defineGetter__('direction', function () {
         return this.velocity.normalized;
-      })
+      });
 
       /**
        * Max velocity control.
@@ -2156,35 +2184,38 @@
 })(Joy);
 
 (function(J){
-  /**
-   * @class Rect
-   * @constructor
-   * @param {Vector2d} position
-   * @param {Number} width
-   * @param {Number} height
-   */
-  var Rect = function(position, width, height) {
-    this.position = position;
-    this.width = width;
-    this.height = height;
-  };
+  var Rect = J.DisplayObject.extend({
+    /**
+     * @class Rect
+     * @constructor
+     * @param {Object} options
+     *   @param {Vector2d} position
+     *   @param {Number} width
+     *   @param {Number} height
+     */
+    init: function(options) {
+      this._super(options);
+    },
 
-  /**
-   * @param {DisplayObject, Circle, Rectangle}
-   * @return {Boolean} is colliding
-   */
-  Rect.prototype.collide = function(collider) {
-    return !(
-      this.position.x      >= collider.position.x + collider.width  ||
-      collider.position.x  >= this.position.x + this.width          ||
-      this.position.y      >= collider.position.y + collider.height ||
-      collider.position.y  >= this.position.y + this.height
-    );
-  };
+    /**
+     * @method colorize
+     * @param {Color, String} color
+     * @return {Rect} this
+     */
+    colorize: function (color) {
+      this.color = color.toString();
+      return this;
+    },
 
-  Rect.prototype.render = function(ctx) {
-    ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
-  };
+    updateContext: function () {
+      this._super();
+    },
+
+    render: function() {
+      this.ctx.fillStyle = this.color;
+      this.ctx.fillRect(0, 0, this._width, this._height);
+    }
+  });
 
   J.Rect = Rect;
 })(Joy);
@@ -2207,7 +2238,7 @@
      */
     this.__defineGetter__('length', function () {
       return Math.sqrt((this.x * this.x) + (this.y * this.y));
-    })
+    });
 
     /**
      * Get this vector with a magnitude of 1.
@@ -2217,7 +2248,7 @@
     this.__defineGetter__('normalized', function () {
       var magnitude = this.length;
       return new Vector2d(this.x / magnitude, this.y / magnitude);
-    })
+    });
   };
 
   /**
