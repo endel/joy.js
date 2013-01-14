@@ -4,7 +4,7 @@
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 1/13/2013
+ * @build 1/14/2013
  */
 
 (function(global) {
@@ -1633,7 +1633,7 @@
       this._super();
 
       // Update viewport context, if it's set.
-      if (this.viewport !== null) {
+      if (this.viewport.follow) {
         this.viewport.updateContext();
       }
     },
@@ -1708,15 +1708,6 @@
 
   Viewport.prototype.setup = function(options) {
     /**
-     * DisplayObject that will be followed.
-     * @property follow
-     * @type {DisplayObject}
-     */
-    if (options.follow) {
-      this.follow = options.follow;
-    }
-
-    /**
      * Container DisplayObject
      * @property scene
      * @type {DisplayObject}
@@ -1742,7 +1733,18 @@
       this.height = options.height;
     }
 
-    //this.ctx.scale(this.ctx.canvas.width / this.width, this.ctx.canvas.height / this.height);
+    this.ctx.scale(this.ctx.canvas.width / this.width, this.ctx.canvas.height / this.height);
+
+    /**
+     * DisplayObject that will be followed.
+     * @property follow
+     * @type {DisplayObject}
+     */
+    if (options.follow) {
+      this.follow = options.follow;
+      this.ctx.translate( -(this.ctx.canvas.width - this.width) / 2 - this.follow.width / 2,
+                         -(this.ctx.canvas.height - this.height) / 2 - this.follow.height / 2);
+    }
   };
 
   /**
@@ -1758,8 +1760,8 @@
   };
 
   Viewport.prototype.updateContext = function() {
-    var widthLimit = this.ctx.canvas.width / 2,
-        heightLimit = this.ctx.canvas.height / 2;
+    var widthLimit = this.width / 2,
+        heightLimit = this.height / 2;
 
     if (this.follow.position.x > widthLimit) {
       this.position.x += this.follow.velocity.x / 2;
@@ -2209,6 +2211,14 @@
      */
     init: function(options) {
       this._super(options);
+
+      /**
+       * @property color
+       * @type {String}
+       */
+      if (options.color) {
+        this.colorize(options.color);
+      }
     },
 
     /**
@@ -2226,7 +2236,9 @@
     },
 
     render: function() {
-      this.ctx.fillStyle = this.color;
+      if (this.color) {
+        this.ctx.fillStyle = this.color;
+      }
       this.ctx.fillRect(0, 0, this._width, this._height);
     }
   });

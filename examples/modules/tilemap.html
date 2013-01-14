@@ -10,7 +10,12 @@
               Joy.debug = true;
               var engine = new Joy.Engine({ canvas2d: document.getElementById("joy") })
               var scene = engine.createScene();
-              scene.background(new Joy.Color(70, 40, 15));
+
+              scene.addChild(new Joy.Rect({
+                width: engine.width,
+                height: engine.height,
+                color: new Joy.Color(70, 40, 15)
+              }));
 
               var texture = new Joy.Sprite("../games/rufus/assets/texture.jpg");
               scene.addChild(texture);
