@@ -1,0 +1,194 @@
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>Rufus and the Magic Mushrooms</title>
+        <script type="text/javascript" src="../../../dist/sizzle.js"></script>
+        <script type="text/javascript" src="../../../dist/joy.js"></script>
+        <style type="text/css">
+          body { margin: 0; padding: 0; zoom: 100%; }
+        </style>
+    </head>
+    <body>
+      <script type="text/javascript">
+          var map = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 17, 14, 17, 14, 14, 17, 14, 14, 14, 17, 17, 17, 17, 14, 14, 14, 14, 14, 14, 14, 17, 17, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 31, 5, 2, 2, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 14, 14, 17, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 20, 8, 9, 11, 11, 10, 19, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4, 5, 4, 4, 4, 20, 10, 10, 10, 8, 11, 9, 9, 19, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 5, 2, 5, 4, 5, 5, 2, 2, 20, 8, 10, 11, 8, 10, 10, 11, 10, 8, 8, 9, 8, 8, 8, 19, 2, 2, 3, 3, 3, 2, 2, 3, 3, 5, 4, 4, 3, 3, 3, 3, 2, 5, 4, 4, 4, 3, 5, 2, 2, 5, 5, 2, 0, 0, 0, 0, 0, 1, 20, 9, 10, 10, 9, 10, 8, 9, 10, 11, 8, 8, 9, 11, 10, 8, 8, 8, 8, 10, 11, 11, 8, 9, 8, 10, 10, 10, 10, 10, 10, 10, 10, 10, 8, 11, 8, 11, 11, 11, 10, 10, 10, 8, 8, 8, 10, 8, 8, 11, 11, 8, 11, 10, 3, 5, 3, 5, 2, 20, 8, 9, 11, 8, 8, 8, 11, 10, 11, 10, 10, 8, 11, 10, 9, 11, 10, 8, 10, 11, 8, 8, 8, 8, 8, 11, 9, 8, 11, 11, 8, 10, 8, 8, 9, 11, 8, 8, 8, 10, 10, 11, 10, 11, 8, 8, 11, 11, 11, 11, 11, 11, 11, 10];
+
+          var tileset = new Joy.Tileset({
+            src: "../games/rufus/assets/tilesets/bright.png",
+            width: 64,
+            height: 64
+          });
+
+          var tilemap = new Joy.Tilemap({
+            tileset: tileset,
+            columns: 60,
+            lines: 10,
+            data: map
+          });
+
+          var engine = new Joy.Engine({width: 960, height: 640});
+          var scene = engine.createScene();
+
+          var background = new Joy.Rect({
+            position: scene.viewport.position,
+            width: engine.width,
+            height: engine.height
+          });
+          background.colorize("#BFE5E5");
+          scene.addChild(background);
+
+          var RufusBehaviour = Joy.Behaviour.extend({
+            INIT: function() {
+              this.behave(Joy.Behaviour.Movimentation);
+              this.maxVelocity = new Joy.Vector2d(2, 2);
+              this.friction.x = 0.1;
+              this.maxVelocity.y = 10;
+              this.grounded = false;
+            },
+
+            UPDATE: function() {
+              // Play idle animation
+              if (this.grounded && Math.abs(this.velocity.x) < 1) {
+                this.play("idle");
+              }
+
+              if (!this.grounded) {
+                this.acceleration.y = 0.5;
+              }
+            },
+
+            KEY_UP: function(evt) {
+              this.acceleration.x = 0;
+            },
+
+            KEY_DOWN: function(evt) {
+              // console.log("Grounded: ", this.grounded);
+              if (evt.keyCode == Joy.Keyboard.SPACE && this.direction.y === 0) {
+                this.play("jumping");
+                this.grounded = false;
+                this.acceleration.y = -10;
+                this.position.y -= 1;
+              }
+            },
+
+            COLLISION: function (other) {
+              if (other instanceof Joy.Tilemap &&
+                  this.willCollideAt(new Joy.Vector2d(this.collider.width / 2, this.collider.height)) &&
+                  this.direction.y > 0) {
+                // console.log("Collision enter");
+                this.grounded = true;
+                this.acceleration.y = 0;
+                this.velocity.y = 0;
+              }
+            },
+
+            COLLISION_EXIT: function (other) {
+              // console.log("Collision exit: ", other);
+              if (other instanceof Joy.Tilemap) {
+                this.grounded = false;
+              }
+            },
+
+            KEY_PRESS: function(evt) {
+              if (evt.keyCode == Joy.Keyboard.LEFT) {
+                if (!this.willCollideAt(new Joy.Vector2d(0, this.collider.height / 2))) {
+                  this.acceleration.x = -2;
+                  this.flipX = false;
+                  if (this.grounded) {
+                    this.play("walking");
+                  }
+                } else {
+                  this.acceleration.x = 0;
+                  this.velocity.x = 0;
+                }
+
+              } else if (evt.keyCode == Joy.Keyboard.RIGHT) {
+                if (!this.willCollideAt(new Joy.Vector2d(this.collider.width, this.collider.height / 2))) {
+                  this.acceleration.x = 2;
+                  this.flipX = true;
+                  if (this.grounded) {
+                    this.play("walking");
+                  }
+                } else {
+                  this.acceleration.x = 0;
+                  this.velocity.x = 0;
+                }
+              }
+            }
+          });
+
+          var rufus = new Joy.SpriteSheet({
+            id: "rufus",
+            x: engine.width / 2 + 520,
+            y: engine.height / 2 - 10,
+            src: "../games/rufus/assets/spritesheets/rufus.png",
+            width: 120,
+            height: 120,
+            animations: {
+              "walking": [0, 30],
+              "idle": [31, 39],
+              "jumping": [40, 59],
+              "falling": [60, 67],
+            }
+          }).behave(RufusBehaviour);
+
+          var backgroundParallax = new Joy.Parallax({
+            id: "Parallax",
+            distance: 10,
+            velocity: 2,
+            children: [
+              new Joy.Sprite("../games/rufus/assets/background/parallax-3.png"),
+              new Joy.Sprite("../games/rufus/assets/background/parallax-2.png")
+            ]
+          });
+
+          var foregroundParallax = new Joy.Parallax({
+            distance: 1,
+            velocity: 15,
+            children: [
+              new Joy.Sprite("../games/rufus/assets/background/parallax-1.png")
+            ]
+          });
+
+          rufus.collider = new Joy.RectCollider(new Joy.Vector2d(30, 40), 60, 45);
+          rufus.allowCollisionFrom(tilemap);
+          rufus.play("walking");
+
+          var dummyRect = new Joy.Rect({x: 500, y: 200, width: 50, height: 50, color: "#000"});
+
+          scene.addChild(backgroundParallax);
+          scene.addChild(tilemap);
+          scene.addChild(rufus);
+          scene.addChild(dummyRect);
+          scene.addChild(foregroundParallax);
+
+          scene.viewport.setup({
+            follow: rufus,
+            width: 960,
+            height: 640
+          });
+
+
+          var targets = [ rufus, dummyRect ];
+          function swapTarget() {
+            if (scene.viewport.follow == rufus) {
+              scene.viewport.follow = dummyRect;
+            } else {
+              scene.viewport.follow = rufus;
+            }
+          }
+
+          function swapScale() {
+            if (scene.viewport.width == 960) {
+              scene.viewport.setSize(480, 320);
+            } else {
+              scene.viewport.setSize(960, 640);
+            }
+          }
+
+
+      </script>
+
+      <a href="javascript:swapTarget();">Swap target to follow</a>
+      <a href="javascript:swapScale();">Swap viewport scale</a>
+    </body>
+</html>
