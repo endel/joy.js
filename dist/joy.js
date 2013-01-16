@@ -1000,12 +1000,6 @@
        */
       this.children = [];
 
-      if (options.children) {
-        for (var i=0,length=options.children.length; i<length; ++i) {
-          this.addChild(options.children[i]);
-        }
-      }
-
       /**
        * Number of children displayObject's attached to the container.
        * @property numChildren
@@ -1039,6 +1033,13 @@
       });
 
       this._super(options);
+
+      // Add children after setup.
+      if (options.children) {
+        for (var i=0,length=options.children.length; i<length; ++i) {
+          this.addChild(options.children[i]);
+        }
+      }
     },
 
     setContext: function(ctx) {
@@ -1100,6 +1101,7 @@
      * @return {DisplayObject} this
      */
     addChild: function(displayObject) {
+      displayObject.setContext(this.ctx);
       displayObject.index = this.children.push(displayObject) - 1;
       displayObject._parent = this;
 
@@ -1592,13 +1594,6 @@
       this.viewport = options.viewport || new J.Viewport({scene: this});
     },
 
-    addChild: function(displayObject) {
-      displayObject.setContext(this.ctx);
-      this._super(displayObject);
-
-      return this;
-    },
-
     /**
      * Set background
      * @method background
@@ -1607,7 +1602,6 @@
     background: function (color) {
       this._backgroundColor = color;
       this.fillStyle(color.toString());
-      console.log("Reset background", this.width, this.height);
       this.fillRect(0, 0, this.width, this.height);
       return this;
     },
@@ -1645,6 +1639,8 @@
       this.updateContext();
       this._super();
 
+      this.viewport.render();
+
       // Experimental: apply shaders
       if (this.shaders.length > 0) {
         for (var i=0, length = this.shaders.length; i < length; ++i) {
@@ -1671,18 +1667,20 @@
 })(Joy);
 
 (function(J) {
-  /**
-   * @class Viewport
-   * @constructor
-   *
-   * @param {Object} options
-   * @param {DisplayObject} options.follow
-   * @param {Number} options.width
-   * @param {Number} options.height
-   */
   var Viewport = J.Triggerable.extend({
+    /**
+     * @class Viewport
+     * @constructor
+     *
+     * @param {Object} options
+     * @param {DisplayObject} options.follow
+     * @param {Number} options.width
+     * @param {Number} options.height
+     */
     init: function (options) {
       this._super(options);
+
+      this.id = options.id || Joy.generateUniqueId();
 
       /**
        * @property position
@@ -1699,6 +1697,23 @@
       this.translation = new J.Vector2d();
 
       /**
+       * Container DisplayObject
+       * @property scene
+       * @type {DisplayObjectContainer}
+       */
+      if (options.scene) {
+        this.scene = options.scene;
+        this.ctx = this.scene.ctx;
+      }
+
+      /**
+       * @property hud
+       * @type {DisplayObjectContainer}
+       */
+      this.hud = new J.DisplayObjectContainer({id: this.id + "_HUD", ctx: this.ctx});
+      this.hud.position = this.position;
+
+      /**
        * @property active
        * @type {Boolean}
        * @readonly
@@ -1708,17 +1723,17 @@
       this.setup(options);
     },
 
-    setup: function (options) {
-      /**
-       * Container DisplayObject
-       * @property scene
-       * @type {DisplayObject}
-       */
-      if (options.scene) {
-        this.scene = options.scene;
-        this.ctx = this.scene.ctx;
-      }
+    /**
+     * Add head up display on the viewport.
+     * @method addHud
+     * @param {DisplayObject}
+     * @return {Viewport}
+     */
+    addHud: function (displayObject) {
+      return this.hud.addChild(displayObject);
+    },
 
+    setup: function (options) {
       /**
        * @property width
        * @type {Number}
@@ -1796,6 +1811,11 @@
 
       this._lastPosition.x = this.position.x;
       this._lastPosition.y = this.position.y;
+    },
+
+    render: function () {
+      //console.log("Render hud!", this.hud.position.toString(), this.hud.children);
+      this.hud.render();
     }
 
   });
@@ -2130,7 +2150,8 @@
     scene.setContext(this.context.ctx);
 
     if (Joy.debug) {
-      scene.addChild(this._frameRateText);
+      console.log("Add hud!");
+      scene.viewport.addHud(this._frameRateText);
     }
 
     this.scenes.push(scene);
