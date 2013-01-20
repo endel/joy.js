@@ -7,9 +7,12 @@
         <script type="text/javascript" src="../../dist/joy.js"></script>
         <script type="text/javascript">
             function setup() {
-              Joy.debug = true;
-
               var c = document.getElementById("joy");
+              var changePivot = function () {
+                console.log("Change pivot!");
+                this.pivot.x = (this.width / 2);
+                this.pivot.y = (this.height / 2);
+              };
 
               var rotation = 0;
               function rotate(s) {
@@ -17,31 +20,44 @@
                 s.rotate(rotation);
               }
 
-              var engine = new Joy.Engine({ canvas2d: c });
+              var engine = new Joy.Engine({ debug: true, canvas2d: c });
               var scene = engine.createScene();
-              var spriteUrl = "../shared-assets/mario.png";
 
+              var ClickableBehaviour = Joy.Behaviour.extend({
+                INIT: function () {
+                  this.behave(Joy.Behaviour.Movimentation);
+                  this.friction.x = 0.1;
+                  this.friction.y = 0.1;
+                },
+
+                UPDATE: function () {
+                  // rotate(this);
+                  this.acceleration.x = 0;
+                },
+
+                CLICK: function(e) {
+                  this.acceleration.x += 2;
+                }
+              });
+
+              var spriteUrl = "../shared-assets/mario.png";
               var sprite = new Joy.Sprite({
+                id: "father",
                 x: engine.width / 2,
                 y: engine.height / 2,
                 src: spriteUrl
               });
               sprite.smooth = true;
-              sprite.bind('load', function () {
-                this.pivotX = (this.width / 2);
-                this.pivotY = (this.height / 2);
-              });
+              sprite.bind('load', changePivot);
+              sprite.behave(ClickableBehaviour);
 
-              var spriteChild = new Joy.Sprite({ x: 0, y: 0, src: spriteUrl });
-              spriteChild.smooth = true;
-              spriteChild.scale(0.5, 0.5);
+              var spriteChild = new Joy.Sprite(spriteUrl);
+              spriteChild.id = "child";
+              spriteChild.position.x = 120;
+              spriteChild.behave(ClickableBehaviour);
 
               sprite.addChild(spriteChild);
               scene.addChild(sprite);
-
-              setInterval(function () {
-                rotate(sprite);
-              }, 1000 / 60);
             }
         </script>
     </head>
