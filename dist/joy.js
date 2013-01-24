@@ -4,7 +4,7 @@
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 1/18/2013
+ * @build 1/23/2013
  */
 
 (function(global) {
@@ -507,10 +507,8 @@
    * @method Context2d
    */
   Context2d.prototype.render = function (scenes) {
-    var len = scenes.length, i = 0;
     this.clear();
-
-    for (; i < len; ++i) {
+    for (var i = 0, len = scenes.length; i < len; ++i) {
       scenes[i].render();
     }
   };
@@ -545,7 +543,8 @@
        */
       this.position = options.position || new J.Vector2d(options.x || 0, options.y || 0);
       this.__defineGetter__('collidePosition', function() {
-        return this.position;
+        var origin = (this._parent !== null) ? this._parent.collidePosition : new J.Vector2d();
+        return origin.sum(this.position).subtract(this.pivot);
       });
 
       /**
@@ -1062,14 +1061,17 @@
 
     render: function() {
       if (!this.visible) { return; }
-
-      var i = 0, length = this.children.length;
       this.ctx.save();
-
       this.updateContext();
-      this._super();
 
-      for (; i<length; ++i) {
+      this._super();
+      this.renderChildren();
+
+      this.ctx.restore();
+    },
+
+    renderChildren: function () {
+      for (var i = 0, length = this.children.length; i<length; ++i) {
         if (!this.children[i].visible) { continue; }
         this.ctx.save();
         this.children[i].updateContext();
@@ -1077,8 +1079,6 @@
         this.children[i].trigger('update');
         this.ctx.restore();
       }
-
-      this.ctx.restore();
     },
 
     /**
@@ -1260,16 +1260,9 @@
     },
 
     render: function() {
-      this._super();
-
+      if (!this.visible) { return; }
       this.ctx.drawImage(this.image, 0, 0, this._width, this._height);
-
-      // Draw debugging rectangle around sprite
-      if (J.debug) {
-        this.ctx.strokeStyle = "red";
-        this.ctx.strokeRect(0, 0, this._width, this._height);
-      }
-
+      this.renderChildren();
     }
   });
 
@@ -1421,6 +1414,11 @@
                          0,
                          this._width,
                          this._height);
+
+      if (J.debug) {
+        this.collider.renderStroke(this.ctx);
+      }
+
     }
   });
 
@@ -1539,14 +1537,14 @@
     },
 
     updateContext: function() {
+      this._super();
+
       this.ctx.font = this.font;
       this.ctx.textAlign = this.align;
       this.ctx.textBaseline = this.baseline;
 
       this.ctx[this.styleMethod] = this.color;
-      this.ctx[this.fillMethod](this.text, this.position.x, this.position.y);
-
-      this._super();
+      this.ctx[this.fillMethod](this.text, 0, 0);
     },
 
     /**
@@ -1651,6 +1649,8 @@
 
       this.viewport.render();
 
+      J.Mouse.collider.renderStroke(this.ctx);
+
       // Experimental: apply shaders
       if (this.shaders.length > 0) {
         for (var i=0, length = this.shaders.length; i < length; ++i) {
@@ -1727,7 +1727,7 @@
        * @type {Boolean}
        * @readonly
        */
-      this.active = false;
+      this.active = true;
 
       this.setup(options);
     },
@@ -1811,10 +1811,8 @@
       this.translation.x = -this.position.x + this._lastPosition.x;
       this.translation.y = -this.position.y + this._lastPosition.y;
 
-      this.active = true;
-
       if (this.active) {
-        this.trigger('translate', [this.translation.x,  this.translation.y]);
+        this.trigger('translate');
         this.ctx.translate(this.translation.x,  this.translation.y);
       }
 
@@ -1935,12 +1933,23 @@
     this.collidePosition.y = position.y + this.position.y;
   };
 
-  RectCollider.prototype.renderStroke = function(ctx, s) {
-    if (s!==undefined) {
-      ctx.strokeStyle = "blue";
-    }
-    ctx.strokeRect(this.position.x, this.position.y, this.width, this.height);
+  RectCollider.prototype.renderStroke = function(ctx) {
     ctx.strokeStyle = "black";
+    ctx.strokeRect(this.collidePosition.x, this.collidePosition.y, this.width, this.height);
+  };
+
+  /**
+   * Is this DisplayObject colliding with {Object}?
+   * @param {DisplayObject, Circle, Rectangle}
+   * @return {Boolean} is colliding
+   */
+  RectCollider.prototype.collide = function(collider) {
+    return !(
+      this.collidePosition.x      >= collider.collidePosition.x + collider.width  ||
+      collider.collidePosition.x  >= this.collidePosition.x + this.width          ||
+      this.collidePosition.y      >= collider.collidePosition.y + collider.height ||
+      collider.collidePosition.y  >= this.collidePosition.y + this.height
+    );
   };
 
   /**
@@ -2355,6 +2364,17 @@
   Vector2d.prototype.set = function (x, y) {
     this.x = x;
     this.y = y;
+    return this;
+  };
+
+  /**
+   * @method sum
+   * @param {Vector2d} vector2d
+   * @return {Vector2d}
+   */
+  Vector2d.prototype.subtract = function (vector2d) {
+    this.x -= vector2d.x;
+    this.y -= vector2d.y;
     return this;
   };
 
@@ -3612,40 +3632,42 @@
    */
   J.Events.MOUSE_OUT = 'mouseout';
 
-  // Create a 1x1 mouse collider
-  var mouseCollider = new J.RectCollider(new J.Vector2d(), 2, 2);
-
   var Mouse = {
+    // Create a 1x1 collider
+    collider: new J.RectCollider(new J.Vector2d(), 1, 1),
+
     enable: function(engine) {
+      var updateColliderPosition = function (e) {
+        Mouse.collider.position.x = e.offsetX * engine.currentScene.viewport.scale.x;
+        Mouse.collider.position.y = e.offsetY * engine.currentScene.viewport.scale.y;
+        Mouse.collider.updateColliderPosition(engine.currentScene.viewport.position);
+      };
+
       engine.context.canvas.onclick = function(e) {
         var i, length,
             handlers = Mouse.handlers[e.type];
 
-        // Update collider position
-        mouseCollider.collidePosition.x = e.offsetX * engine.currentScene.viewport.scale.x;
-        mouseCollider.collidePosition.y = e.offsetY * engine.currentScene.viewport.scale.y;
-        //mouseCollider.updateColliderPosition(engine.currentScene.viewport.position);
+        updateColliderPosition(e);
 
         for (i=0, length = handlers.length; i<length; ++i) {
-          console.log(mouseCollider, mouseCollider.collidePosition.toString(), handlers[i].target.collider, handlers[i].target.collidePosition.toString());
+          console.log("Mouse collider: ", Mouse.collider.collidePosition.toString(), "Target collider: ", handlers[i].target.collidePosition.toString());
 
-          if (handlers[i].target.visible && handlers[i].target.collide(mouseCollider)) {
-            console.log(handlers[i].handler);
+          if (handlers[i].target.visible && handlers[i].target.collider.collide(Mouse.collider)) {
             handlers[i].handler.apply(handlers[i].target, [e]);
           }
         }
       };
 
       engine.context.canvas.onmousedown = function(e) {
-        console.log("Mouse down!", e);
+        updateColliderPosition(e);
       };
+
       engine.context.canvas.onmouseup = function(e) {
-        console.log("Mouse up!", e);
+        updateColliderPosition(e);
       };
+
       engine.context.canvas.onmousemove = function(e) {
-        mouseCollider.collidePosition.x = e.offsetX;
-        mouseCollider.collidePosition.y = e.offsetY;
-        console.log("Mouse move!", e);
+        updateColliderPosition(e);
       };
     },
 
@@ -3712,14 +3734,14 @@
       this.viewport = scene.viewport;
 
       var parallax = this;
-      this.viewport.bind('translate', function (translationX, translationY) {
+      this.viewport.bind('translate', function() {
         var velocity = parallax.distance;
 
         for (var i=0, length=parallax.numChildren; i < length; ++i) {
           velocity *= parallax.velocity * (i + 1);
           if (parallax.getChildAt(i).position) {
-            parallax.getChildAt(i).position.x += (translationX * velocity) / this.width;
-            parallax.getChildAt(i).position.y += (translationY * velocity) / (this.height / 2);
+            parallax.getChildAt(i).position.x += (this.translation.x * velocity) / this.width;
+            parallax.getChildAt(i).position.y += (this.translation.y * velocity) / (this.height / 2);
           }
         }
       });
@@ -4072,7 +4094,7 @@
       });
     },
 
-    render: function() {
+    renderChildren: function () {
       for (var i=0, length = this.data.length; i < length; ++i) {
         if (this.data[i] === 0) { continue; }
 
@@ -4087,6 +4109,7 @@
                            this.tileset.tileHeight);
       }
     }
+
   });
 
   J.Tilemap = Tilemap;
@@ -4197,5 +4220,4 @@
       function( callback ) { window.setTimeout(callback, 1000 / 60); };		// TODO: use FPS rate from render module
   })();
 })(Joy);
-
 
