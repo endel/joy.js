@@ -160,30 +160,31 @@
 
           var restartButton = new Joy.Sprite("assets/menu/button-restart.png").bind('load', function () {
             this.position.x = (engine.width / 2) - this.width;
+            this.behave(Joy.Behaviour.Button);
 
           }).bind(Joy.Events.CLICK, function () {
             rufus.position = rufus.startPosition.clone();
 
-          }).bind(Joy.Events.MOUSE_DOWN, function (e) {
-            console.log("My mouse down!");
+          // }).bind(Joy.Events.MOUSE_DOWN, function (e) {
+          //   console.log("My mouse down!");
 
-          }).bind(Joy.Events.MOUSE_UP, function (e) {
-            console.log("My mouse up!");
+          // }).bind(Joy.Events.MOUSE_UP, function (e) {
+          //   console.log("My mouse up!");
 
           }).bind(Joy.Events.MOUSE_OVER, function (e) {
-            console.log("My mouse over");
+            this.position.y -= 1;
 
           }).bind(Joy.Events.MOUSE_OUT, function (e) {
-            console.log("My mouse out");
+            this.position.y += 1;
 
-          }).bind(Joy.Events.CLICK, function (e) {
-            console.log("My click");
+          // }).bind(Joy.Events.CLICK, function (e) {
+          //   console.log("My click");
 
-          }).bind(Joy.Events.DOUBLE_CLICK, function (e) {
-            console.log("My double click");
+          // }).bind(Joy.Events.DOUBLE_CLICK, function (e) {
+          //   console.log("My double click");
 
-          }).bind(Joy.Events.MOUSE_MOVE, function (e) {
-            console.log("My mouse move!");
+          // }).bind(Joy.Events.MOUSE_MOVE, function (e) {
+          //   console.log("My mouse move!");
 
           });
 
