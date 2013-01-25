@@ -94,30 +94,38 @@
               this.acceleration.y = -20;
             },
 
+            moveLeft: function () {
+              if (!this.willCollideAt(new Joy.Vector2d(0, this.collider.height / 2))) {
+                this.acceleration.x = -2;
+                this.flipX = false;
+                if (this.grounded) {
+                  this.play("walking");
+                }
+              } else {
+                this.acceleration.x = 0;
+                this.velocity.x = 0;
+              }
+            },
+
+            moveRight: function () {
+              if (!this.willCollideAt(new Joy.Vector2d(this.collider.width, this.collider.height / 2))) {
+                this.acceleration.x = 2;
+                this.flipX = true;
+                if (this.grounded) {
+                  this.play("walking");
+                }
+              } else {
+                this.acceleration.x = 0;
+                this.velocity.x = 0;
+              }
+            },
+
             KEY_PRESS: function(evt) {
               if (evt.keyCode == Joy.Keyboard.LEFT) {
-                if (!this.willCollideAt(new Joy.Vector2d(0, this.collider.height / 2))) {
-                  this.acceleration.x = -2;
-                  this.flipX = false;
-                  if (this.grounded) {
-                    this.play("walking");
-                  }
-                } else {
-                  this.acceleration.x = 0;
-                  this.velocity.x = 0;
-                }
+                this.moveLeft();
 
               } else if (evt.keyCode == Joy.Keyboard.RIGHT) {
-                if (!this.willCollideAt(new Joy.Vector2d(this.collider.width, this.collider.height / 2))) {
-                  this.acceleration.x = 2;
-                  this.flipX = true;
-                  if (this.grounded) {
-                    this.play("walking");
-                  }
-                } else {
-                  this.acceleration.x = 0;
-                  this.velocity.x = 0;
-                }
+                this.moveRight();
               }
             }
           });
@@ -158,34 +166,35 @@
             ]
           });
 
-          var restartButton = new Joy.Sprite("assets/menu/button-restart.png").bind('load', function () {
-            this.position.x = (engine.width / 2) - this.width;
+          var leftButton = new Joy.Sprite("assets/menu/button-restart.png").bind('load', function () {
+            this.position.x = 0;
+            this.position.y = (engine.height/2) - this.height;
             this.behave(Joy.Behaviour.Button);
-
-          }).bind(Joy.Events.CLICK, function () {
-            rufus.position = rufus.startPosition.clone();
-
-          // }).bind(Joy.Events.MOUSE_DOWN, function (e) {
-          //   console.log("My mouse down!");
-
-          // }).bind(Joy.Events.MOUSE_UP, function (e) {
-          //   console.log("My mouse up!");
-
+           }).bind(Joy.Events.MOUSE_DOWN, function (e) {
+             rufus.moveLeft();
+           }).bind(Joy.Events.MOUSE_UP, function (e) {
+             rufus.acceleration.x = 0;
           }).bind(Joy.Events.MOUSE_OVER, function (e) {
             this.position.y -= 1;
-
           }).bind(Joy.Events.MOUSE_OUT, function (e) {
             this.position.y += 1;
+          });
 
-          // }).bind(Joy.Events.CLICK, function (e) {
-          //   console.log("My click");
-
-          // }).bind(Joy.Events.DOUBLE_CLICK, function (e) {
-          //   console.log("My double click");
-
-          // }).bind(Joy.Events.MOUSE_MOVE, function (e) {
-          //   console.log("My mouse move!");
-
+          var rightButton = new Joy.Sprite({
+            src: "assets/menu/button-restart.png",
+            flipX: true
+          }).bind('load', function () {
+            this.position.x = this.width;
+            this.position.y = (engine.height/2) - this.height;
+            this.behave(Joy.Behaviour.Button);
+           }).bind(Joy.Events.MOUSE_DOWN, function (e) {
+             rufus.moveRight();
+           }).bind(Joy.Events.MOUSE_UP, function (e) {
+             rufus.acceleration.x = 0;
+          }).bind(Joy.Events.MOUSE_OVER, function (e) {
+            this.position.y -= 1;
+          }).bind(Joy.Events.MOUSE_OUT, function (e) {
+            this.position.y += 1;
           });
 
           rufus.startPosition = rufus.position.clone();
@@ -199,7 +208,8 @@
           scene.addChild(rufus);
           scene.addChild(foregroundParallax);
 
-          scene.viewport.addHud(restartButton);
+          scene.viewport.addHud(leftButton);
+          scene.viewport.addHud(rightButton);
 
           scene.viewport.setup({
             follow: rufus,

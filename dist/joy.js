@@ -4,7 +4,7 @@
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 1/24/2013
+ * @build 1/25/2013
  */
 
 (function(global) {
@@ -118,6 +118,47 @@
 
   global.Joy = Joy;
 })(window);
+
+/*
+ * Normalizes browser support
+ */
+
+(function(J) {
+  var userAgent = navigator.userAgent;
+  var browserPrefix = ((userAgent.match(/opera/i) && "o") ||
+                       (userAgent.match(/webkit/i) && "webkit") ||
+                       (userAgent.match(/msie/i) && "ms") ||
+                       (userAgent.match(/mozilla/i) && "moz") || "");
+
+  function prefix(name) {
+    if (browserPrefix !== "") {
+      name = name.charAt(0).toUpperCase() + name.slice(1);
+    }
+    return browserPrefix + name;
+  }
+
+  /**
+   * Browser support configuration and constants.
+   * @class Support
+   */
+  J.Support = {
+    'imageSmoothingEnabled' : prefix("imageSmoothingEnabled"),
+    touch: ('ontouchstart' in window)
+  };
+
+  /**
+   * window.onEnterFrame
+   */
+  window.onEnterFrame = (function(){
+    return  window.requestAnimationFrame ||
+      window.webkitRequestAnimationFrame ||
+      window.mozRequestAnimationFrame    ||
+      window.oRequestAnimationFrame      ||
+      window.msRequestAnimationFrame     ||
+      function( callback ) { window.setTimeout(callback, 1000 / 60); };		// TODO: use FPS rate from render module
+  })();
+})(Joy);
+
 
 /**
  * Simple JavaScript Inheritance - http://ejohn.org/blog/simple-javascript-inheritance/
@@ -709,14 +750,14 @@
        * @type {Boolean}
        * @default false
        */
-      this.flipX = false;
+      this.flipX = options.flipX || false;
 
       /**
        * @property flipY
        * @type {Boolean}
        * @default false
        */
-      this.flipY = false;
+      this.flipY = options.flipY || false;
 
       this._super();
 
@@ -3628,7 +3669,7 @@
    * @static
    * @final
    */
-  J.Events.MOUSE_DOWN = 'mousedown';
+  J.Events.MOUSE_DOWN = (J.Support.touch) ? 'touchstart' : 'mousedown';
 
   /**
    * Events.MOUSE_UP
@@ -3636,7 +3677,15 @@
    * @static
    * @final
    */
-  J.Events.MOUSE_UP = 'mouseup';
+  J.Events.MOUSE_UP = (J.Support.touch) ? 'touchend' : 'mouseup';
+
+  /**
+   * Events.MOUSE_MOVE
+   * @type {String}
+   * @static
+   * @final
+   */
+  J.Events.MOUSE_MOVE = (J.Support.touch) ? 'touchmove' : 'mousemove';
 
   /**
    * Events.CLICK
@@ -3653,14 +3702,6 @@
    * @final
    */
   J.Events.DOUBLE_CLICK = 'dblclick';
-
-  /**
-   * Events.MOUSE_MOVE
-   * @type {String}
-   * @static
-   * @final
-   */
-  J.Events.MOUSE_MOVE = 'mousemove';
 
   /**
    * TODO: not implemented yet
@@ -3722,8 +3763,8 @@
 
       engine.context.canvas.onclick = triggerMouseEvents;
       engine.context.canvas.ondblclick = triggerMouseEvents;
-      engine.context.canvas.onmousedown = triggerMouseEvents;
-      engine.context.canvas.onmouseup = triggerMouseEvents;
+      engine.context.canvas['on' + J.Events.MOUSE_DOWN] = triggerMouseEvents;
+      engine.context.canvas['on' + J.Events.MOUSE_UP] = triggerMouseEvents;
       engine.context.canvas.onmousemove = triggerMouseEvents;
     },
 
@@ -4237,43 +4278,3 @@
 
   J.Tileset = Tileset;
 })(Joy);
-
-/*
- * Normalizes browser support
- */
-
-(function(J) {
-  var userAgent = navigator.userAgent;
-  var browserPrefix = ((userAgent.match(/opera/i) && "o") ||
-                       (userAgent.match(/webkit/i) && "webkit") ||
-                       (userAgent.match(/msie/i) && "ms") ||
-                       (userAgent.match(/mozilla/i) && "moz") || "");
-
-  function prefix(name) {
-    if (browserPrefix !== "") {
-      name = name.charAt(0).toUpperCase() + name.slice(1);
-    }
-    return browserPrefix + name;
-  }
-
-  /**
-   * Browser support configuration and constants.
-   * @class Support
-   */
-  J.Support = {
-    'imageSmoothingEnabled' : prefix("imageSmoothingEnabled")
-  };
-
-  /**
-   * window.onEnterFrame
-   */
-  window.onEnterFrame = (function(){
-    return  window.requestAnimationFrame ||
-      window.webkitRequestAnimationFrame ||
-      window.mozRequestAnimationFrame    ||
-      window.oRequestAnimationFrame      ||
-      window.msRequestAnimationFrame     ||
-      function( callback ) { window.setTimeout(callback, 1000 / 60); };		// TODO: use FPS rate from render module
-  })();
-})(Joy);
-
