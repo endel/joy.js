@@ -81,6 +81,11 @@
                 this.acceleration.y = 0;
                 this.velocity.y = 0;
               }
+
+              // Clear velocity
+              if (Math.abs(this.direction.x) > 0.5) {
+                this.acceleration.x = 0;
+              }
             },
 
             COLLISION_EXIT: function (other) {

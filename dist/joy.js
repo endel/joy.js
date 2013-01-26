@@ -3603,6 +3603,7 @@
    */
   J.Events.KEY_PRESS = 'key';
 
+  Keyboard.repeatRate = 1;
   Keyboard.handlers = {};
   Keyboard.timers = {};
 
@@ -3629,8 +3630,6 @@
     });
   });
 
-  var repeat = 1;
-
   // Bind document key down
   document.onkeydown = function(e) {
    var key = (e || window.event).keyCode;
@@ -3638,10 +3637,10 @@
       triggerKeyEvent(J.Events.KEY_DOWN, e);
       triggerKeyEvent(J.Events.KEY_PRESS, e);
 
-      if (repeat !== 0) {
+      if (Keyboard.repeatRate !== 0) {
         Keyboard.timers[key] = setInterval(function() {
           triggerKeyEvent(J.Events.KEY_PRESS, e);
-        }, repeat);
+        }, Keyboard.repeatRate);
       }
     }
     return false;
@@ -3726,6 +3725,8 @@
   J.Events.MOUSE_OUT = 'mouseout';
 
   var Mouse = {
+    repeatRate: 1,
+
     // Create a 1x1 collider
     collider: new J.RectCollider(new J.Vector2d(), 1, 1),
 
@@ -3748,27 +3749,34 @@
     },
 
     enable: function(engine) {
-      var triggerMouseEvents = function (event) {
-        var handlers = Mouse.handlers[event.type];
+      var triggerMouseEvents = function (e) {
+        var handlers = Mouse.handlers[e.type];
 
-        this.lastEvent = event;
-        Mouse.updateColliderPosition(event);
+        //Simulate TouchEvent events as a MouseEvent
+        if (!(e instanceof MouseEvent)) {
+          e.offsetX = e.touches[0].clientX;
+          e.offsetY = e.touches[0].clientY;
+        }
+
+        this.lastEvent = e;
+        Mouse.updateColliderPosition(e);
 
         for (var i=0, length = handlers.length; i<length; ++i) {
           if ( handlers[i].target.visible && Mouse.isOver(handlers[i].target) ) {
-            handlers[i].handler.apply(handlers[i].target, [event]);
+            handlers[i].handler.apply(handlers[i].target, [e]);
           }
         }
       };
 
       engine.context.canvas.onclick = triggerMouseEvents;
       engine.context.canvas.ondblclick = triggerMouseEvents;
+      engine.context.canvas.onmousemove = triggerMouseEvents;
       engine.context.canvas['on' + J.Events.MOUSE_DOWN] = triggerMouseEvents;
       engine.context.canvas['on' + J.Events.MOUSE_UP] = triggerMouseEvents;
-      engine.context.canvas.onmousemove = triggerMouseEvents;
     },
 
-    handlers: {}
+    handlers: {},
+    timers: {}
   };
 
   [J.Events.CLICK, J.Events.DOUBLE_CLICK, J.Events.DOUBLE_CLICK, J.Events.MOUSE_MOVE, J.Events.MOUSE_DOWN, J.Events.MOUSE_UP].forEach(function(eventType) {
