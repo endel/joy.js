@@ -6,6 +6,10 @@ create games, or any kind of web multimedia.
 It's currently on early development stage, the API could change at any time,
 feel free to test it if you are adventurous.
 
+## TODO
+
+  - Normalized collidePosition through DisplayObject / RectCollider calls.
+
 ## Resources
 
 [Google Group](https://groups.google.com/forum/#!forum/joyjs)
