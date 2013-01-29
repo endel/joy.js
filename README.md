@@ -1,14 +1,14 @@
 # joy.js [![Build Status](https://secure.travis-ci.org/joyjs/joy.js.png)](http://travis-ci.org/joyjs/joy.js)
 
-joy.js is a nice set of independent JavaScript libraries that can be used to
-create games, or any kind of web multimedia.
+joy.js is a game engine, which is being developed to be easy to use, with
+an intuitive API.
 
-It's currently on early development stage, the API could change at any time,
+It is currently on early development stage, the API could change at any time,
 feel free to test it if you are adventurous.
 
 ## TODO
 
-  - Normalized collidePosition through DisplayObject / RectCollider calls.
+  - Normalized `collidePosition` on DisplayObject / RectCollider calls.
 
 ## Resources
 
@@ -21,6 +21,11 @@ We use [npm](https://npmjs.org) modules, such as [grunt](https://github.com/grun
 If you're under Windows platform, please take a look at
 [this](https://gist.github.com/2489540) guide to setup your environment.
 
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
 
 ## License
 
