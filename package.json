@@ -2,7 +2,7 @@
   "name": "joy.js",
   "title": "Joy",
   "description": "A joyful JavaScript game engine",
-  "version": "0.0.1pre",
+  "version": "0.1.0",
   "homepage": "http://joyjs.org",
   "author": {
     "name": "Endel Dreyer",
@@ -32,7 +32,7 @@
     "grunt": "0.4.0rc4",
     "grunt-contrib-watch": "~0.1.4",
     "grunt-contrib-jshint": "~0.1.0",
-    "grunt-contrib-yuidoc": "~0.3.2",
+    "grunt-contrib-yuidoc": "~0.4.0rc7",
     "grunt-contrib-concat": "~0.1.1",
     "grunt-contrib-qunit": "~0.1.0",
     "grunt-contrib-uglify": "~0.1.0",

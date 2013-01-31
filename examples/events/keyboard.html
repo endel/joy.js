@@ -12,7 +12,7 @@
             var scene = engine.createScene();
             scene.background("#BFE5E5");
 
-            var block = new Joy.Shape({geom: new Joy.Rect(engine.width - 100, 20)}).fillStyle("#000");
+            var block = new Joy.Rect(engine.width - 100, 20).fillStyle("#000");
             block.y = engine.height - 20;
             block.x = 50;
             scene.addChild(block);

@@ -74,10 +74,10 @@ module.exports = function(grunt) {
         version: '<%= pkg.version %>',
         url: '<%= pkg.homepage %>',
         nocode: 'true',
-        themedir: 'doctheme/',
+        themedir: '../joy.js-site/default/',
         options: {
           paths: 'lib/',
-          outdir: 'doc/'
+          outdir: '../joy.js-site/docs/'
         }
       }
     }

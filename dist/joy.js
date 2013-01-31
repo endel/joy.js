@@ -1,16 +1,16 @@
 /* 
- * joy.js v0.0.1pre 
+ * joy.js v0.1.0 
  * http://joyjs.org
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 1/25/2013
+ * @build 1/31/2013
  */
 
 (function(global) {
   /**
-   * Joy namespace
-   * @class Joy
+   * @module Joy
+   * @static
    */
   var Joy = global.Joy || {
     Init: {},
@@ -21,7 +21,7 @@
     Events: {
       /**
        * Triggered when DisplayObject is initialized.
-       * @property Events.INIT
+       * @attribute Events.INIT
        * @type {String}
        * @static
        * @readonly
@@ -29,8 +29,17 @@
       INIT: 'init',
 
       /**
+       * Triggered when scene is loaded.
+       * @attribute Events.SCENE_ACTIVE
+       * @type {String}
+       * @static
+       * @readonly
+       */
+      SCENE_ACTIVE: 'sceneActive',
+
+      /**
        * Triggered when DisplayObject is added into DisplayObjectContainer.
-       * @property Events.ADDED
+       * @attribute Events.ADDED
        * @type {String}
        * @static
        * @readonly
@@ -39,7 +48,7 @@
 
       /**
        * Triggered when DisplayObject is removed from DisplayObjectContainer.
-       * @property Events.REMOVED
+       * @attribute Events.REMOVED
        * @type {String}
        * @static
        * @readonly
@@ -48,7 +57,7 @@
 
       /**
        * Triggered at every frame.
-       * @property Events.UPDATE
+       * @attribute Events.UPDATE
        * @type {String}
        * @static
        * @readonly
@@ -57,7 +66,7 @@
 
       /**
        * Triggered on collision update.
-       * @property Events.COLLISION
+       * @attribute Events.COLLISION
        * @type {String}
        * @static
        * @readonly
@@ -66,7 +75,7 @@
 
       /**
        * Triggered at the moment collision starts.
-       * @property Events.COLLISION_START
+       * @attribute Events.COLLISION_START
        * @type {String}
        * @static
        * @readonly
@@ -75,7 +84,7 @@
 
       /**
        * Triggered at the moment collision ends.
-       * @property Events.COLLISION_EXIT
+       * @attribute Events.COLLISION_EXIT
        * @type {String}
        * @static
        * @readonly
@@ -84,7 +93,7 @@
     },
 
     /**
-     * @property debug
+     * @attribute debug
      * @type {Boolean}
      * @static
      * @default false
@@ -92,7 +101,7 @@
     debug: false,
 
     /**
-     * @property deltaTime
+     * @attribute deltaTime
      * @type {Number}
      * @default 1
      * @static
@@ -119,10 +128,9 @@
   global.Joy = Joy;
 })(window);
 
-/*
- * Normalizes browser support
+/**
+ * @module Joy
  */
-
 (function(J) {
   var userAgent = navigator.userAgent;
   var browserPrefix = ((userAgent.match(/opera/i) && "o") ||
@@ -159,6 +167,9 @@
   })();
 })(Joy);
 
+/**
+ * @module Joy
+ */
 
 /**
  * Simple JavaScript Inheritance - http://ejohn.org/blog/simple-javascript-inheritance/
@@ -232,6 +243,9 @@
 })(Joy);
 /*jshint immed:false loopfunc:false*/
 
+/**
+ * @module Joy
+ */
 (function(J) {
  /**
   * Based on [EaselJS](https://github.com/CreateJS/EaselJS/) Matrix2D implementation.
@@ -274,7 +288,7 @@
    * @param {Number} skewY
    * @param {Number} pivotX Optional.
    * @param {Number} pivotY Optional.
-   * @return {Matrix2D} This matrix. Useful for chaining method calls.
+   * @return {Joy.Matrix2D} This matrix. Useful for chaining method calls.
    **/
   Matrix2D.prototype.appendTransform = function(x, y, scaleX, scaleY, rotation, skewX, skewY, pivotX, pivotY) {
     var cos, sin, r;
@@ -316,7 +330,7 @@
    * @param {Number} m22
    * @param {Number} dx
    * @param {Number} dy
-   * @return {Matrix2D} This matrix. Useful for chaining method calls.
+   * @return {Joy.Matrix2D} This matrix. Useful for chaining method calls.
    **/
   Matrix2D.prototype.append = function(m11, m12, m21, m22, dx, dy) {
     var a1 = this.m11;
@@ -336,7 +350,7 @@
   /**
    * Inverts the matrix, causing it to perform the opposite transformation.
    * @method invert
-   * @return {Matrix2D} this
+   * @return {Joy.Matrix2D} this
    **/
   Matrix2D.prototype.invert = function() {
     var a1 = this.m11;
@@ -357,7 +371,7 @@
 
   /**
    * Clone Matrix2D instance
-   * @return {Matrix2D}
+   * @return {Joy.Matrix2D}
    */
   Matrix2D.prototype.clone = function() {
     return new Matrix2D(this.m11, this.m12, this.m21, this.m22, this.dx, this.dy);
@@ -365,7 +379,7 @@
 
   /**
    * Reset matrix to it's identity
-   * @return {Matrix2D} this
+   * @return {Joy.Matrix2D} this
    */
   Matrix2D.prototype.identity = function() {
     this.m11 = this.m22 = 1;
@@ -376,7 +390,7 @@
   /**
    * Multiplier for converting degrees to radians. Used internally by Matrix2D.
    *
-   * @property DEG_TO_RAD
+   * @attribute DEG_TO_RAD
    * @static
    * @readonly
    * @return {Number}
@@ -387,6 +401,9 @@
   J.Matrix2D = Matrix2D;
 })(Joy);
 
+/**
+ * @module Joy
+ */
 (function(J) {
   /**
    * Event triggering and handling.
@@ -397,14 +414,17 @@
   var Triggerable = J.Object.extend({
     init: function() {
       this._handlers = {};
+      this._behaviours = [];
     },
 
     /**
      * Behave like a {Behaviour}
-     * @param {Behaviour}
-     * @return this
+     * @param {Joy.Behaviour}
+     * @return {Joy.Triggerable} this
      */
     behave: function (Behaviour) {
+      this._behaviours.push(Behaviour);
+
       var behaviour = new Behaviour();
       for (var i in behaviour) {
         if (typeof(Joy.Events[i])==="string") {
@@ -419,10 +439,19 @@
     },
 
     /**
+     * This object behaves as {target} behaviour?
+     * @param {Joy.Behaviour} target
+     * @return {Boolean}
+     */
+    hasBehaviour: function (behaviour) {
+      return this._behaviours.indexOf(behaviour) >= 0;
+    },
+
+    /**
      * Bind event handler
      * @param {String} type event type
      * @param {Function} handler
-     * @return this
+     * @return {Joy.Triggerable} this
      */
     bind: function (type, handler) {
       var data = handler;
@@ -446,7 +475,7 @@
     /**
      * Remove event handlers
      * @param {String} type event type
-     * @return this
+     * @return {Joy.Triggerable} this
      */
     unbind: function (type) {
       // Custom unbind
@@ -510,19 +539,13 @@
 })(Joy);
 
 /**
- * The Context2d class is responsible for drawing everything at the canvas.
- * It works using a buffer of sprites, so you can use it alone, adding sprites to it.
- * Sprites are arranged into layers, so to speed up the Context2ding process.
- * You can have as much layers as you wish, although remember that, the more layers you have, the slower the Context2ding will be.
- * Animations are also handled by the class.
- *
- * @class Context2d
-*/
+ * @module Joy
+ */
 (function(J) {
   /**
-   * Initializes 2d context
-   * @param {Object} options
+   * @class Context2d
    * @constructor
+   * @param {Object} options
    */
   var Context2d = function(options) {
     this.setCanvas(options.canvas);
@@ -550,6 +573,7 @@
   Context2d.prototype.render = function (scenes) {
     this.clear();
     for (var i = 0, len = scenes.length; i < len; ++i) {
+      if (!scenes[i].visible) { continue; }
       scenes[i].render();
     }
   };
@@ -558,6 +582,9 @@
   J.Context.Context2d = Context2d;
 })(Joy);
 
+/**
+ * @module Joy
+ */
 (function(J) {
   var DisplayObject = J.Triggerable.extend({
 
@@ -566,20 +593,22 @@
      * @class DisplayObject
      * @extends Triggerable
      * @constructor
+     *
+     * @param {Object} options
      */
     init: function(options) {
       if (!options) { options = {}; }
 
       /**
-       * @property id
+       * @attribute id
        * @type {String}
        * @default "joy..."
        */
       this.id = options.id || Joy.generateUniqueId();
 
       /**
-       * @property position
-       * @type {Vector2d}
+       * @attribute position
+       * @type {Joy.Vector2d}
        * @default 0,0
        */
       this.position = options.position || new J.Vector2d(options.x || 0, options.y || 0);
@@ -589,72 +618,79 @@
       });
 
       /**
-       * @property pivot
-       * @type {Vector2d}
+       * @attribute pivot
+       * @type {Joy.Vector2d}
        * @default 0,0
        */
       this.pivot = new J.Vector2d(options.pivotX || 0, options.pivotY || 0);
 
       /**
-       * @property skewX
+       * @attribute skewX
        * @type {Number}
        * @default 0
        */
       this.skew = new J.Vector2d(options.skewX || 0, options.skewY || 0);
 
       /**
-       * @property scale
-       * @type {Vector2d}
+       * @attribute scale
+       * @type {Joy.Vector2d}
        * @default 1,1
        */
       this.scale = new J.Vector2d(options.scaleX || 1, options.scaleY || 1);
 
       /**
-       * @property alpha
+       * @attribute alpha
        * @type {Number}
        * @default 1
        */
-      this.alpha = options.alpha || 1;
+      this.alpha = (typeof(options.alpha) === "undefined") ? 1 : options.alpha;
 
       /**
-       * @property rotation
+       * @attribute rotation
        * @type {Number}
        * @default 0
        */
       this.rotation = options.rotation || 0;
 
       /**
-       * @property smooth
+       * @attribute smooth
        * @type {Boolean}
        * @default false
        */
       this.smooth = options.smooth || false;
 
       /**
-       * @property width
+       * @attribute width
        * @type {Number}
        * @default 0
        */
       this._width = options.width || 0;
 
       /**
-       * @property height
+       * @attribute height
        * @type {Number}
        * @default 0
        */
       this._height = options.height || 0;
 
       /**
-       * Collider object. Can be a DisplayObject, or a geometry.
-       * @property collider
-       * @type {DisplayObject, Rect, Circle}
+       * Collider object. Can be a DisplayObject, or a geometry collider.
+       * @attribute collider
+       * @type {Joy.DisplayObject | Joy.RectCollider}
        * @default this
        */
-      this.collider = options.collider || this;
+      this._collider = options.collider || this;
+      this.__defineSetter__('collider', function (collider) {
+        this._collider = collider;
+        this._collider.target = this;
+      });
+      this.__defineGetter__('collider', function () {
+        return this._collider;
+      });
 
       /**
        * Index of this DisplayObject on the DisplayObjectContainer
-       * @property index
+       * @attribute index
        * @type {Number}
        * @readonly
        */
@@ -662,14 +698,14 @@
 
       /**
        * Context that this DisplayObject will be rendered in
-       * @property ctx
-       * @type {Canvas2D, Canvas3D}
+       * @attribute ctx
+       * @type {Joy.Canvas2D}
        * @readonly
        */
       this.ctx = options.ctx || null;
       this._shadow = null;
       this._parent = null;
-      this._visible = options.visible || true;
+      this._visible = (typeof(options.visible) === "undefined") ? true : options.visible;
       this._matrix = J.Matrix2D.identity.clone();
       this._collisionTargets = [];
       this._collisionActive = {};
@@ -680,9 +716,9 @@
 
       /**
        * Parent DisplayObject
-       * @property parent
+       * @attribute parent
        * @readonly
-       * @type {DisplayObjectContainer}
+       * @type {Joy.DisplayObjectContainer}
        */
       this.__defineGetter__('parent', function() {
         return this._parent;
@@ -690,7 +726,7 @@
 
       /**
        * Is this DisplayObject able for rendering?
-       * @property visible
+       * @attribute visible
        * @type {Boolean}
        */
       this.__defineGetter__('visible', function() {
@@ -702,15 +738,15 @@
 
       /**
        * Reference of the current transformation matrix.
-       * @property matrix
-       * @type {Matrix2D}
+       * @attribute matrix
+       * @type {Joy.Matrix2D}
        */
       this.__defineGetter__('matrix', function() {
         return this._matrix;
       });
 
       /**
-       * @property width
+       * @attribute width
        * @readonly
        * @type {Number}
        */
@@ -719,7 +755,7 @@
       });
 
       /**
-       * @property height
+       * @attribute height
        * @readonly
        * @type {Number}
        */
@@ -728,7 +764,7 @@
       });
 
       /**
-       * @property right
+       * @attribute right
        * @readonly
        * @type {Number}
        */
@@ -737,7 +773,7 @@
       });
 
       /**
-       * @property bottom
+       * @attribute bottom
        * @readonly
        * @type {Number}
        */
@@ -746,14 +782,14 @@
       });
 
       /**
-       * @property flipX
+       * @attribute flipX
        * @type {Boolean}
        * @default false
        */
       this.flipX = options.flipX || false;
 
       /**
-       * @property flipY
+       * @attribute flipY
        * @type {Boolean}
        * @default false
        */
@@ -783,11 +819,18 @@
 
     /**
      * @method allowCollisionFrom
-     * @param {DisplayObject}
-     * @return this
+     * @param {Joy.DisplayObject | Array} target
+     * @return {Joy.DisplayObject} this
      */
-    allowCollisionFrom: function (displayObject) {
-      this._collisionTargets.push(displayObject);
+    allowCollisionFrom: function (displayObjects) {
+      if (displayObjects instanceof J.DisplayObject) {
+        displayObjects = [displayObjects];
+      }
+
+      for (var i=0, length = displayObjects.length; i<length; ++i ) {
+        this._collisionTargets.push(displayObjects[i]);
+      }
+
       return this;
     },
 
@@ -828,7 +871,7 @@
      * Apply composite operation on DisplayObject's canvas.
      * @method blend
      * @param {String} compositeOperation
-     * @return this
+     * @return {Joy.DisplayObject} this
      */
     composite: function (compositeOperation) {
       this.compositeOperation = compositeOperation;
@@ -838,7 +881,7 @@
     /**
      * @method fillStyle
      * @param {Color, String} color
-     * @return this
+     * @return {Joy.DisplayObject} this
      */
     fillStyle: function(color) {
       this._hasContextOperations = true;
@@ -852,7 +895,7 @@
      * @param {Number} y
      * @param {Number} width
      * @param {Number} height
-     * @return this
+     * @return {Joy.DisplayObject} this
      */
     fillRect: function(x, y, width, height) {
       this._hasContextOperations = true;
@@ -868,7 +911,7 @@
      *  @param {Number} [options.offsetX] shadow x offset
      *  @param {Number} [options.offsetY] shadow y offset
      *  @param {Number} [options.blur] shadow blur ratio
-     * @return this
+     * @return {Joy.DisplayObject} this
      */
     shadow: function(options) {
       if (options) {
@@ -887,7 +930,7 @@
     /**
      * Update canvas context, based on DisplayObject transformation variables
      * @method updateContext
-     * @return {DisplayObject} this
+     * @return {Joy.DisplayObject} this
      */
     updateContext: function() {
       var bit = {};
@@ -933,8 +976,6 @@
       );
     },
 
-    // updateColliderPosition: function() {},
-
     /**
      * Called on UPDATE, triggers COLLISION_ENTER, COLLISION_EXIT and COLLISION events.
      * @method checkCollisions
@@ -958,15 +999,15 @@
 
         if (collider.collide(this.collider)) {
           // Trigger COLLISION_START when it's colliding for the first time.
-          if (!this._collisionActive[collider]) {
+          if (!this._collisionActive[collider.id]) {
             this.trigger(J.Events.COLLISION_ENTER, [ this._collisionTargets[i] ]);
-            this._collisionActive[collider] = true;
+            this._collisionActive[collider.id] = true;
           }
 
           this.trigger(J.Events.COLLISION, [ this._collisionTargets[i] ]);
 
-        } else if (this._collisionActive[collider]) {
-          delete this._collisionActive[collider];
+        } else if (this._collisionActive[collider.id]) {
+          delete this._collisionActive[collider.id];
           this.trigger(J.Events.COLLISION_EXIT, [ this._collisionTargets[i] ]);
         }
       }
@@ -975,7 +1016,7 @@
     /**
      * @method willCollideAt
      * @param {Vector2d} projection
-     * @return {DisplayObject, null}
+     * @return {Joy.DisplayObject, null}
      */
     willCollideAt: function (projection) {
       var tmpCollider = new J.RectCollider(this.collider.position.clone().sum(projection), 1, 1),
@@ -1016,7 +1057,7 @@
     /**
      * Get a clone of the current transformation
      * @method getMatrix
-     * @return {Matrix2D}
+     * @return {Joy.Matrix2D}
      */
     getMatrix: function() {
       return this._matrix.clone();
@@ -1024,7 +1065,7 @@
 
     /**
      * Return DisplayObject boundaries as a rectangle.
-     * @return {Rect}
+     * @return {Joy.Rect}
      */
     getBounds: function () {
       return new J.Rect(this.position.x, this.position.y, this.width, this.height);
@@ -1034,6 +1075,9 @@
   J.DisplayObject = DisplayObject;
 })(Joy);
 
+/**
+ * @module Joy
+ */
 (function(J) {
   var DisplayObjectContainer = J.DisplayObject.extend({
     /**
@@ -1045,14 +1089,14 @@
       if (!options) { options = {}; }
 
       /**
-       * @property children
+       * @attribute children
        * @type {Array}
        */
       this.children = [];
 
       /**
        * Number of children displayObject's attached to the container.
-       * @property numChildren
+       * @attribute numChildren
        * @type {Number}
        * @readonly
        */
@@ -1119,6 +1163,23 @@
         this.children[i].render();
         this.children[i].trigger('update');
         this.ctx.restore();
+
+        // Render collider, without any transformation
+        if (J.debug) {
+          this.children[i].collider.renderStroke(this.ctx);
+        }
+      }
+    },
+
+    /**
+     * @method broadcast
+     * @param {String}
+     * @return {Joy.DisplayObjectContainer} this
+     */
+    broadcast: function (e, params) {
+      this.trigger(e, params);
+      for (var i = 0, length = this.children.length; i<length; ++i) {
+        this.children[i].trigger(e, params);
       }
     },
 
@@ -1148,8 +1209,8 @@
     /**
      * Add a display object in the list.
      * @method addChild
-     * @param {DisplayObject, DisplayObjectContainer}
-     * @return {DisplayObject} this
+     * @param {Joy.DisplayObject | Joy.DisplayObjectContainer}
+     * @return {Joy.DisplayObjectContainer} this
      */
     addChild: function(displayObject) {
       displayObject.setContext(this.ctx);
@@ -1163,9 +1224,23 @@
     },
 
     /**
+     * Search for a child by id attribute
+     * @method getChildById
+     * @param {String} id
+     * @return {Joy.DisplayObject}
+     */
+    getChildById: function (id) {
+      for (var i = 0, length = this.children.length; i<length; ++i) {
+        if (this.children[i].id == id) {
+          return this.children[i];
+        }
+      }
+    },
+
+    /**
      * @method getChildAt
      * @param {Number} index
-     * @return {DisplayObject}
+     * @return {Joy.DisplayObject}
      */
     getChildAt: function (index) {
       return this.children[index];
@@ -1173,8 +1248,8 @@
 
     /**
      * Remove target child
-     * @param {DisplayObject} displayObject
-     * @return this
+     * @param {Joy.DisplayObject} displayObject
+     * @return {Joy.DisplayObjectContainer} this
      */
     removeChild: function(displayObject) {
       return this.removeChildAt(displayObject.index);
@@ -1183,7 +1258,7 @@
     /**
      * Remove child at specific index
      * @param {Number} index
-     * @return this
+     * @return {Joy.DisplayObjectContainer} this
      */
     removeChildAt: function(index) {
       var displayObject = this.children.splice(index, index+1)[0];
@@ -1200,61 +1275,16 @@
   J.DisplayObjectContainer = DisplayObjectContainer;
 })(Joy);
 
-(function(J) {
-  /**
-   * @class Shape
-   * @constructor
-   */
-  var Shape = J.DisplayObject.extend({
-    init: function (options) {
-      if (!options) {
-        options = {};
-      }
-
-      /**
-       * Geometry
-       * @property geom
-       * @type {Rect, Polygon, Circle}
-       */
-      this.__defineSetter__('geom', function(geom) {
-        this._geom = geom;
-      });
-      this.__defineGetter__('geom', function() { return this._geom; });
-
-      if (options.geom) {
-        this.geom = options.geom;
-      }
-
-      this._super(options);
-
-      // Override DisplayObject width getter
-      this.__defineGetter__('width', function() {
-        return this._geom.width;
-      });
-      // Override DisplayObject height getter
-      this.__defineGetter__('height', function() {
-        return this._geom.height;
-      });
-
-    },
-
-    render: function() {
-      this._super();
-      this._geom.render(this.ctx);
-    }
-  });
-
-
-  J.Shape = Shape;
-})(Joy);
-
+/**
+ * @module Joy
+ */
 (function(J) {
   /**
    * @class Sprite
    * @extends DisplayObjectContainer
    * @constructor
    *
-   * @param {String, Object} data src (String) or
+   * @param {String | Object} data src (String) or
    *  @param {Number} width
    *  @param {Number} height
    */
@@ -1263,6 +1293,12 @@
       if (typeof(options)==="string") {
         options = { src: options };
       }
+
+      /**
+       * @attribute loaded
+       * @type {Boolean}
+       */
+      this.loaded = false;
 
       // Asset
       this.image = options.image || new Image();
@@ -1296,6 +1332,7 @@
     },
 
     onLoad: function() {
+      this.loaded = true;
       if (!this._width) { this._width = this.image.width; }
       if (!this._height) { this._height = this.image.height; }
     },
@@ -1310,9 +1347,13 @@
   J.Sprite = Sprite;
 })(Joy);
 
+/**
+ * @module Joy
+ */
 (function(J) {
   /**
    * Handles spritesheet animations
+   *
    * @class SpriteSheet
    * @constructor
    *
@@ -1331,14 +1372,14 @@
       this.frames = 1;
 
       /**
-       * @property currentFrame
+       * @attribute currentFrame
        * @type {Number}
        */
       this.currentFrame = 0;
 
       /**
        * Frames per second.
-       * @property framesPerSecond
+       * @attribute framesPerSecond
        * @alias fps
        * @type {Number}
        */
@@ -1353,7 +1394,7 @@
       }
 
       /**
-       * @property currentAnimation
+       * @attribute currentAnimation
        * @type {String}
        * @readonly
        */
@@ -1372,6 +1413,7 @@
     },
 
     _update: function() {
+      if (!this.loaded) {return;}
       var currentAnimation = this._animations[this._currentAnimation];
 
       if (this.currentFrame == currentAnimation.lastFrame) {
@@ -1397,10 +1439,10 @@
      * @example
      *  spriteSheet.addAnimation("walking", [0, 32]);
      *
-     * @return this
+     * @return {Joy.SpriteSheet} this
      */
     addAnimation: function (name, frames) {
-      var firstFrame = frames[0], lastFrame = frames[1];
+      var firstFrame = frames[0], lastFrame = frames[1] || frames[0];
       this._animations[name] = {firstFrame: firstFrame, lastFrame: lastFrame};
 
       // Increase animations set length;
@@ -1430,7 +1472,7 @@
     /**
      * Play specified animation by name
      * @param {String} animationName
-     * @return this
+     * @return {Joy.SpriteSheet} this
      */
     play: function (animationName) {
       if (this._currentAnimation != animationName) {
@@ -1441,6 +1483,15 @@
         this.currentFrame = this._animations[animationName].firstFrame;
       }
       return this;
+    },
+
+    /**
+     * Stop current animation
+     * @method stop
+     * @return {Joy.SpriteSheet} this
+     */
+    stop: function () {
+      clearInterval(this._frequencyInterval);
     },
 
     render: function() {
@@ -1455,11 +1506,6 @@
                          0,
                          this._width,
                          this._height);
-
-      if (J.debug) {
-        this.collider.renderStroke(this.ctx);
-      }
-
     }
   });
 
@@ -1467,19 +1513,54 @@
 })(Joy);
 
 /**
- * @class Text
- * @extends DisplayObject
+ * @module Joy
  */
 (function(J) {
-  /*
-   * Constants
+  /**
+   * @property BASELINE
+   * @static
    */
   var BASELINE = {
+    /**
+     * @property BASELINE.TOP
+     * @type {String}
+     * @static
+     */
     TOP : 'top',
+
+    /**
+     * @property BASELINE.HANGING
+     * @type {String}
+     * @static
+     */
     HANGING : 'hanging',
+
+    /**
+     * @property BASELINE.MIDDLE
+     * @type {String}
+     * @static
+     */
     MIDDLE : 'middle',
+
+    /**
+     * @property BASELINE.ALPHABETIC
+     * @type {String}
+     * @static
+     */
     ALPHABETIC : 'alphabetic',
+
+    /**
+     * @property BASELINE.IDEOGRAPHIC
+     * @type {String}
+     * @static
+     */
     IDEOGRAPHIC : 'ideographic',
+
+    /**
+     * @property BASELINE.BOTTOM
+     * @type {String}
+     * @static
+     */
     BOTTOM : 'bottom'
   };
 
@@ -1494,8 +1575,16 @@
 
   var Text = J.DisplayObject.extend({
     /**
-     * Create Text instance
+     * @class Text
+     * @extends Joy.DisplayObject
+     *
      * @param {Object} options any attribute may be initialized by option
+     *   @param {String} [options.text] default - ""
+     *   @param {String} [options.font] default - "Normal 12px Verdana"
+     *   @param {String} [options.align] default - "left"
+     *   @param {String} [options.baseline] default - Joy.Text.BASELINE.TOP
+     *   @param {String} [options.color] default - #000000
+     *
      * @constructor
      */
     init: function(options) {
@@ -1507,7 +1596,7 @@
 
       /**
        * Text to be displayed
-       * @property text
+       * @attribute text
        * @default ""
        * @type {String}
        */
@@ -1515,7 +1604,7 @@
 
       /**
        * Font family and size
-       * @property font
+       * @attribute font
        * @default "Normal 12px Verdana"
        * @type {String}
        */
@@ -1523,7 +1612,7 @@
 
       /**
        * Text horizontal alignment
-       * @property align
+       * @attribute align
        * @default "left"
        * @type {String}
        */
@@ -1531,7 +1620,7 @@
 
       /**
        * Text vertical baseline
-       * @property baseline
+       * @attribute baseline
        * @default Joy.Text.BASELINE.TOP
        * @type {String}
        */
@@ -1539,7 +1628,7 @@
 
       /**
        * Color of the text
-       * @property color
+       * @attribute color
        * @default "#000000"
        * @type {String, Joy.Color}
        */
@@ -1605,12 +1694,15 @@
 
 (function(J) {
   /**
-   * @class Behaviour
+   * @module Joy.Behaviour
    */
   var Behaviour = J.Object.extend({});
   Joy.Behaviour = Behaviour;
 })(Joy);
 
+/**
+ * @module Joy
+ */
 (function(J) {
   var Scene = J.DisplayObjectContainer.extend({
     /**
@@ -1620,25 +1712,32 @@
      */
     init: function(options) {
       if (!options) { options = {}; }
+
+      // Initialize scenes as invisible as default.
+      // Use Engine methods to toggle scene visibility
+      if (typeof(options.visible) === "undefined") {
+        options.visible = false;
+      }
+
       this._super(options);
 
       /**
        * Is the scene on paused state?
-       * @property paused
+       * @attribute paused
        * @type {Boolean}
        */
       this.paused = false;
 
       /**
        * List of active shaders on the scene.
-       * @property shaders
+       * @attribute shaders
        * @type {Array}
        */
       this.shaders = [];
 
       /**
-       * @property viewport
-       * @type {Viewport}
+       * @attribute viewport
+       * @type {Joy.Viewport}
        */
       this.viewport = options.viewport || new J.Viewport({scene: this});
     },
@@ -1659,7 +1758,7 @@
      * @method pause
      * @param {Object} options
      * @param {Number} options.blur radius for gaussian blur filter (optional)
-     * @return this
+     * @return {Joy.Scene} this
      */
     pause: function (options) {
       options = options || {};
@@ -1690,23 +1789,73 @@
 
       this.viewport.render();
 
-      J.Mouse.collider.renderStroke(this.ctx);
-
       // Experimental: apply shaders
       if (this.shaders.length > 0) {
         for (var i=0, length = this.shaders.length; i < length; ++i) {
           J.Shader.process(this.ctx, this.shaders[i][0], this.shaders[i][1]);
         }
       }
-
     },
+
+    /**
+     * @method fadeOut
+     * @param {Number} milliseconds
+     * @param {String, Color} color
+     * @return {Joy.Scene} this
+     */
+    fadeOut: function (milliseconds, color) {
+      var self = this,
+          rectangle = new J.Rect({
+        width: this.viewport.width,
+        height: this.viewport.height,
+        alpha: 0
+      }).colorize(color);
+      self.trigger('fadeOutStart');
+
+      this.viewport.addHud(rectangle);
+      var interval = setInterval(function () {
+        rectangle.alpha += ((1000 / milliseconds) / 60) * J.deltaTime;
+        if (rectangle.alpha >= 1) {
+          clearInterval(interval);
+          self.trigger('fadeOutComplete');
+        }
+      }, 1);
+      return this;
+    },
+
+    /**
+     * @method fadeIn
+     * @param {Number} milliseconds
+     * @param {String, Color} color
+     * @return {Joy.Scene} this
+     */
+    fadeIn: function (milliseconds, color) {
+      var self = this,
+          rectangle = new J.Rect({
+        width: this.viewport.width,
+        height: this.viewport.height,
+        alpha: 1
+      }).colorize(color);
+      self.trigger('fadeInStart');
+
+      this.viewport.addHud(rectangle);
+      var interval = setInterval(function () {
+        rectangle.alpha -= ((1000 / milliseconds) / 60) * J.deltaTime;
+        if (rectangle.alpha <= 0) {
+          clearInterval(interval);
+          self.trigger('fadeInComplete');
+        }
+      }, 1000 / 60);
+      return this;
+    },
+
 
     /**
      * Experimental: add post-processing pixel effect.
      * @method addShader
      * @param {Function} shader
      * @param {Object} options shader options (optional)
-     * @return this
+     * @return {Joy.Scene} this
      */
     addShader: function(shader, args) {
       this.shaders.push([shader, args]);
@@ -1717,6 +1866,9 @@
   J.Scene = Scene;
 })(Joy);
 
+/**
+ * @module Joy
+ */
 (function(J) {
   var Viewport = J.Triggerable.extend({
     /**
@@ -1724,7 +1876,7 @@
      * @constructor
      *
      * @param {Object} options
-     * @param {DisplayObject} options.follow
+     * @param {Joy.DisplayObject} options.follow
      * @param {Number} options.width
      * @param {Number} options.height
      */
@@ -1733,23 +1885,23 @@
       this.id = options.id || Joy.generateUniqueId();
 
       /**
-       * @property position
-       * @type {Vector2d}
+       * @attribute position
+       * @type {Joy.Vector2d}
        */
       this.position = new J.Vector2d();
       this._lastPosition = new J.Vector2d();
 
       /**
        * Current viewport translation offset
-       * @property translation
-       * @type {Vector2d}
+       * @attribute translation
+       * @type {Joy.Vector2d}
        */
       this.translation = new J.Vector2d();
 
       /**
        * Container DisplayObject
-       * @property scene
-       * @type {DisplayObjectContainer}
+       * @attribute scene
+       * @type {Joy.DisplayObjectContainer}
        */
       if (options.scene) {
         this.scene = options.scene;
@@ -1757,18 +1909,20 @@
       }
 
       /**
-       * @property hud
-       * @type {DisplayObjectContainer}
+       * @attribute hud
+       * @type {Joy.DisplayObjectContainer}
        */
       this.hud = new J.DisplayObjectContainer({id: this.id + "_HUD", ctx: this.ctx});
       this.hud.position = this.position;
 
       /**
-       * @property active
+       * @attribute active
        * @type {Boolean}
        * @readonly
        */
       this.active = true;
+
+      this._translationTotal = new J.Vector2d();
 
       this.setup(options);
     },
@@ -1777,7 +1931,7 @@
      * Add head up display on the viewport.
      * @method addHud
      * @param {DisplayObject}
-     * @return {Viewport}
+     * @return {Joy.Viewport}
      */
     addHud: function (displayObject) {
       return this.hud.addChild(displayObject);
@@ -1785,21 +1939,21 @@
 
     setup: function (options) {
       /**
-       * @property width
+       * @attribute width
        * @type {Number}
        */
       this.width = options.width;
 
       /**
-       * @property height
+       * @attribute height
        * @type {Number}
        */
       this.height = options.height;
 
       /**
        * DisplayObject that will be followed.
-       * @property follow
-       * @type {DisplayObject}
+       * @attribute follow
+       * @type {Joy.DisplayObject}
        */
       if (options.follow) {
         this.follow = options.follow;
@@ -1816,7 +1970,7 @@
      * @method setSize
      * @param {Number} width
      * @param {Number} height
-     * @return {Viewport}
+     * @return {Joy.Viewport}
      */
     setSize: function (width, height) {
       this.width = width;
@@ -1835,7 +1989,7 @@
      * @method setDeadzone
      * @param {Number} width
      * @param {Number} height
-     * @return {Viewport} this
+     * @return {Joy.Viewport} this
      */
     setDeadzone: function(width, height) {
       this.deadzone = new J.Vector2d(width, height);
@@ -1852,6 +2006,8 @@
       this.translation.x = -this.position.x + this._lastPosition.x;
       this.translation.y = -this.position.y + this._lastPosition.y;
 
+      this._translationTotal.sum(this.translation);
+
       if (this.active) {
         this.trigger('translate');
         this.ctx.translate(this.translation.x,  this.translation.y);
@@ -1862,8 +2018,19 @@
     },
 
     render: function () {
-      //console.log("Render hud!", this.hud.position.toString(), this.hud.children);
       this.hud.render();
+    },
+
+    /**
+     * Restore context translation
+     * @method reset
+     * @return {Joy.Viewport} this
+     */
+    reset: function () {
+      this.ctx.translate(-this._translationTotal.x, -this._translationTotal.y);
+      this._translationTotal.set(0, 0);
+      this._lastPosition.set(0, 0);
+      return this;
     }
 
   });
@@ -1871,30 +2038,39 @@
   J.Viewport = Viewport;
 })(Joy);
 
+/**
+ * @module Joy.Behaviour
+ */
 (function(J) {
   /**
    * Built-in behaviour that handles OVER/OUT/CLICK events from mouse.
    * May be appended to any DisplayObject, by `behave` method.
    *
-   * @example Append Button behavior into a HUD instance.
-   *   play.behave(Joy.Behaviour.Button);
-   *   play.bind(J.Events.CLICK, function() {
-   *     console.log("Mouse is mine!");
-   *   })
-   *   play.bind(J.Events.MOUSE_OVER, function() {
-   *     console.log("Mouse is mine!");
-   *   })
-   *   play.bind(J.Events.MOUSE_OUT, function() {
-   *     console.log("Mouse is leaving me!");
-   *   })
+   * @class Button
+   * @constructor
    *
-   * @class Behaviour.Button
+   * @example
+   *     play = new Joy.DisplayObject(...);
+   *
+   *     // Append Button behavior into a HUD instance.
+   *     play.behave(Joy.Behaviour.Button);
+   *
+   *     // Bind event handlers
+   *     play.bind(Joy.Events.CLICK, function() {
+   *       console.log("Mouse is mine!");
+   *     })
+   *     play.bind(Joy.Events.MOUSE_OVER, function() {
+   *       console.log("Mouse is mine!");
+   *     })
+   *     play.bind(Joy.Events.MOUSE_OUT, function() {
+   *       console.log("Mouse is leaving me!");
+   *     })
    */
 
   var Button = J.Behaviour.extend({
     INIT: function (options) {
       /**
-       * @property isOver
+       * @attribute isOver
        * @type {Boolean}
        */
       this.isOver = false;
@@ -1917,32 +2093,50 @@
 })(Joy);
 
 
+/**
+ * @module Joy.Behaviour
+ */
 (function(J) {
   /**
    * Built-in behaviour that have acceleration / friction / velocity control.
-   * May be appended to any DisplayObject, by `behave` method.
+   * May be appended to any DisplayObject, by `DisplayObject#behave` method.
    *
-   * @example Append Movimentation behavior into player instance.
-   *   player.behave(Joy.Behaviour.Movimentation);
-   *   player.acceleration.x = 5;
-   *   player.friction.x = 5;
+   * @class Movimentation
+   * @constructor
    *
-   * @class Behaviour.Movimentation
+   * @example
+   *     player = new Joy.DisplayObject(...);
+   *
+   *     // Append movimentation behaviour to DisplayObject
+   *     player.behave(Joy.Behaviour.Movimentation);
+   *
+   *     // Configure attributes
+   *     player.maxVelocity.x = 8;
+   *     player.acceleration.x = 2;
+   *     player.friction.x = 1;
+   *
    */
   var Movimentation = J.Behaviour.extend({
     INIT: function (options) {
       /**
        * Current object's velocity
-       * @property velocity
-       * @type {Vector2d}
-       * @readonly
+       * @attribute velocity
+       * @type {Joy.Vector2d}
+       * @readOnly
        */
       this.velocity = new J.Vector2d();
 
       /**
-       * Current object's direction
-       * @property direction
-       * @type {Vector2d}
+       * @attribute maxVelocity
+       * @type {Joy.Vector2d}
+       * @default Joy.Vector2d(500,500)
+       */
+      this.maxVelocity = new J.Vector2d(500, 500);
+
+      /**
+       * Normalized velocity vector, with values between -1 and 1.
+       * @attribute direction
+       * @type {Joy.Vector2d}
        * @readonly
        */
       this.__defineGetter__('direction', function () {
@@ -1950,24 +2144,18 @@
       });
 
       /**
-       * Max velocity control.
-       * @property maxVelocity
-       * @type {Vector2d}
-       * @default Joy.Vector2d(500,500)
-       */
-      this.maxVelocity = new J.Vector2d(500, 500);
-
-      /**
        * Acceleration by frame, in pixels.
-       * @property acceleration
-       * @type {Vector2d}
+       *
+       * @attribute acceleration
+       * @type {Joy.Vector2d}
        */
       this.acceleration = new J.Vector2d();
 
       /**
        * Friction for velocity.
-       * @property friction
-       * @type {Vector2d}
+       *
+       * @attribute friction
+       * @type {Joy.Vector2d}
        */
       this.friction = new J.Vector2d();
     },
@@ -2000,6 +2188,9 @@
   J.Behaviour.Movimentation = Movimentation;
 })(Joy);
 
+/**
+ * @module Joy
+ */
 (function(J) {
   /**
    * @class RectCollider
@@ -2009,6 +2200,7 @@
    * @constructor
    */
   var RectCollider = function(position, width, height) {
+    this.id = J.generateUniqueId();
     this.position = position;
     this.collidePosition = this.position.clone();
     this.width = width;
@@ -2021,7 +2213,7 @@
   };
 
   RectCollider.prototype.renderStroke = function(ctx) {
-    ctx.strokeStyle = "black";
+    ctx.strokeStyle = "red";
     ctx.strokeRect(this.collidePosition.x, this.collidePosition.y, this.width, this.height);
   };
 
@@ -2041,7 +2233,7 @@
 
   /**
    * @method clone
-   * @return {RectCollider}
+   * @return {Joy.RectCollider}
    */
   RectCollider.prototype.clone = function() {
     return new RectCollider(this.position.clone(), this.width, this.height);
@@ -2050,15 +2242,18 @@
   J.RectCollider = RectCollider;
 })(Joy);
 
+/**
+ * @module Joy
+ */
 (function(J) {
   /**
-   * Used on DisplayObject#composite
+   * Used on `DisplayObject#composite`
    * @class CompositeOperation
    * @static
    */
   J.CompositeOperation = {
     /**
-     * @property SOURCE_OVER
+     * @attribute SOURCE_OVER
      * @static
      * @final
      * @type {String}
@@ -2066,7 +2261,7 @@
     SOURCE_OVER: 'source-over',
 
     /**
-     * @property SOURCE_IN
+     * @attribute SOURCE_IN
      * @static
      * @final
      * @type {String}
@@ -2074,7 +2269,7 @@
     SOURCE_IN: 'source-in',
 
     /**
-     * @property SOURCE_OUT
+     * @attribute SOURCE_OUT
      * @static
      * @final
      * @type {String}
@@ -2082,7 +2277,7 @@
     SOURCE_OUT: 'source-out',
 
     /**
-     * @property SOURCE_ATOP
+     * @attribute SOURCE_ATOP
      * @static
      * @final
      * @type {String}
@@ -2090,7 +2285,7 @@
     SOURCE_ATOP: 'source-atop',
 
     /**
-     * @property LIGHTER
+     * @attribute LIGHTER
      * @static
      * @final
      * @type {String}
@@ -2098,7 +2293,7 @@
     LIGHTER: 'lighter',
 
     /**
-     * @property XOR
+     * @attribute XOR
      * @static
      * @final
      * @type {String}
@@ -2106,7 +2301,7 @@
     XOR: 'xor',
 
     /**
-     * @property DESTINATION_OVER
+     * @attribute DESTINATION_OVER
      * @static
      * @final
      * @type {String}
@@ -2114,7 +2309,7 @@
     DESTINATION_OVER: 'destination-over',
 
     /**
-     * @property DESTINATION_IN
+     * @attribute DESTINATION_IN
      * @static
      * @final
      * @type {String}
@@ -2122,7 +2317,7 @@
     DESTINATION_IN: 'destination-in',
 
     /**
-     * @property DESTINATION_OUT
+     * @attribute DESTINATION_OUT
      * @static
      * @final
      * @type {String}
@@ -2130,7 +2325,7 @@
     DESTINATION_OUT: 'destination-out',
 
     /**
-     * @property DESTINATION_ATOP
+     * @attribute DESTINATION_ATOP
      * @static
      * @final
      * @type {String}
@@ -2138,7 +2333,7 @@
     DESTINATION_ATOP: 'destination-atop',
 
     /**
-     * @property DESTINATION_COPY
+     * @attribute DESTINATION_COPY
      * @static
      * @final
      * @type {String}
@@ -2147,6 +2342,9 @@
   };
 })(Joy);
 
+/**
+ * @module Joy
+ */
 (function(J) {
   // TODO: find a better way to reference currentEngine instance.
   // What will happen when we have two canvas contexts at the same time? (like a mini-map?)
@@ -2154,6 +2352,7 @@
 
   /**
    * Engine context. Start your application from here.
+   *
    * @class Engine
    * @constructor
    */
@@ -2165,7 +2364,7 @@
 
     /**
      * Is engine paused?
-     * @property paused
+     * @attribute paused
      * @type {Boolean}
      */
     this.paused = false;
@@ -2216,14 +2415,19 @@
     });
 
     /**
-     * @property currentScene
-     * @type {Scene}
+     * @attribute currentScene
+     * @type {Joy.Scene}
      * @readonly
      */
     this.__defineGetter__('currentScene', function() {
-      return this.scenes[this._currentScene];
+      return this.scenes[this._currentSceneIndex];
     });
-    this._currentScene = null;
+    this.__defineSetter__('_currentScene', function (index) {
+      // Trigger scene active event
+      this.scenes[index].broadcast(J.Events.SCENE_ACTIVE, [this.scenes[index]]);
+      this._currentSceneIndex = index;
+    });
+    this._currentSceneIndex = null;
 
     // requestAnimationFrame
     if (Joy.debug) {
@@ -2238,7 +2442,7 @@
   /**
    * Create a new scene
    * @method createScene
-   * @return {Scene}
+   * @return {Joy.Scene}
    */
   Engine.prototype.createScene = function() {
     var scene = new J.Scene({ctx: this.context.ctx});
@@ -2266,19 +2470,44 @@
     this.paused = false;
   };
 
+  /**
+   * @method gotoNextScene
+   * @param {Number} fadeMilliseconds (default=1000)
+   * @param {String | Joy.Color} color (default=#fff)
+   * @return {Joy.Scene} this
+   */
+  Engine.prototype.gotoNextScene = function(milliseconds, color) {
+    if (!milliseconds) { milliseconds = 1000; }
+    if (!color) { color = "#fff"; }
+    var self = this;
+    this.scenes[this._currentSceneIndex].fadeOut(milliseconds, color).bind('fadeOutComplete', function () {
+      self.scenes[self._currentSceneIndex].visible = false;
+
+      // Restore ctx translation to x=0, y=0
+      self.scenes[self._currentSceneIndex].viewport.reset();
+
+      self._currentScene = self._currentSceneIndex + 1;
+      self.scenes[self._currentSceneIndex].visible = true;
+      self.scenes[self._currentSceneIndex].fadeIn(milliseconds, color);
+    });
+    return this;
+  };
+
   Engine.prototype.addScene = function(scene) {
     scene.engine = this;
     scene.setContext(this.context.ctx);
 
     if (Joy.debug) {
-      console.log("Add hud!");
       scene.viewport.addHud(this._frameRateText);
     }
 
-    // TODO: implement scene switcher,
-    // setting the current scene to the last added one
-    // is too dumb
-    this._currentScene = this.scenes.push(scene) - 1;
+    // The first scene added to engine is always the 'current'
+    this.scenes.push(scene);
+
+    if (this._currentSceneIndex === null) {
+      scene.visible = true;
+      this._currentScene = this.scenes.length - 1;
+    }
   };
 
   Engine.prototype.render = function() {
@@ -2315,11 +2544,12 @@
   J.Engine = Engine;
 })(Joy);
 
+/**
+ * @module Joy
+ */
 (function(J) {
   /**
-   * Initialize a Circle
-   *
-   * @param {Vector2d} position
+   * @param {Joy.Vector2d} position
    * @param {Number} radius
    *
    * @class Circle
@@ -2337,40 +2567,16 @@
   J.Circle = Circle;
 })(Joy);
 
-(function(J) {
-  /**
-   * @class Polygon
-   * @constructor
-   * @param {Array} Array of Vector2d's.
-   */
-  var Polygon = function(points) {
-    this.points = [];
-
-    if (points) {
-      for (var i=0, length=points.length; i < length; ++i) {
-        this.addPoint(points[i]);
-      }
-    }
-  };
-
-  Polygon.prototype.addPoint = function(point) {
-    this.points.push(point);
-  };
-
-  Polygon.prototype.render = function(ctx) {
-    // TODO
-  };
-
-  J.Polygon = Polygon;
-})(Joy);
-
+/**
+ * @module Joy
+ */
 (function(J){
   var Rect = J.DisplayObject.extend({
     /**
      * @class Rect
      * @constructor
      * @param {Object} options
-     *   @param {Vector2d} position
+     *   @param {Joy.Vector2d} position
      *   @param {Number} width
      *   @param {Number} height
      */
@@ -2378,7 +2584,7 @@
       this._super(options);
 
       /**
-       * @property color
+       * @attribute color
        * @type {String}
        */
       if (options.color) {
@@ -2388,7 +2594,7 @@
 
     /**
      * @method colorize
-     * @param {Color, String} color
+     * @param {Joy.Color | String} color
      * @return {Rect} this
      */
     colorize: function (color) {
@@ -2411,6 +2617,9 @@
   J.Rect = Rect;
 })(Joy);
 
+/**
+ * @module Joy
+ */
 (function(J){
   /**
    * @class Vector2d
@@ -2424,7 +2633,7 @@
 
     /**
      * Get the magnitude of this vector
-     * @property length
+     * @attribute length
      * @readonly
      */
     this.__defineGetter__('length', function () {
@@ -2433,7 +2642,7 @@
 
     /**
      * Get this vector with a magnitude of 1.
-     * @property normalized
+     * @attribute normalized
      * @readonly
      */
     this.__defineGetter__('normalized', function () {
@@ -2446,7 +2655,7 @@
    * @method set
    * @param {Number} x
    * @param {Number} y
-   * @return {Vector2d}
+   * @return {Joy.Vector2d}
    */
   Vector2d.prototype.set = function (x, y) {
     this.x = x;
@@ -2456,8 +2665,8 @@
 
   /**
    * @method sum
-   * @param {Vector2d} vector2d
-   * @return {Vector2d}
+   * @param {Joy.Vector2d} vector2d
+   * @return {Joy.Vector2d}
    */
   Vector2d.prototype.subtract = function (vector2d) {
     this.x -= vector2d.x;
@@ -2467,8 +2676,8 @@
 
   /**
    * @method sum
-   * @param {Vector2d} vector2d
-   * @return {Vector2d}
+   * @param {Joy.Vector2d} vector2d
+   * @return {Joy.Vector2d}
    */
   Vector2d.prototype.sum = function (vector2d) {
     this.x += vector2d.x;
@@ -2478,19 +2687,19 @@
 
   /**
    * @method scale
-   * @param {Number} x
+   * @param {Number} x (or x y)
    * @param {Number} y
-   * @return {Vector2d}
+   * @return {Joy.Vector2d}
    */
   Vector2d.prototype.scale = function (x, y) {
     this.x *= x;
-    this.y *= y;
+    this.y *= y || x;
     return this;
   };
 
   /**
    * @method clone
-   * @return {Vector2d}
+   * @return {Joy.Vector2d}
    */
   Vector2d.prototype.clone = function() {
     return new Vector2d(this.x, this.y);
@@ -2498,7 +2707,7 @@
 
   /**
    * Return unit vector
-   * @return {Vector2d}
+   * @return {Joy.Vector2d}
    */
   Vector2d.prototype.unit = function() {
     return new Vector2d( Math.cos(this.x), Math.sin(this.y) );
@@ -2506,7 +2715,7 @@
 
   /**
    * Normalize this vector
-   * @return {Vector2d}
+   * @return {Joy.Vector2d}
    */
   Vector2d.prototype.normalize = function() {
     var normal = this.normalized;
@@ -2517,11 +2726,12 @@
 
   /**
    * Get the distance between this vector and the argument vector
-   * @param {Vector2d} vector
+   * @param {Joy.Vector2d} vector
    * @return {Number}
    */
-  Vector2d.distance = function(vector) {
-    var xdiff = this.x - vector.x, ydiff = this.y - vector.y;
+  Vector2d.distance = function(v1, v2) {
+    var xdiff = v1.x - v2.x,
+        ydiff = v1.y - v2.y;
     return Math.sqrt(xdiff * xdiff + ydiff * ydiff);
   };
 
@@ -2542,18 +2752,24 @@
 })(Joy);
 
 /**
- * Analyses HTML tags inside <canvas> tag, and add those childs
- * to Joy contexting pipeline.
- *
- * TODO: This feature is extremely experimental.
- *
- * Dependency: Sizzle
- * @class Markup
+ * @module Joy
  */
+
 (function(J){
   // Use Sizzle as CSS Selector Engine.
   var $ = (typeof(Sizzle) !== "undefined") ? Sizzle : null;
 
+  /**
+   * Analyses HTML `canvas` tag contents, and add those childs
+   * to Joy contexting pipeline.
+   *
+   * TODO: This feature is extremely experimental.
+   *
+   * Dependency: Sizzle
+   *
+   * @class Markup
+   * @constructor
+   */
   var Markup = function() {};
 
   Markup.prototype.analyse = function(context) {
@@ -2601,34 +2817,46 @@
 })(Joy);
 
 /**
- * Reads a stand-alone package.
- * @class Package
+ * @module Joy
  */
 (function(J){
+  /**
+   * Reads a stand-alone package.
+   *
+   * TODO: Not implemented yet.
+   *
+   * @class Package
+   */
   var Package = function() {};
   J.Package = Package;
 })(Joy);
 
 
+/**
+ * @module Joy
+ */
 (function(J) {
   /**
-   * Create a color.
-   * @param {String, Number} HEX_or_RED hexadecimal color (String), or red (Number)
+   * @param {String | Number} hexOrRed hexadecimal color (String), or red (Number)
    * @param {Number} green
    * @param {Number} blue
    * @param {Number} alpha
    *
-   * @example Color name
-   *  var color = new Joy.Color("red");
+   * @example
+   *     // color name
+   *     var color = new Joy.Color("red");
    *
-   * @example Hexadecimal
-   *  var color = new Joy.Color("#fff");
+   * @example
+   *     // hexadecimal
+   *     var color = new Joy.Color("#fff");
    *
-   * @example RGB
-   *  var color = new Joy.Color(255, 50, 255);
+   * @example
+   *     // rgb
+   *     var color = new Joy.Color(255, 50, 255);
    *
-   * @example RGBA
-   *  var color = new Joy.Color(255, 50, 255, 100);
+   * @example
+   *     // rgba
+   *     var color = new Joy.Color(255, 50, 255, 100);
    *
    * @class Color
    * @constructor
@@ -2660,19 +2888,29 @@
 
 (function(J) {
   /**
+   * @class Math
+   */
+
+  /**
    * @method clamp
    * @param {Number} number
    * @param {Number} low
    * @param {Number} high
+   * @static
+   *
+   * @example
+   *     Math.clamp(5, 10, 20); // returns 10
    */
   Math.clamp = function(number, low, high) {
     return ((number < low) ? low : ((number > high) ? high : +number));
   };
 })(Joy);
 
+/**
+ * @module Joy
+ */
 (function(J) {
   /**
-   * Utility class
    * @class Utils
    * @static
    */
@@ -2690,24 +2928,19 @@
   };
 })(Joy);
 
-(function(J) {
-  var Button = J.DisplayObject.extend({
-    init: function() {
-    }
-  });
-})(Joy);
-
+/**
+ * @module Joy
+ */
 (function(J) {
   /**
-   * Singleton keyboard finals.
+   * @class Keyboard
    * @static
    * @readonly
-   * @class Keyboard
    */
   var Keyboard = {
     /**
      * Enter keycode
-     * @property ENTER
+     * @attribute ENTER
      * @type {Number}
      * @static
      * @final
@@ -2716,7 +2949,7 @@
 
     /**
      * SPACE keycode
-     * @property SPACE
+     * @attribute SPACE
      * @type {Number}
      * @static
      * @final
@@ -2725,7 +2958,7 @@
 
     /**
      * BACKSPACE keycode
-     * @property BACKSPACE
+     * @attribute BACKSPACE
      * @type {Number}
      * @static
      * @final
@@ -2734,7 +2967,7 @@
 
     /**
      * TAB keycode
-     * @property TAB
+     * @attribute TAB
      * @type {Number}
      * @static
      * @final
@@ -2743,7 +2976,7 @@
 
     /**
      * SHIFT keycode
-     * @property SHIFT
+     * @attribute SHIFT
      * @type {Number}
      * @static
      * @final
@@ -2752,7 +2985,7 @@
 
     /**
      * CTRL keycode
-     * @property CTRL
+     * @attribute CTRL
      * @type {Number}
      * @static
      * @final
@@ -2761,7 +2994,7 @@
 
     /**
      * ALT keycode
-     * @property ALT
+     * @attribute ALT
      * @type {Number}
      * @static
      * @final
@@ -2770,7 +3003,7 @@
 
     /**
      * PAUSE keycode
-     * @property PAUSE
+     * @attribute PAUSE
      * @type {Number}
      * @static
      * @final
@@ -2779,7 +3012,7 @@
 
     /**
      * CAPSLOCK keycode
-     * @property CAPSLOCK
+     * @attribute CAPSLOCK
      * @type {Number}
      * @static
      * @final
@@ -2788,7 +3021,7 @@
 
     /**
      * ESCAPE keycode
-     * @property ESCAPE
+     * @attribute ESCAPE
      * @type {Number}
      * @static
      * @final
@@ -2797,7 +3030,7 @@
 
     /**
      * PAGEUP keycode
-     * @property PAGEUP
+     * @attribute PAGEUP
      * @type {Number}
      * @static
      * @final
@@ -2806,7 +3039,7 @@
 
     /**
      * PAGEDOWN keycode
-     * @property PAGEDOWN
+     * @attribute PAGEDOWN
      * @type {Number}
      * @static
      * @final
@@ -2815,7 +3048,7 @@
 
     /**
      * END keycode
-     * @property END
+     * @attribute END
      * @type {Number}
      * @static
      * @final
@@ -2824,7 +3057,7 @@
 
     /**
      * HOME keycode
-     * @property HOME
+     * @attribute HOME
      * @type {Number}
      * @static
      * @final
@@ -2833,7 +3066,7 @@
 
     /**
      * LEFT keycode
-     * @property LEFT
+     * @attribute LEFT
      * @type {Number}
      * @static
      * @final
@@ -2842,7 +3075,7 @@
 
     /**
      * UP keycode
-     * @property UP
+     * @attribute UP
      * @type {Number}
      * @static
      * @final
@@ -2851,7 +3084,7 @@
 
     /**
      * RIGHT keycode
-     * @property RIGHT
+     * @attribute RIGHT
      * @type {Number}
      * @static
      * @final
@@ -2860,7 +3093,7 @@
 
     /**
      * DOWN keycode
-     * @property DOWN
+     * @attribute DOWN
      * @type {Number}
      * @static
      * @final
@@ -2869,7 +3102,7 @@
 
     /**
      * INSERT keycode
-     * @property INSERT
+     * @attribute INSERT
      * @type {Number}
      * @static
      * @final
@@ -2878,7 +3111,7 @@
 
     /**
      * DELETE keycode
-     * @property DELETE
+     * @attribute DELETE
      * @type {Number}
      * @static
      * @final
@@ -2887,7 +3120,7 @@
 
     /**
      * KEY_0 keycode
-     * @property KEY_0
+     * @attribute KEY_0
      * @type {Number}
      * @static
      * @final
@@ -2896,7 +3129,7 @@
 
     /**
      * KEY_1 keycode
-     * @property KEY_1
+     * @attribute KEY_1
      * @type {Number}
      * @static
      * @final
@@ -2905,7 +3138,7 @@
 
     /**
      * KEY_2 keycode
-     * @property KEY_2
+     * @attribute KEY_2
      * @type {Number}
      * @static
      * @final
@@ -2914,7 +3147,7 @@
 
     /**
      * KEY_3 keycode
-     * @property KEY_3
+     * @attribute KEY_3
      * @type {Number}
      * @static
      * @final
@@ -2923,7 +3156,7 @@
 
     /**
      * KEY_4 keycode
-     * @property KEY_4
+     * @attribute KEY_4
      * @type {Number}
      * @static
      * @final
@@ -2932,7 +3165,7 @@
 
     /**
      * KEY_5 keycode
-     * @property KEY_5
+     * @attribute KEY_5
      * @type {Number}
      * @static
      * @final
@@ -2941,7 +3174,7 @@
 
     /**
      * KEY_6 keycode
-     * @property KEY_6
+     * @attribute KEY_6
      * @type {Number}
      * @static
      * @final
@@ -2950,7 +3183,7 @@
 
     /**
      * KEY_7 keycode
-     * @property KEY_7
+     * @attribute KEY_7
      * @type {Number}
      * @static
      * @final
@@ -2959,7 +3192,7 @@
 
     /**
      * KEY_8 keycode
-     * @property KEY_8
+     * @attribute KEY_8
      * @type {Number}
      * @static
      * @final
@@ -2968,7 +3201,7 @@
 
     /**
      * KEY_9 keycode
-     * @property KEY_9
+     * @attribute KEY_9
      * @type {Number}
      * @static
      * @final
@@ -2977,7 +3210,7 @@
 
     /**
      * KEY_A keycode
-     * @property KEY_A
+     * @attribute KEY_A
      * @type {Number}
      * @static
      * @final
@@ -2986,7 +3219,7 @@
 
     /**
      * KEY_B keycode
-     * @property KEY_B
+     * @attribute KEY_B
      * @type {Number}
      * @static
      * @final
@@ -2995,7 +3228,7 @@
 
     /**
      * KEY_C keycode
-     * @property KEY_C
+     * @attribute KEY_C
      * @type {Number}
      * @static
      * @final
@@ -3004,7 +3237,7 @@
 
     /**
      * KEY_D keycode
-     * @property KEY_D
+     * @attribute KEY_D
      * @type {Number}
      * @static
      * @final
@@ -3013,7 +3246,7 @@
 
     /**
      * KEY_E keycode
-     * @property KEY_E
+     * @attribute KEY_E
      * @type {Number}
      * @static
      * @final
@@ -3022,7 +3255,7 @@
 
     /**
      * KEY_F keycode
-     * @property KEY_F
+     * @attribute KEY_F
      * @type {Number}
      * @static
      * @final
@@ -3031,7 +3264,7 @@
 
     /**
      * KEY_G keycode
-     * @property KEY_G
+     * @attribute KEY_G
      * @type {Number}
      * @static
      * @final
@@ -3040,7 +3273,7 @@
 
     /**
      * KEY_H keycode
-     * @property KEY_H
+     * @attribute KEY_H
      * @type {Number}
      * @static
      * @final
@@ -3049,7 +3282,7 @@
 
     /**
      * KEY_I keycode
-     * @property KEY_I
+     * @attribute KEY_I
      * @type {Number}
      * @static
      * @final
@@ -3058,7 +3291,7 @@
 
     /**
      * KEY_J keycode
-     * @property KEY_J
+     * @attribute KEY_J
      * @type {Number}
      * @static
      * @final
@@ -3067,7 +3300,7 @@
 
     /**
      * KEY_K keycode
-     * @property KEY_K
+     * @attribute KEY_K
      * @type {Number}
      * @static
      * @final
@@ -3076,7 +3309,7 @@
 
     /**
      * KEY_L keycode
-     * @property KEY_L
+     * @attribute KEY_L
      * @type {Number}
      * @static
      * @final
@@ -3085,7 +3318,7 @@
 
     /**
      * KEY_M keycode
-     * @property KEY_M
+     * @attribute KEY_M
      * @type {Number}
      * @static
      * @final
@@ -3094,7 +3327,7 @@
 
     /**
      * KEY_N keycode
-     * @property KEY_N
+     * @attribute KEY_N
      * @type {Number}
      * @static
      * @final
@@ -3103,7 +3336,7 @@
 
     /**
      * KEY_O keycode
-     * @property KEY_O
+     * @attribute KEY_O
      * @type {Number}
      * @static
      * @final
@@ -3112,7 +3345,7 @@
 
     /**
      * KEY_P keycode
-     * @property KEY_P
+     * @attribute KEY_P
      * @type {Number}
      * @static
      * @final
@@ -3121,7 +3354,7 @@
 
     /**
      * KEY_Q keycode
-     * @property KEY_Q
+     * @attribute KEY_Q
      * @type {Number}
      * @static
      * @final
@@ -3130,7 +3363,7 @@
 
     /**
      * KEY_R keycode
-     * @property KEY_R
+     * @attribute KEY_R
      * @type {Number}
      * @static
      * @final
@@ -3139,7 +3372,7 @@
 
     /**
      * KEY_S keycode
-     * @property KEY_S
+     * @attribute KEY_S
      * @type {Number}
      * @static
      * @final
@@ -3148,7 +3381,7 @@
 
     /**
      * KEY_T keycode
-     * @property KEY_T
+     * @attribute KEY_T
      * @type {Number}
      * @static
      * @final
@@ -3157,7 +3390,7 @@
 
     /**
      * KEY_U keycode
-     * @property KEY_U
+     * @attribute KEY_U
      * @type {Number}
      * @static
      * @final
@@ -3166,7 +3399,7 @@
 
     /**
      * KEY_V keycode
-     * @property KEY_V
+     * @attribute KEY_V
      * @type {Number}
      * @static
      * @final
@@ -3175,7 +3408,7 @@
 
     /**
      * KEY_W keycode
-     * @property KEY_W
+     * @attribute KEY_W
      * @type {Number}
      * @static
      * @final
@@ -3184,7 +3417,7 @@
 
     /**
      * KEY_X keycode
-     * @property KEY_X
+     * @attribute KEY_X
      * @type {Number}
      * @static
      * @final
@@ -3193,7 +3426,7 @@
 
     /**
      * KEY_Y keycode
-     * @property KEY_Y
+     * @attribute KEY_Y
      * @type {Number}
      * @static
      * @final
@@ -3202,7 +3435,7 @@
 
     /**
      * KEY_Z keycode
-     * @property KEY_Z
+     * @attribute KEY_Z
      * @type {Number}
      * @static
      * @final
@@ -3211,7 +3444,7 @@
 
     /**
      * SELECT keycode
-     * @property SELECT
+     * @attribute SELECT
      * @type {Number}
      * @static
      * @final
@@ -3220,7 +3453,7 @@
 
     /**
      * NUMPAD0 keycode
-     * @property NUMPAD0
+     * @attribute NUMPAD0
      * @type {Number}
      * @static
      * @final
@@ -3229,7 +3462,7 @@
 
     /**
      * NUMPAD1 keycode
-     * @property NUMPAD1
+     * @attribute NUMPAD1
      * @type {Number}
      * @static
      * @final
@@ -3238,7 +3471,7 @@
 
     /**
      * NUMPAD2 keycode
-     * @property NUMPAD2
+     * @attribute NUMPAD2
      * @type {Number}
      * @static
      * @final
@@ -3247,7 +3480,7 @@
 
     /**
      * NUMPAD3 keycode
-     * @property NUMPAD3
+     * @attribute NUMPAD3
      * @type {Number}
      * @static
      * @final
@@ -3256,7 +3489,7 @@
 
     /**
      * NUMPAD4 keycode
-     * @property NUMPAD4
+     * @attribute NUMPAD4
      * @type {Number}
      * @static
      * @final
@@ -3265,7 +3498,7 @@
 
     /**
      * NUMPAD5 keycode
-     * @property NUMPAD5
+     * @attribute NUMPAD5
      * @type {Number}
      * @static
      * @final
@@ -3274,7 +3507,7 @@
 
     /**
      * NUMPAD6 keycode
-     * @property NUMPAD6
+     * @attribute NUMPAD6
      * @type {Number}
      * @static
      * @final
@@ -3283,7 +3516,7 @@
 
     /**
      * NUMPAD7 keycode
-     * @property NUMPAD7
+     * @attribute NUMPAD7
      * @type {Number}
      * @static
      * @final
@@ -3292,7 +3525,7 @@
 
     /**
      * NUMPAD8 keycode
-     * @property NUMPAD8
+     * @attribute NUMPAD8
      * @type {Number}
      * @static
      * @final
@@ -3301,7 +3534,7 @@
 
     /**
      * NUMPAD9 keycode
-     * @property NUMPAD9
+     * @attribute NUMPAD9
      * @type {Number}
      * @static
      * @final
@@ -3310,7 +3543,7 @@
 
     /**
      * MULTIPLY keycode
-     * @property MULTIPLY
+     * @attribute MULTIPLY
      * @type {Number}
      * @static
      * @final
@@ -3319,7 +3552,7 @@
 
     /**
      * ADD keycode
-     * @property ADD
+     * @attribute ADD
      * @type {Number}
      * @static
      * @final
@@ -3328,7 +3561,7 @@
 
     /**
      * SUBTRACT keycode
-     * @property SUBTRACT
+     * @attribute SUBTRACT
      * @type {Number}
      * @static
      * @final
@@ -3337,7 +3570,7 @@
 
     /**
      * DECIMALPOINT keycode
-     * @property DECIMALPOINT
+     * @attribute DECIMALPOINT
      * @type {Number}
      * @static
      * @final
@@ -3346,7 +3579,7 @@
 
     /**
      * DIVIDE keycode
-     * @property DIVIDE
+     * @attribute DIVIDE
      * @type {Number}
      * @static
      * @final
@@ -3355,7 +3588,7 @@
 
     /**
      * F1 keycode
-     * @property F1
+     * @attribute F1
      * @type {Number}
      * @static
      * @final
@@ -3364,7 +3597,7 @@
 
     /**
      * F2 keycode
-     * @property F2
+     * @attribute F2
      * @type {Number}
      * @static
      * @final
@@ -3373,7 +3606,7 @@
 
     /**
      * F3 keycode
-     * @property F3
+     * @attribute F3
      * @type {Number}
      * @static
      * @final
@@ -3382,7 +3615,7 @@
 
     /**
      * F4 keycode
-     * @property F4
+     * @attribute F4
      * @type {Number}
      * @static
      * @final
@@ -3391,7 +3624,7 @@
 
     /**
      * F5 keycode
-     * @property F5
+     * @attribute F5
      * @type {Number}
      * @static
      * @final
@@ -3400,7 +3633,7 @@
 
     /**
      * F6 keycode
-     * @property F6
+     * @attribute F6
      * @type {Number}
      * @static
      * @final
@@ -3409,7 +3642,7 @@
 
     /**
      * F7 keycode
-     * @property F7
+     * @attribute F7
      * @type {Number}
      * @static
      * @final
@@ -3418,7 +3651,7 @@
 
     /**
      * F8 keycode
-     * @property F8
+     * @attribute F8
      * @type {Number}
      * @static
      * @final
@@ -3427,7 +3660,7 @@
 
     /**
      * F9 keycode
-     * @property F9
+     * @attribute F9
      * @type {Number}
      * @static
      * @final
@@ -3436,7 +3669,7 @@
 
     /**
      * F10 keycode
-     * @property F10
+     * @attribute F10
      * @type {Number}
      * @static
      * @final
@@ -3445,7 +3678,7 @@
 
     /**
      * F11 keycode
-     * @property F11
+     * @attribute F11
      * @type {Number}
      * @static
      * @final
@@ -3454,7 +3687,7 @@
 
     /**
      * F12 keycode
-     * @property F12
+     * @attribute F12
      * @type {Number}
      * @static
      * @final
@@ -3463,7 +3696,7 @@
 
     /**
      * NUMLOCK keycode
-     * @property NUMLOCK
+     * @attribute NUMLOCK
      * @type {Number}
      * @static
      * @final
@@ -3472,7 +3705,7 @@
 
     /**
      * SCROLLLOCK keycode
-     * @property SCROLLLOCK
+     * @attribute SCROLLLOCK
      * @type {Number}
      * @static
      * @final
@@ -3481,7 +3714,7 @@
 
     /**
      * SEMICOLON keycode
-     * @property SEMICOLON
+     * @attribute SEMICOLON
      * @type {Number}
      * @static
      * @final
@@ -3490,7 +3723,7 @@
 
     /**
      * EQUALSIGN keycode
-     * @property EQUALSIGN
+     * @attribute EQUALSIGN
      * @type {Number}
      * @static
      * @final
@@ -3499,7 +3732,7 @@
 
     /**
      * COMMA keycode
-     * @property COMMA
+     * @attribute COMMA
      * @type {Number}
      * @static
      * @final
@@ -3508,7 +3741,7 @@
 
     /**
      * DASH keycode
-     * @property DASH
+     * @attribute DASH
      * @type {Number}
      * @static
      * @final
@@ -3517,7 +3750,7 @@
 
     /**
      * PERIOD keycode
-     * @property PERIOD
+     * @attribute PERIOD
      * @type {Number}
      * @static
      * @final
@@ -3526,7 +3759,7 @@
 
     /**
      * FORWARDSLASH keycode
-     * @property FORWARDSLASH
+     * @attribute FORWARDSLASH
      * @type {Number}
      * @static
      * @final
@@ -3535,7 +3768,7 @@
 
     /**
      * GRAVEACCENT keycode
-     * @property GRAVEACCENT
+     * @attribute GRAVEACCENT
      * @type {Number}
      * @static
      * @final
@@ -3544,7 +3777,7 @@
 
     /**
      * OPENBRACKET keycode
-     * @property OPENBRACKET
+     * @attribute OPENBRACKET
      * @type {Number}
      * @static
      * @final
@@ -3553,7 +3786,7 @@
 
     /**
      * BACKSLASH keycode
-     * @property BACKSLASH
+     * @attribute BACKSLASH
      * @type {Number}
      * @static
      * @final
@@ -3562,7 +3795,7 @@
 
     /**
      * CLOSEBRAKET keycode
-     * @property CLOSEBRAKET
+     * @attribute CLOSEBRAKET
      * @type {Number}
      * @static
      * @final
@@ -3571,7 +3804,7 @@
 
     /**
      * SINGLEQUOTE keycode
-     * @property SINGLEQUOTE
+     * @attribute SINGLEQUOTE
      * @type {Number}
      * @static
      * @final
@@ -3603,6 +3836,11 @@
    */
   J.Events.KEY_PRESS = 'key';
 
+  /**
+   * @property repeatRate
+   * @type {Number}
+   * @default 1
+   */
   Keyboard.repeatRate = 1;
   Keyboard.handlers = {};
   Keyboard.timers = {};
@@ -3661,7 +3899,68 @@
   Joy.Keyboard = Keyboard;
 })(Joy);
 
+/**
+ * @module Joy
+ */
 (function(J) {
+  /**
+   * @class Mouse
+   * @static
+   * @readonly
+   */
+  var Mouse = {
+    // Create a 1x1 collider
+    collider: new J.RectCollider(new J.Vector2d(), 1, 1),
+
+    lastEvent: null,
+
+    updateColliderPosition: function (e) {
+      Mouse.collider.position.x = e.offsetX * J.currentEngine.currentScene.viewport.scale.x;
+      Mouse.collider.position.y = e.offsetY * J.currentEngine.currentScene.viewport.scale.y;
+      Mouse.collider.updateColliderPosition(J.currentEngine.currentScene.viewport.position);
+    },
+
+    /**
+     * @method isOver
+     * @param {DisplayObject} displayObject
+     * @static
+     * @return {Booelan}
+     */
+    isOver: function (displayObject) {
+      return displayObject.collider.collide(Mouse.collider);
+    },
+
+    enable: function(engine) {
+      var triggerMouseEvents = function (e) {
+        var handlers = Mouse.handlers[e.type];
+
+        //Simulate TouchEvent events as a MouseEvent
+        if (!(e instanceof MouseEvent)) {
+          e.offsetX = e.touches[0].clientX;
+          e.offsetY = e.touches[0].clientY;
+        }
+
+        this.lastEvent = e;
+        Mouse.updateColliderPosition(e);
+
+        for (var i=0, length = handlers.length; i<length; ++i) {
+          if ( handlers[i].target.visible && Mouse.isOver(handlers[i].target) ) {
+            handlers[i].handler.apply(handlers[i].target, [e]);
+          }
+        }
+      };
+
+      engine.context.canvas.onclick = triggerMouseEvents;
+      engine.context.canvas.ondblclick = triggerMouseEvents;
+      engine.context.canvas.onmousemove = triggerMouseEvents;
+      engine.context.canvas['on' + J.Events.MOUSE_DOWN] = triggerMouseEvents;
+      engine.context.canvas['on' + J.Events.MOUSE_UP] = triggerMouseEvents;
+    },
+
+    handlers: {},
+    timers: {}
+  };
+
   /**
    * Events.MOUSE_DOWN
    * @type {String}
@@ -3724,61 +4023,6 @@
    */
   J.Events.MOUSE_OUT = 'mouseout';
 
-  var Mouse = {
-    repeatRate: 1,
-
-    // Create a 1x1 collider
-    collider: new J.RectCollider(new J.Vector2d(), 1, 1),
-
-    lastEvent: null,
-
-    updateColliderPosition: function (e) {
-      Mouse.collider.position.x = e.offsetX * J.currentEngine.currentScene.viewport.scale.x;
-      Mouse.collider.position.y = e.offsetY * J.currentEngine.currentScene.viewport.scale.y;
-      Mouse.collider.updateColliderPosition(J.currentEngine.currentScene.viewport.position);
-    },
-
-    /**
-     * @method isOver
-     * @param {DisplayObject} displayObject
-     * @static
-     * @return {Booelan}
-     */
-    isOver: function (displayObject) {
-      return displayObject.collider.collide(Mouse.collider);
-    },
-
-    enable: function(engine) {
-      var triggerMouseEvents = function (e) {
-        var handlers = Mouse.handlers[e.type];
-
-        //Simulate TouchEvent events as a MouseEvent
-        if (!(e instanceof MouseEvent)) {
-          e.offsetX = e.touches[0].clientX;
-          e.offsetY = e.touches[0].clientY;
-        }
-
-        this.lastEvent = e;
-        Mouse.updateColliderPosition(e);
-
-        for (var i=0, length = handlers.length; i<length; ++i) {
-          if ( handlers[i].target.visible && Mouse.isOver(handlers[i].target) ) {
-            handlers[i].handler.apply(handlers[i].target, [e]);
-          }
-        }
-      };
-
-      engine.context.canvas.onclick = triggerMouseEvents;
-      engine.context.canvas.ondblclick = triggerMouseEvents;
-      engine.context.canvas.onmousemove = triggerMouseEvents;
-      engine.context.canvas['on' + J.Events.MOUSE_DOWN] = triggerMouseEvents;
-      engine.context.canvas['on' + J.Events.MOUSE_UP] = triggerMouseEvents;
-    },
-
-    handlers: {},
-    timers: {}
-  };
-
   [J.Events.CLICK, J.Events.DOUBLE_CLICK, J.Events.DOUBLE_CLICK, J.Events.MOUSE_MOVE, J.Events.MOUSE_DOWN, J.Events.MOUSE_UP].forEach(function(eventType) {
     Mouse.handlers[eventType] = [];
 
@@ -3797,6 +4041,9 @@
   J.Mouse = Mouse;
 })(Joy);
 
+/**
+ * @module Joy
+ */
 (function(J) {
   var Parallax = J.DisplayObjectContainer.extend({
     /**
@@ -3809,21 +4056,21 @@
 
       /**
        * Viewport that parallax effect will be based on.
-       * @property viewport
-       * @type {Viewport}
+       * @attribute viewport
+       * @type {Joy.Viewport}
        */
       this.viewport = options.viewport || null;
 
       /**
        * Distance between each parallax child.
-       * @property distance
+       * @attribute distance
        * @type {Number}
        */
       this.distance = options.distance || 1;
 
       /**
        * Amount of velocity that will increase by child.
-       * @property velocity
+       * @attribute velocity
        * @type {Number}
        */
       this.velocity = options.velocity || 1;
@@ -3857,6 +4104,9 @@
   J.Parallax = Parallax;
 })(Joy);
 
+/**
+ * @module Joy
+ */
 (function(J) {
   var ParticleEmitter = J.DisplayObject.extend({
     /**
@@ -3882,7 +4132,13 @@
   J.ParticleEmitter = ParticleEmitter;
 })(Joy);
 
+/**
+ * @module Joy
+ */
 (function(J) {
+  /**
+   * @class Shader
+   */
   var Shader = function() {};
 
   /**
@@ -4133,10 +4389,13 @@
   J.Shader = Shader;
 })(Joy);
 
+/**
+ * @module Joy
+ */
 (function(J) {
   var Tilemap = J.DisplayObjectContainer.extend({
     /**
-     * @class TileMap
+     * @class Tilemap
      * @constructor
      * @param {Object} options
      */
@@ -4147,25 +4406,25 @@
       this._super(options);
 
       /**
-       * @property tileset
-       * @type {Tileset}
+       * @attribute tileset
+       * @type {Joy.Tileset}
        */
       this.tileset = options.tileset;
 
       /**
-       * @property lines
+       * @attribute lines
        * @type {Number}
        */
       this.lines = options.lines || 1;
 
       /**
-       * @property columns
+       * @attribute columns
        * @type {Number}
        */
       this.columns = options.columns || 1;
 
       /**
-       * @property data
+       * @attribute data
        * @type {Array}
        */
       this.__defineSetter__('data', function(data) {
@@ -4181,7 +4440,7 @@
       this.data = options.data;
 
       /**
-       * @property height
+       * @attribute height
        * @readonly
        * @type {Number}
        */
@@ -4190,7 +4449,7 @@
       });
 
       /**
-       * @property width
+       * @attribute width
        * @readonly
        * @type {Number}
        */
@@ -4256,15 +4515,18 @@
   J.TilemapCollider = TilemapCollider;
 })(Joy);
 
+/**
+ * @module Joy
+ */
 (function(J) {
   var Tileset = J.Sprite.extend({
     /**
      * @class Tileset
      * @constructor
      * @param {Object} options
-     *   @param {String} src
-     *   @param {Number} width tile width
-     *   @param {Number} height tile height
+     *   @param {String} [options.src]
+     *   @param {Number} [options.width] tile width
+     *   @param {Number} [options.height] tile height
      */
     init: function(options) {
       this.tileWidth = options.width;
