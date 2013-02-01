@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>Joy Example</title>
+        <script type="text/javascript" src="../../../dist/sizzle.js"></script>
+        <script type="text/javascript" src="../../../dist/joy.js"></script>
+        <script type="text/javascript" src="../../../dist/tween.min.js"></script>
+        <style type="text/css">
+          body { margin: 0; padding: 0; zoom: 100%; }
+        </style>
+    </head>
+    <body>
+      <script type="text/javascript">
+          var J = Joy;
+          var engine = new J.Engine({debug: true, width: 960, height: 640});
+          var scene = engine.createScene();
+          scene.background("#ccc");
+
+          var logo = new J.Sprite("../shared-assets/joyjs.png").bind('load', function () {
+            this.pivot.x = this.width / 2;
+            this.pivot.y = this.height / 2;
+            this.position.x = engine.width / 2;
+            this.position.y = engine.height - this.height;
+            this.scale.x = 0.0;
+            this.scale.y = 0.0;
+            this.rotation = -180;
+            this.alpha = 0;
+
+            new TWEEN.Tween(this.position).to({y: engine.height / 2}, 3000).easing( TWEEN.Easing.Elastic.Out ).start();
+            new TWEEN.Tween(this.scale).to({x: 1.0, y: 1.0}, 2000).easing( TWEEN.Easing.Exponential.Out ).start();
+            new TWEEN.Tween(this).to({rotation: 0.0, alpha: 1}, 3000).easing( TWEEN.Easing.Elastic.Out ).start();
+          });
+
+          var joy = new J.Sprite("../shared-assets/joyjs-text.png").bind('load', function () {
+            this.pivot.x = this.width / 2;
+            this.pivot.y = this.height / 2;
+            this.position.x = engine.width / 2;
+            this.position.y = engine.height / 2;
+            this.scale.x = 0.5;
+            this.scale.y = 0.5;
+            this.alpha = 0;
+
+            new TWEEN.Tween(this.position).to({y: this.position.y - 150}, 5000).easing( TWEEN.Easing.Elastic.Out ).start();
+            new TWEEN.Tween(this.scale).to({x: 1.0, y: 1.0}, 2000).easing( TWEEN.Easing.Exponential.Out ).start();
+            new TWEEN.Tween(this).to({alpha: 1}, 3000).easing( TWEEN.Easing.Exponential.Out ).start();
+          });
+
+          scene.addChild(logo);
+          scene.addChild(joy);
+      </script>
+    </body>
+</html>
+
