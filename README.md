@@ -19,6 +19,8 @@ joy.js plays nice with these following independent libraries:
 
 ## Resources
 
+  - [Documentation](http://joyjs.org/docs)
+  - [Examples](http://joyjs.org/examples.html)
   - [Google Group](https://groups.google.com/forum/#!forum/joyjs)
   - Follow [@joyjs](https://twitter.com/joyjs_) on twitter for updates
 
