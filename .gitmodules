@@ -1,3 +1,6 @@
-[submodule "vendor/SoundManager2"]
-	path = vendor/SoundManager2
-	url = https://github.com/scottschiller/SoundManager2.git
+[submodule "vendor/howler.js"]
+	path = vendor/howler.js
+	url = https://github.com/goldfire/howler.js.git
+[submodule "vendor/tween.js"]
+	path = vendor/tween.js
+	url = https://github.com/sole/tween.js.git

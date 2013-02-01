@@ -6,13 +6,21 @@ an intuitive API.
 It is currently on early development stage, the API could change at any time,
 feel free to test it if you are adventurous.
 
+# External libraries / engines
+
+joy.js plays nice with these following independent libraries:
+
+  - TWEEN.js - tweening engine
+  - howler.js - audio library
+
 ## TODO
 
   - Normalized `collidePosition` on DisplayObject / RectCollider calls.
 
 ## Resources
 
-[Google Group](https://groups.google.com/forum/#!forum/joyjs)
+  - [Google Group](https://groups.google.com/forum/#!forum/joyjs)
+  - Follow [@joyjs](https://twitter.com/joyjs_) on twitter for updates
 
 ## Contributing
 
