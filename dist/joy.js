@@ -168,15 +168,10 @@
 })(Joy);
 
 /**
- * @module Joy
- */
-
-/**
  * Simple JavaScript Inheritance - http://ejohn.org/blog/simple-javascript-inheritance/
  * By John Resig http://ejohn.org/
  * MIT Licensed.
  *
- * @class Object
  */
 // Inspired by base2 and Prototype
 /*jshint immed:true loopfunc:true*/
@@ -288,7 +283,7 @@
    * @param {Number} skewY
    * @param {Number} pivotX Optional.
    * @param {Number} pivotY Optional.
-   * @return {Joy.Matrix2D} This matrix. Useful for chaining method calls.
+   * @return {Matrix2D} This matrix. Useful for chaining method calls.
    **/
   Matrix2D.prototype.appendTransform = function(x, y, scaleX, scaleY, rotation, skewX, skewY, pivotX, pivotY) {
     var cos, sin, r;
@@ -330,7 +325,7 @@
    * @param {Number} m22
    * @param {Number} dx
    * @param {Number} dy
-   * @return {Joy.Matrix2D} This matrix. Useful for chaining method calls.
+   * @return {Matrix2D} This matrix. Useful for chaining method calls.
    **/
   Matrix2D.prototype.append = function(m11, m12, m21, m22, dx, dy) {
     var a1 = this.m11;
@@ -350,7 +345,7 @@
   /**
    * Inverts the matrix, causing it to perform the opposite transformation.
    * @method invert
-   * @return {Joy.Matrix2D} this
+   * @return {Matrix2D} this
    **/
   Matrix2D.prototype.invert = function() {
     var a1 = this.m11;
@@ -371,7 +366,7 @@
 
   /**
    * Clone Matrix2D instance
-   * @return {Joy.Matrix2D}
+   * @return {Matrix2D}
    */
   Matrix2D.prototype.clone = function() {
     return new Matrix2D(this.m11, this.m12, this.m21, this.m22, this.dx, this.dy);
@@ -379,7 +374,7 @@
 
   /**
    * Reset matrix to it's identity
-   * @return {Joy.Matrix2D} this
+   * @return {Matrix2D} this
    */
   Matrix2D.prototype.identity = function() {
     this.m11 = this.m22 = 1;
@@ -419,8 +414,9 @@
 
     /**
      * Behave like a {Behaviour}
-     * @param {Joy.Behaviour}
-     * @return {Joy.Triggerable} this
+     * @method behave
+     * @param {Behaviour}
+     * @return {Triggerable} this
      */
     behave: function (Behaviour) {
       this._behaviours.push(Behaviour);
@@ -440,7 +436,8 @@
 
     /**
      * This object behaves as {target} behaviour?
-     * @param {Joy.Behaviour} target
+     * @method hasBehaviour
+     * @param {Behaviour} target
      * @return {Boolean}
      */
     hasBehaviour: function (behaviour) {
@@ -449,9 +446,10 @@
 
     /**
      * Bind event handler
+     * @method bind
      * @param {String} type event type
      * @param {Function} handler
-     * @return {Joy.Triggerable} this
+     * @return {Triggerable} this
      */
     bind: function (type, handler) {
       var data = handler;
@@ -474,8 +472,9 @@
 
     /**
      * Remove event handlers
+     * @method unbind
      * @param {String} type event type
-     * @return {Joy.Triggerable} this
+     * @return {Triggerable} this
      */
     unbind: function (type) {
       // Custom unbind
@@ -492,6 +491,7 @@
 
     /**
      * Triggers event type
+     * @method trigger
      * @param {String} type event type
      * @param {Array} arguments arguments for callback
      * @param {Number} delay
@@ -608,7 +608,7 @@
 
       /**
        * @attribute position
-       * @type {Joy.Vector2d}
+       * @type {Vector2d}
        * @default 0,0
        */
       this.position = options.position || new J.Vector2d(options.x || 0, options.y || 0);
@@ -619,7 +619,7 @@
 
       /**
        * @attribute pivot
-       * @type {Joy.Vector2d}
+       * @type {Vector2d}
        * @default 0,0
        */
       this.pivot = new J.Vector2d(options.pivotX || 0, options.pivotY || 0);
@@ -633,7 +633,7 @@
 
       /**
        * @attribute scale
-       * @type {Joy.Vector2d}
+       * @type {Vector2d}
        * @default 1,1
        */
       this.scale = new J.Vector2d(options.scaleX || 1, options.scaleY || 1);
@@ -657,7 +657,7 @@
        * @type {Boolean}
        * @default false
        */
-      this.smooth = options.smooth || false;
+      this.smooth = (typeof(options.smooth) === "undefined") ? true : options.smooth;
 
       /**
        * @attribute width
@@ -676,7 +676,7 @@
       /**
        * Collider object. Can be a DisplayObject, or a geometry collider.
        * @attribute collider
-       * @type {Joy.DisplayObject | Joy.RectCollider}
+       * @type {DisplayObject | RectCollider}
        * @default this
        */
       this._collider = options.collider || this;
@@ -699,7 +699,7 @@
       /**
        * Context that this DisplayObject will be rendered in
        * @attribute ctx
-       * @type {Joy.Canvas2D}
+       * @type {Canvas2D}
        * @readonly
        */
       this.ctx = options.ctx || null;
@@ -718,7 +718,7 @@
        * Parent DisplayObject
        * @attribute parent
        * @readonly
-       * @type {Joy.DisplayObjectContainer}
+       * @type {DisplayObjectContainer}
        */
       this.__defineGetter__('parent', function() {
         return this._parent;
@@ -739,7 +739,7 @@
       /**
        * Reference of the current transformation matrix.
        * @attribute matrix
-       * @type {Joy.Matrix2D}
+       * @type {Matrix2D}
        */
       this.__defineGetter__('matrix', function() {
         return this._matrix;
@@ -819,8 +819,8 @@
 
     /**
      * @method allowCollisionFrom
-     * @param {Joy.DisplayObject | Array} target
-     * @return {Joy.DisplayObject} this
+     * @param {DisplayObject | Array} target
+     * @return {DisplayObject} this
      */
     allowCollisionFrom: function (displayObjects) {
       if (displayObjects instanceof J.DisplayObject) {
@@ -871,7 +871,7 @@
      * Apply composite operation on DisplayObject's canvas.
      * @method blend
      * @param {String} compositeOperation
-     * @return {Joy.DisplayObject} this
+     * @return {DisplayObject} this
      */
     composite: function (compositeOperation) {
       this.compositeOperation = compositeOperation;
@@ -881,7 +881,7 @@
     /**
      * @method fillStyle
      * @param {Color, String} color
-     * @return {Joy.DisplayObject} this
+     * @return {DisplayObject} this
      */
     fillStyle: function(color) {
       this._hasContextOperations = true;
@@ -895,7 +895,7 @@
      * @param {Number} y
      * @param {Number} width
      * @param {Number} height
-     * @return {Joy.DisplayObject} this
+     * @return {DisplayObject} this
      */
     fillRect: function(x, y, width, height) {
       this._hasContextOperations = true;
@@ -911,7 +911,7 @@
      *  @param {Number} [options.offsetX] shadow x offset
      *  @param {Number} [options.offsetY] shadow y offset
      *  @param {Number} [options.blur] shadow blur ratio
-     * @return {Joy.DisplayObject} this
+     * @return {DisplayObject} this
      */
     shadow: function(options) {
       if (options) {
@@ -930,7 +930,7 @@
     /**
      * Update canvas context, based on DisplayObject transformation variables
      * @method updateContext
-     * @return {Joy.DisplayObject} this
+     * @return {DisplayObject} this
      */
     updateContext: function() {
       var bit = {};
@@ -982,7 +982,7 @@
      */
     checkCollisions: function() {
       var collider, totalTargets = this._collisionTargets.length;
-      // if (totalTargets == 0) { return ; }
+      if (totalTargets == 0) { return ; }
 
       if (this.collider.updateColliderPosition !== undefined) {
         this.collider.updateColliderPosition(this.position);
@@ -1016,7 +1016,7 @@
     /**
      * @method willCollideAt
      * @param {Vector2d} projection
-     * @return {Joy.DisplayObject, null}
+     * @return {DisplayObject, null}
      */
     willCollideAt: function (projection) {
       var tmpCollider = new J.RectCollider(this.collider.position.clone().sum(projection), 1, 1),
@@ -1051,13 +1051,13 @@
 
     renderStroke: function (ctx) {
       ctx.strokeStyle = "red";
-      ctx.strokeRect(0, 0, this._width, this._height);
+      ctx.strokeRect(this.collidePosition.x, this.collidePosition.y, this._width, this._height);
     },
 
     /**
      * Get a clone of the current transformation
      * @method getMatrix
-     * @return {Joy.Matrix2D}
+     * @return {Matrix2D}
      */
     getMatrix: function() {
       return this._matrix.clone();
@@ -1065,7 +1065,7 @@
 
     /**
      * Return DisplayObject boundaries as a rectangle.
-     * @return {Joy.Rect}
+     * @return {Rect}
      */
     getBounds: function () {
       return new J.Rect(this.position.x, this.position.y, this.width, this.height);
@@ -1174,7 +1174,7 @@
     /**
      * @method broadcast
      * @param {String}
-     * @return {Joy.DisplayObjectContainer} this
+     * @return {DisplayObjectContainer} this
      */
     broadcast: function (e, params) {
       this.trigger(e, params);
@@ -1209,8 +1209,8 @@
     /**
      * Add a display object in the list.
      * @method addChild
-     * @param {Joy.DisplayObject | Joy.DisplayObjectContainer}
-     * @return {Joy.DisplayObjectContainer} this
+     * @param {DisplayObject | DisplayObjectContainer}
+     * @return {DisplayObjectContainer} this
      */
     addChild: function(displayObject) {
       displayObject.setContext(this.ctx);
@@ -1227,7 +1227,7 @@
      * Search for a child by id attribute
      * @method getChildById
      * @param {String} id
-     * @return {Joy.DisplayObject}
+     * @return {DisplayObject}
      */
     getChildById: function (id) {
       for (var i = 0, length = this.children.length; i<length; ++i) {
@@ -1240,7 +1240,7 @@
     /**
      * @method getChildAt
      * @param {Number} index
-     * @return {Joy.DisplayObject}
+     * @return {DisplayObject}
      */
     getChildAt: function (index) {
       return this.children[index];
@@ -1248,8 +1248,8 @@
 
     /**
      * Remove target child
-     * @param {Joy.DisplayObject} displayObject
-     * @return {Joy.DisplayObjectContainer} this
+     * @param {DisplayObject} displayObject
+     * @return {DisplayObjectContainer} this
      */
     removeChild: function(displayObject) {
       return this.removeChildAt(displayObject.index);
@@ -1258,7 +1258,7 @@
     /**
      * Remove child at specific index
      * @param {Number} index
-     * @return {Joy.DisplayObjectContainer} this
+     * @return {DisplayObjectContainer} this
      */
     removeChildAt: function(index) {
       var displayObject = this.children.splice(index, index+1)[0];
@@ -1439,7 +1439,7 @@
      * @example
      *  spriteSheet.addAnimation("walking", [0, 32]);
      *
-     * @return {Joy.SpriteSheet} this
+     * @return {SpriteSheet} this
      */
     addAnimation: function (name, frames) {
       var firstFrame = frames[0], lastFrame = frames[1] || frames[0];
@@ -1472,7 +1472,7 @@
     /**
      * Play specified animation by name
      * @param {String} animationName
-     * @return {Joy.SpriteSheet} this
+     * @return {SpriteSheet} this
      */
     play: function (animationName) {
       if (this._currentAnimation != animationName) {
@@ -1488,7 +1488,7 @@
     /**
      * Stop current animation
      * @method stop
-     * @return {Joy.SpriteSheet} this
+     * @return {SpriteSheet} this
      */
     stop: function () {
       clearInterval(this._frequencyInterval);
@@ -1576,7 +1576,7 @@
   var Text = J.DisplayObject.extend({
     /**
      * @class Text
-     * @extends Joy.DisplayObject
+     * @extends DisplayObject
      *
      * @param {Object} options any attribute may be initialized by option
      *   @param {String} [options.text] default - ""
@@ -1630,7 +1630,7 @@
        * Color of the text
        * @attribute color
        * @default "#000000"
-       * @type {String, Joy.Color}
+       * @type {String, Color}
        */
       this._color = options.color || DEFAULT_COLOR;
       this.__defineGetter__('color', function() {
@@ -1737,7 +1737,7 @@
 
       /**
        * @attribute viewport
-       * @type {Joy.Viewport}
+       * @type {Viewport}
        */
       this.viewport = options.viewport || new J.Viewport({scene: this});
     },
@@ -1758,7 +1758,7 @@
      * @method pause
      * @param {Object} options
      * @param {Number} options.blur radius for gaussian blur filter (optional)
-     * @return {Joy.Scene} this
+     * @return {Scene} this
      */
     pause: function (options) {
       options = options || {};
@@ -1801,7 +1801,7 @@
      * @method fadeOut
      * @param {Number} milliseconds
      * @param {String, Color} color
-     * @return {Joy.Scene} this
+     * @return {Scene} this
      */
     fadeOut: function (milliseconds, color) {
       var self = this,
@@ -1827,7 +1827,7 @@
      * @method fadeIn
      * @param {Number} milliseconds
      * @param {String, Color} color
-     * @return {Joy.Scene} this
+     * @return {Scene} this
      */
     fadeIn: function (milliseconds, color) {
       var self = this,
@@ -1855,7 +1855,7 @@
      * @method addShader
      * @param {Function} shader
      * @param {Object} options shader options (optional)
-     * @return {Joy.Scene} this
+     * @return {Scene} this
      */
     addShader: function(shader, args) {
       this.shaders.push([shader, args]);
@@ -1876,7 +1876,7 @@
      * @constructor
      *
      * @param {Object} options
-     * @param {Joy.DisplayObject} options.follow
+     * @param {DisplayObject} options.follow
      * @param {Number} options.width
      * @param {Number} options.height
      */
@@ -1886,7 +1886,7 @@
 
       /**
        * @attribute position
-       * @type {Joy.Vector2d}
+       * @type {Vector2d}
        */
       this.position = new J.Vector2d();
       this._lastPosition = new J.Vector2d();
@@ -1894,14 +1894,14 @@
       /**
        * Current viewport translation offset
        * @attribute translation
-       * @type {Joy.Vector2d}
+       * @type {Vector2d}
        */
       this.translation = new J.Vector2d();
 
       /**
        * Container DisplayObject
        * @attribute scene
-       * @type {Joy.DisplayObjectContainer}
+       * @type {DisplayObjectContainer}
        */
       if (options.scene) {
         this.scene = options.scene;
@@ -1910,7 +1910,7 @@
 
       /**
        * @attribute hud
-       * @type {Joy.DisplayObjectContainer}
+       * @type {DisplayObjectContainer}
        */
       this.hud = new J.DisplayObjectContainer({id: this.id + "_HUD", ctx: this.ctx});
       this.hud.position = this.position;
@@ -1931,7 +1931,7 @@
      * Add head up display on the viewport.
      * @method addHud
      * @param {DisplayObject}
-     * @return {Joy.Viewport}
+     * @return {Viewport}
      */
     addHud: function (displayObject) {
       return this.hud.addChild(displayObject);
@@ -1953,7 +1953,7 @@
       /**
        * DisplayObject that will be followed.
        * @attribute follow
-       * @type {Joy.DisplayObject}
+       * @type {DisplayObject}
        */
       if (options.follow) {
         this.follow = options.follow;
@@ -1970,7 +1970,7 @@
      * @method setSize
      * @param {Number} width
      * @param {Number} height
-     * @return {Joy.Viewport}
+     * @return {Viewport}
      */
     setSize: function (width, height) {
       this.width = width;
@@ -1989,7 +1989,7 @@
      * @method setDeadzone
      * @param {Number} width
      * @param {Number} height
-     * @return {Joy.Viewport} this
+     * @return {Viewport} this
      */
     setDeadzone: function(width, height) {
       this.deadzone = new J.Vector2d(width, height);
@@ -2024,7 +2024,7 @@
     /**
      * Restore context translation
      * @method reset
-     * @return {Joy.Viewport} this
+     * @return {Viewport} this
      */
     reset: function () {
       this.ctx.translate(-this._translationTotal.x, -this._translationTotal.y);
@@ -2121,14 +2121,14 @@
       /**
        * Current object's velocity
        * @attribute velocity
-       * @type {Joy.Vector2d}
+       * @type {Vector2d}
        * @readOnly
        */
       this.velocity = new J.Vector2d();
 
       /**
        * @attribute maxVelocity
-       * @type {Joy.Vector2d}
+       * @type {Vector2d}
        * @default Joy.Vector2d(500,500)
        */
       this.maxVelocity = new J.Vector2d(500, 500);
@@ -2136,7 +2136,7 @@
       /**
        * Normalized velocity vector, with values between -1 and 1.
        * @attribute direction
-       * @type {Joy.Vector2d}
+       * @type {Vector2d}
        * @readonly
        */
       this.__defineGetter__('direction', function () {
@@ -2147,7 +2147,7 @@
        * Acceleration by frame, in pixels.
        *
        * @attribute acceleration
-       * @type {Joy.Vector2d}
+       * @type {Vector2d}
        */
       this.acceleration = new J.Vector2d();
 
@@ -2155,7 +2155,7 @@
        * Friction for velocity.
        *
        * @attribute friction
-       * @type {Joy.Vector2d}
+       * @type {Vector2d}
        */
       this.friction = new J.Vector2d();
     },
@@ -2233,7 +2233,7 @@
 
   /**
    * @method clone
-   * @return {Joy.RectCollider}
+   * @return {RectCollider}
    */
   RectCollider.prototype.clone = function() {
     return new RectCollider(this.position.clone(), this.width, this.height);
@@ -2416,7 +2416,7 @@
 
     /**
      * @attribute currentScene
-     * @type {Joy.Scene}
+     * @type {Scene}
      * @readonly
      */
     this.__defineGetter__('currentScene', function() {
@@ -2442,7 +2442,7 @@
   /**
    * Create a new scene
    * @method createScene
-   * @return {Joy.Scene}
+   * @return {Scene}
    */
   Engine.prototype.createScene = function() {
     var scene = new J.Scene({ctx: this.context.ctx});
@@ -2473,8 +2473,8 @@
   /**
    * @method gotoNextScene
    * @param {Number} fadeMilliseconds (default=1000)
-   * @param {String | Joy.Color} color (default=#fff)
-   * @return {Joy.Scene} this
+   * @param {String | Color} color (default=#fff)
+   * @return {Scene} this
    */
   Engine.prototype.gotoNextScene = function(milliseconds, color) {
     if (!milliseconds) { milliseconds = 1000; }
@@ -2524,7 +2524,13 @@
    * @method onEnterFrame
    */
   Engine.prototype.onEnterFrame = function () {
-    if (!J.currentEngine.paused) { J.currentEngine.render(); }
+    if (!J.currentEngine.paused) {
+      // Update TWEENs, if it is present
+      if (window.TWEEN) { window.TWEEN.update(); }
+
+      // Update rendering
+      J.currentEngine.render();
+    }
     window.onEnterFrame(J.currentEngine.onEnterFrame);
   };
 
@@ -2535,7 +2541,13 @@
   Engine.prototype.onEnterFrameDebug = function () {
     var thisRenderTime = new Date();
     J.currentEngine._frameRateText.text = (1000 / (thisRenderTime - J.currentEngine._lastRenderTime)).toFixed(1).toString() + " FPS";
-    if (!J.currentEngine.paused) { J.currentEngine.render(); }
+    if (!J.currentEngine.paused) {
+      // Update TWEENs, if it is present
+      if (window.TWEEN) { window.TWEEN.update(); }
+
+      // Update rendering
+      J.currentEngine.render();
+    }
     J.currentEngine._lastRenderTime = thisRenderTime;
 
     window.onEnterFrame(J.currentEngine.onEnterFrameDebug);
@@ -2545,15 +2557,17 @@
 })(Joy);
 
 /**
- * @module Joy
+ * TODO: circle geometry
+ *
+ * module Joy
  */
 (function(J) {
   /**
-   * @param {Joy.Vector2d} position
+   * @param {Vector2d} position
    * @param {Number} radius
    *
-   * @class Circle
-   * @constructor
+   * class Circle
+   * constructor
    */
   var Circle = function(position, radius) {
     this.position = position;
@@ -2576,7 +2590,7 @@
      * @class Rect
      * @constructor
      * @param {Object} options
-     *   @param {Joy.Vector2d} position
+     *   @param {Vector2d} position
      *   @param {Number} width
      *   @param {Number} height
      */
@@ -2594,7 +2608,7 @@
 
     /**
      * @method colorize
-     * @param {Joy.Color | String} color
+     * @param {Color | String} color
      * @return {Rect} this
      */
     colorize: function (color) {
@@ -2655,7 +2669,7 @@
    * @method set
    * @param {Number} x
    * @param {Number} y
-   * @return {Joy.Vector2d}
+   * @return {Vector2d}
    */
   Vector2d.prototype.set = function (x, y) {
     this.x = x;
@@ -2665,8 +2679,8 @@
 
   /**
    * @method sum
-   * @param {Joy.Vector2d} vector2d
-   * @return {Joy.Vector2d}
+   * @param {Vector2d} vector2d
+   * @return {Vector2d}
    */
   Vector2d.prototype.subtract = function (vector2d) {
     this.x -= vector2d.x;
@@ -2676,8 +2690,8 @@
 
   /**
    * @method sum
-   * @param {Joy.Vector2d} vector2d
-   * @return {Joy.Vector2d}
+   * @param {Vector2d} vector2d
+   * @return {Vector2d}
    */
   Vector2d.prototype.sum = function (vector2d) {
     this.x += vector2d.x;
@@ -2689,7 +2703,7 @@
    * @method scale
    * @param {Number} x (or x y)
    * @param {Number} y
-   * @return {Joy.Vector2d}
+   * @return {Vector2d}
    */
   Vector2d.prototype.scale = function (x, y) {
     this.x *= x;
@@ -2699,7 +2713,7 @@
 
   /**
    * @method clone
-   * @return {Joy.Vector2d}
+   * @return {Vector2d}
    */
   Vector2d.prototype.clone = function() {
     return new Vector2d(this.x, this.y);
@@ -2707,7 +2721,7 @@
 
   /**
    * Return unit vector
-   * @return {Joy.Vector2d}
+   * @return {Vector2d}
    */
   Vector2d.prototype.unit = function() {
     return new Vector2d( Math.cos(this.x), Math.sin(this.y) );
@@ -2715,7 +2729,7 @@
 
   /**
    * Normalize this vector
-   * @return {Joy.Vector2d}
+   * @return {Vector2d}
    */
   Vector2d.prototype.normalize = function() {
     var normal = this.normalized;
@@ -2726,7 +2740,7 @@
 
   /**
    * Get the distance between this vector and the argument vector
-   * @param {Joy.Vector2d} vector
+   * @param {Vector2d} vector
    * @return {Number}
    */
   Vector2d.distance = function(v1, v2) {
@@ -2752,7 +2766,9 @@
 })(Joy);
 
 /**
- * @module Joy
+ * TODO:
+ *
+ * module Joy
  */
 
 (function(J){
@@ -2767,8 +2783,8 @@
    *
    * Dependency: Sizzle
    *
-   * @class Markup
-   * @constructor
+   * class Markup
+   * constructor
    */
   var Markup = function() {};
 
@@ -2780,7 +2796,7 @@
     length = imgs.length;
     for (i=0; i<length; ++i) {
       dataset = this.evaluateDataset.call(imgs[i], imgs[i].dataset, context.context);
-      context.addChild(new Joy.Sprite({
+      context.addChild(new J.Sprite({
         x: imgs[i].dataset.x,
         y: imgs[i].dataset.y,
         asset: imgs[i]
@@ -2793,7 +2809,7 @@
     for (i=0; i<length; ++i) {
       dataset = this.evaluateDataset(labels[i].dataset, context.context);
       dataset.text = labels[i].innerHTML;
-      context.addChild(new Joy.Text(dataset));
+      context.addChild(new J.Text(dataset));
     }
   };
 
@@ -4057,7 +4073,7 @@
       /**
        * Viewport that parallax effect will be based on.
        * @attribute viewport
-       * @type {Joy.Viewport}
+       * @type {Viewport}
        */
       this.viewport = options.viewport || null;
 
@@ -4105,14 +4121,15 @@
 })(Joy);
 
 /**
- * @module Joy
+ * TODO:
+ * module Joy
  */
 (function(J) {
   var ParticleEmitter = J.DisplayObject.extend({
     /**
-     * @class ParticleEmitter
-     * @constructor
-     * @param {Object} options
+     * class ParticleEmitter
+     * constructor
+     * param {Object} options
      */
     init: function (options) {
 
@@ -4407,7 +4424,7 @@
 
       /**
        * @attribute tileset
-       * @type {Joy.Tileset}
+       * @type {Tileset}
        */
       this.tileset = options.tileset;
 
