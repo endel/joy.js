@@ -6,12 +6,12 @@ an intuitive API.
 It is currently on early development stage, the API could change at any time,
 feel free to test it if you are adventurous.
 
-# External libraries / engines
+# Vendor libraries
 
-joy.js plays nice with these following independent libraries:
+joy.js aliases the following external independent libraries:
 
-  - TWEEN.js - tweening engine
-  - howler.js - audio library
+  - Tweening engine: [tween.js](https://github.com/sole/tween.js) - Joy.Tween / Joy.TweenManager
+  - Audio library: [howler.js](https://github.com/goldfire/howler.js) - Joy.Sound
 
 ## TODO
 
