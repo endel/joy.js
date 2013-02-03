@@ -52,7 +52,14 @@ module.exports = function(grunt) {
       all: ['test/index.html']
     },
     jshint: {
-      all: [ 'Gruntfile.js', 'lib/**/*.js'],
+      all: [
+        'Gruntfile.js',
+        'lib/*.js',
+        'lib/base/**/**.js',
+        'lib/core/**/**.js',
+        'lib/input/**/**.js',
+        'lib/modules/**/**.js'
+      ],
       options: {
         "browser": true,
         "evil" : true // TODO: don't allow eval! (used on markup.js)
