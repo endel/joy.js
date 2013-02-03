@@ -33,6 +33,7 @@ module.exports = function(grunt) {
           'lib/core/geom/matrix2d.js',
           'lib/core/triggerable.js',
           'lib/core/render/*.js',
+          'lib/vendor/**.js',
           'lib/**/**.js'
         ],
         dest: 'dist/joy.js'
