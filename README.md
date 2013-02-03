@@ -1,20 +1,22 @@
 # joy.js [![Build Status](https://secure.travis-ci.org/joyjs/joy.js.png)](http://travis-ci.org/joyjs/joy.js)
 
-joy.js is a game engine, which is being developed to be easy to use, with
-an intuitive API.
+A Joyful 2D HTML5 Game Engine, designed to be easy to use.
 
-It is currently on early development stage, the API could change at any time,
-feel free to test it if you are adventurous.
+## Features
 
-# Vendor libraries
-
-joy.js aliases the following external independent libraries:
-
-  - Tweening engine: [tween.js](https://github.com/sole/tween.js) - Joy.Tween / Joy.TweenManager
-  - Audio library: [howler.js](https://github.com/goldfire/howler.js) - Joy.Sound
+  - Keyboard input
+  - Mouse input
+  - Viewport / Head-up display
+  - Tilemap / Tileset
+  - Reusable object behaviours
+  - Collision detection
+  - Scene graph
+  - Audio (provided by [howler.js](https://github.com/goldfire/howler.js))
+  - Tweens (provided by [tween.js](https://github.com/sole/tween.js))
 
 ## TODO
 
+  - Touch events
   - Normalized `collidePosition` on DisplayObject / RectCollider calls.
 
 ## Resources
@@ -22,7 +24,7 @@ joy.js aliases the following external independent libraries:
   - [Documentation](http://joyjs.org/docs)
   - [Examples](http://joyjs.org/examples.html)
   - [Google Group](https://groups.google.com/forum/#!forum/joyjs)
-  - Follow [@joyjs](https://twitter.com/joyjs_) on twitter for updates
+  - Follow [@joyjs_](https://twitter.com/joyjs_) on twitter for updates
 
 ## Contributing
 
