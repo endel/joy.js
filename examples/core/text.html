@@ -6,41 +6,38 @@
 
         <script type="text/javascript" src="../../dist/sizzle.js"></script>
         <script type="text/javascript" src="../../dist/joy.js"></script>
-        <script type="text/javascript">
-            function setup() {
-              Joy.debug = true;
-              var engine = new Joy.Engine({ canvas2d: document.getElementById("joy") })
-              var scene = engine.createScene();
-
-              var text = new Joy.Text({
-                x: engine.width / 2,
-                y: engine.height / 2,
-                text: "Enjoy joy.js",
-                align: "center",
-                font: "30pt Merienda",
-                baseline: Joy.Text.BASELINE.MIDDLE
-              });
-
-              var toggle = false;
-              setInterval(function() {
-                toggle = !toggle;
-
-                if (toggle) {
-                  text.useFill();
-                } else {
-                  text.useStroke();
-                }
-
-                text.color = new Joy.Color(parseInt(Math.random() * 255, 10), parseInt(Math.random() * 255, 10), parseInt(Math.random() * 255, 10));
-              }, 1000 / 60)
-
-              scene.addChild(text);
-            }
-        </script>
     </head>
+    <body style="margin: 0; padding: 0;">
 
-    <body onload="setup();" style="margin: 0; padding: 0;">
-        <canvas id="joy" width="320" height="240" style="border: 1px solid #000000;"></canvas>
+      <script type="text/javascript">
+          var engine = new Joy.Engine({ debug: true, width: 300, height: 250 })
+          engine.createScene(function (scene) {
+            var text = new Joy.Text({
+              x: engine.width / 2,
+              y: engine.height / 2,
+              text: "Enjoy joy.js",
+              align: "center",
+              font: "30pt Merienda",
+              baseline: Joy.Text.BASELINE.MIDDLE
+            });
+
+            var toggle = false;
+            setInterval(function() {
+              toggle = !toggle;
+
+              if (toggle) {
+                text.useFill();
+              } else {
+                text.useStroke();
+              }
+
+              text.color = new Joy.Color(parseInt(Math.random() * 255, 10), parseInt(Math.random() * 255, 10), parseInt(Math.random() * 255, 10));
+            }, 1000 / 60)
+
+            scene.addChild(text);
+          });
+      </script>
+
     </body>
 
 </html>

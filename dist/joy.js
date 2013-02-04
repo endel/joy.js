@@ -4,7 +4,7 @@
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 2/2/2013
+ * @build 2/3/2013
  */
 
 (function(global) {
@@ -1252,7 +1252,11 @@
      * @return {DisplayObjectContainer} this
      */
     removeChild: function(displayObject) {
-      return this.removeChildAt(displayObject.index);
+      var index = this.children.indexOf(displayObject);
+      if (index !== -1) {
+        this.removeChildAt(index);
+      }
+      return this;
     },
 
     /**
@@ -1652,6 +1656,14 @@
         this._color = color.toString();
       });
 
+      // this.__defineGetter__('width', function () {
+      //   return this.getMeasure().width;
+      // })
+
+      // this.__defineGetter__('height', function () {
+      //   return parseInt(this.font, 10);
+      // })
+
       if (options.stroke) {
         this.useStroke();
       } else {
@@ -1694,7 +1706,7 @@
      * @return {TextMetrics} text metrics
      */
     getMeasure: function() {
-      this.ctx.measureText(this.text);
+      return this.ctx.measureText(this.text);
     }
 
   });
@@ -3347,6 +3359,7 @@ TWEEN.Interpolation = {
         rectangle.alpha += ((1000 / milliseconds) / 60) * J.deltaTime;
         if (rectangle.alpha >= 1) {
           clearInterval(interval);
+          self.viewport.hud.removeChild(rectangle);
           self.trigger('fadeOutComplete');
         }
       }, 1);
@@ -3373,6 +3386,7 @@ TWEEN.Interpolation = {
         rectangle.alpha -= ((1000 / milliseconds) / 60) * J.deltaTime;
         if (rectangle.alpha <= 0) {
           clearInterval(interval);
+          self.viewport.hud.removeChild(rectangle);
           self.trigger('fadeInComplete');
         }
       }, 1000 / 60);
@@ -3521,10 +3535,10 @@ TWEEN.Interpolation = {
 
     /**
      * TODO: not supported yet
-     * @method setDeadzone
-     * @param {Number} width
-     * @param {Number} height
-     * @return {Viewport} this
+     * method setDeadzone
+     * param {Number} width
+     * param {Number} height
+     * return {Viewport} this
      */
     setDeadzone: function(width, height) {
       this.deadzone = new J.Vector2d(width, height);
@@ -3726,6 +3740,21 @@ TWEEN.Interpolation = {
   });
 
   J.Behaviour.Movimentation = Movimentation;
+})(Joy);
+
+/**
+ * @module Joy.Behaviour
+ */
+(function(J) {
+  /**
+   * TODO: Wouldn't it be nice?
+   */
+  var Physics = J.Behaviour.extend({
+    INIT: function (options) {},
+    UPDATE: function () {}
+  });
+
+  J.Behaviour.Physics = Physics;
 })(Joy);
 
 /**
@@ -3982,10 +4011,27 @@ TWEEN.Interpolation = {
   /**
    * Create a new scene
    * @method createScene
+   * @param {Function} setupMethod
+   *
+   * @example
+   *     // Creating a scene without setup.
+   *     var scene = engine.createScene();
+   *
+   *     // Creating a scene with setup
+   *     engine.createScene(function(scene) {
+   *        scene.addChild(...);
+   *     });
+   *
    * @return {Scene}
    */
-  Engine.prototype.createScene = function() {
+  Engine.prototype.createScene = function(setupMethod) {
     var scene = new J.Scene({ctx: this.context.ctx});
+
+    // yield scene on setup method
+    if (typeof(setupMethod) === "function") {
+      setupMethod.apply(this, [scene]);
+    }
+
     this.addScene(scene);
     return scene;
   };
@@ -5489,6 +5535,7 @@ TWEEN.Interpolation = {
 
     enable: function(engine) {
       var triggerMouseEvents = function (e) {
+        console.log(e);
         var handlers = Mouse.handlers[e.type];
 
         //Simulate TouchEvent events as a MouseEvent

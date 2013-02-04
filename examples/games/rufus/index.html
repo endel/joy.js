@@ -211,12 +211,13 @@
           scene.viewport.addHud(leftButton);
           scene.viewport.addHud(rightButton);
 
-          scene.viewport.setup({
-            follow: rufus,
-            width: engine.width / 2,
-            height: engine.height / 2
-          });
-
+          setTimeout(function () {
+            scene.viewport.setup({
+              follow: rufus,
+              width: engine.width / 2,
+              height: engine.height / 2
+            });
+          }, 5000);
       </script>
     </body>
 </html>

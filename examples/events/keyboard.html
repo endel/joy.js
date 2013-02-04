@@ -1,61 +1,66 @@
 <html>
-    <head>
-        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <title>Event handling</title>
-        <script type="text/javascript" src="../../dist/sizzle.js"></script>
-        <script type="text/javascript" src="../../dist/joy.js"></script>
-        <script type="text/javascript">
-          function setup() {
-            Joy.debug = true;
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Event handling</title>
+    <script type="text/javascript" src="../../dist/sizzle.js"></script>
+    <script type="text/javascript" src="../../dist/joy.js"></script>
+  </head>
+  <body style="margin: 0; padding: 0;">
+    <script type="text/javascript">
+      var engine = new Joy.Engine({
+        debug: true,
+        width: document.width - 5,
+        height: document.height - 5
+      });
 
-            var engine = new Joy.Engine({ canvas2d: document.getElementById('joy') });
-            var scene = engine.createScene();
-            scene.background("#BFE5E5");
+      engine.createScene(function(scene) {
+        var ship = new Joy.SpriteSheet({
+          x: engine.width / 2,
+          y: engine.height / 2,
+          width: 36,
+          height: 30,
+          animations: {
+            "idle": [0],
+            "left": [1],
+            "right": [2],
+          },
+          src: "../shared-assets/spaceship.gif"
+        });
+        ship.behave(Joy.Behaviour.Movimentation);
+        ship.friction.set(0.1, 0.1);
+        ship.maxVelocity.set(2, 2);
+        ship.play("idle");
 
-            var block = new Joy.Rect(engine.width - 100, 20).fillStyle("#000");
-            block.y = engine.height - 20;
-            block.x = 50;
-            scene.addChild(block);
-
-            var mario1 = new Joy.Sprite({ x: engine.width / 2, y: engine.height / 2, src: "../shared-assets/mario.png" });
-            mario1.vspeed = 0;
-            mario1.maxVSpeed = 5;
-
-            mario1.bind(Joy.Events.KEY_PRESS, function(evt) {
-              console.log("Key press!", evt.keyCode);
-              if (evt.keyCode == Joy.Keyboard.SPACE && this.grounded) {
-                this.vspeed = -4;
-                this.grounded = false;
-              } if (evt.keyCode === Joy.Keyboard.LEFT) {
-                this.x -= 1;
-              } else if (evt.keyCode === Joy.Keyboard.RIGHT) {
-                this.x += 1;
-              }
-            });
-
-            mario1.bind(Joy.Events.UPDATE, function() {
-              if (!this.grounded) {
-
-                // Limit vspeed
-                if (this.vspeed < this.maxVSpeed)  {
-                  this.vspeed += 0.15;
-                }
-
-                this.y += this.vspeed;
-              }
-            });
-
-            mario1.onCollide(block, function() {
-              this.y -= 1;
-              this.grounded = true;
-            });
-            scene.addChild(mario1);
+        ship.bind(Joy.Events.KEY_PRESS, function(evt) {
+          if (evt.keyCode == Joy.Keyboard.UP) {
+            this.acceleration.y = -2;
+          } else if (evt.keyCode == Joy.Keyboard.DOWN) {
+            this.acceleration.y = 2;
           }
-        </script>
-    </head>
+          if (evt.keyCode === Joy.Keyboard.LEFT) {
+            this.acceleration.x = -2;
+            this.play("left");
 
-    <body onload="setup();">
-        <canvas id="joy" width='800' height='600' style="border: 1px solid #666;"></canvas>
-    </body>
+          } else if (evt.keyCode === Joy.Keyboard.RIGHT) {
+            this.acceleration.x = 2;
+            this.play("right");
+          }
+        });
 
+        ship.bind(Joy.Events.KEY_UP, function(evt) {
+          if (evt.keyCode == Joy.Keyboard.UP ||
+              evt.keyCode == Joy.Keyboard.DOWN) {
+            this.acceleration.y = 0;
+          }
+          if (evt.keyCode === Joy.Keyboard.LEFT ||
+              evt.keyCode === Joy.Keyboard.RIGHT) {
+            this.acceleration.x = 0;
+            this.play("idle");
+          }
+        });
+
+        scene.addChild(ship);
+      });
+    </script>
+  </body>
 </html>

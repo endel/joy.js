@@ -5,65 +5,60 @@
 
         <script type="text/javascript" src="../../dist/sizzle.js"></script>
         <script type="text/javascript" src="../../dist/joy.js"></script>
-        <script type="text/javascript">
-            function setup() {
-              var c = document.getElementById("joy");
-              var changePivot = function () {
-                console.log("Change pivot!");
-                this.pivot.x = (this.width / 2);
-                this.pivot.y = (this.height / 2);
-              };
-
-              var rotation = 0;
-              function rotate(s) {
-                rotation = rotation + 0.5;
-                s.rotate(rotation);
-              }
-
-              var engine = new Joy.Engine({ debug: true, canvas2d: c });
-              var scene = engine.createScene();
-
-              var ClickableBehaviour = Joy.Behaviour.extend({
-                INIT: function () {
-                  this.behave(Joy.Behaviour.Movimentation);
-                  this.friction.x = 0.1;
-                  this.friction.y = 0.1;
-                },
-
-                UPDATE: function () {
-                  // rotate(this);
-                  this.acceleration.x = 0;
-                },
-
-                CLICK: function(e) {
-                  this.acceleration.x += 2;
-                }
-              });
-
-              var spriteUrl = "../shared-assets/mario.png";
-              var sprite = new Joy.Sprite({
-                id: "father",
-                x: engine.width / 2,
-                y: engine.height / 2,
-                src: spriteUrl
-              });
-              sprite.smooth = true;
-              sprite.bind('load', changePivot);
-              sprite.behave(ClickableBehaviour);
-
-              var spriteChild = new Joy.Sprite(spriteUrl);
-              spriteChild.id = "child";
-              spriteChild.position.x = 120;
-              spriteChild.behave(ClickableBehaviour);
-
-              sprite.addChild(spriteChild);
-              scene.addChild(sprite);
-            }
-        </script>
     </head>
+    <body style="margin: 0; padding: 0;">
+      <script type="text/javascript">
+        var engine = new Joy.Engine({ debug: true, width: document.width - 5, height: document.height - 5 });
+        var scene = engine.createScene();
 
-    <body onload="setup();" style="margin: 0; padding: 0;">
-        <canvas id="joy" width=480 height=320 style="border: 1px solid #000000;"></canvas>
+        var ClickableBehaviour = Joy.Behaviour.extend({
+          INIT: function () {
+            this.behave(Joy.Behaviour.Movimentation);
+            this.friction.x = 0.1;
+            this.friction.y = 0.1;
+          },
+
+          UPDATE: function () {
+            this.acceleration.x = 0;
+          },
+
+          CLICK: function(e) {
+            this.acceleration.x += 2;
+          }
+        });
+
+        var spriteUrl = "../shared-assets/mario.png";
+        var sprite = new Joy.Sprite({
+          id: "father",
+          x: engine.width / 2,
+          y: engine.height / 2,
+          src: spriteUrl
+        });
+        sprite.smooth = true;
+        sprite.bind('load', function () {
+          this.pivot.x = (this.width / 2);
+          this.pivot.y = (this.height / 2);
+        });
+        sprite.behave(ClickableBehaviour);
+
+        var spriteChild = new Joy.Sprite(spriteUrl);
+        spriteChild.id = "child";
+        spriteChild.position.x = 120;
+        spriteChild.behave(ClickableBehaviour);
+
+        var rotateButton = new Joy.Text({
+          x: engine.width / 2, y: 20,
+          font: "22px Arial",
+          align: "center",
+          text: "Rotate!"
+        }).bind(Joy.Events.CLICK, function () {
+          new Joy.Tween(sprite).to({ rotation: sprite.rotation + 180 }, 200).start();
+        });
+
+        sprite.addChild(spriteChild);
+        scene.addChild(sprite);
+        scene.addChild(rotateButton);
+      </script>
     </body>
 
 </html>
