@@ -12,6 +12,11 @@
   <script type="text/javascript" src="../dist/sizzle.js"></script>
 
   <script type="text/javascript">
+    // Fake audio class
+    var Audio = function () {
+      this.canPlayType = function () { return "no"; };
+    };
+
     function withScene(func) {
       withEngine(function(engine) {
         func.call(this, engine.createScene());
