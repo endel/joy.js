@@ -4,7 +4,7 @@
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 2/3/2013
+ * @build 2/4/2013
  */
 
 (function(global) {
@@ -4420,7 +4420,7 @@ TWEEN.Interpolation = {
 })(Joy);
 
 /**
- * @module Joy
+ * module Joy
  */
 (function(J){
   /**
@@ -4428,7 +4428,7 @@ TWEEN.Interpolation = {
    *
    * TODO: Not implemented yet.
    *
-   * @class Package
+   * class Package
    */
   var Package = function() {};
   J.Package = Package;
@@ -5535,14 +5535,7 @@ TWEEN.Interpolation = {
 
     enable: function(engine) {
       var triggerMouseEvents = function (e) {
-        console.log(e);
         var handlers = Mouse.handlers[e.type];
-
-        //Simulate TouchEvent events as a MouseEvent
-        if (!(e instanceof MouseEvent)) {
-          e.offsetX = e.touches[0].clientX;
-          e.offsetY = e.touches[0].clientY;
-        }
 
         this.lastEvent = e;
         Mouse.updateColliderPosition(e);
@@ -5554,9 +5547,10 @@ TWEEN.Interpolation = {
         }
       };
 
-      engine.context.canvas.onclick = triggerMouseEvents;
-      engine.context.canvas.ondblclick = triggerMouseEvents;
-      engine.context.canvas.onmousemove = triggerMouseEvents;
+      // Bind all mouse events
+      engine.context.canvas['on' + J.Events.CLICK] = triggerMouseEvents;
+      engine.context.canvas['on' + J.Events.DOUBLE_CLICK] = triggerMouseEvents;
+      engine.context.canvas['on' + J.Events.MOUSE_MOVE] = triggerMouseEvents;
       engine.context.canvas['on' + J.Events.MOUSE_DOWN] = triggerMouseEvents;
       engine.context.canvas['on' + J.Events.MOUSE_UP] = triggerMouseEvents;
     },
@@ -5571,7 +5565,7 @@ TWEEN.Interpolation = {
    * @static
    * @final
    */
-  J.Events.MOUSE_DOWN = (J.Support.touch) ? 'touchstart' : 'mousedown';
+  J.Events.MOUSE_DOWN = 'mousedown';
 
   /**
    * Events.MOUSE_UP
@@ -5579,7 +5573,7 @@ TWEEN.Interpolation = {
    * @static
    * @final
    */
-  J.Events.MOUSE_UP = (J.Support.touch) ? 'touchend' : 'mouseup';
+  J.Events.MOUSE_UP = 'mouseup';
 
   /**
    * Events.MOUSE_MOVE
@@ -5587,7 +5581,7 @@ TWEEN.Interpolation = {
    * @static
    * @final
    */
-  J.Events.MOUSE_MOVE = (J.Support.touch) ? 'touchmove' : 'mousemove';
+  J.Events.MOUSE_MOVE = 'mousemove';
 
   /**
    * Events.CLICK
@@ -5643,6 +5637,42 @@ TWEEN.Interpolation = {
   });
 
   J.Mouse = Mouse;
+})(Joy);
+
+/**
+ * @module Joy
+ */
+(function(J) {
+  // Only bind touch events when devise supports it.
+  if (!J.Support.touch) { return; }
+
+  var Touch = {};
+
+  /**
+   * Events.TOUCH_START
+   * @type {String}
+   * @static
+   * @final
+   */
+  J.Events.TOUCH_START = 'touchstart';
+
+  /**
+   * Events.TOUCH_MOVE
+   * @type {String}
+   * @static
+   * @final
+   */
+  J.Events.TOUCH_MOVE = 'touchmove';
+
+  /**
+   * Events.TOUCH_END
+   * @type {String}
+   * @static
+   * @final
+   */
+  J.Events.TOUCH_END = 'touchend';
+
+  J.Touch = Touch;
 })(Joy);
 
 /**
@@ -6199,8 +6229,9 @@ TWEEN.Interpolation = {
  */
 (function(J) {
   /**
-   * OBS:
-   * Tweens are provided by [tween.js](https://github.com/sole/tween.js).
+   * OBS: Tweens are provided by [tween.js](https://github.com/sole/tween.js).
+   *
+   * Alias to TWEEN
    *
    * @class TweenManager
    */
@@ -6229,8 +6260,9 @@ TWEEN.Interpolation = {
   /**
    * Create a new tween.
    *
-   * OBS:
-   * Tweens are provided by [tween.js](https://github.com/sole/tween.js).
+   * OBS: Tweens are provided by [tween.js](https://github.com/sole/tween.js).
+   *
+   * Alias to TWEEN.Tween
    *
    * @class Tween
    * @param {Object} target
