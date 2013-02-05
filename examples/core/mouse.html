@@ -1,0 +1,64 @@
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>Joy Example</title>
+
+        <script type="text/javascript" src="../../dist/sizzle.js"></script>
+        <script type="text/javascript" src="../../dist/joy.js"></script>
+    </head>
+    <body style="margin: 0; padding: 0;">
+      <script type="text/javascript">
+        var engine = new Joy.Engine({ debug: true, width: document.width - 5, height: document.height - 5 });
+        engine.createScene(function(scene) {
+
+          var MyMouseBehaviour = Joy.Behaviour.extend({
+            INIT: function () {
+              // Add button behaviour, to handle MOUSE_OVER and MOUSE_OUT events
+              this.behave(Joy.Behaviour.Button);
+            },
+
+            // When mouse enters
+            MOUSE_OVER: function () {
+              new Joy.Tween(this.position).to({
+                y: this.position.y - 5
+              }).easing(Joy.TweenManager.Easing.Sinusoidal.InOut).start();
+            },
+
+            // When mouse leave
+            MOUSE_OUT: function () {
+              new Joy.Tween(this.position).to({
+                y: this.position.y + 5
+              }).easing(Joy.TweenManager.Easing.Sinusoidal.InOut).start();
+            },
+
+            CLICK: function(e) {
+              new Joy.Tween(this.position).to({
+                x: Math.random() * (engine.width - this.width),
+                y: Math.random() * (engine.height - this.height)
+              }).easing(Joy.TweenManager.Easing.Sinusoidal.InOut).start();
+            }
+          });
+
+          var logo = new Joy.Sprite({
+            x: engine.width / 2,
+            y: engine.height / 2,
+            smooth: true,
+            src: "../shared-assets/joyjs.png"
+          }).bind('load', function() {
+            // Change pivot to center
+            this.pivot.x = (this.width / 2);
+            this.pivot.y = (this.height / 2);
+            // Add clickable behaviour
+          }).behave(MyMouseBehaviour);
+
+          scene.addChild(logo);
+        });
+
+      </script>
+    </body>
+
+</html>
+
+
+
+
