@@ -4,7 +4,7 @@
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 2/4/2013
+ * @build 2/7/2013
  */
 
 (function(global) {
@@ -150,8 +150,28 @@
    * @class Support
    */
   J.Support = {
-    'imageSmoothingEnabled' : prefix("imageSmoothingEnabled"),
-    touch: ('ontouchstart' in window)
+    /**
+     * Device supports touch events?
+     * @attribute touch
+     * @type {Boolean}
+     * @static
+     * @readonly
+     */
+    touch: ('ontouchstart' in window),
+
+    /**
+     * Device supports Retina Display?
+     * @attribute retina
+     * @type {Boolean}
+     * @static
+     * @readonly
+     */
+    retina: window.devicePixelRatio > 1 || window.matchMedia('(min-resolution: 1.1dppx)').matches,
+
+    /*
+     * Misc / Interal use
+     */
+    'imageSmoothingEnabled' : prefix("imageSmoothingEnabled")
   };
 
   /**
@@ -163,7 +183,7 @@
       window.mozRequestAnimationFrame    ||
       window.oRequestAnimationFrame      ||
       window.msRequestAnimationFrame     ||
-      function( callback ) { window.setTimeout(callback, 1000 / 60); };		// TODO: use FPS rate from render module
+      function( callback ) { window.setTimeout(callback, 1000 / 60); }; // TODO: use FPS rate from render module
   })();
 })(Joy);
 
@@ -3960,6 +3980,12 @@ TWEEN.Interpolation = {
     if (options.height) {
       this.context.canvas.height = options.height;
     }
+
+    // Resize canvas accourding to device pixel ratio
+    // 1 on Desktops
+    // 2 on Retina Display
+    this.context.canvas.style.width = (this.context.canvas.width / window.devicePixelRatio) + "px";
+    this.context.canvas.style.height = (this.context.canvas.height / window.devicePixelRatio) + "px";
 
     // TODO: Implement on-init engine trigger
     // Enable mouse events, if module is included
