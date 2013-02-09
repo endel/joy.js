@@ -17,8 +17,8 @@ A Joyful 2D HTML5 Game Engine, designed to be easy to use.
 
 ## Resources
 
-  - [Examples](http://joyjs.org/examples.html)
-  - [API](http://joyjs.org/docs)
+  - [Examples](http://joyjs.org)
+  - [API](http://joyjs.org/api/)
   - [Google Group](https://groups.google.com/forum/#!forum/joyjs)
   - Follow [@joyjs_](https://twitter.com/joyjs_) on twitter for updates
 
