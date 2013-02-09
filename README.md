@@ -15,17 +15,18 @@ A Joyful 2D HTML5 Game Engine, designed to be easy to use.
   - Tweens (provided by [tween.js](https://github.com/sole/tween.js))
   - Device feature detection
 
-## TODO
-
-  - Touch events
-  - Normalized `collidePosition` on DisplayObject / RectCollider calls.
-
 ## Resources
 
   - [Examples](http://joyjs.org/examples.html)
   - [API](http://joyjs.org/docs)
   - [Google Group](https://groups.google.com/forum/#!forum/joyjs)
   - Follow [@joyjs_](https://twitter.com/joyjs_) on twitter for updates
+
+## TODO
+
+  - Touch events
+  - Normalized `collidePosition` on DisplayObject / RectCollider calls.
+
 
 ## Contributing
 

@@ -4,7 +4,7 @@
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 2/7/2013
+ * @build 2/9/2013
  */
 
 (function(global) {
@@ -4089,9 +4089,15 @@ TWEEN.Interpolation = {
    * @return {Scene} this
    */
   Engine.prototype.gotoNextScene = function(milliseconds, color) {
+    var self = this;
+
     if (!milliseconds) { milliseconds = 1000; }
     if (!color) { color = "#fff"; }
-    var self = this;
+
+    if (typeof(this.scenes[this._currentSceneIndex+1])==="undefined") {
+      throw new Error("There is no next scene.")
+    }
+
     this.scenes[this._currentSceneIndex].fadeOut(milliseconds, color).bind('fadeOutComplete', function () {
       self.scenes[self._currentSceneIndex].visible = false;
 
@@ -4170,26 +4176,39 @@ TWEEN.Interpolation = {
 })(Joy);
 
 /**
- * TODO: circle geometry
- *
- * module Joy
+ * @module Joy
  */
 (function(J) {
-  /**
-   * @param {Vector2d} position
-   * @param {Number} radius
-   *
-   * class Circle
-   * constructor
-   */
-  var Circle = function(position, radius) {
-    this.position = position;
-    this.radius = radius;
-  };
+  var Circle = J.DisplayObject.extend({
+    /**
+     * @class Circle
+     * @extends DisplayObject
+     * @constructor
+     *
+     * @param {Object} options
+     *   @param {Number} [options.radius]
+     *   @param {Color, String} [options.color]
+     */
+    init: function (options) {
+      this._super(options);
+      this.radius = options.radius || 1;
+      this.color = options.color || "#000";
 
-  Circle.prototype.render = function(ctx) {
-    // TODO
-  };
+      this.__defineGetter__('width', function () {
+        return this.radius * 2 * this.scale.x;
+      });
+      this.__defineGetter__('height', function () {
+        return this.radius * 2 * this.scale.y;
+      });
+    },
+
+    render: function () {
+      this.ctx.beginPath();
+      this.ctx.arc(this.radius, this.radius, this.radius, 0, 2 * Math.PI);
+      this.ctx.fillStyle = this.color;
+      this.ctx.fill();
+    }
+  });
 
   J.Circle = Circle;
 })(Joy);
@@ -4201,11 +4220,11 @@ TWEEN.Interpolation = {
   var Rect = J.DisplayObject.extend({
     /**
      * @class Rect
+     * @extends DisplayObject
      * @constructor
+     *
      * @param {Object} options
-     *   @param {Vector2d} position
-     *   @param {Number} width
-     *   @param {Number} height
+     *   @param {Color, String} [options.color]
      */
     init: function(options) {
       this._super(options);
@@ -4227,10 +4246,6 @@ TWEEN.Interpolation = {
     colorize: function (color) {
       this.color = color.toString();
       return this;
-    },
-
-    updateContext: function () {
-      this._super();
     },
 
     render: function() {
