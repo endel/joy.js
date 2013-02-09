@@ -85,7 +85,7 @@ module.exports = function(grunt) {
         themedir: '../joy.js-site/default/',
         options: {
           paths: 'lib/',
-          outdir: '../joy.js-site/docs/'
+          outdir: '../joy.js-site/api/'
         }
       }
     }
