@@ -3370,13 +3370,17 @@ TWEEN.Interpolation = {
           rectangle = new J.Rect({
         width: this.viewport.width,
         height: this.viewport.height,
+        color: color,
         alpha: 0
-      }).colorize(color);
+      });
+
+      console.log("fade out start", color, rectangle);
       self.trigger('fadeOutStart');
 
       this.viewport.addHud(rectangle);
       var interval = setInterval(function () {
         rectangle.alpha += ((1000 / milliseconds) / 60) * J.deltaTime;
+        console.log("Change rect alpha: ", rectangle.alpha);
         if (rectangle.alpha >= 1) {
           clearInterval(interval);
           self.viewport.hud.removeChild(rectangle);
@@ -3397,8 +3401,9 @@ TWEEN.Interpolation = {
           rectangle = new J.Rect({
         width: this.viewport.width,
         height: this.viewport.height,
+        color: color,
         alpha: 1
-      }).colorize(color);
+      });
       self.trigger('fadeInStart');
 
       this.viewport.addHud(rectangle);
@@ -3506,13 +3511,13 @@ TWEEN.Interpolation = {
        * @attribute width
        * @type {Number}
        */
-      this.width = options.width;
+      this.width = options.width || this.scene.ctx.canvas.width;
 
       /**
        * @attribute height
        * @type {Number}
        */
-      this.height = options.height;
+      this.height = options.height || this.scene.ctx.canvas.height;
 
       /**
        * DisplayObject that will be followed.
@@ -4095,7 +4100,7 @@ TWEEN.Interpolation = {
     if (!color) { color = "#fff"; }
 
     if (typeof(this.scenes[this._currentSceneIndex+1])==="undefined") {
-      throw new Error("There is no next scene.")
+      throw new Error("There is no next scene.");
     }
 
     this.scenes[this._currentSceneIndex].fadeOut(milliseconds, color).bind('fadeOutComplete', function () {
