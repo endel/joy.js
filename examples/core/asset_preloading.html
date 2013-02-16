@@ -1,0 +1,54 @@
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>Joy Example</title>
+
+        <link href='http://fonts.googleapis.com/css?family=Merienda' rel='stylesheet' type='text/css'>
+        <script type="text/javascript" src="../../dist/joy.js"></script>
+    </head>
+    <body style="margin: 0; padding: 0;">
+      <script type="text/javascript">
+        var engine = new Joy.Engine({ debug: true, width: document.width - 5, height: document.height - 5 });
+
+        engine.setSceneLoader(function(scene) {
+          scene.addChild(new Joy.Text({
+            x: engine.width / 2,
+            y: engine.height / 2,
+            text: "Loading...",
+            align: "center",
+            font: "30pt Merienda",
+            baseline: Joy.Text.BASELINE.MIDDLE
+
+            // Append
+          }).bind(Joy.Events.UPDATE, function() {
+            this.text = "Loading... " + scene.loader.percentage + "%";
+          }));
+        });
+
+        engine.createScene(function(scene) {
+          var nocache = parseInt(Math.random() * 99999);
+          var candyImages = [
+            'http://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Plain-M%26Ms-Pile.jpg/790px-Plain-M%26Ms-Pile.jpg?' + nocache,
+            'http://upload.wikimedia.org/wikipedia/en/thumb/d/dd/Selection_of_loose_candy.jpg/800px-Selection_of_loose_candy.jpg?' + nocache,
+            'http://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Liquorice.jpg/746px-Liquorice.jpg?' + nocache,
+            'http://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Kompeito_konpeito.JPG/800px-Kompeito_konpeito.JPG?' + nocache,
+            'http://upload.wikimedia.org/wikipedia/commons/b/b5/Chikki_assortment.jpg?' + nocache,
+            'http://upload.wikimedia.org/wikipedia/commons/1/16/Batasha_sweets.jpg?' + nocache,
+            'http://upload.wikimedia.org/wikipedia/commons/thumb/1/13/HardCandy.jpg/721px-HardCandy.jpg?' + nocache,
+            'http://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Pantteri_Mix.jpg/800px-Pantteri_Mix.jpg?' + nocache,
+            'http://upload.wikimedia.org/wikipedia/en/thumb/9/99/CandyHouse.JPG/800px-CandyHouse.JPG?' + nocache,
+            'http://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Candy_in_Damascus.jpg/800px-Candy_in_Damascus.jpg?' + nocache,
+            'http://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/100_1373.JPG/800px-100_1373.JPG?' + nocache,
+            'http://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Fruit_candies_from_Saint-Paul-de-Vence.jpg/800px-Fruit_candies_from_Saint-Paul-de-Vence.jpg?' + nocache,
+            'http://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/San_Francisco_salt_water_taffy.jpg/800px-San_Francisco_salt_water_taffy.jpg?' + nocache
+          ]
+
+          for (var i=0;i<candyImages.length;++i) {
+            scene.addChild(new Joy.Sprite(candyImages[i]));
+          }
+        });
+
+      </script>
+    </body>
+
+</html>

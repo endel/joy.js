@@ -28,6 +28,7 @@ module.exports = function(grunt) {
       dist: {
         src: [
           'lib/joy.js',
+          'lib/core/consts/*.js',
           'lib/support.js',
           'lib/core/object.js',
           'lib/core/geom/matrix2d.js',
