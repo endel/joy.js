@@ -2,7 +2,7 @@
   "name": "joy.js",
   "title": "Joy",
   "description": "A joyful JavaScript game engine",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "http://joyjs.org",
   "author": {
     "name": "Endel Dreyer",

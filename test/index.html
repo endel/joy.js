@@ -19,7 +19,7 @@
 
     function withScene(func) {
       withEngine(function(engine) {
-        func.call(this, engine.createScene());
+        engine.createScene(func);
       });
     }
 
@@ -73,6 +73,7 @@
   </script>
 
   <script src="unit/joy.js"></script>
+  <script src="unit/display_object.js"></script>
   <script src="unit/sprite.js"></script>
   <script src="unit/sprite_sheet.js"></script>
   <script src="unit/text.js"></script>

@@ -2,6 +2,8 @@
 
 A Joyful 2D HTML5 Game Engine, designed to be easy to use.
 
+Current version: [0.1.1](CHANGELOG.md).
+
 ## Features
 
   - Keyboard input
@@ -14,6 +16,7 @@ A Joyful 2D HTML5 Game Engine, designed to be easy to use.
   - Audio (provided by [howler.js](https://github.com/goldfire/howler.js))
   - Tweens (provided by [tween.js](https://github.com/sole/tween.js))
   - Device feature detection
+  - Custom preloader
 
 ## Resources
 
@@ -22,10 +25,12 @@ A Joyful 2D HTML5 Game Engine, designed to be easy to use.
   - [Google Group](https://groups.google.com/forum/#!forum/joyjs)
   - Follow [@joyjs_](https://twitter.com/joyjs_) on twitter for updates
 
-## TODO
+## TODO (enchancements / features)
 
   - Touch events
   - Normalized `collidePosition` on DisplayObject / RectCollider calls.
+  - Handle custom WebFonts on loader pipeline. (lib/base/font.js)
+  - Physics integration. (lib/core/behaviour/physics.js)
 
 
 ## Contributing

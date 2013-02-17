@@ -1,10 +1,10 @@
 /* 
- * joy.js v0.1.0 
+ * joy.js v0.1.1 
  * http://joyjs.org
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 2/9/2013
+ * @build 2/16/2013
  */
 
 (function(global) {
@@ -17,80 +17,6 @@
     Render: {},
     Input: {},
     Context: {},
-
-    Events: {
-      /**
-       * Triggered when DisplayObject is initialized.
-       * @attribute Events.INIT
-       * @type {String}
-       * @static
-       * @readonly
-       */
-      INIT: 'init',
-
-      /**
-       * Triggered when scene is loaded.
-       * @attribute Events.SCENE_ACTIVE
-       * @type {String}
-       * @static
-       * @readonly
-       */
-      SCENE_ACTIVE: 'sceneActive',
-
-      /**
-       * Triggered when DisplayObject is added into DisplayObjectContainer.
-       * @attribute Events.ADDED
-       * @type {String}
-       * @static
-       * @readonly
-       */
-      ADDED: 'added',
-
-      /**
-       * Triggered when DisplayObject is removed from DisplayObjectContainer.
-       * @attribute Events.REMOVED
-       * @type {String}
-       * @static
-       * @readonly
-       */
-      REMOVED: 'removed',
-
-      /**
-       * Triggered at every frame.
-       * @attribute Events.UPDATE
-       * @type {String}
-       * @static
-       * @readonly
-       */
-      UPDATE: 'update',
-
-      /**
-       * Triggered on collision update.
-       * @attribute Events.COLLISION
-       * @type {String}
-       * @static
-       * @readonly
-       */
-      COLLISION: 'collision',
-
-      /**
-       * Triggered at the moment collision starts.
-       * @attribute Events.COLLISION_START
-       * @type {String}
-       * @static
-       * @readonly
-       */
-      COLLISION_ENTER: 'collisionEnter',
-
-      /**
-       * Triggered at the moment collision ends.
-       * @attribute Events.COLLISION_EXIT
-       * @type {String}
-       * @static
-       * @readonly
-       */
-      COLLISION_EXIT: 'collisionExit'
-    },
 
     /**
      * @attribute debug
@@ -132,59 +58,510 @@
  * @module Joy
  */
 (function(J) {
-  var userAgent = navigator.userAgent;
-  var browserPrefix = ((userAgent.match(/opera/i) && "o") ||
-                       (userAgent.match(/webkit/i) && "webkit") ||
-                       (userAgent.match(/msie/i) && "ms") ||
-                       (userAgent.match(/mozilla/i) && "moz") || "");
+  /**
+   * Used on `DisplayObject#composite`
+   * @class CompositeOperation
+   * @static
+   */
+  J.CompositeOperation = {
+    /**
+     * @attribute SOURCE_OVER
+     * @static
+     * @final
+     * @type {String}
+     */
+    SOURCE_OVER: 'source-over',
 
-  function prefix(name) {
-    if (browserPrefix !== "") {
-      name = name.charAt(0).toUpperCase() + name.slice(1);
-    }
-    return browserPrefix + name;
-  }
+    /**
+     * @attribute SOURCE_IN
+     * @static
+     * @final
+     * @type {String}
+     */
+    SOURCE_IN: 'source-in',
+
+    /**
+     * @attribute SOURCE_OUT
+     * @static
+     * @final
+     * @type {String}
+     */
+    SOURCE_OUT: 'source-out',
+
+    /**
+     * @attribute SOURCE_ATOP
+     * @static
+     * @final
+     * @type {String}
+     */
+    SOURCE_ATOP: 'source-atop',
+
+    /**
+     * @attribute LIGHTER
+     * @static
+     * @final
+     * @type {String}
+     */
+    LIGHTER: 'lighter',
+
+    /**
+     * @attribute XOR
+     * @static
+     * @final
+     * @type {String}
+     */
+    XOR: 'xor',
+
+    /**
+     * @attribute DESTINATION_OVER
+     * @static
+     * @final
+     * @type {String}
+     */
+    DESTINATION_OVER: 'destination-over',
+
+    /**
+     * @attribute DESTINATION_IN
+     * @static
+     * @final
+     * @type {String}
+     */
+    DESTINATION_IN: 'destination-in',
+
+    /**
+     * @attribute DESTINATION_OUT
+     * @static
+     * @final
+     * @type {String}
+     */
+    DESTINATION_OUT: 'destination-out',
+
+    /**
+     * @attribute DESTINATION_ATOP
+     * @static
+     * @final
+     * @type {String}
+     */
+    DESTINATION_ATOP: 'destination-atop',
+
+    /**
+     * @attribute DESTINATION_COPY
+     * @static
+     * @final
+     * @type {String}
+     */
+    DESTINATION_COPY: 'copy'
+  };
+})(Joy);
+
+/**
+ * @module Joy
+ */
+(function(J) {
+  J.Events = {
+    /**
+     * Triggered when DisplayObject is initialized.
+     * @attribute Events.INIT
+     * @type {String}
+     * @static
+     * @readonly
+     */
+    INIT: 'init',
+
+    /**
+     * Triggered when scene is loaded.
+     * @attribute Events.SCENE_ACTIVE
+     * @type {String}
+     * @static
+     * @readonly
+     */
+    SCENE_ACTIVE: 'sceneActive',
+
+    /**
+     * Triggered when DisplayObject is added into DisplayObjectContainer.
+     * @attribute Events.ADDED
+     * @type {String}
+     * @static
+     * @readonly
+     */
+    ADDED: 'added',
+
+    /**
+     * Triggered when DisplayObject is removed from DisplayObjectContainer.
+     * @attribute Events.REMOVED
+     * @type {String}
+     * @static
+     * @readonly
+     */
+    REMOVED: 'removed',
+
+    /**
+     * Triggered at every frame.
+     * @attribute Events.UPDATE
+     * @type {String}
+     * @static
+     * @readonly
+     */
+    UPDATE: 'update',
+
+    /**
+     * Triggered on collision update.
+     * @attribute Events.COLLISION
+     * @type {String}
+     * @static
+     * @readonly
+     */
+    COLLISION: 'collision',
+
+    /**
+     * Triggered at the moment collision starts.
+     * @attribute Events.COLLISION_START
+     * @type {String}
+     * @static
+     * @readonly
+     */
+    COLLISION_ENTER: 'collisionEnter',
+
+    /**
+     * Triggered at the moment collision ends.
+     * @attribute Events.COLLISION_EXIT
+     * @type {String}
+     * @static
+     * @readonly
+     */
+    COLLISION_EXIT: 'collisionExit'
+  };
+})(Joy);
+
+/**
+ * @module Joy
+ */
+(function(J) {
+  // TODO: find a better way to reference currentEngine instance.
+  // What will happen when we have two canvas contexts at the same time? (like a mini-map?)
+  J.currentEngine = null;
 
   /**
-   * Browser support configuration and constants.
-   * @class Support
+   * Engine context. Start your application from here.
+   *
+   * @class Engine
+   * @constructor
    */
-  J.Support = {
-    /**
-     * Device supports touch events?
-     * @attribute touch
-     * @type {Boolean}
-     * @static
-     * @readonly
-     */
-    touch: ('ontouchstart' in window),
+  var Engine = function(options) {
+    J.currentEngine = this;
 
     /**
-     * Device supports Retina Display?
-     * @attribute retina
+     * Is engine paused?
+     * @attribute paused
      * @type {Boolean}
-     * @static
-     * @readonly
      */
-    retina: window.devicePixelRatio > 1 || window.matchMedia('(min-resolution: 1.1dppx)').matches,
+    this.paused = false;
 
-    /*
-     * Misc / Interal use
+    if (options.canvas2d) {
+      this.context = new Joy.Context.Context2d({canvas: options.canvas2d});
+    }
+
+    if (options.canvas3d) {
+      // OMG, there is no 3d yet (and shouldn't for long time...)
+    }
+
+    // Create canvas and context, if it isn't set.
+    if (!this.context) {
+      var contextKlass = options.context || Joy.Context.Context2d;
+      this.context = new contextKlass({canvas: document.createElement('canvas')});
+      document.body.appendChild(this.context.canvas);
+    }
+
+    if (options.width) {
+      this.context.canvas.width = options.width;
+    }
+
+    if (options.height) {
+      this.context.canvas.height = options.height;
+    }
+
+    // Resize canvas accourding to device pixel ratio
+    // 1 on Desktops
+    // 2 on Retina Display
+    this.context.canvas.style.width = (this.context.canvas.width / window.devicePixelRatio) + "px";
+    this.context.canvas.style.height = (this.context.canvas.height / window.devicePixelRatio) + "px";
+
+    // TODO: Implement on-init engine trigger
+    // Enable mouse events, if module is included
+    if (typeof(J.Mouse) !== "undefined") {
+      J.Mouse.enable(this);
+    }
+
+    if (options.markup) {
+      this.useMarkup();
+    }
+
+    if (options.debug) {
+      Joy.debug = true;
+    }
+
+    // Active actors list
+    this.scenes = [];
+
+    this.__defineGetter__('width', function() {
+      return this.context.canvas.width;
+    });
+
+    this.__defineGetter__('height', function() {
+      return this.context.canvas.height;
+    });
+
+    /**
+     * @attribute currentScene
+     * @type {Scene}
      */
-    'imageSmoothingEnabled' : prefix("imageSmoothingEnabled")
+    this.__defineGetter__('currentScene', function() {
+      return this.scenes[this._currentSceneIndex];
+    });
+    this.__defineSetter__('currentScene', function(scene) {
+      if (this._currentSceneIndex !== null) {
+        // Restore context2d viewport translation
+        this.scenes[this._currentSceneIndex].visible = false;
+        this.scenes[this._currentSceneIndex].viewport.reset();
+      }
+
+      if (this.sceneLoader && scene.loader.loading) {
+        this._currentSceneIndex = this.scenes.indexOf(this.sceneLoader);
+        this.sceneLoader.loader = scene.loader;
+        this.sceneLoader.visible = true;
+
+        scene.visible = false;
+        scene.loader.bind('loadComplete', function() {
+          J.currentEngine.gotoScene(scene);
+        });
+      } else {
+        this._currentSceneIndex = this.scenes.indexOf(scene);
+        scene.visible = true;
+        // Trigger scene active event
+        scene.broadcast(J.Events.SCENE_ACTIVE, [scene]);
+      }
+
+    });
+    this._currentSceneIndex = null;
+
+    /**
+     * Scene that will show when your current scene is loading.
+     * @property sceneLoader
+     * @type {Scene}
+     */
+    this.sceneLoader = null;
+    this.setSceneLoader(J.Engine.defaultSceneLoader);
+
+    // requestAnimationFrame
+    if (Joy.debug) {
+      this._lastRenderTime = new Date();
+      this._frameRateText = new Joy.Text({x: 4, y: 4, font: "12px Verdana", color: "red"});
+      this.onEnterFrameDebug();
+    } else {
+      this.onEnterFrame();
+    }
   };
 
   /**
-   * window.onEnterFrame
+   * Create a new scene
+   * @method createScene
+   * @param {Function} setupMethod
+   *
+   * @example
+   *     // Creating a scene with setup
+   *     engine.createScene(function(scene) {
+   *        scene.addChild(...);
+   *     });
+   *
+   * @return {Engine}
    */
-  window.onEnterFrame = (function(){
-    return  window.requestAnimationFrame ||
-      window.webkitRequestAnimationFrame ||
-      window.mozRequestAnimationFrame    ||
-      window.oRequestAnimationFrame      ||
-      window.msRequestAnimationFrame     ||
-      function( callback ) { window.setTimeout(callback, 1000 / 60); }; // TODO: use FPS rate from render module
-  })();
+  Engine.prototype.createScene = function(setupMethod) {
+    var scene = new J.Scene({ctx: this.context.ctx});
+
+    // yield scene on setup method
+    if (typeof(setupMethod) === "function") {
+      setupMethod.apply(this, [scene]);
+    }
+
+    this.addScene(scene);
+    return scene;
+  };
+
+  /**
+   * Create a new scene loader.
+   * The first scene loader created will be the default to appear whenever a loader is requested.
+   *
+   * @method setSceneLoader
+   * @param {Function | Scene} setupMethod or target loader scene
+   * @param {Number} fadeMilliseconds
+   * @param {String | Color} fadeColor
+   *
+   * @example
+   *
+   *     //
+   *     // Setup custom scene loader
+   *     //
+   *     engine.setSceneLoader(function(scene) {
+   *        scene.addChild(...).bind(Joy.Events.UPDATE, function () {
+   *          console.log(scene.loader.percentage);
+   *        });
+   *     });
+   *
+   *     //
+   *     // Set based on created scene
+   *     //
+   *     // => Set your first scene loader
+   *     var firstLoader = engine.setSceneLoader(function(scene) {
+   *        scene.addChild(...).bind(Joy.Events.UPDATE, function () {
+   *          console.log(scene.loader.percentage);
+   *        });
+   *     });
+   *
+   *     // => Change the loader
+   *     var secondLoader = engine.setSceneLoader(function(scene) {
+   *        scene.addChild(...);
+   *     });
+   *     // => Change it again, using the first one
+   *     engine.setSceneLoader(firstLoader);
+   *
+   * @return {Scene} sceneLoader
+   */
+  Engine.prototype.setSceneLoader = function(obj) {
+    var scene = (typeof(obj) === "object") ? obj : new J.Scene({
+      ctx: this.context.ctx,
+      loader: null
+    });
+
+    // yield scene on setup method
+    if (typeof(obj) === "function") {
+      obj.apply(this, [scene]);
+    }
+
+    // Add only unique items to scene list
+    if (this.scenes.indexOf(scene) === -1) {
+      this.scenes.push(scene);
+    }
+
+    this.sceneLoader = scene;
+    return scene;
+  };
+
+  /**
+   * Pause engine
+   * @method pause
+   * @param {Object} options
+   */
+  Engine.prototype.pause = function() {
+    this._deltaTime = J.deltaTime;
+    J.deltaTime = 0;
+    this.paused = true;
+  };
+
+  /**
+   * Resume if engine is paused.
+   * @method resume
+   */
+  Engine.prototype.resume = function() {
+    J.deltaTime = this._deltaTime;
+    this.paused = false;
+  };
+
+  /**
+   * @method gotoNextScene
+   * @param {Number} fadeMilliseconds (default=1000)
+   * @param {String | Color} color (default=#fff)
+   * @return {Engine} this
+   */
+  Engine.prototype.gotoNextScene = function(milliseconds, color) {
+    if (typeof(this.scenes[this._currentSceneIndex+1])==="undefined") {
+      throw new Error("There is no next scene.");
+    }
+    return this.gotoScene(this.scenes[this._currentSceneIndex+1], milliseconds, color);
+  };
+
+  /**
+   * @method gotoScene
+   * @param {Scene} scene
+   * @param {Number} fadeMilliseconds (default=1000)
+   * @param {String | Color} color (default=#fff)
+   * @return {Engine} this
+   */
+  Engine.prototype.gotoScene = function (scene, milliseconds, color) {
+    var self = this;
+    if (!milliseconds) { milliseconds = 1000; }
+    if (!color) { color = "#fff"; }
+
+    console.log(this.currentScene, scene);
+
+    this.currentScene.fadeOut(milliseconds, color).bind('fadeOutComplete', function () {
+      self.currentScene = scene;
+      self.currentScene.fadeIn(milliseconds, color);
+    });
+
+    return this;
+  };
+
+  Engine.prototype.addScene = function(scene) {
+    scene.engine = this;
+    scene.setContext(this.context.ctx);
+
+    if (Joy.debug) {
+      scene.viewport.addHud(this._frameRateText);
+    }
+
+    this.scenes.push(scene);
+
+    // The first scene added to engine is always the 'current'
+    if (this._currentSceneIndex === null) {
+      this.currentScene = scene;
+    }
+  };
+
+  Engine.prototype.render = function() {
+    this.context.render(this.scenes);
+  };
+
+  Engine.prototype.useMarkup = function() {
+    var markup = new J.Markup();
+    markup.analyse(this.context);
+  };
+
+  /**
+   * Call window's requestAnimationFrame.
+   * @method onEnterFrame
+   */
+  Engine.prototype.onEnterFrame = function () {
+    if (!J.currentEngine.paused) {
+      // Update tweening engine
+      J.TweenManager.update();
+
+      // Update rendering
+      J.currentEngine.render();
+    }
+    window.onEnterFrame(J.currentEngine.onEnterFrame);
+  };
+
+  /**
+   * Inspect application frame rate. Call window's requestAnimationFrame
+   * @method onEnterFrameDebug
+   */
+  Engine.prototype.onEnterFrameDebug = function () {
+    var thisRenderTime = new Date();
+    J.currentEngine._frameRateText.text = (1000 / (thisRenderTime - J.currentEngine._lastRenderTime)).toFixed(1).toString() + " FPS";
+    if (!J.currentEngine.paused) {
+
+      // Update tweening engine
+      J.TweenManager.update();
+
+      // Update rendering
+      J.currentEngine.render();
+    }
+    J.currentEngine._lastRenderTime = thisRenderTime;
+
+    window.onEnterFrame(J.currentEngine.onEnterFrameDebug);
+  };
+
+  J.Engine = Engine;
 })(Joy);
 
 /**
@@ -257,6 +634,236 @@
   Joy.Object = Class;
 })(Joy);
 /*jshint immed:false loopfunc:false*/
+
+/**
+ * @module Joy
+ */
+(function(J) {
+  var userAgent = navigator.userAgent;
+  var browserPrefix = ((userAgent.match(/opera/i) && "o") ||
+                       (userAgent.match(/webkit/i) && "webkit") ||
+                       (userAgent.match(/msie/i) && "ms") ||
+                       (userAgent.match(/mozilla/i) && "moz") || "");
+
+  function prefix(name) {
+    if (browserPrefix !== "") {
+      name = name.charAt(0).toUpperCase() + name.slice(1);
+    }
+    return browserPrefix + name;
+  }
+
+  /*
+   * Extend HTMLElement to support addEventListener method.
+   */
+  if (typeof(window.addEventListener)!=="function") {
+    HTMLElement.prototype.addEventListener = function (type, callback, useCapture) {
+      attachEvent('on' + type, callback);
+    };
+  }
+
+  /**
+   * Browser support configuration and constants.
+   * @class Support
+   */
+  J.Support = {
+    /**
+     * Device supports touch events?
+     * @attribute touch
+     * @type {Boolean}
+     * @static
+     * @readonly
+     */
+    touch: ('ontouchstart' in window),
+
+    /**
+     * Device supports Retina Display?
+     * @attribute retina
+     * @type {Boolean}
+     * @static
+     * @readonly
+     */
+    retina: window.devicePixelRatio > 1 || window.matchMedia('(min-resolution: 1.1dppx)').matches,
+
+    /*
+     * Misc / Interal use
+     */
+    'imageSmoothingEnabled' : prefix("imageSmoothingEnabled")
+  };
+
+  /**
+   * window.onEnterFrame
+   */
+  window.onEnterFrame = (function(){
+    return  window.requestAnimationFrame ||
+      window.webkitRequestAnimationFrame ||
+      window.mozRequestAnimationFrame    ||
+      window.oRequestAnimationFrame      ||
+      window.msRequestAnimationFrame     ||
+      function( callback ) { window.setTimeout(callback, 1000 / 60); }; // TODO: use FPS rate from render module
+  })();
+})(Joy);
+
+/**
+ * @module Joy
+ */
+(function(J) {
+  /**
+   * Event triggering and handling.
+   *
+   * @class Triggerable
+   * @constructor
+   */
+  var Triggerable = J.Object.extend({
+    init: function() {
+      this._handlers = {};
+      this._behaviours = [];
+    },
+
+    /**
+     * Behave like a {Behaviour}
+     * @method behave
+     * @param {Behaviour}
+     * @return {Triggerable} this
+     */
+    behave: function (Behaviour) {
+      this._behaviours.push(Behaviour);
+
+      var behaviour = new Behaviour();
+      for (var i in behaviour) {
+        if (typeof(Joy.Events[i])==="string") {
+          this.bind(Joy.Events[i], behaviour[i]);
+
+        } else if (i !== "constructor") { // Deny 'constructor' method of being overwritten
+          // Define methods on this instance
+          this[i] = behaviour[i];
+        }
+      }
+      return this;
+    },
+
+    /**
+     * This object behaves as {target} behaviour?
+     * @method hasBehaviour
+     * @param {Behaviour} target
+     * @return {Boolean}
+     */
+    hasBehaviour: function (behaviour) {
+      return this._behaviours.indexOf(behaviour) >= 0;
+    },
+
+    /**
+     * Bind event handler
+     * @method bind
+     * @param {String} type event type
+     * @param {Function} handler
+     * @return {Triggerable} this
+     */
+    bind: function (type, handler) {
+      var data = handler;
+
+      // Custom bind
+      if (Triggerable._custom.bind[type] !== undefined) {
+        data = { target: this, handler: handler };
+        Triggerable._custom.bind[type].call(this, data);
+      }
+
+      // Register bind in the instance
+      if (this._handlers[type] === undefined) {
+        this._handlers[type] = [];
+      }
+      if (this._handlers[type].indexOf(data) === -1) {
+        this._handlers[type].push(data);
+      }
+      return this;
+    },
+
+    /**
+     * Remove event handlers
+     * @method unbind
+     * @param {String} type event type
+     * @return {Triggerable} this
+     */
+    unbind: function (type) {
+      // Custom unbind
+      if (Triggerable._custom.unbind[type] !== undefined) {
+        for (var i=0, length=this._handlers[type].length; i<length;++i) {
+          Triggerable._custom.unbind[type].call(this, this._handlers[type][i]);
+        }
+      }
+
+      // Unbind from this instance
+      this._handlers[type] = null;
+      return this;
+    },
+
+    /**
+     * Triggers event type
+     * @method trigger
+     * @param {String} type event type
+     * @param {Array} arguments arguments for callback
+     * @param {Number} delay
+     *  @optional
+     */
+    trigger: function (type, args, delay) {
+      var handlers = this._handlers[type] || [];
+
+      args = args || [];
+      delay = delay || 0;
+
+      for (var i = 0, length = handlers.length; i<length; ++i) {
+        handlers[i].apply(this, args);
+      }
+    }
+  });
+
+  Triggerable._custom = {
+    'bind': {},
+    'unbind' : {}
+  };
+
+  /**
+   * Register default method handler.
+   * @method register
+   * @param {String} type
+   * @param {Function} bindCallback
+   * @param {Function} unbindCallback
+   *
+   * @static
+   */
+  Triggerable.register = function(type, bindCallback, unbindCallback) {
+    Triggerable._custom.bind[type] = bindCallback;
+    Triggerable._custom.unbind[type] = unbindCallback;
+    return this;
+  };
+
+  // 'init' is triggered right when it's binded.
+  Triggerable.register(Joy.Events.INIT, function(evt) {
+    evt.handler.call(this);
+  });
+
+  // Exports module
+  J.Triggerable = Triggerable;
+})(Joy);
+
+(function(J) {
+  /**
+   * @class Math
+   */
+
+  /**
+   * @method clamp
+   * @param {Number} number
+   * @param {Number} low
+   * @param {Number} high
+   * @static
+   *
+   * @example
+   *     Math.clamp(5, 10, 20); // returns 10
+   */
+  Math.clamp = function(number, low, high) {
+    return ((number < low) ? low : ((number > high) ? high : +number));
+  };
+})(Joy);
 
 /**
  * @module Joy
@@ -419,143 +1026,135 @@
 /**
  * @module Joy
  */
-(function(J) {
+(function(J){
   /**
-   * Event triggering and handling.
-   *
-   * @class Triggerable
+   * @class Vector2d
    * @constructor
+   * @param {Number} x
+   * @param {Number} y
    */
-  var Triggerable = J.Object.extend({
-    init: function() {
-      this._handlers = {};
-      this._behaviours = [];
-    },
+  var Vector2d = function(x, y) {
+    this.x = x || 0;
+    this.y = y || 0;
 
     /**
-     * Behave like a {Behaviour}
-     * @method behave
-     * @param {Behaviour}
-     * @return {Triggerable} this
+     * Get the magnitude of this vector
+     * @attribute length
+     * @readonly
      */
-    behave: function (Behaviour) {
-      this._behaviours.push(Behaviour);
-
-      var behaviour = new Behaviour();
-      for (var i in behaviour) {
-        if (typeof(Joy.Events[i])==="string") {
-          this.bind(Joy.Events[i], behaviour[i]);
-
-        } else if (i !== "constructor") { // Deny 'constructor' method of being overwritten
-          // Define methods on this instance
-          this[i] = behaviour[i];
-        }
-      }
-      return this;
-    },
+    this.__defineGetter__('length', function () {
+      return Math.sqrt((this.x * this.x) + (this.y * this.y));
+    });
 
     /**
-     * This object behaves as {target} behaviour?
-     * @method hasBehaviour
-     * @param {Behaviour} target
-     * @return {Boolean}
+     * Get this vector with a magnitude of 1.
+     * @attribute normalized
+     * @readonly
      */
-    hasBehaviour: function (behaviour) {
-      return this._behaviours.indexOf(behaviour) >= 0;
-    },
-
-    /**
-     * Bind event handler
-     * @method bind
-     * @param {String} type event type
-     * @param {Function} handler
-     * @return {Triggerable} this
-     */
-    bind: function (type, handler) {
-      var data = handler;
-
-      // Custom bind
-      if (Triggerable._custom.bind[type] !== undefined) {
-        data = { target: this, handler: handler };
-        Triggerable._custom.bind[type].call(this, data);
-      }
-
-      // Register bind in the instance
-      if (this._handlers[type] === undefined) {
-        this._handlers[type] = [];
-      }
-      if (this._handlers[type].indexOf(data) === -1) {
-        this._handlers[type].push(data);
-      }
-      return this;
-    },
-
-    /**
-     * Remove event handlers
-     * @method unbind
-     * @param {String} type event type
-     * @return {Triggerable} this
-     */
-    unbind: function (type) {
-      // Custom unbind
-      if (Triggerable._custom.unbind[type] !== undefined) {
-        for (var i=0, length=this._handlers[type].length; i<length;++i) {
-          Triggerable._custom.unbind[type].call(this, this._handlers[type][i]);
-        }
-      }
-
-      // Unbind from this instance
-      this._handlers[type] = null;
-      return this;
-    },
-
-    /**
-     * Triggers event type
-     * @method trigger
-     * @param {String} type event type
-     * @param {Array} arguments arguments for callback
-     * @param {Number} delay
-     *  @optional
-     */
-    trigger: function (type, args, delay) {
-      var handlers = this._handlers[type] || [];
-
-      args = args || [];
-      delay = delay || 0;
-
-      for (var i = 0, length = handlers.length; i<length; ++i) {
-        handlers[i].apply(this, args);
-      }
-    }
-  });
-
-  Triggerable._custom = {
-    'bind': {},
-    'unbind' : {}
+    this.__defineGetter__('normalized', function () {
+      var magnitude = this.length;
+      return new Vector2d(this.x / magnitude, this.y / magnitude);
+    });
   };
 
   /**
-   * Register default method handler.
-   * @method register
-   * @param {String} type
-   * @param {Function} bindCallback
-   * @param {Function} unbindCallback
-   *
-   * @static
+   * @method set
+   * @param {Number} x
+   * @param {Number} y
+   * @return {Vector2d}
    */
-  Triggerable.register = function(type, bindCallback, unbindCallback) {
-    Triggerable._custom.bind[type] = bindCallback;
-    Triggerable._custom.unbind[type] = unbindCallback;
+  Vector2d.prototype.set = function (x, y) {
+    this.x = x;
+    this.y = y;
     return this;
   };
 
-  // 'init' is triggered right when it's binded.
-  Triggerable.register(Joy.Events.INIT, function(evt) {
-    evt.handler.call(this);
-  });
+  /**
+   * @method sum
+   * @param {Vector2d} vector2d
+   * @return {Vector2d}
+   */
+  Vector2d.prototype.subtract = function (vector2d) {
+    this.x -= vector2d.x;
+    this.y -= vector2d.y;
+    return this;
+  };
 
-  // Exports module
-  J.Triggerable = Triggerable;
+  /**
+   * @method sum
+   * @param {Vector2d} vector2d
+   * @return {Vector2d}
+   */
+  Vector2d.prototype.sum = function (vector2d) {
+    this.x += vector2d.x;
+    this.y += vector2d.y;
+    return this;
+  };
+
+  /**
+   * @method scale
+   * @param {Number} x (or x y)
+   * @param {Number} y
+   * @return {Vector2d}
+   */
+  Vector2d.prototype.scale = function (x, y) {
+    this.x *= x;
+    this.y *= y || x;
+    return this;
+  };
+
+  /**
+   * @method clone
+   * @return {Vector2d}
+   */
+  Vector2d.prototype.clone = function() {
+    return new Vector2d(this.x, this.y);
+  };
+
+  /**
+   * Return unit vector
+   * @return {Vector2d}
+   */
+  Vector2d.prototype.unit = function() {
+    return new Vector2d( Math.cos(this.x), Math.sin(this.y) );
+  };
+
+  /**
+   * Normalize this vector
+   * @return {Vector2d}
+   */
+  Vector2d.prototype.normalize = function() {
+    var normal = this.normalized;
+    this.x = normal.x;
+    this.y = normal.y;
+    return this;
+  };
+
+  /**
+   * Get the distance between this vector and the argument vector
+   * @param {Vector2d} vector
+   * @return {Number}
+   */
+  Vector2d.distance = function(v1, v2) {
+    var xdiff = v1.x - v2.x,
+        ydiff = v1.y - v2.y;
+    return Math.sqrt(xdiff * xdiff + ydiff * ydiff);
+  };
+
+  /**
+   * @method toString
+   * @return {String}
+   */
+  Vector2d.prototype.toString = function () {
+    return "#<Vector2d @x=" + this.x + ", @y=" + this.y + ">";
+  };
+
+  Vector2d.LEFT = new Vector2d(-1, 0);
+  Vector2d.RIGHT = new Vector2d(1, 0);
+  Vector2d.TOP = new Vector2d(0, -1);
+  Vector2d.BOTTOM = new Vector2d(0, 1);
+
+  J.Vector2d = Vector2d;
 })(Joy);
 
 /**
@@ -563,43 +1162,458 @@
  */
 (function(J) {
   /**
-   * @class Context2d
+   * @param {String | Number} hexOrRed hexadecimal color (String), or red (Number)
+   * @param {Number} green
+   * @param {Number} blue
+   * @param {Number} alpha
+   *
+   * @example
+   *     // color name
+   *     var color = new Joy.Color("red");
+   *
+   * @example
+   *     // hexadecimal
+   *     var color = new Joy.Color("#fff");
+   *
+   * @example
+   *     // rgb
+   *     var color = new Joy.Color(255, 50, 255);
+   *
+   * @example
+   *     // rgba
+   *     var color = new Joy.Color(255, 50, 255, 100);
+   *
+   * @class Color
    * @constructor
-   * @param {Object} options
    */
-  var Context2d = function(options) {
-    this.setCanvas(options.canvas);
-  };
-
-  Context2d.prototype.setCanvas = function(canvas) {
-    this.canvas = canvas;
-    this.ctx = canvas.getContext('2d');
-    return this;
+  var Color = function(r, g, b, a) {
+    this.red = r;
+    this.green = g;
+    this.blue = b;
+    this.alpha = a;
   };
 
   /**
-   * Clears the entire screen.
-   * @method clear
+   * Get color definition as CSS string.
+   * @method toString
+   * @return {String}
    */
-  Context2d.prototype.clear = function () {
-    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-    return this;
-  };
-
-  /**
-   * Render everything in the buffer to the screen.
-   * @method render
-   */
-  Context2d.prototype.render = function (scenes) {
-    this.clear();
-    for (var i = 0, len = scenes.length; i < len; ++i) {
-      if (!scenes[i].visible) { continue; }
-      scenes[i].render();
+  Color.prototype.toString = function() {
+    if (!this.green && !this.blue) {
+      return this.red;
+    } else if (this.alpha) {
+      return "rgba(" + this.red + "," + this.green + "," + this.blue + "," + this.alpha + ")";
+    } else {
+      return "rgb(" + this.red + "," + this.green + "," + this.blue + ")";
     }
   };
 
-  // Exports Context2d module
-  J.Context.Context2d = Context2d;
+  J.Color = Color;
+})(Joy);
+
+/**
+ * @module Joy
+ */
+(function(J) {
+  var Loader = J.Triggerable.extend({
+    /**
+     * @class Loader
+     */
+    init: function() {
+      this._super();
+
+      this.assets = [];
+      this.loaded = 0;
+
+      /**
+       * Loaded percentage
+       * @property percentage
+       * @type {Number}
+       */
+      this.__defineGetter__('percentage', function () {
+        return Math.round((this.loaded / this.assets.length) * 100);
+      });
+
+      /**
+       * Is loading?
+       * @property loading
+       * @type {Boolean}
+       */
+      this.__defineGetter__('loading', function () {
+        return this.assets.length !== this.loaded;
+      });
+    },
+
+    add: function(asset) {
+      var that = this;
+      this.assets.push(asset);
+
+      asset.addEventListener('load', function() {
+        that.loaded += 1;
+
+        that.trigger('loadProgress');
+
+        // Trigger load complete
+        console.log(that.loaded, that.assets.length);
+        if (that.loaded == that.assets.length) {
+          that.trigger('loadComplete');
+        }
+      });
+    }
+
+  });
+
+  J.Loader = Loader;
+})(Joy);
+
+/**
+ * @module Joy
+ */
+(function(J) {
+  /**
+   * @class Shader
+   */
+  var Shader = function() {};
+
+  /**
+   * Process
+   * @method process
+   * @param {CanvasRenderingContext2D} ctx
+   * @param {Function} method
+   * @static
+   */
+  Shader.process = function(ctx, method) {
+    var imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
+    method.call(this, imageData);
+    ctx.putImageData(imageData, 0, 0);
+  };
+
+  /*
+   * Blur filter extracted from: http://www.quasimondo.com/StackBlurForCanvas/StackBlurDemo.html
+   */
+  var blur_mul_table = [ 512,512,456,512,328,456,335,512,405,328,271,456,388,335,292,512, 454,405,364,328,298,271,496,456,420,388,360,335,312,292,273,512, 482,454,428,405,383,364,345,328,312,298,284,271,259,496,475,456, 437,420,404,388,374,360,347,335,323,312,302,292,282,273,265,512, 497,482,468,454,441,428,417,405,394,383,373,364,354,345,337,328, 320,312,305,298,291,284,278,271,265,259,507,496,485,475,465,456, 446,437,428,420,412,404,396,388,381,374,367,360,354,347,341,335, 329,323,318,312,307,302,297,292,287,282,278,273,269,265,261,512, 505,497,489,482,475,468,461,454,447,441,435,428,422,417,411,405, 399,394,389,383,378,373,368,364,359,354,350,345,341,337,332,328, 324,320,316,312,309,305,301,298,294,291,287,284,281,278,274,271, 268,265,262,259,257,507,501,496,491,485,480,475,470,465,460,456, 451,446,442,437,433,428,424,420,416,412,408,404,400,396,392,388, 385,381,377,374,370,367,363,360,357,354,350,347,344,341,338,335, 332,329,326,323,320,318,315,312,310,307,304,302,299,297,294,292, 289,287,285,282,280,278,275,273,271,269,267,265,263,261,259];
+  var blur_shg_table = [ 9, 11, 12, 13, 13, 14, 14, 15, 15, 15, 15, 16, 16, 16, 16, 17, 17, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24 ];
+
+  Shader.blur = function(imageData) {
+    var index = 0, next;
+    var BlurStack = function () {
+      this.r = 0;
+      this.g = 0;
+      this.b = 0;
+      this.a = 0;
+      this.next = null;
+    };
+
+    var x, y, i, p, yp, yi, yw, r_sum, g_sum, b_sum,
+        r_out_sum, g_out_sum, b_out_sum,
+        r_in_sum, g_in_sum, b_in_sum,
+        pixels = imageData.data,
+        pr, pg, pb, rbs, radius = 5, width = imageData.width, height = imageData.height;
+
+    var div = radius + radius + 1;
+    var w4 = width << 2;
+    var widthMinus1  = width - 1;
+    var heightMinus1 = height - 1;
+    var radiusPlus1  = radius + 1;
+    var sumFactor = radiusPlus1 * ( radiusPlus1 + 1 ) / 2;
+
+    var stackStart = new BlurStack();
+    var stackEnd;
+    var stack = stackStart;
+    for ( i = 1; i < div; i++ )
+    {
+      stack = stack.next = new BlurStack();
+      if ( i == radiusPlus1 ) stackEnd = stack;
+    }
+    stack.next = stackStart;
+    var stackIn = null;
+    var stackOut = null;
+
+    yw = yi = 0;
+
+    var mul_sum = blur_mul_table[radius];
+    var shg_sum = blur_shg_table[radius];
+
+    for ( y = 0; y < height; y++ )
+    {
+      r_in_sum = g_in_sum = b_in_sum = r_sum = g_sum = b_sum = 0;
+
+      r_out_sum = radiusPlus1 * ( pr = pixels[yi] );
+      g_out_sum = radiusPlus1 * ( pg = pixels[yi+1] );
+      b_out_sum = radiusPlus1 * ( pb = pixels[yi+2] );
+
+      r_sum += sumFactor * pr;
+      g_sum += sumFactor * pg;
+      b_sum += sumFactor * pb;
+
+      stack = stackStart;
+
+      for( i = 0; i < radiusPlus1; i++ )
+      {
+        stack.r = pr;
+        stack.g = pg;
+        stack.b = pb;
+        stack = stack.next;
+      }
+
+      for( i = 1; i < radiusPlus1; i++ )
+      {
+        p = yi + (( widthMinus1 < i ? widthMinus1 : i ) << 2 );
+        r_sum += ( stack.r = ( pr = pixels[p])) * ( rbs = radiusPlus1 - i );
+        g_sum += ( stack.g = ( pg = pixels[p+1])) * rbs;
+        b_sum += ( stack.b = ( pb = pixels[p+2])) * rbs;
+
+        r_in_sum += pr;
+        g_in_sum += pg;
+        b_in_sum += pb;
+
+        stack = stack.next;
+      }
+
+
+      stackIn = stackStart;
+      stackOut = stackEnd;
+      for ( x = 0; x < width; x++ )
+      {
+        pixels[yi]   = (r_sum * mul_sum) >> shg_sum;
+        pixels[yi+1] = (g_sum * mul_sum) >> shg_sum;
+        pixels[yi+2] = (b_sum * mul_sum) >> shg_sum;
+
+        r_sum -= r_out_sum;
+        g_sum -= g_out_sum;
+        b_sum -= b_out_sum;
+
+        r_out_sum -= stackIn.r;
+        g_out_sum -= stackIn.g;
+        b_out_sum -= stackIn.b;
+
+        p =  ( yw + ( ( p = x + radius + 1 ) < widthMinus1 ? p : widthMinus1 ) ) << 2;
+
+        r_in_sum += ( stackIn.r = pixels[p]);
+        g_in_sum += ( stackIn.g = pixels[p+1]);
+        b_in_sum += ( stackIn.b = pixels[p+2]);
+
+        r_sum += r_in_sum;
+        g_sum += g_in_sum;
+        b_sum += b_in_sum;
+
+        stackIn = stackIn.next;
+
+        r_out_sum += ( pr = stackOut.r );
+        g_out_sum += ( pg = stackOut.g );
+        b_out_sum += ( pb = stackOut.b );
+
+        r_in_sum -= pr;
+        g_in_sum -= pg;
+        b_in_sum -= pb;
+
+        stackOut = stackOut.next;
+
+        yi += 4;
+      }
+      yw += width;
+    }
+
+
+    for ( x = 0; x < width; x++ )
+    {
+      g_in_sum = b_in_sum = r_in_sum = g_sum = b_sum = r_sum = 0;
+
+      yi = x << 2;
+      r_out_sum = radiusPlus1 * ( pr = pixels[yi]);
+      g_out_sum = radiusPlus1 * ( pg = pixels[yi+1]);
+      b_out_sum = radiusPlus1 * ( pb = pixels[yi+2]);
+
+      r_sum += sumFactor * pr;
+      g_sum += sumFactor * pg;
+      b_sum += sumFactor * pb;
+
+      stack = stackStart;
+
+      for( i = 0; i < radiusPlus1; i++ )
+      {
+        stack.r = pr;
+        stack.g = pg;
+        stack.b = pb;
+        stack = stack.next;
+      }
+
+      yp = width;
+
+      for( i = 1; i <= radius; i++ )
+      {
+        yi = ( yp + x ) << 2;
+
+        r_sum += ( stack.r = ( pr = pixels[yi])) * ( rbs = radiusPlus1 - i );
+        g_sum += ( stack.g = ( pg = pixels[yi+1])) * rbs;
+        b_sum += ( stack.b = ( pb = pixels[yi+2])) * rbs;
+
+        r_in_sum += pr;
+        g_in_sum += pg;
+        b_in_sum += pb;
+
+        stack = stack.next;
+
+        if( i < heightMinus1 )
+          {
+            yp += width;
+          }
+      }
+
+      yi = x;
+      stackIn = stackStart;
+      stackOut = stackEnd;
+      for ( y = 0; y < height; y++ )
+      {
+        p = yi << 2;
+        pixels[p]   = (r_sum * mul_sum) >> shg_sum;
+        pixels[p+1] = (g_sum * mul_sum) >> shg_sum;
+        pixels[p+2] = (b_sum * mul_sum) >> shg_sum;
+
+        r_sum -= r_out_sum;
+        g_sum -= g_out_sum;
+        b_sum -= b_out_sum;
+
+        r_out_sum -= stackIn.r;
+        g_out_sum -= stackIn.g;
+        b_out_sum -= stackIn.b;
+
+        p = ( x + (( ( p = y + radiusPlus1) < heightMinus1 ? p : heightMinus1 ) * width )) << 2;
+
+        r_sum += ( r_in_sum += ( stackIn.r = pixels[p]));
+        g_sum += ( g_in_sum += ( stackIn.g = pixels[p+1]));
+        b_sum += ( b_in_sum += ( stackIn.b = pixels[p+2]));
+
+        stackIn = stackIn.next;
+
+        r_out_sum += ( pr = stackOut.r );
+        g_out_sum += ( pg = stackOut.g );
+        b_out_sum += ( pb = stackOut.b );
+
+        r_in_sum -= pr;
+        g_in_sum -= pg;
+        b_in_sum -= pb;
+
+        stackOut = stackOut.next;
+
+        yi += width;
+      }
+    }
+  };
+
+  /**
+   * Noise pixel shader
+   * @method noise
+   * @param {ImageData} imageData
+   * @static
+   */
+  Shader.noise = function(imageData) {
+    var index = 0, x, y, random;
+    for (x=0; x < imageData.width; ++x) {
+      for (y=0; y < imageData.height; ++y) {
+        random = Math.random() * 0.8;
+        index = (x * 4) + (y * (imageData.width * 4));
+        imageData.data[index] *= random; // red channel
+        imageData.data[index+1] *= random; // green channel
+        imageData.data[index+2] *= random; // blue channel
+      }
+    }
+  };
+
+  J.Shader = Shader;
+})(Joy);
+
+/**
+ * @module Joy
+ */
+(function(J) {
+  /**
+   * @class Utils
+   * @static
+   */
+  J.Utils = {
+
+    /**
+     * @method applyFriction
+     * @param {Number} v velocity
+     * @param {Number} f friction
+     * @return {Number}
+     */
+    applyFriction: function(v, f) {
+      return (v + f < 0) ? v + (f * J.deltaTime) : (v - f > 0) ? v - (f * J.deltaTime) : 0;
+    }
+  };
+})(Joy);
+
+(function(J) {
+  J.Engine.defaultSceneLoader = function (scene) {
+    // Joy.js logo, used on default loader
+    var joyLogo = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEcAAABkCAMAAADjVt21AAADAFBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJBwYjGxnlTCblTCblTCblTSflTSblTijlTijlTyjlTynlUSrlUSvmUy7lUy3lVS/mVzHmWDLnWjbmXDbnYD3oYT3oYTrrYjTvYyzqYzrtYzCCZF3oZELoZUPoZELqbUzqdFXreFrre13sfF/sgGXsg2fthmztiW+zjILtjHPujnXuknrvln/vmYLwnIfxoIvxo47xpZHyqJXYqZ3yqpfyrZvzr57zs6L0tqb0uqvuvK7yv7L2w7b0w7b2xbn2xrr2x7vs7/Dt8PHw8vL19vb7+/v+/v7////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////+/fz//v7+/v7s8vTs8/Xs8/Xs8vTs8fP47uvs7e3s7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozz497y3NTx187w0cfxy77xwK/xtJ/vq5Xuo4rsnobsl33sk3ftj3DsiWnuhF/sfFbsc0vrbUTyaC3yaC7yaC3yaC7pZ0DyZyvyZirxZizzZSjxZCjxZCjxZCjxZCjyZSnyZSjxZCryZSjxZCjxZCjxZCjxZCjzZSjzZSjzZSjxZSnwYinwYSfwYSjxYCPwYCTwYCbxXyDxXyLxXR3xXR7xXh/vXCDxXB3uWyLsWibrWSbrWCfqVyfpViboUyToUCLlTiflTiblTiblTiblTiblTSblTSblTSblTSblTSblTSblTSblTSblTSblTSblTSblTSblTCbkTCblTCblTCblTCXlTCXlTCTlSyTlSyPmSx/lSiPlSiLlSSLkSSHlSR7kSCDkSCDkRx/kRh7kRh3lRh3kRh7kRRzlRRzkRBzlRBvlRBtkxwbdAAAAeXRSTlMAAAAAAAAAAAAAAAECX19fX2Bk/mL+/Px3+vtx+pD9qoT97Pnh8ga/ydKYpaShnpaQiIAHeHNpYVpTS0Q+NgcyLCYiHRoHBxQHDwgM/vrRn1QvycTAua+mn5aMhnlxbmlmYFpRSUEyKiIfHBUcIuLm6/nc9/Xy79fSI5QIfgAAAAZ0RVh0VGl0bGUAqO7SJwAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERlc2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAAB3RFWHRFLW1haWwAfQib1QAAAAR0RVh0VVJMAHij0w8AAAjpSURBVFjD7ZhNTBtJFsd96eNIc3EQCLECcbHIBIj4Dihh+Aiwc8gQ8+FAkgnhM5YmDFkSria0LIeDDxiMvwBje5FYFk67Pq1DIHFstTJZEubsKy3swfG22pasbbaqutvd7bYxLNGe9h1sNy7/eO9V/evVKwXGWd/U1NQweB/pmwSmvoNhXfBPvV0Ydge8T/3ID8SGwNMAeOuGA1/cG0d/VPDfdut0uscYNqjjrK8LG4bvQ5h2Cj6mMNgD8NiPDfADn41KOHcR54EuZf0Y1gveZrCH4HV6QuDAZ83EL/w4tVbGGdY+h7/p1zyFA0awiWnw9mAGvNzHpJx7Q+Dl59HRhzOTE5iMMwK/fQ78nIChaIQoX3Rl4jzrHRyZeIJl4GjYeDDsPvjQjWHaFyznMYZlieupZlzOGe4DLwPw6Q7MTAeGPUaDe7F0Tj82NMn5+nRMwlFDf+AkqOETdKwHfuiBkY5LOD+xTj952PMcgTQpztg9LZrckRH493tPtA+e8bmFP7oLP4xqNJr7WNfACPofGuxR7ximHe3h/x/gdIz8rJtCiRjvgnOjm0YuT2r5IBAHJrZb26ubRkN+GvsTCFwzMMMnFHCeTPNLrwMb5aPW/TKMSTgwYz393JeT4zPCQhvh/XnExnkXTuFoN/vlDItBEzfD+3N3jP355DA20sNN2POHwnyND/aoe4fYNdI1rFGr++9ouaSODg4ODqEcog/aR33qnkG09H580KdW994fT1s/l7T/c/5HnG+/+fby9k2dojQWurzRZQoV9RU48XLFVfpr+FOlKE98DU6N4npuf47OMjQiVq+oyZ2fg49nmBIMII8aFfU55+vow9Z2Vts6AB4d591SNJJkTs62L7t9ApxIYYvipvJynEPAOSnpVHyfH07/4TGVZJJ05Dycnde/wTSr2hSdJVEpJcKENl3OdXceE8vN2X4DR1AqTNGmkiY6mbdqXjDgeuOivYghc3LeHiFZAL1LhcG4lnDDvBGYATetJcK5OB8Q5xrglIkXIuM06o28/YDb6ePzcBKVgPOdiJN0GX8wigxfYXJwPiJ/qgGnQuCElUt6McY4v+Chz+bAZRiiagGnWuAwa7hRarg1cQ7OSQPg1KXmiyTN+jTO/EJxTMLx+glggT3+GXLIwybAEYRBFS/Mp3GMeicj4niDfveKzWpb8wT8giyO85sB59aVY46TcBnSMUbccSpw9oPO5TlU1V9Z3IRXkEUr4LQU8ApIruvlHJvgz97fLMIpY9Ye8PKyKG0DnM6Sk9SsZ/DHnvJn37esE5st6N3hZQE4gjAojzw/+Brvjzdo0Ulthdh+w8kC1sGUMMDykTvkoTlOwJmG0b3y7L/lZAE5gjAYR/r60VtiJMvx+s3pHJ31PS8LyBGEESsypTlkcCW5deh3z8k4po1fOVlATmVCJFN8Pn05cxzCIcPoXro+I1nUIU6VIAwy4cBFQsUtymiKY5VzdE7EiTQgTq1oIwsnVxc4l+Zxg/WQCp3JWfudkwXkNIg3VpLZtJr0OLAFiyt5IuyHhC2TP//iZAE5TYdQYFGKkwfFFDkddodzk06I9+fAqhwz54b+RIAsIKc5D+yekSJPiGFiSLKxJAOMIiX1Ys8zK5+v18dIFl2I01oIBMas6M02ZzF1moiSmetXYFnGsROsLNoR54+lIEEJCw6KhMnicBXSDB3OwPG70heQ6c/7R5y8IKcdCOw4ZIYrcF6PG0yWVY8yyfDpEvZnwp6WnfUAK4ur3DkTCCxSsMivG8AyLlnXNg9Pk18k9cv7TjL1c2vv2WoRL+c44EgWLTKJF7IBTLvZvl4UO41HhP35H0HHKyGodcK3xVaL6xynIhGKFZvStwyYrmW7qyBx+unv/LZKeGyml9CXRcdGkK86VA3HARUjA4cNcX7Rsur+C9jYveyWSGy41tacbh+xm6oWsXqOU0tBpWfgoKKq18+arGuefSIIf+rb9QfeBznqDqoWZCPHaYiS0cJsHKNxAS7A2SXr+sY7wr8rKV/cYYzjAGGElWbDmRy0/4F0bQQJzhm+WkRKbnOcZnCUoi36nByWter2EoF9lnWIZNHOcVoLTzJsqZk5aLJAuvxEcJ+tOkgWiNMGhJGpBmbhILfMtvUNPwF3LqqM75tg5YlmnbCMHDbEleITThZs/6WiQySVNUHZOLCCnQKFV6Q4sPIwq/iFObPFFCcLllMOONkDy85ZTvKyYDmoVzm14xfluJK8LFgO6lUynX7O5ix9DvOyYDnskYyx4RfjrMNd/vjKrRTnBtpHowWLhotwLEEoi3BBS4pzU4k2UWZdfwHOK88elAXoUVIcvldJZowsM+elM8D3KCnObe5IdkIu4+fl2AjhMMZz2vkjGVVoxs/HsQS9qR5FuJdIHckSRUv4eTiWvV2fqFrwHOFIliiShZaBY93fT/U6VSKOqImn8yzSs5ScM2dnd3m26tSKONfjQhmO0eAIdBZn0cUewbf/maoWPEfSxJOnmxaDPhtn1vbXoKhHIUONIk6dtLekKdeyIRWdmDNr8RB8yUBVJ8zKguPcCEsPK2Qy4rKacLbDFDiLNrfQ6fh8SsgpbBFx5E08mQDHMqvZBEqqHp5X5uCO7CP20lv3KCsLjpOhiQdDGOawyO1cXXE4VtfdG3vEO6+kdfdBWXxhZcFxZE08fyMQiyeZ08/vA0H/rjetE9wSy4LjtJ91uyXvK3e2t31vfv0UEmTBc8663UrjAMbrDweHIfbqJ35Ncu9XRp+Ls7O943v78eA3/v4I+FMp4VxlcnJQMMARgQHt31USTvUVio4dZ+dsb+2AYJQhCSMci3/Jb5BwOprrvlMpafqEzHgf5XsjCQauryhN5asq6lvk96IdN6vLSk7ilGwpHaQHc0LTZElZbXNb1vvV1oYKVT5NS8/0EghYUlRh2fXGzpz3tM01ZaVAqhF5hCRw5IrqWl3Lee97O5uqVIWxuCTzESoeKSmrudV+wXvjlvpymHkUIhmj6XxV5Y3W/+7+ub0JZD5MR+jD0qu1zZe7x759o/IP1U3tuYb9B9Eohegx+UHyAAAAAElFTkSuQmCC";
+
+    var percentageTween, logo, text,
+        data = {percentage: 0},
+        engine = this;
+
+    scene.background("#000");
+
+    text = new Joy.Text({
+      x: engine.width / 2,
+      y: engine.height / 2,
+      text: "0%",
+      align: "center",
+      font: "30pt Merienda",
+      color: "#fff",
+      alpha: 0,
+      baseline: Joy.Text.BASELINE.MIDDLE
+
+    }).bind(Joy.Events.UPDATE, function() {
+      var that = this;
+
+      if (data.percentage !== scene.loader.percentage) {
+        if (percentageTween) {percentageTween.stop();}
+        data.percentage = scene.loader.percentage;
+
+        percentageTween = Joy.Tween({
+          percentage: parseInt(that.text, 10)
+        }, 1000).easing(Joy.TweenManager.Easing.Quadratic.Out).to({
+          percentage: scene.loader.percentage
+        }).onUpdate(function() {
+          that.text = parseInt(this.percentage, 10) + "%";
+        }).start();
+      }
+    });
+
+    logo = new Joy.Sprite(joyLogo).bind('load', function () {
+      this.alpha = 0;
+      this.position.x = engine.width / 2;
+      this.position.y = engine.height / 2;
+      this.pivot.x += this.width / 2;
+      this.pivot.y += this.height / 2;
+
+      Joy.Tween(this.position).
+        to({x: this.position.x - 50}).
+        easing(Joy.TweenManager.Easing.Quadratic.Out).
+        start();
+
+      Joy.Tween(this, 1000).
+        to({alpha: 1}).
+        easing(Joy.TweenManager.Easing.Quadratic.Out).
+        start();
+
+      Joy.Tween(text, 1000).
+        to({alpha: 1}).
+        easing(Joy.TweenManager.Easing.Quadratic.Out).
+        start();
+
+      Joy.Tween(text.position, 3000).
+        to({x: text.position.x + 50}).
+        easing(Joy.TweenManager.Easing.Quadratic.Out).
+        start();
+    });
+
+    scene.addChild(logo);
+    scene.addChild(text);
+  };
 })(Joy);
 
 /**
@@ -742,6 +1756,19 @@
        */
       this.__defineGetter__('parent', function() {
         return this._parent;
+      });
+
+      /**
+       * Get scene where this DisplayObject is contained in
+       * @readonly
+       * @type {Scene}
+       */
+      this.__defineGetter__('scene', function() {
+        var parent = this._parent;
+        while (!(parent instanceof J.Scene) && parent !== null) {
+          parent = (parent && parent.parent) || null;
+        }
+        return parent;
       });
 
       /**
@@ -1303,6 +2330,312 @@
  * @module Joy
  */
 (function(J) {
+  /*
+   * TODO:
+   * @class Font
+   */
+  var Font = J.Object.extend({
+    init: function () {}
+  });
+  // Joy.Font = Font;
+})(Joy);
+
+
+/**
+ * @module Joy
+ */
+(function(J) {
+  var Parallax = J.DisplayObjectContainer.extend({
+    /**
+     * @class Parallax
+     * @constructor
+     * @param {Object} options
+     */
+    init: function(options) {
+      this._super(options);
+
+      /**
+       * Viewport that parallax effect will be based on.
+       * @attribute viewport
+       * @type {Viewport}
+       */
+      this.viewport = options.viewport || null;
+
+      /**
+       * Distance between each parallax child.
+       * @attribute distance
+       * @type {Number}
+       */
+      this.distance = options.distance || 1;
+
+      /**
+       * Amount of velocity that will increase by child.
+       * @attribute velocity
+       * @type {Number}
+       */
+      this.velocity = options.velocity || 1;
+
+      // Bind on added to Container
+      this.bind(J.Events.ADDED, this._setup);
+    },
+
+    _setup: function (scene) {
+      if (!(scene instanceof J.Scene)) {
+        throw new Error("'Parallax' instance must be added into a 'Scene'.");
+      }
+      this.viewport = scene.viewport;
+
+      var parallax = this;
+
+      // Add repeatable parts
+      this.viewport.bind('setup', function() {
+        var i, length, layer, child;
+
+        for (i=0, length=parallax.numChildren; i < length; ++i) {
+
+          if (parallax.getChildAt(i).position) {
+            layer = parallax.getChildAt(i);
+
+            // Empty previous setup
+            while (layer.numChildren > 0) {
+              layer.removeChildAt(0);
+            }
+
+            for (var j=0, childsToFill = Math.ceil(layer.width / this.width) - 1; j<childsToFill; ++j) {
+              child = layer.clone();
+              child.children = [];
+              child.position.x = layer.width;
+              layer.addChild(child);
+            }
+          }
+
+        }
+      });
+
+      this.viewport.bind('translate', function() {
+        var velocity = parallax.distance;
+
+        for (var i=0, length=parallax.numChildren; i < length; ++i) {
+          velocity *= parallax.velocity * (i + 1);
+          if (parallax.getChildAt(i).position) {
+            parallax.getChildAt(i).position.x += (this.translation.x * velocity) / this.width;
+            parallax.getChildAt(i).position.y += (this.translation.y * velocity) / (this.height / 2);
+          }
+        }
+      });
+    }
+
+  });
+
+  J.Parallax = Parallax;
+})(Joy);
+
+/**
+ * TODO:
+ * module Joy
+ */
+(function(J) {
+  var ParticleEmitter = J.DisplayObject.extend({
+    /**
+     * class ParticleEmitter
+     * constructor
+     * param {Object} options
+     */
+    init: function (options) {
+
+      // position         The position of the particle.
+      // velocity         The velocity of the particle.
+      // energy           The energy of the particle.
+      // startEnergy      The starting energy of the particle.
+      // size             The size of the particle.
+      // rotation         The rotation of the particle.
+      // angularVelocity  The angular velocity of the particle.
+      // color            The color of the particle.
+
+      this._super(options);
+    }
+  });
+
+  J.ParticleEmitter = ParticleEmitter;
+})(Joy);
+
+/**
+ * @module Joy
+ */
+(function(J) {
+  var Scene = J.DisplayObjectContainer.extend({
+    /**
+     * @class Scene
+     * @constructor
+     * @param {Object} options
+     */
+    init: function(options) {
+      if (!options) { options = {}; }
+
+      // Initialize scenes as invisible as default.
+      // Use Engine methods to toggle scene visibility
+      if (typeof(options.visible) === "undefined") {
+        options.visible = false;
+      }
+
+      this._super(options);
+
+      /**
+       * @type {Loader}
+       */
+      this.loader = (typeof(options.loader) === "undefined") ? new J.Loader() : options.loader;
+
+      /**
+       * Is the scene on paused state?
+       * @attribute paused
+       * @type {Boolean}
+       */
+      this.paused = false;
+
+      /**
+       * List of active shaders on the scene.
+       * @attribute shaders
+       * @type {Array}
+       */
+      this.shaders = [];
+
+      /**
+       * @attribute viewport
+       * @type {Viewport}
+       */
+      this.viewport = options.viewport || new J.Viewport({scene: this});
+    },
+
+    /**
+     * Set background
+     * @method background
+     * @param {Color, String} color
+     */
+    background: function (color) {
+      this.fillStyle(color.toString());
+      this.fillRect(0, 0, this.width || J.currentEngine.width, this.height || J.currentEngine.height);
+      return this;
+    },
+
+    /**
+     * @method pause
+     * @param {Object} options
+     * @param {Number} options.blur radius for gaussian blur filter (optional)
+     * @return {Scene} this
+     */
+    pause: function (options) {
+      options = options || {};
+      if (options.blur) {
+        this.render();
+        J.Shader.process(this.ctx, J.Shader.blur, options.blur);
+      }
+      this.paused = true;
+      this.trigger('pause');
+      return this;
+    },
+
+    updateContext: function () {
+      this._super();
+
+      // Update viewport context, if it's set.
+      if (this.viewport.follow) {
+        this.viewport.updateContext();
+      }
+    },
+
+    render: function () {
+      // Don't render when paused
+      if (this.paused) { return; }
+
+      this.updateContext();
+      this._super();
+
+      this.viewport.render();
+
+      // Experimental: apply shaders
+      if (this.shaders.length > 0) {
+        for (var i=0, length = this.shaders.length; i < length; ++i) {
+          J.Shader.process(this.ctx, this.shaders[i][0], this.shaders[i][1]);
+        }
+      }
+    },
+
+    /**
+     * @method fadeOut
+     * @param {Number} milliseconds
+     * @param {String, Color} color
+     * @return {Scene} this
+     */
+    fadeOut: function (milliseconds, color) {
+      var self = this,
+          rectangle = new J.Rect({
+        width: this.viewport.width,
+        height: this.viewport.height,
+        color: color,
+        alpha: 0
+      });
+      self.trigger('fadeOutStart');
+
+      this.viewport.addHud(rectangle);
+      var interval = setInterval(function () {
+        rectangle.alpha += ((1000 / milliseconds) / 60) * J.deltaTime;
+        if (rectangle.alpha >= 1) {
+          clearInterval(interval);
+          self.viewport.hud.removeChild(rectangle);
+          self.trigger('fadeOutComplete');
+        }
+      }, 1);
+      return this;
+    },
+
+    /**
+     * @method fadeIn
+     * @param {Number} milliseconds
+     * @param {String, Color} color
+     * @return {Scene} this
+     */
+    fadeIn: function (milliseconds, color) {
+      var self = this,
+          rectangle = new J.Rect({
+        width: this.viewport.width,
+        height: this.viewport.height,
+        color: color,
+        alpha: 1
+      });
+      self.trigger('fadeInStart');
+
+      this.viewport.addHud(rectangle);
+      var interval = setInterval(function () {
+        rectangle.alpha -= ((1000 / milliseconds) / 60) * J.deltaTime;
+        if (rectangle.alpha <= 0) {
+          clearInterval(interval);
+          self.viewport.hud.removeChild(rectangle);
+          self.trigger('fadeInComplete');
+        }
+      }, 1000 / 60);
+      return this;
+    },
+
+    /**
+     * Experimental: add post-processing pixel effect.
+     * @method addShader
+     * @param {Function} shader
+     * @param {Object} options shader options (optional)
+     * @return {Scene} this
+     */
+    addShader: function(shader, args) {
+      this.shaders.push([shader, args]);
+      return this;
+    }
+  });
+
+  J.Scene = Scene;
+})(Joy);
+
+/**
+ * @module Joy
+ */
+(function(J) {
   /**
    * @class Sprite
    * @extends DisplayObjectContainer
@@ -1318,12 +2651,6 @@
         options = { src: options };
       }
 
-      /**
-       * @attribute loaded
-       * @type {Boolean}
-       */
-      this.loaded = false;
-
       // Asset
       this.image = options.image || new Image();
 
@@ -1333,11 +2660,12 @@
 
       this._super(options);
 
-      // Bind on load trigger.
-      this.bind('load', this.onLoad);
-      if (options.src) {
-        this.load(options.src);
-      }
+      // When is added into a container
+      this.bind(J.Events.ADDED, function () {
+        if (options.src) {
+          this.load(options.src);
+        }
+      });
     },
 
     /**
@@ -1347,16 +2675,21 @@
     load: function(src) {
       var self = this;
 
+      // Append sprite to scene loader
+      if (this.scene && this.scene.loader) {
+        this.scene.loader.add(this.image);
+      }
+
       // Expose trigger
-      this.image.onload = function() {
+      this.image.addEventListener('load', function() {
+        self.onLoad();
         self.trigger('load');
-      };
+      });
 
       this.image.src = src;
     },
 
     onLoad: function() {
-      this.loaded = true;
       if (!this._width) { this._width = this.image.width; }
       if (!this._height) { this._height = this.image.height; }
     },
@@ -1445,11 +2778,10 @@
       });
 
       // Create the interval to change through frames
-      this._frequencyInterval = setInterval(function(){ self._update(); }, 1000 / this.framesPerSecond);
+      this._frequencyInterval = setInterval(function(){ self.update(); }, 1000 / this.framesPerSecond);
     },
 
-    _update: function() {
-      if (!this.loaded) {return;}
+    update: function() {
       var currentAnimation = this._animations[this._currentAnimation];
 
       if (this.currentFrame == currentAnimation.lastFrame) {
@@ -1735,6 +3067,396 @@
   J.Text = Text;
 })(Joy);
 
+
+/**
+ * @module Joy
+ */
+(function(J) {
+  var Tilemap = J.DisplayObjectContainer.extend({
+    /**
+     * @class Tilemap
+     * @constructor
+     * @param {Object} options
+     */
+    init: function (options) {
+      if (!(options.tileset instanceof J.Tileset)) {
+        throw new Error("'tileset' must be given on Tilemap constructor, as Sprite instance.");
+      }
+      this._super(options);
+
+      /**
+       * @attribute tileset
+       * @type {Tileset}
+       */
+      this.tileset = options.tileset;
+
+      /**
+       * @attribute lines
+       * @type {Number}
+       */
+      this.lines = options.lines || 1;
+
+      /**
+       * @attribute columns
+       * @type {Number}
+       */
+      this.columns = options.columns || 1;
+
+      /**
+       * @attribute data
+       * @type {Array}
+       */
+      this.__defineSetter__('data', function(data) {
+        this._data = data;
+
+        if (this.collider == this || this.collider instanceof J.TilemapCollider) {
+          this.collider = new J.TilemapCollider(this);
+        }
+      });
+      this.__defineGetter__('data', function() {
+        return this._data;
+      });
+      this.data = options.data;
+
+      /**
+       * @attribute height
+       * @readonly
+       * @type {Number}
+       */
+      this.__defineGetter__('height', function () {
+        return this.lines * this.tileset.tileHeight;
+      });
+
+      /**
+       * @attribute width
+       * @readonly
+       * @type {Number}
+       */
+      this.__defineGetter__('width', function () {
+        return this.columns * this.tileset.tileWidth;
+      });
+    },
+
+    renderChildren: function () {
+      for (var i=0, length = this.data.length; i < length; ++i) {
+        if (this.data[i] === 0) { continue; }
+
+        this.ctx.drawImage(this.tileset.image,
+                           this.tileset.tileWidth * ((this.data[i]-1) % this.tileset.columns),
+                           this.tileset.tileHeight * (((this.data[i]-1) / this.tileset.columns) >> 0),
+                           this.tileset.tileWidth,
+                           this.tileset.tileHeight,
+                           this.tileset.tileWidth * (i % this.columns),
+                           this.tileset.tileHeight * ((i / this.columns) >> 0),
+                           this.tileset.tileWidth,
+                           this.tileset.tileHeight);
+      }
+    }
+
+  });
+
+  J.Tilemap = Tilemap;
+})(Joy);
+
+/**
+ * @module Joy
+ */
+(function(J) {
+  var Tileset = J.Sprite.extend({
+    /**
+     * @class Tileset
+     * @constructor
+     * @param {Object} options
+     *   @param {String} [options.src]
+     *   @param {Number} [options.width] tile width
+     *   @param {Number} [options.height] tile height
+     */
+    init: function(options) {
+      this.tileWidth = options.width;
+      this.tileHeight = options.height;
+
+      delete options.width;
+      delete options.height;
+
+      this._super(options);
+    },
+
+    onLoad: function() {
+      this._super();
+
+      this.columns = (this._width / this.tileWidth) >> 0;
+      this.lines = (this._height / this.tileHeight) >> 0;
+    }
+  });
+
+  J.Tileset = Tileset;
+})(Joy);
+
+/**
+ * @module Joy
+ */
+(function(J) {
+  var Viewport = J.Triggerable.extend({
+    /**
+     * @class Viewport
+     * @constructor
+     *
+     * @param {Object} options
+     * @param {DisplayObject} options.follow
+     * @param {Number} options.width
+     * @param {Number} options.height
+     */
+    init: function (options) {
+      this._super(options);
+      this.id = options.id || Joy.generateUniqueId();
+
+      /**
+       * @attribute position
+       * @type {Vector2d}
+       */
+      this.position = new J.Vector2d();
+      this._lastPosition = new J.Vector2d();
+
+      /**
+       * Current viewport translation offset
+       * @attribute translation
+       * @type {Vector2d}
+       */
+      this.translation = new J.Vector2d();
+
+      /**
+       * Container DisplayObject
+       * @attribute scene
+       * @type {DisplayObjectContainer}
+       */
+      if (options.scene) {
+        this.scene = options.scene;
+        this.ctx = this.scene.ctx;
+      }
+
+      /**
+       * @attribute hud
+       * @type {DisplayObjectContainer}
+       */
+      this.hud = new J.DisplayObjectContainer({id: this.id + "_HUD", ctx: this.ctx});
+      this.hud.position = this.position;
+
+      /**
+       * @attribute active
+       * @type {Boolean}
+       * @readonly
+       */
+      this.active = true;
+
+      this._translationTotal = new J.Vector2d();
+
+      this.setup(options);
+    },
+
+    /**
+     * Add head up display on the viewport.
+     * @method addHud
+     * @param {DisplayObject}
+     * @return {Viewport}
+     */
+    addHud: function (displayObject) {
+      return this.hud.addChild(displayObject);
+    },
+
+    setup: function (options) {
+      /**
+       * @attribute width
+       * @type {Number}
+       */
+      this.width = options.width || this.scene.ctx.canvas.width;
+
+      /**
+       * @attribute height
+       * @type {Number}
+       */
+      this.height = options.height || this.scene.ctx.canvas.height;
+
+      /**
+       * DisplayObject that will be followed.
+       * @attribute follow
+       * @type {DisplayObject}
+       */
+      if (options.follow) {
+        this.follow = options.follow;
+      }
+
+      this.scale = new J.Vector2d(1, 1);
+
+      if (this.width && this.height) {
+        this.setSize(this.width, this.height);
+      }
+
+      // Trigger setup
+      this.trigger('setup');
+    },
+
+    /**
+     * @method setSize
+     * @param {Number} width
+     * @param {Number} height
+     * @return {Viewport}
+     */
+    setSize: function (width, height) {
+      this.reset();
+
+      this.width = width;
+      this.height = height;
+
+      this.ctx.scale((this.ctx.canvas.width / this.width) * this.scale.x, (this.ctx.canvas.height / this.height) * this.scale.y);
+
+      this.scale.x = this.width / this.ctx.canvas.width;
+      this.scale.y = this.height / this.ctx.canvas.height;
+
+      return this;
+    },
+
+    /**
+     * TODO: not supported yet
+     * method setDeadzone
+     * param {Number} width
+     * param {Number} height
+     * return {Viewport} this
+     */
+    setDeadzone: function(width, height) {
+      this.deadzone = new J.Vector2d(width, height);
+      return this;
+    },
+
+    updateContext: function() {
+      var widthLimit = this.width / 2,
+          heightLimit = this.height / 2;
+
+      this.position.x = ~~ (this.follow.position.x + (this.follow.width / 2) - (this.width / 2));
+      this.position.y = ~~ (this.follow.position.y + (this.follow.height / 2) - (this.height / 2));
+
+      this.translation.x = -this.position.x + this._lastPosition.x;
+      this.translation.y = -this.position.y + this._lastPosition.y;
+
+      this._translationTotal.sum(this.translation);
+
+      if (this.active) {
+        this.trigger('translate');
+        this.ctx.translate(this.translation.x,  this.translation.y);
+      }
+
+      this._lastPosition.x = this.position.x;
+      this._lastPosition.y = this.position.y;
+    },
+
+    render: function () {
+      this.hud.render();
+    },
+
+    /**
+     * Restore context translation
+     * @method reset
+     * @return {Viewport} this
+     */
+    reset: function () {
+      this.translation.x = -this._translationTotal.x;
+      this.translation.y = -this._translationTotal.y;
+
+      this.ctx.translate(this.translation.x, this.translation.y);
+      this.trigger('translate');
+
+      this._translationTotal.set(0, 0);
+      this._lastPosition.set(0, 0);
+      return this;
+    }
+
+  });
+
+  J.Viewport = Viewport;
+})(Joy);
+
+/**
+ * @module Joy
+ */
+(function(J) {
+  var Circle = J.DisplayObject.extend({
+    /**
+     * @class Circle
+     * @extends DisplayObject
+     * @constructor
+     *
+     * @param {Object} options
+     *   @param {Number} [options.radius]
+     *   @param {Color, String} [options.color]
+     */
+    init: function (options) {
+      this._super(options);
+      this.radius = options.radius || 1;
+      this.color = options.color || "#000";
+
+      this.__defineGetter__('width', function () {
+        return this.radius * 2 * this.scale.x;
+      });
+      this.__defineGetter__('height', function () {
+        return this.radius * 2 * this.scale.y;
+      });
+    },
+
+    render: function () {
+      this.ctx.beginPath();
+      this.ctx.arc(this.radius, this.radius, this.radius, 0, 2 * Math.PI);
+      this.ctx.fillStyle = this.color;
+      this.ctx.fill();
+    }
+  });
+
+  J.Circle = Circle;
+})(Joy);
+
+/**
+ * @module Joy
+ */
+(function(J){
+  var Rect = J.DisplayObject.extend({
+    /**
+     * @class Rect
+     * @extends DisplayObject
+     * @constructor
+     *
+     * @param {Object} options
+     *   @param {Color, String} [options.color]
+     */
+    init: function(options) {
+      this._super(options);
+
+      /**
+       * @attribute color
+       * @type {String}
+       */
+      if (options.color) {
+        this.colorize(options.color);
+      }
+    },
+
+    /**
+     * @method colorize
+     * @param {Color | String} color
+     * @return {Rect} this
+     */
+    colorize: function (color) {
+      this.color = color.toString();
+      return this;
+    },
+
+    render: function() {
+      if (this.color) {
+        this.ctx.fillStyle = this.color;
+      }
+      this.ctx.fillRect(0, 0, this._width, this._height);
+    }
+  });
+
+  J.Rect = Rect;
+})(Joy);
 
 /*!
  *  howler.js v1.0.1
@@ -3254,367 +4976,129 @@ TWEEN.Interpolation = {
 
 };
 
+/**
+ * @module Joy
+ */
+(function(J) {
+  /**
+   * OBS:
+   * Audio library are provided by [howler.js](https://github.com/goldfire/howler.js).
+   *
+   * @class Sound
+   */
+  J.Sound = Howl;
+})(Joy);
+
+
+/**
+ * @module Joy
+ */
+(function(J) {
+  /**
+   * OBS: Tweens are provided by [tween.js](https://github.com/sole/tween.js).
+   *
+   * Alias to TWEEN
+   *
+   * @class TweenManager
+   */
+  J.TweenManager = TWEEN;
+
+  /**
+   * @method getAll
+   * @return {Array}
+   */
+  /**
+   * @method removeAll
+   */
+  /**
+   * @param {Tween} tween
+   * @method add
+   */
+  /**
+   * @param {Tween} tween
+   * @method remove
+   */
+  /**
+   * @param {Number} time
+   * @method update
+   */
+
+  /**
+   * Create a new tween.
+   *
+   * OBS: Tweens are provided by [tween.js](https://github.com/sole/tween.js).
+   *
+   * Alias to TWEEN.Tween
+   *
+   * @class Tween
+   * @param {Object} target
+   * @param {Number} duration (in milliseconds)
+   * @constructor
+   */
+  J.Tween = function(vars, duration) {
+    return new TWEEN.Tween(vars, duration);
+  };
+
+  /**
+   * @param {Object}
+   * @method to
+   * @return {Tween} this
+   */
+
+  /**
+   * @param {Object}
+   * @method start
+   * @return {Tween} this
+   */
+
+  /**
+   * @method stop
+   * @return {Tween} this
+   */
+
+  /**
+   * @param {Number} times
+   * @method repeat
+   * @return {Tween} this
+   */
+
+  /**
+   * @param {Number} amount
+   * @method delay
+   * @return {Tween} this
+   */
+
+  /**
+   * @param {Function} method
+   * @method easing
+   * @return {Tween} this
+   */
+
+  /**
+   * @param {Function} method
+   * @method interpolation
+   * @return {Tween} this
+   */
+
+  /**
+   * @param {Function} callback
+   * @method onUpdate
+   * @return {Tween} this
+   */
+
+  /**
+   * @param {Function} callback
+   * @method onComplete
+   * @return {Tween} this
+   */
+})(Joy);
+
 (function(J) {
   /**
    * @module Joy.Behaviour
    */
   var Behaviour = J.Object.extend({});
   Joy.Behaviour = Behaviour;
-})(Joy);
-
-/**
- * @module Joy
- */
-(function(J) {
-  var Scene = J.DisplayObjectContainer.extend({
-    /**
-     * @class Scene
-     * @constructor
-     * @param {Object} options
-     */
-    init: function(options) {
-      if (!options) { options = {}; }
-
-      // Initialize scenes as invisible as default.
-      // Use Engine methods to toggle scene visibility
-      if (typeof(options.visible) === "undefined") {
-        options.visible = false;
-      }
-
-      this._super(options);
-
-      /**
-       * Is the scene on paused state?
-       * @attribute paused
-       * @type {Boolean}
-       */
-      this.paused = false;
-
-      /**
-       * List of active shaders on the scene.
-       * @attribute shaders
-       * @type {Array}
-       */
-      this.shaders = [];
-
-      /**
-       * @attribute viewport
-       * @type {Viewport}
-       */
-      this.viewport = options.viewport || new J.Viewport({scene: this});
-    },
-
-    /**
-     * Set background
-     * @method background
-     * @param {Color, String} color
-     */
-    background: function (color) {
-      this._backgroundColor = color;
-      this.fillStyle(color.toString());
-      this.fillRect(0, 0, this.width, this.height);
-      return this;
-    },
-
-    /**
-     * @method pause
-     * @param {Object} options
-     * @param {Number} options.blur radius for gaussian blur filter (optional)
-     * @return {Scene} this
-     */
-    pause: function (options) {
-      options = options || {};
-      if (options.blur) {
-        this.render();
-        J.Shader.process(this.ctx, J.Shader.blur, options.blur);
-      }
-      this.paused = true;
-      this.trigger('pause');
-      return this;
-    },
-
-    updateContext: function () {
-      this._super();
-
-      // Update viewport context, if it's set.
-      if (this.viewport.follow) {
-        this.viewport.updateContext();
-      }
-    },
-
-    render: function () {
-      // Don't render when paused
-      if (this.paused) { return; }
-
-      this.updateContext();
-      this._super();
-
-      this.viewport.render();
-
-      // Experimental: apply shaders
-      if (this.shaders.length > 0) {
-        for (var i=0, length = this.shaders.length; i < length; ++i) {
-          J.Shader.process(this.ctx, this.shaders[i][0], this.shaders[i][1]);
-        }
-      }
-    },
-
-    /**
-     * @method fadeOut
-     * @param {Number} milliseconds
-     * @param {String, Color} color
-     * @return {Scene} this
-     */
-    fadeOut: function (milliseconds, color) {
-      var self = this,
-          rectangle = new J.Rect({
-        width: this.viewport.width,
-        height: this.viewport.height,
-        color: color,
-        alpha: 0
-      });
-
-      console.log("fade out start", color, rectangle);
-      self.trigger('fadeOutStart');
-
-      this.viewport.addHud(rectangle);
-      var interval = setInterval(function () {
-        rectangle.alpha += ((1000 / milliseconds) / 60) * J.deltaTime;
-        console.log("Change rect alpha: ", rectangle.alpha);
-        if (rectangle.alpha >= 1) {
-          clearInterval(interval);
-          self.viewport.hud.removeChild(rectangle);
-          self.trigger('fadeOutComplete');
-        }
-      }, 1);
-      return this;
-    },
-
-    /**
-     * @method fadeIn
-     * @param {Number} milliseconds
-     * @param {String, Color} color
-     * @return {Scene} this
-     */
-    fadeIn: function (milliseconds, color) {
-      var self = this,
-          rectangle = new J.Rect({
-        width: this.viewport.width,
-        height: this.viewport.height,
-        color: color,
-        alpha: 1
-      });
-      self.trigger('fadeInStart');
-
-      this.viewport.addHud(rectangle);
-      var interval = setInterval(function () {
-        rectangle.alpha -= ((1000 / milliseconds) / 60) * J.deltaTime;
-        if (rectangle.alpha <= 0) {
-          clearInterval(interval);
-          self.viewport.hud.removeChild(rectangle);
-          self.trigger('fadeInComplete');
-        }
-      }, 1000 / 60);
-      return this;
-    },
-
-
-    /**
-     * Experimental: add post-processing pixel effect.
-     * @method addShader
-     * @param {Function} shader
-     * @param {Object} options shader options (optional)
-     * @return {Scene} this
-     */
-    addShader: function(shader, args) {
-      this.shaders.push([shader, args]);
-      return this;
-    }
-  });
-
-  J.Scene = Scene;
-})(Joy);
-
-/**
- * @module Joy
- */
-(function(J) {
-  var Viewport = J.Triggerable.extend({
-    /**
-     * @class Viewport
-     * @constructor
-     *
-     * @param {Object} options
-     * @param {DisplayObject} options.follow
-     * @param {Number} options.width
-     * @param {Number} options.height
-     */
-    init: function (options) {
-      this._super(options);
-      this.id = options.id || Joy.generateUniqueId();
-
-      /**
-       * @attribute position
-       * @type {Vector2d}
-       */
-      this.position = new J.Vector2d();
-      this._lastPosition = new J.Vector2d();
-
-      /**
-       * Current viewport translation offset
-       * @attribute translation
-       * @type {Vector2d}
-       */
-      this.translation = new J.Vector2d();
-
-      /**
-       * Container DisplayObject
-       * @attribute scene
-       * @type {DisplayObjectContainer}
-       */
-      if (options.scene) {
-        this.scene = options.scene;
-        this.ctx = this.scene.ctx;
-      }
-
-      /**
-       * @attribute hud
-       * @type {DisplayObjectContainer}
-       */
-      this.hud = new J.DisplayObjectContainer({id: this.id + "_HUD", ctx: this.ctx});
-      this.hud.position = this.position;
-
-      /**
-       * @attribute active
-       * @type {Boolean}
-       * @readonly
-       */
-      this.active = true;
-
-      this._translationTotal = new J.Vector2d();
-
-      this.setup(options);
-    },
-
-    /**
-     * Add head up display on the viewport.
-     * @method addHud
-     * @param {DisplayObject}
-     * @return {Viewport}
-     */
-    addHud: function (displayObject) {
-      return this.hud.addChild(displayObject);
-    },
-
-    setup: function (options) {
-      /**
-       * @attribute width
-       * @type {Number}
-       */
-      this.width = options.width || this.scene.ctx.canvas.width;
-
-      /**
-       * @attribute height
-       * @type {Number}
-       */
-      this.height = options.height || this.scene.ctx.canvas.height;
-
-      /**
-       * DisplayObject that will be followed.
-       * @attribute follow
-       * @type {DisplayObject}
-       */
-      if (options.follow) {
-        this.follow = options.follow;
-      }
-
-      this.scale = new J.Vector2d(1, 1);
-
-      if (this.width && this.height) {
-        this.setSize(this.width, this.height);
-      }
-
-      // Trigger setup
-      this.trigger('setup');
-    },
-
-    /**
-     * @method setSize
-     * @param {Number} width
-     * @param {Number} height
-     * @return {Viewport}
-     */
-    setSize: function (width, height) {
-      this.reset();
-
-      this.width = width;
-      this.height = height;
-
-      this.ctx.scale((this.ctx.canvas.width / this.width) * this.scale.x, (this.ctx.canvas.height / this.height) * this.scale.y);
-
-      this.scale.x = this.width / this.ctx.canvas.width;
-      this.scale.y = this.height / this.ctx.canvas.height;
-
-      return this;
-    },
-
-    /**
-     * TODO: not supported yet
-     * method setDeadzone
-     * param {Number} width
-     * param {Number} height
-     * return {Viewport} this
-     */
-    setDeadzone: function(width, height) {
-      this.deadzone = new J.Vector2d(width, height);
-      return this;
-    },
-
-    updateContext: function() {
-      var widthLimit = this.width / 2,
-          heightLimit = this.height / 2;
-
-      this.position.x = ~~ (this.follow.position.x + (this.follow.width / 2) - (this.width / 2));
-      this.position.y = ~~ (this.follow.position.y + (this.follow.height / 2) - (this.height / 2));
-
-      this.translation.x = -this.position.x + this._lastPosition.x;
-      this.translation.y = -this.position.y + this._lastPosition.y;
-
-      this._translationTotal.sum(this.translation);
-
-      if (this.active) {
-        this.trigger('translate');
-        this.ctx.translate(this.translation.x,  this.translation.y);
-      }
-
-      this._lastPosition.x = this.position.x;
-      this._lastPosition.y = this.position.y;
-    },
-
-    render: function () {
-      this.hud.render();
-    },
-
-    /**
-     * Restore context translation
-     * @method reset
-     * @return {Viewport} this
-     */
-    reset: function () {
-      this.translation.x = -this._translationTotal.x;
-      this.translation.y = -this._translationTotal.y;
-
-      this.ctx.translate(this.translation.x, this.translation.y);
-      this.trigger('translate');
-
-      this._translationTotal.set(0, 0);
-      this._lastPosition.set(0, 0);
-      return this;
-    }
-
-  });
-
-  J.Viewport = Viewport;
 })(Joy);
 
 /**
@@ -3841,561 +5325,87 @@ TWEEN.Interpolation = {
  */
 (function(J) {
   /**
-   * Used on `DisplayObject#composite`
-   * @class CompositeOperation
-   * @static
+   * @class TilemapCollider
+   * @param {Tilemap} tilemap
+   * @constructor
    */
-  J.CompositeOperation = {
-    /**
-     * @attribute SOURCE_OVER
-     * @static
-     * @final
-     * @type {String}
-     */
-    SOURCE_OVER: 'source-over',
+  var TilemapCollider = function(tilemap) {
+    this.blocks = [];
 
-    /**
-     * @attribute SOURCE_IN
-     * @static
-     * @final
-     * @type {String}
-     */
-    SOURCE_IN: 'source-in',
+    for (var i=0, length=tilemap.data.length; i<length; ++i) {
+      if (tilemap.data[i] === 0) { continue; }
 
-    /**
-     * @attribute SOURCE_OUT
-     * @static
-     * @final
-     * @type {String}
-     */
-    SOURCE_OUT: 'source-out',
+      this.blocks.push(new Joy.RectCollider(new J.Vector2d(tilemap.tileset.tileWidth * (i % tilemap.columns), tilemap.tileset.tileHeight * ((i / tilemap.columns) >> 0)),
+                                            tilemap.tileset.tileWidth,
+                                            tilemap.tileset.tileHeight));
+    }
 
-    /**
-     * @attribute SOURCE_ATOP
-     * @static
-     * @final
-     * @type {String}
-     */
-    SOURCE_ATOP: 'source-atop',
-
-    /**
-     * @attribute LIGHTER
-     * @static
-     * @final
-     * @type {String}
-     */
-    LIGHTER: 'lighter',
-
-    /**
-     * @attribute XOR
-     * @static
-     * @final
-     * @type {String}
-     */
-    XOR: 'xor',
-
-    /**
-     * @attribute DESTINATION_OVER
-     * @static
-     * @final
-     * @type {String}
-     */
-    DESTINATION_OVER: 'destination-over',
-
-    /**
-     * @attribute DESTINATION_IN
-     * @static
-     * @final
-     * @type {String}
-     */
-    DESTINATION_IN: 'destination-in',
-
-    /**
-     * @attribute DESTINATION_OUT
-     * @static
-     * @final
-     * @type {String}
-     */
-    DESTINATION_OUT: 'destination-out',
-
-    /**
-     * @attribute DESTINATION_ATOP
-     * @static
-     * @final
-     * @type {String}
-     */
-    DESTINATION_ATOP: 'destination-atop',
-
-    /**
-     * @attribute DESTINATION_COPY
-     * @static
-     * @final
-     * @type {String}
-     */
-    DESTINATION_COPY: 'copy'
+    this.length = this.blocks.length;
   };
+
+  TilemapCollider.prototype.collide = function(collider) {
+    for (var i=0; i<this.length; ++i) {
+      if (!( this.blocks[i].collidePosition.x  >= collider.collidePosition.x + collider.width     ||
+             collider.collidePosition.x        >= this.blocks[i].collidePosition.x + this.blocks[i].width  ||
+             this.blocks[i].collidePosition.y  >= collider.collidePosition.y + collider.height    ||
+             collider.collidePosition.y        >= this.blocks[i].collidePosition.y + this.blocks[i].height)) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  TilemapCollider.prototype.renderStroke = function(ctx) {
+    for (var i=0; i<this.length; ++i) {
+      ctx.strokeRect(this.blocks[i].position.x, this.blocks[i].position.y, this.blocks[i].width, this.blocks[i].height);
+    }
+  };
+
+  J.TilemapCollider = TilemapCollider;
 })(Joy);
 
 /**
  * @module Joy
  */
 (function(J) {
-  // TODO: find a better way to reference currentEngine instance.
-  // What will happen when we have two canvas contexts at the same time? (like a mini-map?)
-  J.currentEngine = null;
-
   /**
-   * Engine context. Start your application from here.
-   *
-   * @class Engine
+   * @class Context2d
    * @constructor
-   */
-  var Engine = function(options) {
-    J.currentEngine = this;
-
-    // Active actors list
-    this.scenes = [];
-
-    /**
-     * Is engine paused?
-     * @attribute paused
-     * @type {Boolean}
-     */
-    this.paused = false;
-
-    if (options.canvas2d) {
-      this.context = new Joy.Context.Context2d({canvas: options.canvas2d});
-    }
-
-    if (options.canvas3d) {
-      // OMG, there is no 3d yet (and shouldn't for long time...)
-    }
-
-    // Create canvas and context, if it isn't set.
-    if (!this.context) {
-      var contextKlass = options.context || Joy.Context.Context2d;
-      this.context = new contextKlass({canvas: document.createElement('canvas')});
-      document.body.appendChild(this.context.canvas);
-    }
-
-    if (options.width) {
-      this.context.canvas.width = options.width;
-    }
-
-    if (options.height) {
-      this.context.canvas.height = options.height;
-    }
-
-    // Resize canvas accourding to device pixel ratio
-    // 1 on Desktops
-    // 2 on Retina Display
-    this.context.canvas.style.width = (this.context.canvas.width / window.devicePixelRatio) + "px";
-    this.context.canvas.style.height = (this.context.canvas.height / window.devicePixelRatio) + "px";
-
-    // TODO: Implement on-init engine trigger
-    // Enable mouse events, if module is included
-    if (typeof(J.Mouse) !== "undefined") {
-      J.Mouse.enable(this);
-    }
-
-    if (options.markup) {
-      this.useMarkup();
-    }
-
-    if (options.debug) {
-      Joy.debug = true;
-    }
-
-    this.__defineGetter__('width', function() {
-      return this.context.canvas.width;
-    });
-
-    this.__defineGetter__('height', function() {
-      return this.context.canvas.height;
-    });
-
-    /**
-     * @attribute currentScene
-     * @type {Scene}
-     * @readonly
-     */
-    this.__defineGetter__('currentScene', function() {
-      return this.scenes[this._currentSceneIndex];
-    });
-    this.__defineSetter__('_currentScene', function (index) {
-      // Trigger scene active event
-      this.scenes[index].broadcast(J.Events.SCENE_ACTIVE, [this.scenes[index]]);
-      this._currentSceneIndex = index;
-    });
-    this._currentSceneIndex = null;
-
-    // requestAnimationFrame
-    if (Joy.debug) {
-      this._lastRenderTime = new Date();
-      this._frameRateText = new Joy.Text({x: 4, y: 4, font: "12px Verdana", color: "red"});
-      this.onEnterFrameDebug();
-    } else {
-      this.onEnterFrame();
-    }
-  };
-
-  /**
-   * Create a new scene
-   * @method createScene
-   * @param {Function} setupMethod
-   *
-   * @example
-   *     // Creating a scene without setup.
-   *     var scene = engine.createScene();
-   *
-   *     // Creating a scene with setup
-   *     engine.createScene(function(scene) {
-   *        scene.addChild(...);
-   *     });
-   *
-   * @return {Scene}
-   */
-  Engine.prototype.createScene = function(setupMethod) {
-    var scene = new J.Scene({ctx: this.context.ctx});
-
-    // yield scene on setup method
-    if (typeof(setupMethod) === "function") {
-      setupMethod.apply(this, [scene]);
-    }
-
-    this.addScene(scene);
-    return scene;
-  };
-
-  /**
-   * Pause engine
-   * @method pause
    * @param {Object} options
    */
-  Engine.prototype.pause = function() {
-    this._deltaTime = J.deltaTime;
-    J.deltaTime = 0;
-    this.paused = true;
+  var Context2d = function(options) {
+    this.setCanvas(options.canvas);
   };
 
-  /**
-   * Resume if engine is paused.
-   * @method resume
-   */
-  Engine.prototype.resume = function() {
-    J.deltaTime = this._deltaTime;
-    this.paused = false;
-  };
-
-  /**
-   * @method gotoNextScene
-   * @param {Number} fadeMilliseconds (default=1000)
-   * @param {String | Color} color (default=#fff)
-   * @return {Scene} this
-   */
-  Engine.prototype.gotoNextScene = function(milliseconds, color) {
-    var self = this;
-
-    if (!milliseconds) { milliseconds = 1000; }
-    if (!color) { color = "#fff"; }
-
-    if (typeof(this.scenes[this._currentSceneIndex+1])==="undefined") {
-      throw new Error("There is no next scene.");
-    }
-
-    this.scenes[this._currentSceneIndex].fadeOut(milliseconds, color).bind('fadeOutComplete', function () {
-      self.scenes[self._currentSceneIndex].visible = false;
-
-      // Restore ctx translation to x=0, y=0
-      self.scenes[self._currentSceneIndex].viewport.reset();
-
-      self._currentScene = self._currentSceneIndex + 1;
-      self.scenes[self._currentSceneIndex].visible = true;
-      self.scenes[self._currentSceneIndex].fadeIn(milliseconds, color);
-    });
-    return this;
-  };
-
-  Engine.prototype.addScene = function(scene) {
-    scene.engine = this;
-    scene.setContext(this.context.ctx);
-
-    if (Joy.debug) {
-      scene.viewport.addHud(this._frameRateText);
-    }
-
-    // The first scene added to engine is always the 'current'
-    this.scenes.push(scene);
-
-    if (this._currentSceneIndex === null) {
-      scene.visible = true;
-      this._currentScene = this.scenes.length - 1;
-    }
-  };
-
-  Engine.prototype.render = function() {
-    this.context.render(this.scenes);
-  };
-
-  Engine.prototype.useMarkup = function() {
-    var markup = new J.Markup();
-    markup.analyse(this.context);
-  };
-
-  /**
-   * Call window's requestAnimationFrame.
-   * @method onEnterFrame
-   */
-  Engine.prototype.onEnterFrame = function () {
-    if (!J.currentEngine.paused) {
-      // Update tweening engine
-      J.TweenManager.update();
-
-      // Update rendering
-      J.currentEngine.render();
-    }
-    window.onEnterFrame(J.currentEngine.onEnterFrame);
-  };
-
-  /**
-   * Inspect application frame rate. Call window's requestAnimationFrame
-   * @method onEnterFrameDebug
-   */
-  Engine.prototype.onEnterFrameDebug = function () {
-    var thisRenderTime = new Date();
-    J.currentEngine._frameRateText.text = (1000 / (thisRenderTime - J.currentEngine._lastRenderTime)).toFixed(1).toString() + " FPS";
-    if (!J.currentEngine.paused) {
-
-      // Update tweening engine
-      J.TweenManager.update();
-
-      // Update rendering
-      J.currentEngine.render();
-    }
-    J.currentEngine._lastRenderTime = thisRenderTime;
-
-    window.onEnterFrame(J.currentEngine.onEnterFrameDebug);
-  };
-
-  J.Engine = Engine;
-})(Joy);
-
-/**
- * @module Joy
- */
-(function(J) {
-  var Circle = J.DisplayObject.extend({
-    /**
-     * @class Circle
-     * @extends DisplayObject
-     * @constructor
-     *
-     * @param {Object} options
-     *   @param {Number} [options.radius]
-     *   @param {Color, String} [options.color]
-     */
-    init: function (options) {
-      this._super(options);
-      this.radius = options.radius || 1;
-      this.color = options.color || "#000";
-
-      this.__defineGetter__('width', function () {
-        return this.radius * 2 * this.scale.x;
-      });
-      this.__defineGetter__('height', function () {
-        return this.radius * 2 * this.scale.y;
-      });
-    },
-
-    render: function () {
-      this.ctx.beginPath();
-      this.ctx.arc(this.radius, this.radius, this.radius, 0, 2 * Math.PI);
-      this.ctx.fillStyle = this.color;
-      this.ctx.fill();
-    }
-  });
-
-  J.Circle = Circle;
-})(Joy);
-
-/**
- * @module Joy
- */
-(function(J){
-  var Rect = J.DisplayObject.extend({
-    /**
-     * @class Rect
-     * @extends DisplayObject
-     * @constructor
-     *
-     * @param {Object} options
-     *   @param {Color, String} [options.color]
-     */
-    init: function(options) {
-      this._super(options);
-
-      /**
-       * @attribute color
-       * @type {String}
-       */
-      if (options.color) {
-        this.colorize(options.color);
-      }
-    },
-
-    /**
-     * @method colorize
-     * @param {Color | String} color
-     * @return {Rect} this
-     */
-    colorize: function (color) {
-      this.color = color.toString();
-      return this;
-    },
-
-    render: function() {
-      if (this.color) {
-        this.ctx.fillStyle = this.color;
-      }
-      this.ctx.fillRect(0, 0, this._width, this._height);
-    }
-  });
-
-  J.Rect = Rect;
-})(Joy);
-
-/**
- * @module Joy
- */
-(function(J){
-  /**
-   * @class Vector2d
-   * @constructor
-   * @param {Number} x
-   * @param {Number} y
-   */
-  var Vector2d = function(x, y) {
-    this.x = x || 0;
-    this.y = y || 0;
-
-    /**
-     * Get the magnitude of this vector
-     * @attribute length
-     * @readonly
-     */
-    this.__defineGetter__('length', function () {
-      return Math.sqrt((this.x * this.x) + (this.y * this.y));
-    });
-
-    /**
-     * Get this vector with a magnitude of 1.
-     * @attribute normalized
-     * @readonly
-     */
-    this.__defineGetter__('normalized', function () {
-      var magnitude = this.length;
-      return new Vector2d(this.x / magnitude, this.y / magnitude);
-    });
-  };
-
-  /**
-   * @method set
-   * @param {Number} x
-   * @param {Number} y
-   * @return {Vector2d}
-   */
-  Vector2d.prototype.set = function (x, y) {
-    this.x = x;
-    this.y = y;
+  Context2d.prototype.setCanvas = function(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
     return this;
   };
 
   /**
-   * @method sum
-   * @param {Vector2d} vector2d
-   * @return {Vector2d}
+   * Clears the entire screen.
+   * @method clear
    */
-  Vector2d.prototype.subtract = function (vector2d) {
-    this.x -= vector2d.x;
-    this.y -= vector2d.y;
+  Context2d.prototype.clear = function () {
+    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     return this;
   };
 
   /**
-   * @method sum
-   * @param {Vector2d} vector2d
-   * @return {Vector2d}
+   * Render everything in the buffer to the screen.
+   * @method render
    */
-  Vector2d.prototype.sum = function (vector2d) {
-    this.x += vector2d.x;
-    this.y += vector2d.y;
-    return this;
+  Context2d.prototype.render = function (scenes) {
+    this.clear();
+    for (var i = 0, len = scenes.length; i < len; ++i) {
+      if (!scenes[i].visible) { continue; }
+      scenes[i].render();
+    }
   };
 
-  /**
-   * @method scale
-   * @param {Number} x (or x y)
-   * @param {Number} y
-   * @return {Vector2d}
-   */
-  Vector2d.prototype.scale = function (x, y) {
-    this.x *= x;
-    this.y *= y || x;
-    return this;
-  };
-
-  /**
-   * @method clone
-   * @return {Vector2d}
-   */
-  Vector2d.prototype.clone = function() {
-    return new Vector2d(this.x, this.y);
-  };
-
-  /**
-   * Return unit vector
-   * @return {Vector2d}
-   */
-  Vector2d.prototype.unit = function() {
-    return new Vector2d( Math.cos(this.x), Math.sin(this.y) );
-  };
-
-  /**
-   * Normalize this vector
-   * @return {Vector2d}
-   */
-  Vector2d.prototype.normalize = function() {
-    var normal = this.normalized;
-    this.x = normal.x;
-    this.y = normal.y;
-    return this;
-  };
-
-  /**
-   * Get the distance between this vector and the argument vector
-   * @param {Vector2d} vector
-   * @return {Number}
-   */
-  Vector2d.distance = function(v1, v2) {
-    var xdiff = v1.x - v2.x,
-        ydiff = v1.y - v2.y;
-    return Math.sqrt(xdiff * xdiff + ydiff * ydiff);
-  };
-
-  /**
-   * @method toString
-   * @return {String}
-   */
-  Vector2d.prototype.toString = function () {
-    return "#<Vector2d @x=" + this.x + ", @y=" + this.y + ">";
-  };
-
-  Vector2d.LEFT = new Vector2d(-1, 0);
-  Vector2d.RIGHT = new Vector2d(1, 0);
-  Vector2d.TOP = new Vector2d(0, -1);
-  Vector2d.BOTTOM = new Vector2d(0, 1);
-
-  J.Vector2d = Vector2d;
+  // Exports Context2d module
+  J.Context.Context2d = Context2d;
 })(Joy);
 
 /**
@@ -4480,102 +5490,6 @@ TWEEN.Interpolation = {
   J.Package = Package;
 })(Joy);
 
-
-/**
- * @module Joy
- */
-(function(J) {
-  /**
-   * @param {String | Number} hexOrRed hexadecimal color (String), or red (Number)
-   * @param {Number} green
-   * @param {Number} blue
-   * @param {Number} alpha
-   *
-   * @example
-   *     // color name
-   *     var color = new Joy.Color("red");
-   *
-   * @example
-   *     // hexadecimal
-   *     var color = new Joy.Color("#fff");
-   *
-   * @example
-   *     // rgb
-   *     var color = new Joy.Color(255, 50, 255);
-   *
-   * @example
-   *     // rgba
-   *     var color = new Joy.Color(255, 50, 255, 100);
-   *
-   * @class Color
-   * @constructor
-   */
-  var Color = function(r, g, b, a) {
-    this.red = r;
-    this.green = g;
-    this.blue = b;
-    this.alpha = a;
-  };
-
-  /**
-   * Get color definition as CSS string.
-   * @method toString
-   * @return {String}
-   */
-  Color.prototype.toString = function() {
-    if (!this.green && !this.blue) {
-      return this.red;
-    } else if (this.alpha) {
-      return "rgba(" + this.red + "," + this.green + "," + this.blue + "," + this.alpha + ")";
-    } else {
-      return "rgb(" + this.red + "," + this.green + "," + this.blue + ")";
-    }
-  };
-
-  J.Color = Color;
-})(Joy);
-
-(function(J) {
-  /**
-   * @class Math
-   */
-
-  /**
-   * @method clamp
-   * @param {Number} number
-   * @param {Number} low
-   * @param {Number} high
-   * @static
-   *
-   * @example
-   *     Math.clamp(5, 10, 20); // returns 10
-   */
-  Math.clamp = function(number, low, high) {
-    return ((number < low) ? low : ((number > high) ? high : +number));
-  };
-})(Joy);
-
-/**
- * @module Joy
- */
-(function(J) {
-  /**
-   * @class Utils
-   * @static
-   */
-  J.Utils = {
-
-    /**
-     * @method applyFriction
-     * @param {Number} v velocity
-     * @param {Number} f friction
-     * @return {Number}
-     */
-    applyFriction: function(v, f) {
-      return (v + f < 0) ? v + (f * J.deltaTime) : (v - f > 0) ? v - (f * J.deltaTime) : 0;
-    }
-  };
-})(Joy);
 
 /**
  * @module Joy
@@ -5721,651 +6635,3 @@ TWEEN.Interpolation = {
   J.Touch = Touch;
 })(Joy);
 
-/**
- * @module Joy
- */
-(function(J) {
-  var Parallax = J.DisplayObjectContainer.extend({
-    /**
-     * @class Parallax
-     * @constructor
-     * @param {Object} options
-     */
-    init: function(options) {
-      this._super(options);
-
-      /**
-       * Viewport that parallax effect will be based on.
-       * @attribute viewport
-       * @type {Viewport}
-       */
-      this.viewport = options.viewport || null;
-
-      /**
-       * Distance between each parallax child.
-       * @attribute distance
-       * @type {Number}
-       */
-      this.distance = options.distance || 1;
-
-      /**
-       * Amount of velocity that will increase by child.
-       * @attribute velocity
-       * @type {Number}
-       */
-      this.velocity = options.velocity || 1;
-
-      // Bind on added to Container
-      this.bind(J.Events.ADDED, this._setup);
-    },
-
-    _setup: function (scene) {
-      if (!(scene instanceof J.Scene)) {
-        throw new Error("'Parallax' instance must be added into a 'Scene'.");
-      }
-      this.viewport = scene.viewport;
-
-      var parallax = this;
-
-      // Add repeatable parts
-      this.viewport.bind('setup', function() {
-        var i, length, layer, child;
-
-        for (i=0, length=parallax.numChildren; i < length; ++i) {
-
-          if (parallax.getChildAt(i).position) {
-            layer = parallax.getChildAt(i);
-
-            // Empty previous setup
-            while (layer.numChildren > 0) {
-              layer.removeChildAt(0);
-            }
-
-            for (var j=0, childsToFill = Math.ceil(layer.width / this.width) - 1; j<childsToFill; ++j) {
-              child = layer.clone();
-              child.children = [];
-              child.position.x = layer.width;
-              layer.addChild(child);
-            }
-          }
-
-        }
-      });
-
-      this.viewport.bind('translate', function() {
-        var velocity = parallax.distance;
-
-        for (var i=0, length=parallax.numChildren; i < length; ++i) {
-          velocity *= parallax.velocity * (i + 1);
-          if (parallax.getChildAt(i).position) {
-            parallax.getChildAt(i).position.x += (this.translation.x * velocity) / this.width;
-            parallax.getChildAt(i).position.y += (this.translation.y * velocity) / (this.height / 2);
-          }
-        }
-      });
-    }
-
-  });
-
-  J.Parallax = Parallax;
-})(Joy);
-
-/**
- * TODO:
- * module Joy
- */
-(function(J) {
-  var ParticleEmitter = J.DisplayObject.extend({
-    /**
-     * class ParticleEmitter
-     * constructor
-     * param {Object} options
-     */
-    init: function (options) {
-
-      // position         The position of the particle.
-      // velocity         The velocity of the particle.
-      // energy           The energy of the particle.
-      // startEnergy      The starting energy of the particle.
-      // size             The size of the particle.
-      // rotation         The rotation of the particle.
-      // angularVelocity  The angular velocity of the particle.
-      // color            The color of the particle.
-
-      this._super(options);
-    }
-  });
-
-  J.ParticleEmitter = ParticleEmitter;
-})(Joy);
-
-/**
- * @module Joy
- */
-(function(J) {
-  /**
-   * @class Shader
-   */
-  var Shader = function() {};
-
-  /**
-   * Process
-   * @method process
-   * @param {CanvasRenderingContext2D} ctx
-   * @param {Function} method
-   * @static
-   */
-  Shader.process = function(ctx, method) {
-    var imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
-    method.call(this, imageData);
-    ctx.putImageData(imageData, 0, 0);
-  };
-
-  /*
-   * Blur filter extracted from: http://www.quasimondo.com/StackBlurForCanvas/StackBlurDemo.html
-   */
-  var blur_mul_table = [ 512,512,456,512,328,456,335,512,405,328,271,456,388,335,292,512, 454,405,364,328,298,271,496,456,420,388,360,335,312,292,273,512, 482,454,428,405,383,364,345,328,312,298,284,271,259,496,475,456, 437,420,404,388,374,360,347,335,323,312,302,292,282,273,265,512, 497,482,468,454,441,428,417,405,394,383,373,364,354,345,337,328, 320,312,305,298,291,284,278,271,265,259,507,496,485,475,465,456, 446,437,428,420,412,404,396,388,381,374,367,360,354,347,341,335, 329,323,318,312,307,302,297,292,287,282,278,273,269,265,261,512, 505,497,489,482,475,468,461,454,447,441,435,428,422,417,411,405, 399,394,389,383,378,373,368,364,359,354,350,345,341,337,332,328, 324,320,316,312,309,305,301,298,294,291,287,284,281,278,274,271, 268,265,262,259,257,507,501,496,491,485,480,475,470,465,460,456, 451,446,442,437,433,428,424,420,416,412,408,404,400,396,392,388, 385,381,377,374,370,367,363,360,357,354,350,347,344,341,338,335, 332,329,326,323,320,318,315,312,310,307,304,302,299,297,294,292, 289,287,285,282,280,278,275,273,271,269,267,265,263,261,259];
-  var blur_shg_table = [ 9, 11, 12, 13, 13, 14, 14, 15, 15, 15, 15, 16, 16, 16, 16, 17, 17, 17, 17, 17, 17, 17, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24 ];
-
-  Shader.blur = function(imageData) {
-    var index = 0, next;
-    var BlurStack = function () {
-      this.r = 0;
-      this.g = 0;
-      this.b = 0;
-      this.a = 0;
-      this.next = null;
-    };
-
-    var x, y, i, p, yp, yi, yw, r_sum, g_sum, b_sum,
-        r_out_sum, g_out_sum, b_out_sum,
-        r_in_sum, g_in_sum, b_in_sum,
-        pixels = imageData.data,
-        pr, pg, pb, rbs, radius = 5, width = imageData.width, height = imageData.height;
-
-    var div = radius + radius + 1;
-    var w4 = width << 2;
-    var widthMinus1  = width - 1;
-    var heightMinus1 = height - 1;
-    var radiusPlus1  = radius + 1;
-    var sumFactor = radiusPlus1 * ( radiusPlus1 + 1 ) / 2;
-
-    var stackStart = new BlurStack();
-    var stackEnd;
-    var stack = stackStart;
-    for ( i = 1; i < div; i++ )
-    {
-      stack = stack.next = new BlurStack();
-      if ( i == radiusPlus1 ) stackEnd = stack;
-    }
-    stack.next = stackStart;
-    var stackIn = null;
-    var stackOut = null;
-
-    yw = yi = 0;
-
-    var mul_sum = blur_mul_table[radius];
-    var shg_sum = blur_shg_table[radius];
-
-    for ( y = 0; y < height; y++ )
-    {
-      r_in_sum = g_in_sum = b_in_sum = r_sum = g_sum = b_sum = 0;
-
-      r_out_sum = radiusPlus1 * ( pr = pixels[yi] );
-      g_out_sum = radiusPlus1 * ( pg = pixels[yi+1] );
-      b_out_sum = radiusPlus1 * ( pb = pixels[yi+2] );
-
-      r_sum += sumFactor * pr;
-      g_sum += sumFactor * pg;
-      b_sum += sumFactor * pb;
-
-      stack = stackStart;
-
-      for( i = 0; i < radiusPlus1; i++ )
-      {
-        stack.r = pr;
-        stack.g = pg;
-        stack.b = pb;
-        stack = stack.next;
-      }
-
-      for( i = 1; i < radiusPlus1; i++ )
-      {
-        p = yi + (( widthMinus1 < i ? widthMinus1 : i ) << 2 );
-        r_sum += ( stack.r = ( pr = pixels[p])) * ( rbs = radiusPlus1 - i );
-        g_sum += ( stack.g = ( pg = pixels[p+1])) * rbs;
-        b_sum += ( stack.b = ( pb = pixels[p+2])) * rbs;
-
-        r_in_sum += pr;
-        g_in_sum += pg;
-        b_in_sum += pb;
-
-        stack = stack.next;
-      }
-
-
-      stackIn = stackStart;
-      stackOut = stackEnd;
-      for ( x = 0; x < width; x++ )
-      {
-        pixels[yi]   = (r_sum * mul_sum) >> shg_sum;
-        pixels[yi+1] = (g_sum * mul_sum) >> shg_sum;
-        pixels[yi+2] = (b_sum * mul_sum) >> shg_sum;
-
-        r_sum -= r_out_sum;
-        g_sum -= g_out_sum;
-        b_sum -= b_out_sum;
-
-        r_out_sum -= stackIn.r;
-        g_out_sum -= stackIn.g;
-        b_out_sum -= stackIn.b;
-
-        p =  ( yw + ( ( p = x + radius + 1 ) < widthMinus1 ? p : widthMinus1 ) ) << 2;
-
-        r_in_sum += ( stackIn.r = pixels[p]);
-        g_in_sum += ( stackIn.g = pixels[p+1]);
-        b_in_sum += ( stackIn.b = pixels[p+2]);
-
-        r_sum += r_in_sum;
-        g_sum += g_in_sum;
-        b_sum += b_in_sum;
-
-        stackIn = stackIn.next;
-
-        r_out_sum += ( pr = stackOut.r );
-        g_out_sum += ( pg = stackOut.g );
-        b_out_sum += ( pb = stackOut.b );
-
-        r_in_sum -= pr;
-        g_in_sum -= pg;
-        b_in_sum -= pb;
-
-        stackOut = stackOut.next;
-
-        yi += 4;
-      }
-      yw += width;
-    }
-
-
-    for ( x = 0; x < width; x++ )
-    {
-      g_in_sum = b_in_sum = r_in_sum = g_sum = b_sum = r_sum = 0;
-
-      yi = x << 2;
-      r_out_sum = radiusPlus1 * ( pr = pixels[yi]);
-      g_out_sum = radiusPlus1 * ( pg = pixels[yi+1]);
-      b_out_sum = radiusPlus1 * ( pb = pixels[yi+2]);
-
-      r_sum += sumFactor * pr;
-      g_sum += sumFactor * pg;
-      b_sum += sumFactor * pb;
-
-      stack = stackStart;
-
-      for( i = 0; i < radiusPlus1; i++ )
-      {
-        stack.r = pr;
-        stack.g = pg;
-        stack.b = pb;
-        stack = stack.next;
-      }
-
-      yp = width;
-
-      for( i = 1; i <= radius; i++ )
-      {
-        yi = ( yp + x ) << 2;
-
-        r_sum += ( stack.r = ( pr = pixels[yi])) * ( rbs = radiusPlus1 - i );
-        g_sum += ( stack.g = ( pg = pixels[yi+1])) * rbs;
-        b_sum += ( stack.b = ( pb = pixels[yi+2])) * rbs;
-
-        r_in_sum += pr;
-        g_in_sum += pg;
-        b_in_sum += pb;
-
-        stack = stack.next;
-
-        if( i < heightMinus1 )
-          {
-            yp += width;
-          }
-      }
-
-      yi = x;
-      stackIn = stackStart;
-      stackOut = stackEnd;
-      for ( y = 0; y < height; y++ )
-      {
-        p = yi << 2;
-        pixels[p]   = (r_sum * mul_sum) >> shg_sum;
-        pixels[p+1] = (g_sum * mul_sum) >> shg_sum;
-        pixels[p+2] = (b_sum * mul_sum) >> shg_sum;
-
-        r_sum -= r_out_sum;
-        g_sum -= g_out_sum;
-        b_sum -= b_out_sum;
-
-        r_out_sum -= stackIn.r;
-        g_out_sum -= stackIn.g;
-        b_out_sum -= stackIn.b;
-
-        p = ( x + (( ( p = y + radiusPlus1) < heightMinus1 ? p : heightMinus1 ) * width )) << 2;
-
-        r_sum += ( r_in_sum += ( stackIn.r = pixels[p]));
-        g_sum += ( g_in_sum += ( stackIn.g = pixels[p+1]));
-        b_sum += ( b_in_sum += ( stackIn.b = pixels[p+2]));
-
-        stackIn = stackIn.next;
-
-        r_out_sum += ( pr = stackOut.r );
-        g_out_sum += ( pg = stackOut.g );
-        b_out_sum += ( pb = stackOut.b );
-
-        r_in_sum -= pr;
-        g_in_sum -= pg;
-        b_in_sum -= pb;
-
-        stackOut = stackOut.next;
-
-        yi += width;
-      }
-    }
-  };
-
-  /**
-   * Noise pixel shader
-   * @method noise
-   * @param {ImageData} imageData
-   * @static
-   */
-  Shader.noise = function(imageData) {
-    var index = 0, x, y, random;
-    for (x=0; x < imageData.width; ++x) {
-      for (y=0; y < imageData.height; ++y) {
-        random = Math.random() * 0.8;
-        index = (x * 4) + (y * (imageData.width * 4));
-        imageData.data[index] *= random; // red channel
-        imageData.data[index+1] *= random; // green channel
-        imageData.data[index+2] *= random; // blue channel
-      }
-    }
-  };
-
-  J.Shader = Shader;
-})(Joy);
-
-/**
- * @module Joy
- */
-(function(J) {
-  /**
-   * OBS:
-   * Audio library are provided by [howler.js](https://github.com/goldfire/howler.js).
-   *
-   * @class Sound
-   */
-  J.Sound = Howl;
-})(Joy);
-
-
-/**
- * @module Joy
- */
-(function(J) {
-  var Tilemap = J.DisplayObjectContainer.extend({
-    /**
-     * @class Tilemap
-     * @constructor
-     * @param {Object} options
-     */
-    init: function (options) {
-      if (!(options.tileset instanceof J.Tileset)) {
-        throw new Error("'tileset' must be given on Tilemap constructor, as Sprite instance.");
-      }
-      this._super(options);
-
-      /**
-       * @attribute tileset
-       * @type {Tileset}
-       */
-      this.tileset = options.tileset;
-
-      /**
-       * @attribute lines
-       * @type {Number}
-       */
-      this.lines = options.lines || 1;
-
-      /**
-       * @attribute columns
-       * @type {Number}
-       */
-      this.columns = options.columns || 1;
-
-      /**
-       * @attribute data
-       * @type {Array}
-       */
-      this.__defineSetter__('data', function(data) {
-        this._data = data;
-
-        if (this.collider == this || this.collider instanceof J.TilemapCollider) {
-          this.collider = new J.TilemapCollider(this);
-        }
-      });
-      this.__defineGetter__('data', function() {
-        return this._data;
-      });
-      this.data = options.data;
-
-      /**
-       * @attribute height
-       * @readonly
-       * @type {Number}
-       */
-      this.__defineGetter__('height', function () {
-        return this.lines * this.tileset.tileHeight;
-      });
-
-      /**
-       * @attribute width
-       * @readonly
-       * @type {Number}
-       */
-      this.__defineGetter__('width', function () {
-        return this.columns * this.tileset.tileWidth;
-      });
-    },
-
-    renderChildren: function () {
-      for (var i=0, length = this.data.length; i < length; ++i) {
-        if (this.data[i] === 0) { continue; }
-
-        this.ctx.drawImage(this.tileset.image,
-                           this.tileset.tileWidth * ((this.data[i]-1) % this.tileset.columns),
-                           this.tileset.tileHeight * (((this.data[i]-1) / this.tileset.columns) >> 0),
-                           this.tileset.tileWidth,
-                           this.tileset.tileHeight,
-                           this.tileset.tileWidth * (i % this.columns),
-                           this.tileset.tileHeight * ((i / this.columns) >> 0),
-                           this.tileset.tileWidth,
-                           this.tileset.tileHeight);
-      }
-    }
-
-  });
-
-  J.Tilemap = Tilemap;
-})(Joy);
-
-(function(J) {
-  var TilemapCollider = function(tilemap) {
-    this.blocks = [];
-
-    for (var i=0, length=tilemap.data.length; i<length; ++i) {
-      if (tilemap.data[i] === 0) { continue; }
-
-      this.blocks.push(new Joy.RectCollider(new J.Vector2d(tilemap.tileset.tileWidth * (i % tilemap.columns), tilemap.tileset.tileHeight * ((i / tilemap.columns) >> 0)),
-                                            tilemap.tileset.tileWidth,
-                                            tilemap.tileset.tileHeight));
-    }
-
-    this.length = this.blocks.length;
-  };
-
-  TilemapCollider.prototype.collide = function(collider) {
-    for (var i=0; i<this.length; ++i) {
-      if (!( this.blocks[i].collidePosition.x  >= collider.collidePosition.x + collider.width     ||
-             collider.collidePosition.x        >= this.blocks[i].collidePosition.x + this.blocks[i].width  ||
-             this.blocks[i].collidePosition.y  >= collider.collidePosition.y + collider.height    ||
-             collider.collidePosition.y        >= this.blocks[i].collidePosition.y + this.blocks[i].height)) {
-        return true;
-      }
-    }
-    return false;
-  };
-
-  TilemapCollider.prototype.renderStroke = function(ctx) {
-    for (var i=0; i<this.length; ++i) {
-      ctx.strokeRect(this.blocks[i].position.x, this.blocks[i].position.y, this.blocks[i].width, this.blocks[i].height);
-    }
-  };
-
-  J.TilemapCollider = TilemapCollider;
-})(Joy);
-
-/**
- * @module Joy
- */
-(function(J) {
-  var Tileset = J.Sprite.extend({
-    /**
-     * @class Tileset
-     * @constructor
-     * @param {Object} options
-     *   @param {String} [options.src]
-     *   @param {Number} [options.width] tile width
-     *   @param {Number} [options.height] tile height
-     */
-    init: function(options) {
-      this.tileWidth = options.width;
-      this.tileHeight = options.height;
-
-      delete options.width;
-      delete options.height;
-
-      this._super(options);
-    },
-
-    onLoad: function() {
-      this._super();
-
-      this.columns = (this._width / this.tileWidth) >> 0;
-      this.lines = (this._height / this.tileHeight) >> 0;
-    }
-  });
-
-  J.Tileset = Tileset;
-})(Joy);
-
-/**
- * @module Joy
- */
-(function(J) {
-  /**
-   * OBS: Tweens are provided by [tween.js](https://github.com/sole/tween.js).
-   *
-   * Alias to TWEEN
-   *
-   * @class TweenManager
-   */
-  J.TweenManager = TWEEN;
-
-  /**
-   * @method getAll
-   * @return {Array}
-   */
-  /**
-   * @method removeAll
-   */
-  /**
-   * @param {Tween} tween
-   * @method add
-   */
-  /**
-   * @param {Tween} tween
-   * @method remove
-   */
-  /**
-   * @param {Number} time
-   * @method update
-   */
-
-  /**
-   * Create a new tween.
-   *
-   * OBS: Tweens are provided by [tween.js](https://github.com/sole/tween.js).
-   *
-   * Alias to TWEEN.Tween
-   *
-   * @class Tween
-   * @param {Object} target
-   * @constructor
-   */
-  J.Tween = TWEEN.Tween;
-
-  /**
-   * @param {Object}
-   * @method to
-   * @return {Tween} this
-   */
-
-  /**
-   * @param {Object}
-   * @method start
-   * @return {Tween} this
-   */
-
-  /**
-   * @method stop
-   * @return {Tween} this
-   */
-
-  /**
-   * @param {Number} times
-   * @method repeat
-   * @return {Tween} this
-   */
-
-  /**
-   * @param {Number} amount
-   * @method delay
-   * @return {Tween} this
-   */
-
-  /**
-   * @param {Function} method
-   * @method easing
-   * @return {Tween} this
-   */
-
-  /**
-   * @param {Function} method
-   * @method interpolation
-   * @return {Tween} this
-   */
-
-  /**
-   * @param {Function} callback
-   * @method onUpdate
-   * @return {Tween} this
-   */
-
-  /**
-   * @param {Function} callback
-   * @method onComplete
-   * @return {Tween} this
-   */
-})(Joy);

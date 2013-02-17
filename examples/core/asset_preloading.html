@@ -8,22 +8,14 @@
     </head>
     <body style="margin: 0; padding: 0;">
       <script type="text/javascript">
-        var engine = new Joy.Engine({ debug: true, width: document.width - 5, height: document.height - 5 });
-
-        engine.setSceneLoader(function(scene) {
-          scene.addChild(new Joy.Text({
-            x: engine.width / 2,
-            y: engine.height / 2,
-            text: "Loading...",
-            align: "center",
-            font: "30pt Merienda",
-            baseline: Joy.Text.BASELINE.MIDDLE
-
-            // Append
-          }).bind(Joy.Events.UPDATE, function() {
-            this.text = "Loading... " + scene.loader.percentage + "%";
-          }));
+        var engine = new Joy.Engine({
+          debug: true,
+          width: document.width - 5,
+          height: document.height - 5
         });
+
+        // engine.setSceneLoader(function(scene) {
+        // });
 
         engine.createScene(function(scene) {
           var nocache = parseInt(Math.random() * 99999);
@@ -44,7 +36,13 @@
           ]
 
           for (var i=0;i<candyImages.length;++i) {
-            scene.addChild(new Joy.Sprite(candyImages[i]));
+            var sprite = new Joy.Sprite(candyImages[i]);
+            sprite.bind(Joy.Events.SCENE_ACTIVE, function () {
+              this.position.x = Math.random() * (engine.width - this.width);
+              this.position.y = Math.random() * (engine.height - this.height);
+              this.scale.set(0.2, 0.2);
+            });
+            scene.addChild(sprite);
           }
         });
 
