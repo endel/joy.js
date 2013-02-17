@@ -4,7 +4,7 @@
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 2/16/2013
+ * @build 2/17/2013
  */
 
 (function(global) {
@@ -469,7 +469,7 @@
   /**
    * @method gotoNextScene
    * @param {Number} fadeMilliseconds (default=1000)
-   * @param {String | Color} color (default=#fff)
+   * @param {String | Color} color (default=#000)
    * @return {Engine} this
    */
   Engine.prototype.gotoNextScene = function(milliseconds, color) {
@@ -483,15 +483,13 @@
    * @method gotoScene
    * @param {Scene} scene
    * @param {Number} fadeMilliseconds (default=1000)
-   * @param {String | Color} color (default=#fff)
+   * @param {String | Color} color (default=#000)
    * @return {Engine} this
    */
   Engine.prototype.gotoScene = function (scene, milliseconds, color) {
     var self = this;
     if (!milliseconds) { milliseconds = 1000; }
-    if (!color) { color = "#fff"; }
-
-    console.log(this.currentScene, scene);
+    if (!color) { color = "#000"; }
 
     this.currentScene.fadeOut(milliseconds, color).bind('fadeOutComplete', function () {
       self.currentScene = scene;
@@ -813,6 +811,10 @@
       for (var i = 0, length = handlers.length; i<length; ++i) {
         handlers[i].apply(this, args);
       }
+    },
+
+    broadcast: function (type, args, delay) {
+      this.trigger(type, args, delay);
     }
   });
 
@@ -1254,7 +1256,6 @@
         that.trigger('loadProgress');
 
         // Trigger load complete
-        console.log(that.loaded, that.assets.length);
         if (that.loaded == that.assets.length) {
           that.trigger('loadComplete');
         }
@@ -2264,8 +2265,10 @@
       displayObject.index = this.children.push(displayObject) - 1;
       displayObject._parent = this;
 
-      // Trigger ADDED event on target DisplayObject.
-      displayObject.trigger(J.Events.ADDED, [this]);
+      if (displayObject.scene) {
+        // Trigger ADDED event on target DisplayObject.
+        displayObject.broadcast(J.Events.ADDED, [this]);
+      }
 
       return this;
     },
@@ -2560,6 +2563,11 @@
       }
     },
 
+    broadcast: function (type, args, delay) {
+      this.viewport.broadcast(type, args, delay);
+      this._super();
+    },
+
     /**
      * @method fadeOut
      * @param {Number} milliseconds
@@ -2783,6 +2791,9 @@
 
     update: function() {
       var currentAnimation = this._animations[this._currentAnimation];
+
+      // Skip if currentAnimation is not defined
+      if (typeof(currentAnimation)==="undefined") { return; }
 
       if (this.currentFrame == currentAnimation.lastFrame) {
         this.currentFrame = currentAnimation.firstFrame;
@@ -3135,6 +3146,11 @@
       this.__defineGetter__('width', function () {
         return this.columns * this.tileset.tileWidth;
       });
+
+      // Propagate ADDED event to tileset.
+      this.bind(J.Events.ADDED, function () {
+        this.tileset.trigger(J.Events.ADDED);
+      });
     },
 
     renderChildren: function () {
@@ -3287,12 +3303,17 @@
 
       this.scale = new J.Vector2d(1, 1);
 
-      if (this.width && this.height) {
-        this.setSize(this.width, this.height);
-      }
+      // Set viewport size when scene is active.
+      this.bind(J.Events.SCENE_ACTIVE, function () {
+        console.log("VIEWPORT scene active")
+        if (this.width && this.height) {
+          this.setSize(this.width, this.height);
+        }
 
-      // Trigger setup
-      this.trigger('setup');
+        // Trigger setup
+        this.trigger('setup');
+      });
+
     },
 
     /**
@@ -6635,3 +6656,9 @@ TWEEN.Interpolation = {
   J.Touch = Touch;
 })(Joy);
 
+(function (J) {
+  J.Transition = J.Object.extend({
+  });
+
+  //J.Transition.
+})(Joy)
