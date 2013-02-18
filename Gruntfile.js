@@ -56,11 +56,19 @@ module.exports = function(grunt) {
     jshint: {
       all: [
         'Gruntfile.js',
-        'lib/*.js',
-        'lib/base/**/**.js',
-        'lib/core/**/**.js',
-        'lib/input/**/**.js',
-        'lib/modules/**/**.js'
+        'lib/joy.js',
+        'lib/behaviour/**.js',
+        'lib/collider/**.js',
+        'lib/consts/*.js',
+        'lib/core/**.js',
+        'lib/geom/**.js',
+        'lib/init/**.js',
+        'lib/input/**.js',
+        'lib/math/*.js',
+        'lib/modules/**.js',
+        'lib/render/*.js',
+        'lib/transitions/*.js',
+        'lib/util/*.js'
       ],
       options: {
         "browser": true,

@@ -303,47 +303,55 @@
     // Active actors list
     this.scenes = [];
 
-    this.__defineGetter__('width', function() {
-      return this.context.canvas.width;
+    Object.defineProperty(this, 'width', {
+      get: function () {
+        return this.context.canvas.width;
+      },
+      configurable: true
     });
 
-    this.__defineGetter__('height', function() {
-      return this.context.canvas.height;
+    Object.defineProperty(this, 'height', {
+      get: function () {
+        return this.context.canvas.height;
+      },
+      configurable: true
     });
 
     /**
      * @attribute currentScene
      * @type {Scene}
      */
-    this.__defineGetter__('currentScene', function() {
-      return this.scenes[this._currentSceneIndex];
-    });
-    this.__defineSetter__('currentScene', function(scene) {
-      if (this._currentSceneIndex !== null) {
-        // Restore context2d viewport translation
-        this.scenes[this._currentSceneIndex].visible = false;
-        this.scenes[this._currentSceneIndex].viewport.reset();
+    Object.defineProperty(this, 'currentScene', {
+      get: function () {
+        return this.scenes[this._currentSceneIndex];
+      },
+      set: function (scene) {
+        if (this._currentSceneIndex !== null) {
+          // Restore context2d viewport translation
+          this.scenes[this._currentSceneIndex].visible = false;
+          this.scenes[this._currentSceneIndex].viewport.reset();
+        }
+
+        if (this.sceneLoader && scene.loader.loading) {
+          this._currentSceneIndex = this.scenes.indexOf(this.sceneLoader);
+          this.sceneLoader.loader = scene.loader;
+          this.sceneLoader.visible = true;
+
+          scene.visible = false;
+          scene.loader.bind('loadComplete', function() {
+            J.currentEngine.gotoScene(scene);
+          });
+
+        } else {
+          this._currentSceneIndex = this.scenes.indexOf(scene);
+          scene.visible = true;
+
+          // Trigger scene active event
+          scene.broadcast(J.Events.SCENE_ACTIVE, [scene]);
+        }
       }
-
-      if (this.sceneLoader && scene.loader.loading) {
-        this._currentSceneIndex = this.scenes.indexOf(this.sceneLoader);
-        this.sceneLoader.loader = scene.loader;
-        this.sceneLoader.visible = true;
-
-        scene.visible = false;
-        scene.loader.bind('loadComplete', function() {
-          J.currentEngine.gotoScene(scene);
-        });
-
-      } else {
-        this._currentSceneIndex = this.scenes.indexOf(scene);
-        scene.visible = true;
-
-        // Trigger scene active event
-        scene.broadcast(J.Events.SCENE_ACTIVE, [scene]);
-      }
-
     });
+
     this._currentSceneIndex = null;
 
     /**
@@ -1046,8 +1054,11 @@
      * @attribute length
      * @readonly
      */
-    this.__defineGetter__('length', function () {
-      return Math.sqrt((this.x * this.x) + (this.y * this.y));
+    Object.defineProperty(this, 'length', {
+      get: function () {
+        return Math.sqrt((this.x * this.x) + (this.y * this.y));
+      },
+      configurable: true
     });
 
     /**
@@ -1055,9 +1066,12 @@
      * @attribute normalized
      * @readonly
      */
-    this.__defineGetter__('normalized', function () {
-      var magnitude = this.length;
-      return new Vector2d(this.x / magnitude, this.y / magnitude);
+    Object.defineProperty(this, 'normalized', {
+      get: function () {
+        var magnitude = this.length;
+        return new Vector2d(this.x / magnitude, this.y / magnitude);
+      },
+      configurable: true
     });
   };
 
@@ -1234,8 +1248,11 @@
        * @property percentage
        * @type {Number}
        */
-      this.__defineGetter__('percentage', function () {
-        return Math.round((this.loaded / this.assets.length) * 100);
+      Object.defineProperty(this, 'percentage', {
+        get: function () {
+          return Math.round((this.loaded / this.assets.length) * 100);
+        },
+        configurable: true
       });
 
       /**
@@ -1243,8 +1260,11 @@
        * @property loading
        * @type {Boolean}
        */
-      this.__defineGetter__('loading', function () {
-        return this.assets.length !== this.loaded;
+      Object.defineProperty(this, 'loading', {
+        get: function () {
+          return this.assets.length !== this.loaded;
+        },
+        configurable: true
       });
     },
 
@@ -1649,9 +1669,12 @@
        * @default 0,0
        */
       this.position = options.position || new J.Vector2d(options.x || 0, options.y || 0);
-      this.__defineGetter__('collidePosition', function() {
-        var origin = (this._parent !== null) ? this._parent.collidePosition : new J.Vector2d();
-        return origin.sum(this.position).subtract(this.pivot);
+      Object.defineProperty(this, 'collidePosition', {
+        get: function () {
+          var origin = (this._parent !== null) ? this._parent.collidePosition : new J.Vector2d();
+          return origin.sum(this.position).subtract(this.pivot);
+        },
+        configurable: true
       });
 
       /**
@@ -1716,14 +1739,17 @@
        * @type {DisplayObject | RectCollider}
        * @default this
        */
+      Object.defineProperty(this, 'collider', {
+        get: function () {
+          return this._collider;
+        },
+        set: function (collider) {
+          this._collider = collider;
+          this._collider.target = this;
+        },
+        configurable: true
+      });
       this._collider = options.collider || this;
-      this.__defineSetter__('collider', function (collider) {
-        this._collider = collider;
-        this._collider.target = this;
-      });
-      this.__defineGetter__('collider', function () {
-        return this._collider;
-      });
 
       /**
        * Index of this DisplayObject on the DisplayObjectContainer
@@ -1757,8 +1783,11 @@
        * @readonly
        * @type {DisplayObjectContainer}
        */
-      this.__defineGetter__('parent', function() {
-        return this._parent;
+      Object.defineProperty(this, 'parent', {
+        get: function () {
+          return this._parent;
+        },
+        configurable: true
       });
 
       /**
@@ -1766,12 +1795,15 @@
        * @readonly
        * @type {Scene}
        */
-      this.__defineGetter__('scene', function() {
-        var parent = this._parent;
-        while (!(parent instanceof J.Scene) && parent !== null) {
-          parent = (parent && parent.parent) || null;
-        }
-        return parent;
+      Object.defineProperty(this, 'scene', {
+        get: function () {
+          var parent = this._parent;
+          while (!(parent instanceof J.Scene) && parent !== null) {
+            parent = (parent && parent.parent) || null;
+          }
+          return parent;
+        },
+        configurable: true
       });
 
       /**
@@ -1779,11 +1811,14 @@
        * @attribute visible
        * @type {Boolean}
        */
-      this.__defineGetter__('visible', function() {
-        return this._visible && this.alpha > 0 && this.scale.y !== 0 && this.scale.y !== 0;
-      });
-      this.__defineSetter__('visible', function(visible) {
-        this._visible = visible;
+      Object.defineProperty(this, 'visible', {
+        get: function () {
+          return this._visible && this.alpha > 0 && this.scale.y !== 0 && this.scale.y !== 0;
+        },
+        set: function (visible) {
+          this._visible = visible;
+        },
+        configurable: true
       });
 
       /**
@@ -1791,8 +1826,11 @@
        * @attribute matrix
        * @type {Matrix2D}
        */
-      this.__defineGetter__('matrix', function() {
-        return this._matrix;
+      Object.defineProperty(this, 'matrix', {
+        get: function () {
+          return this._matrix;
+        },
+        configurable: true
       });
 
       /**
@@ -1800,8 +1838,11 @@
        * @readonly
        * @type {Number}
        */
-      this.__defineGetter__('width', function() {
-        return this._width * Math.abs(this.scale.x);
+      Object.defineProperty(this, 'width', {
+        get: function () {
+          return this._width * Math.abs(this.scale.x);
+        },
+        configurable: true
       });
 
       /**
@@ -1809,8 +1850,11 @@
        * @readonly
        * @type {Number}
        */
-      this.__defineGetter__('height', function() {
-        return this._height * Math.abs(this.scale.y);
+      Object.defineProperty(this, 'height', {
+        get: function () {
+          return this._height * Math.abs(this.scale.y);
+        },
+        configurable: true
       });
 
       /**
@@ -1818,8 +1862,11 @@
        * @readonly
        * @type {Number}
        */
-      this.__defineGetter__('right', function () {
-        return this.position.x + this.width;
+      Object.defineProperty(this, 'right', {
+        get: function () {
+          return this.position.x + this.width;
+        },
+        configurable: true
       });
 
       /**
@@ -1827,8 +1874,11 @@
        * @readonly
        * @type {Number}
        */
-      this.__defineGetter__('bottom', function () {
-        return this.position.y + this.height;
+      Object.defineProperty(this, 'bottom', {
+        get: function () {
+          return this.position.y + this.height;
+        },
+        configurable: true
       });
 
       /**
@@ -2150,30 +2200,39 @@
        * @type {Number}
        * @readonly
        */
-      this.__defineGetter__('numChildren', function() {
-        return this.children.length;
+      Object.defineProperty(this, 'numChildren', {
+        get: function () {
+          return this.children.length;
+        },
+        configurable: true
       });
 
-      this.__defineGetter__('width', function() {
-        // Get child with greater width
-        var width = 0;
-        for (var i=0, length = this.children.length; i<length; ++i) {
-          if (this.children[i].width > width) {
-            width = this.children[i].width;
+      Object.defineProperty(this, 'width', {
+        get: function () {
+          // Get child with greater width
+          var width = 0;
+          for (var i=0, length = this.children.length; i<length; ++i) {
+            if (this.children[i].width > width) {
+              width = this.children[i].width;
+            }
           }
-        }
-        return width;
+          return width;
+        },
+        configurable: true
       });
 
-      this.__defineGetter__('height', function() {
-        // Get child with greater height
-        var height = 0;
-        for (var i=0, length = this.children.length; i<length; ++i) {
-          if (this.children[i].height > height) {
-            height = this.children[i].height;
+      Object.defineProperty(this, 'height', {
+        get: function () {
+          // Get child with greater height
+          var height = 0;
+          for (var i=0, length = this.children.length; i<length; ++i) {
+            if (this.children[i].height > height) {
+              height = this.children[i].height;
+            }
           }
-        }
-        return height;
+          return height;
+        },
+        configurable: true
       });
 
       this._super(options);
@@ -2777,14 +2836,14 @@
        * @type {String}
        * @readonly
        */
-      this._currentAnimation = null;
-      this.__defineGetter__('currentAnimation', function () {
-        return this._currentAnimation;
-      });
+      this.currentAnimation = null;
 
       // framesPerSecond alias
-      this.__defineGetter__('fps', function () {
-        return this.framesPerSecond;
+      Object.defineProperty(this, 'fps', {
+        get: function () {
+          return this.framesPerSecond;
+        },
+        configurable: true
       });
 
       // Create the interval to change through frames
@@ -2792,7 +2851,7 @@
     },
 
     update: function() {
-      var currentAnimation = this._animations[this._currentAnimation];
+      var currentAnimation = this._animations[this.currentAnimation];
 
       // Skip if currentAnimation is not defined
       if (typeof(currentAnimation)==="undefined") { return; }
@@ -2844,7 +2903,7 @@
         totalFrames = totalFrames * (this._rows = Math.ceil(this.image.height / this._height));
       }
 
-      if (this._animations.length === 0 || this._currentAnimation === null) {
+      if (this._animations.length === 0 || this.currentAnimation === null) {
         this.addAnimation('default', [0, totalFrames-1]);
         this.play('default');
       }
@@ -2856,8 +2915,8 @@
      * @return {SpriteSheet} this
      */
     play: function (animationName) {
-      if (this._currentAnimation != animationName) {
-        this._currentAnimation = animationName;
+      if (this.currentAnimation != animationName) {
+        this.currentAnimation = animationName;
         if (!this._animations[animationName]) {
           throw new Error("Animation '" + animationName + "' not found on '" + this.id + "'");
         }
@@ -3014,11 +3073,14 @@
        * @type {String, Color}
        */
       this._color = options.color || DEFAULT_COLOR;
-      this.__defineGetter__('color', function() {
-        return this._color;
-      });
-      this.__defineSetter__('color', function(color) {
-        this._color = color.toString();
+      Object.defineProperty(this, 'color', {
+        get: function () {
+          return this._color;
+        },
+        set: function (color) {
+          this._color = color.toString();
+        },
+        configurable: true
       });
 
       // this.__defineGetter__('width', function () {
@@ -3119,15 +3181,18 @@
        * @attribute data
        * @type {Array}
        */
-      this.__defineSetter__('data', function(data) {
-        this._data = data;
+      Object.defineProperty(this, 'data', {
+        get: function () {
+          return this._data;
+        },
+        set: function (data) {
+          this._data = data;
 
-        if (this.collider == this || this.collider instanceof J.TilemapCollider) {
-          this.collider = new J.TilemapCollider(this);
-        }
-      });
-      this.__defineGetter__('data', function() {
-        return this._data;
+          if (this.collider == this || this.collider instanceof J.TilemapCollider) {
+            this.collider = new J.TilemapCollider(this);
+          }
+        },
+        configurable: true
       });
       this.data = options.data;
 
@@ -3136,8 +3201,11 @@
        * @readonly
        * @type {Number}
        */
-      this.__defineGetter__('height', function () {
-        return this.lines * this.tileset.tileHeight;
+      Object.defineProperty(this, 'height', {
+        get: function () {
+          return this.lines * this.tileset.tileHeight;
+        },
+        configurable: true
       });
 
       /**
@@ -3145,8 +3213,11 @@
        * @readonly
        * @type {Number}
        */
-      this.__defineGetter__('width', function () {
-        return this.columns * this.tileset.tileWidth;
+      Object.defineProperty(this, 'width', {
+        get: function () {
+          return this.columns * this.tileset.tileWidth;
+        },
+        configurable: true
       });
 
       // Propagate ADDED event to tileset.
@@ -3415,11 +3486,18 @@
       this.radius = options.radius || 1;
       this.color = options.color || "#000";
 
-      this.__defineGetter__('width', function () {
-        return this.radius * 2 * this.scale.x;
+      Object.defineProperty(this, 'width', {
+        get: function () {
+          return this.radius * 2 * this.scale.x;
+        },
+        configurable: true
       });
-      this.__defineGetter__('height', function () {
-        return this.radius * 2 * this.scale.y;
+
+      Object.defineProperty(this, 'height', {
+        get: function () {
+          return this.radius * 2 * this.scale.y;
+        },
+        configurable: true
       });
     },
 
@@ -5219,13 +5297,16 @@ TWEEN.Interpolation = {
       this.maxVelocity = new J.Vector2d(500, 500);
 
       /**
-       * Normalized velocity vector, with values between -1 and 1.
+       * Normalized velocity vector, with x/y values between -1 and 1.
        * @attribute direction
        * @type {Vector2d}
        * @readonly
        */
-      this.__defineGetter__('direction', function () {
-        return this.velocity.normalized;
+      Object.defineProperty(this, 'direction', {
+        get: function () {
+          return this.velocity.normalized;
+        },
+        configurable: true
       });
 
       /**
@@ -6662,4 +6743,4 @@ TWEEN.Interpolation = {
   });
 
   //J.Transition.
-})(Joy)
+})(Joy);

@@ -6,6 +6,8 @@
     Engine#sceneLoader
   - Fixed Scene#background(color) method, when scene has no child.
   - Omit 'new' when creating Tween instances.
+  - Use Object.defineProperty instead of __defineGetter__ / __defineSetter__ for
+    IE9+ support.
 
 
 0.1.0
