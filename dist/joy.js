@@ -339,8 +339,6 @@
         this._currentSceneIndex = this.scenes.indexOf(scene);
         scene.visible = true;
 
-        console.log("Broadcast scene active!!");
-
         // Trigger scene active event
         scene.broadcast(J.Events.SCENE_ACTIVE, [scene]);
       }
@@ -1566,7 +1564,7 @@
       y: engine.height / 2,
       text: "0%",
       align: "center",
-      font: "30pt Merienda",
+      font: "30pt Courier New, monospace",
       color: "#fff",
       alpha: 0,
       baseline: Joy.Text.BASELINE.MIDDLE
