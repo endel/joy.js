@@ -2,7 +2,8 @@
 ===
 
   - Added Joy.Loader class, which triggers `loadStart` / `loadProgress` / `loadEnd` events.
-  - Added Scene#load(fn) method, to create a preloading scene.
+  - Refactor on Engine#currentScene getter/setter to handle with
+    Engine#sceneLoader
   - Fixed Scene#background(color) method, when scene has no child.
   - Omit 'new' when creating Tween instances.
 
