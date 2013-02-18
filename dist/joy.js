@@ -334,9 +334,13 @@
         scene.loader.bind('loadComplete', function() {
           J.currentEngine.gotoScene(scene);
         });
+
       } else {
         this._currentSceneIndex = this.scenes.indexOf(scene);
         scene.visible = true;
+
+        console.log("Broadcast scene active!!");
+
         // Trigger scene active event
         scene.broadcast(J.Events.SCENE_ACTIVE, [scene]);
       }
@@ -2563,9 +2567,9 @@
       }
     },
 
-    broadcast: function (type, args, delay) {
-      this.viewport.broadcast(type, args, delay);
-      this._super();
+    broadcast: function (type, args) {
+      this.viewport.broadcast(type, args);
+      this._super(type, args);
     },
 
     /**
@@ -3305,7 +3309,6 @@
 
       // Set viewport size when scene is active.
       this.bind(J.Events.SCENE_ACTIVE, function () {
-        console.log("VIEWPORT scene active")
         if (this.width && this.height) {
           this.setSize(this.width, this.height);
         }
