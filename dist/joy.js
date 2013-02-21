@@ -4,7 +4,7 @@
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 2/17/2013
+ * @build 2/21/2013
  */
 
 (function(global) {
@@ -2376,7 +2376,7 @@
      * @return {DisplayObjectContainer} this
      */
     removeChildAt: function(index) {
-      var displayObject = this.children.splice(index, index+1)[0];
+      var displayObject = this.children.splice(index, 1)[0];
 
       // Trigger REMOVED event on target DisplayObject.
       displayObject.trigger(J.Events.REMOVED, [this]);
