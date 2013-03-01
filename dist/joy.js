@@ -4,7 +4,7 @@
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 2/21/2013
+ * @build 3/1/2013
  */
 
 (function(global) {
@@ -579,7 +579,8 @@
  *
  */
 // Inspired by base2 and Prototype
-/*jshint immed:true loopfunc:true*/
+
+/*jshint loopfunc:true*/
 (function(J){
   var initializing = false, fnTest = /xyz/.test(function(){'xyz';}) ? /\b_super\b/ : /.*/;
 
@@ -641,7 +642,7 @@
 
   Joy.Object = Class;
 })(Joy);
-/*jshint immed:false loopfunc:false*/
+/*jshint loopfunc:false*/
 
 /**
  * @module Joy
@@ -2790,6 +2791,83 @@
  */
 (function(J) {
   /**
+   * This class is used on SpriteSheet's `animations` attribute.
+   *
+   * @class SpriteAnimation
+   * @constructor
+   */
+  var SpriteAnimation = function (options) {
+    /**
+     * @attribute parent
+     * @type {SpriteSheet}
+     */
+    this.parent = options.parent;
+
+    /**
+     * @attribute name
+     * @type {String}
+     */
+    this.name = options.name;
+
+    /**
+     * @attribute framesPerSecond
+     * @type {Number}
+     */
+    this.framesPerSecond = options.framesPerSecond;
+
+    /**
+     * @attribute frames
+     * @type {Array}
+     */
+    this.frames = options.frames;
+
+    /**
+     * @attribute firstFrame
+     * @type {Number}
+     */
+    this.firstFrame = this.frames[0];
+
+    /**
+     * @attribute lastFrame
+     * @type {Number}
+     */
+    this.lastFrame = lastFrame = this.frames[1] || this.frames[0];
+
+    /**
+     * @attribute currentFrame
+     * @type {Number}
+     */
+    this.currentFrame = 0;
+  };
+
+  SpriteAnimation.prototype.start = function () {
+    this.currentFrame = this.firstFrame;
+  }
+
+  SpriteAnimation.prototype.update = function () {
+    if (this.currentFrame == this.lastFrame) {
+      this.currentFrame = this.firstFrame;
+
+      // Reached the first frame, trigger animation start callback.
+      this.parent.trigger('animationStart');
+    } else {
+      this.currentFrame = this.currentFrame + 1;
+
+      // Reached the last frame, trigger animation end callback.
+      if (this.currentFrame == this.lastFrame) {
+        this.parent.trigger('animationEnd');
+      }
+    }
+  };
+
+  J.SpriteAnimation = SpriteAnimation;
+})(Joy);
+
+/**
+ * @module Joy
+ */
+(function(J) {
+  /**
    * Handles spritesheet animations
    *
    * @class SpriteSheet
@@ -2800,20 +2878,13 @@
    */
   var SpriteSheet = J.Sprite.extend({
     init: function (options) {
-      var self = this;
       this._super(options);
 
-      this._animations = {length: 0};
+      this.animations = { length: 0 };
       this._frequencyInterval = null;
 
       // Frames
       this.frames = 1;
-
-      /**
-       * @attribute currentFrame
-       * @type {Number}
-       */
-      this.currentFrame = 0;
 
       /**
        * Frames per second.
@@ -2823,15 +2894,15 @@
        */
       this.framesPerSecond = options.framesPerSecond || options.fps || 24;
 
+      // Define animations
       if (options.animations) {
         for (var name in options.animations) {
-          if (options.animations[name] instanceof Array) {
-            this.addAnimation(name, options.animations[name]);
-          }
+          this.addAnimation(name, options.animations[name]);
         }
       }
 
       /**
+       * Current running animation name
        * @attribute currentAnimation
        * @type {String}
        * @readonly
@@ -2847,46 +2918,42 @@
       });
 
       // Create the interval to change through frames
+      var self = this;
       this._frequencyInterval = setInterval(function(){ self.update(); }, 1000 / this.framesPerSecond);
     },
 
     update: function() {
-      var currentAnimation = this._animations[this.currentAnimation];
+      var currentAnimation = this.animations[this.currentAnimation];
 
       // Skip if currentAnimation is not defined
       if (typeof(currentAnimation)==="undefined") { return; }
 
-      if (this.currentFrame == currentAnimation.lastFrame) {
-        this.currentFrame = currentAnimation.firstFrame;
-
-        // Reached the first frame, trigger animation start callback.
-        this.trigger('animationStart');
-      } else {
-        this.currentFrame = this.currentFrame + 1;
-
-        // Reached the last frame, trigger animation end callback.
-        if (this.currentFrame == currentAnimation.lastFrame) {
-          this.trigger('animationEnd');
-        }
-      }
+      currentAnimation.update();
     },
 
     /**
      * Add animation to sprite sheet.
      * @param {String} name
-     * @param {Array} frames
+     * @param {Object, Array} data list of frame numbers or options object
+     *   @param {Array} [options.frames] frame indexes
+     *   @param {Number} [options.framesPerSecond]
      *
      * @example
      *  spriteSheet.addAnimation("walking", [0, 32]);
+     *  spriteSheet.addAnimation("walking", {frames: [0, 32], framesPerSecond: 2});
      *
      * @return {SpriteSheet} this
      */
-    addAnimation: function (name, frames) {
-      var firstFrame = frames[0], lastFrame = frames[1] || frames[0];
-      this._animations[name] = {firstFrame: firstFrame, lastFrame: lastFrame};
+    addAnimation: function (name, data) {
+      this.animations[name] = new J.SpriteAnimation({
+        parent: this,
+        name: name,
+        frames: (data instanceof Array) ? data : data.frames,
+        framesPerSecond: data.framesPerSecond || this.framesPerSecond
+      });
 
       // Increase animations set length;
-      this._animations.length = (this._animations.length || 0) + 1;
+      this.animations.length = (this.animations.length || 0) + 1;
 
       return this;
     },
@@ -2903,7 +2970,7 @@
         totalFrames = totalFrames * (this._rows = Math.ceil(this.image.height / this._height));
       }
 
-      if (this._animations.length === 0 || this.currentAnimation === null) {
+      if (this.animations.length === 0 || this.currentAnimation === null) {
         this.addAnimation('default', [0, totalFrames-1]);
         this.play('default');
       }
@@ -2917,10 +2984,10 @@
     play: function (animationName) {
       if (this.currentAnimation != animationName) {
         this.currentAnimation = animationName;
-        if (!this._animations[animationName]) {
+        if (!this.animations[animationName]) {
           throw new Error("Animation '" + animationName + "' not found on '" + this.id + "'");
         }
-        this.currentFrame = this._animations[animationName].firstFrame;
+        this.animations[animationName].start();
       }
       return this;
     },
@@ -2938,8 +3005,8 @@
       if (!this.visible) { return; }
 
       this.ctx.drawImage(this.image,
-                         this._width * (this.currentFrame % this._columns),
-                         this._height * ((this.currentFrame / this._columns) >> 0),
+                         this._width * (this.animations[this.currentAnimation].currentFrame % this._columns),
+                         this._height * ((this.animations[this.currentAnimation].currentFrame / this._columns) >> 0),
                          this._width,
                          this._height,
                          0,
