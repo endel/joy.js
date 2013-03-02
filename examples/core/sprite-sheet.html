@@ -20,10 +20,10 @@
                 width: 120,
                 height: 120,
                 animations: {
-                  "walking": { frames: [0, 30], framesPerSecond: 24 },
-                  "idle": { frames: [31, 39] },
+                  "walking": { frames: [0, 30], framesPerSecond: 32 },
+                  "idle": { frames: [31, 39], framesPerSecond: 12 },
                   "jumping": [40, 59],
-                  "falling": [60, 67],
+                  "falling": {frames: [60, 67], framesPerSecond: 12 },
                 }
               });
               rufus.bind('load', function() {

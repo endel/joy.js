@@ -2840,10 +2840,33 @@
     this.currentFrame = 0;
   };
 
+  /**
+   * Start the animation
+   * @method start
+   */
   SpriteAnimation.prototype.start = function () {
     this.currentFrame = this.firstFrame;
-  }
 
+    // Create the interval to change through frames
+    var self = this;
+    this._interval = setInterval(function(){ self.update(); }, 1000 / this.framesPerSecond);
+  };
+
+  /**
+   * Stops the animation
+   * @method stop
+   */
+  SpriteAnimation.prototype.stop = function () {
+    if (this._interval) {
+      clearInterval(this._interval);
+    }
+    return this;
+  };
+
+  /**
+   * Update frame animation
+   * @method update
+   */
   SpriteAnimation.prototype.update = function () {
     if (this.currentFrame == this.lastFrame) {
       this.currentFrame = this.firstFrame;
@@ -2903,11 +2926,11 @@
 
       /**
        * Current running animation name
-       * @attribute currentAnimation
+       * @attribute currentAnimationName
        * @type {String}
        * @readonly
        */
-      this.currentAnimation = null;
+      this.currentAnimationName = 'all';
 
       // framesPerSecond alias
       Object.defineProperty(this, 'fps', {
@@ -2917,18 +2940,18 @@
         configurable: true
       });
 
-      // Create the interval to change through frames
-      var self = this;
-      this._frequencyInterval = setInterval(function(){ self.update(); }, 1000 / this.framesPerSecond);
-    },
+      /**
+       * @attribute currentAnimation
+       * @type {SpriteAnimation}
+       * @readonly
+       */
+      Object.defineProperty(this, 'currentAnimation', {
+        get: function () {
+          return this.animations[this.currentAnimationName];
+        },
+        configurable: true
+      });
 
-    update: function() {
-      var currentAnimation = this.animations[this.currentAnimation];
-
-      // Skip if currentAnimation is not defined
-      if (typeof(currentAnimation)==="undefined") { return; }
-
-      currentAnimation.update();
     },
 
     /**
@@ -2970,9 +2993,10 @@
         totalFrames = totalFrames * (this._rows = Math.ceil(this.image.height / this._height));
       }
 
+      this.addAnimation('all', [0, totalFrames-1]);
+
       if (this.animations.length === 0 || this.currentAnimation === null) {
-        this.addAnimation('default', [0, totalFrames-1]);
-        this.play('default');
+        this.play('all');
       }
     },
 
@@ -2982,11 +3006,19 @@
      * @return {SpriteSheet} this
      */
     play: function (animationName) {
-      if (this.currentAnimation != animationName) {
-        this.currentAnimation = animationName;
+      if (this.currentAnimationName != animationName) {
+        // Stop previous animation
+        if (this.currentAnimation) {
+          this.currentAnimation.stop();
+        }
+
+        this.currentAnimationName = animationName;
+
+        // Throw error when requested animation doesn't exists.
         if (!this.animations[animationName]) {
           throw new Error("Animation '" + animationName + "' not found on '" + this.id + "'");
         }
+
         this.animations[animationName].start();
       }
       return this;
@@ -2998,15 +3030,15 @@
      * @return {SpriteSheet} this
      */
     stop: function () {
-      clearInterval(this._frequencyInterval);
+      this.currentAnimation.stop();
     },
 
     render: function() {
       if (!this.visible) { return; }
 
       this.ctx.drawImage(this.image,
-                         this._width * (this.animations[this.currentAnimation].currentFrame % this._columns),
-                         this._height * ((this.animations[this.currentAnimation].currentFrame / this._columns) >> 0),
+                         this._width * (this.currentAnimation.currentFrame % this._columns),
+                         this._height * ((this.currentAnimation.currentFrame / this._columns) >> 0),
                          this._width,
                          this._height,
                          0,
