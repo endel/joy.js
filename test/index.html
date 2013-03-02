@@ -6,10 +6,21 @@
 
   <title>Joy.js Test Suite</title>
   <link rel="Stylesheet" media="screen" href="../node_modules/qunitjs/qunit/qunit.css" />
-  <!-- Includes -->
 
+  <!-- Includes -->
   <script type="text/javascript" src="../node_modules/qunitjs/qunit/qunit.js"></script>
-  <script type="text/javascript" src="../dist/sizzle.js"></script>
+
+  <script type="text/javascript" src="unit/joy.js"></script>
+  <script type="text/javascript" src="unit/display_object.js"></script>
+  <script type="text/javascript" src="unit/display_object_container.js"></script>
+  <script type="text/javascript" src="unit/sprite.js"></script>
+  <script type="text/javascript" src="unit/sprite_sheet.js"></script>
+  <script type="text/javascript" src="unit/text.js"></script>
+  <script type="text/javascript" src="unit/markup.js"></script>
+  <script type="text/javascript" src="unit/behaviour/triggers.js"></script>
+  <script type="text/javascript" src="unit/tilemap.js"></script>
+  <script type="text/javascript" src="unit/util/color.js"></script>
+  <script type="text/javascript" src="unit/util/math.js"></script>
 
   <script type="text/javascript">
     // Fake audio class
@@ -48,52 +59,17 @@
       QUnit.config.urlConfig.push({
         id: "min",
         label: "Load minified",
-        tooltip: "Load the minified version of the jQuery build"
+        tooltip: "Load the minified build version"
       });
       if ( QUnit.urlParams.min ) {
         src = "../dist/joy.min.js";
       }
 
-      // Config parameter to force basic code paths
-      QUnit.config.urlConfig.push({
-        id: "basic",
-        label: "Bypass optimizations",
-        tooltip: "Force use of the most basic code by disabling native querySelectorAll; contains; compareDocumentPosition"
-      });
-      if ( QUnit.urlParams.basic ) {
-        document.querySelectorAll = null;
-        document.documentElement.contains = null;
-        document.documentElement.compareDocumentPosition = null;
-      }
-
-      // Load jQuery
+      // load engine
       document.write( "<script src='" + src + "'><\/script>" );
-      QUnit.start();
     })();
   </script>
 
-  <script src="unit/joy.js"></script>
-  <script src="unit/display_object.js"></script>
-  <script src="unit/display_object_container.js"></script>
-  <script src="unit/sprite.js"></script>
-  <script src="unit/sprite_sheet.js"></script>
-  <script src="unit/text.js"></script>
-  <script src="unit/markup.js"></script>
-  <script src="unit/behaviour/triggers.js"></script>
-  <script src="unit/modules/tilemap.js"></script>
-  <script src="unit/util/color.js"></script>
-  <script src="unit/util/math.js"></script>
-
-  <!--
-  <script>
-  // html5shiv, enabling HTML5 elements to be used with jQuery
-  ( "abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup " +
-   "mark meter nav output progress section summary time video"
-  ).replace(/\w+/g, function(n) {
-    document.createElement(n);
-  });
-  </script>
-  -->
 </head>
 
 <body id="body">
