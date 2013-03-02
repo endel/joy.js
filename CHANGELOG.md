@@ -1,3 +1,9 @@
+0.1.2.dev (not released)
+===
+
+  - Added `Joy.SpriteAnimation` class, allowing to define `framesPerSecond`
+    attribute for each `SpriteSheet`'s animation set.
+
 0.1.1
 ===
 
