@@ -4,7 +4,7 @@
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 3/1/2013
+ * @build 3/14/2013
  */
 
 (function(global) {
@@ -291,11 +291,6 @@
     if (typeof(J.Mouse) !== "undefined") {
       J.Mouse.enable(this);
     }
-
-    if (options.markup) {
-      this.useMarkup();
-    }
-
     if (options.debug) {
       Joy.debug = true;
     }
@@ -361,6 +356,10 @@
      */
     this.sceneLoader = null;
     this.setSceneLoader(J.Engine.defaultSceneLoader);
+
+    if (options.markup) {
+      this.markup = new J.Markup(this).parse();
+    }
 
     // requestAnimationFrame
     if (Joy.debug) {
@@ -527,11 +526,6 @@
 
   Engine.prototype.render = function() {
     this.context.render(this.scenes);
-  };
-
-  Engine.prototype.useMarkup = function() {
-    var markup = new J.Markup();
-    markup.analyse(this.context);
   };
 
   /**
@@ -5617,61 +5611,107 @@ TWEEN.Interpolation = {
  */
 
 (function(J){
-  // Use Sizzle as CSS Selector Engine.
-  var $ = (typeof(Sizzle) !== "undefined") ? Sizzle : null;
-
   /**
    * Analyses HTML `canvas` tag contents, and add those childs
    * to Joy contexting pipeline.
    *
    * TODO: This feature is extremely experimental.
    *
-   * Dependency: Sizzle
-   *
    * class Markup
    * constructor
    */
-  var Markup = function() {};
+  var Markup = function(engine) {
+    this.engine = engine;
+    this.canvas = engine.context.canvas;
 
-  Markup.prototype.analyse = function(context) {
-    var i, length, dataset;
+    /**
+     * Hold element parsers by tag name.
+     * By default, it handles IMG, LABEL, AUDIO
+     *
+     * @property parsers
+     * @type {Object}
+     */
+    this.parsers = {
+      IMG: function (element) {
+        console.log("IMG dataset: ", this.evaluateDataset(element));
+        return new J.Sprite(this.evaluateDataset(element));
+      },
+      LABEL: function (element) {
+        var dataset = this.evaluateDataset(element);
+        dataset.text = element.innerHTML;
+        return new J.Text(dataset);
+      },
+      AUDIO: function (element) {
+      }
+    };
 
-    // Sprite
-    var imgs = $('img', context.canvas);
-    length = imgs.length;
-    for (i=0; i<length; ++i) {
-      dataset = this.evaluateDataset.call(imgs[i], imgs[i].dataset, context.context);
-      context.addChild(new J.Sprite({
-        x: imgs[i].dataset.x,
-        y: imgs[i].dataset.y,
-        asset: imgs[i]
-      }));
+  };
+
+  Markup.prototype.parse = function(section) {
+    var sections = this.canvas.querySelectorAll('section');
+
+    if (sections.length === 0) {
+      sections = [this.canvas];
     }
 
-    // Text
-    var labels = $('label', context.canvas);
-    length = labels.length;
-    for (i=0; i<length; ++i) {
-      dataset = this.evaluateDataset(labels[i].dataset, context.context);
-      dataset.text = labels[i].innerHTML;
-      context.addChild(new J.Text(dataset));
+    for (var i=0;i<sections.length;i++) {
+      this.createScene(sections[i]);
     }
   };
 
-  Markup.prototype.evaluateDataset = function(dataset, context) {
-    var attr, matches,
-        width = context.canvas.width,
-        height = context.canvas.height;
+  Markup.prototype.createScene = function(section) {
+    var i, length,
+        children = [];
 
-    for (var key in dataset) {
-      attr = dataset[key];
-      matches = attr.match(/\{\{([^\}]*)\}\}/);
-      if (matches) {
-        // Replace expression by the evaluation of it.
-        dataset[key] = attr.replace(attr, eval(matches[1]));
+    var elements = section.querySelectorAll('*');
+    for (i=0, length=elements.length;i<length; ++i) {
+      if (this.parsers[elements[i].tagName]) {
+        var element = this.parsers[elements[i].tagName].apply(this, [elements[i]]);
+        console.log(element);
+        children.push(element);
       }
     }
-    return dataset;
+
+    // Create scene on engine and append all children parsed
+    this.engine.createScene(function(scene) {
+      for (i=0,length=children.length; i<length; ++i) {
+        scene.addChild(children[i]);
+      }
+    });
+  };
+
+  Markup.prototype.evaluateDataset = function(element) {
+    var value, matches, attr, attributeName,
+        attributes = element.attributes,
+        width = this.canvas.width,
+        height = this.canvas.height,
+        obj = {};
+
+    for (var key in attributes) {
+      attr = attributes[key];
+
+      // Skip "length" attribute
+      if (typeof(attr)!=="object") {
+        continue;
+      }
+
+      value = attr.value;
+      attributeName = attr.name;
+
+      if (attributeName.indexOf('data-') === 0) {
+        attributeName = attributeName.substr(5, attributeName.length);
+      }
+
+      matches = attr.value.match(/\{\{([^\}]*)\}\}/);
+      if (matches) {
+        // Replace expression by the evaluation of it.
+        value = value.replace(value, eval(matches[1]));
+      }
+
+      obj[attributeName] = value;
+    }
+
+    return obj;
   };
 
   J.Markup = Markup;
@@ -5691,7 +5731,6 @@ TWEEN.Interpolation = {
   var Package = function() {};
   J.Package = Package;
 })(Joy);
-
 
 /**
  * @module Joy
