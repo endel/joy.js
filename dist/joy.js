@@ -4,7 +4,7 @@
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 3/14/2013
+ * @build 3/28/2013
  */
 
 (function(global) {
@@ -245,6 +245,7 @@
    * Engine context. Start your application from here.
    *
    * @class Engine
+   * @param {CanvasElement | Object} options
    * @constructor
    */
   var Engine = function(options) {
@@ -257,12 +258,17 @@
      */
     this.paused = false;
 
-    if (options.canvas2d) {
-      this.context = new Joy.Context.Context2d({canvas: options.canvas2d});
+    if (typeof(options.tagName) === "string" && options.tagName === "CANVAS") {
+      options = {canvas: options};
+      var dataset = Joy.Markup.evaluateDataset(options.canvas);
+      for (var attr in dataset) {
+        options[attr] = dataset[attr];
+      }
+      console.log("Options! ", options);
     }
 
-    if (options.canvas3d) {
-      // OMG, there is no 3d yet (and shouldn't for long time...)
+    if (options.canvas) {
+      this.context = new Joy.Context.Context2d({canvas: options.canvas});
     }
 
     // Create canvas and context, if it isn't set.
@@ -285,6 +291,19 @@
     // 2 on Retina Display
     this.context.canvas.style.width = (this.context.canvas.width / window.devicePixelRatio) + "px";
     this.context.canvas.style.height = (this.context.canvas.height / window.devicePixelRatio) + "px";
+
+    if (options.fullscreen) {
+      window.onresize = function (e) {
+        J.currentEngine.context.canvas.width = e.currentTarget.innerWidth;
+        J.currentEngine.context.canvas.height = e.currentTarget.innerHeight;
+
+        J.currentEngine.context.canvas.style.width = (J.currentEngine.context.canvas.width / window.devicePixelRatio) + "px";
+        J.currentEngine.context.canvas.style.height = (J.currentEngine.context.canvas.height / window.devicePixelRatio) + "px";
+
+        J.currentEngine.currentScene.width = J.currentEngine.context.canvas.width;
+        J.currentEngine.currentScene.height = J.currentEngine.context.canvas.height;
+      };
+    }
 
     // TODO: Implement on-init engine trigger
     // Enable mouse events, if module is included
@@ -357,7 +376,8 @@
     this.sceneLoader = null;
     this.setSceneLoader(J.Engine.defaultSceneLoader);
 
-    if (options.markup) {
+    // Parse <canvas> markup when it's not empty
+    if (this.context.canvas.children.length > 0) {
       this.markup = new J.Markup(this).parse();
     }
 
@@ -490,7 +510,7 @@
 
   /**
    * @method gotoScene
-   * @param {Scene} scene
+   * @param {Scene | String} scene reference or scene id
    * @param {Number} fadeMilliseconds (default=1000)
    * @param {String | Color} color (default=#000)
    * @return {Engine} this
@@ -5632,16 +5652,26 @@ TWEEN.Interpolation = {
      * @type {Object}
      */
     this.parsers = {
-      IMG: function (element) {
-        console.log("IMG dataset: ", this.evaluateDataset(element));
-        return new J.Sprite(this.evaluateDataset(element));
+      IMG: function (el, dataset) {
+        return new J.Sprite(dataset);
       },
-      LABEL: function (element) {
-        var dataset = this.evaluateDataset(element);
-        dataset.text = element.innerHTML;
+
+      LABEL: function (el, dataset) {
+        dataset.text = el.innerHTML;
         return new J.Text(dataset);
       },
-      AUDIO: function (element) {
+
+      DIV: function (el, dataset) {
+        var displayObject = new J.DisplayObjectContainer(dataset);
+        var children = el.querySelector('*');
+        for (var i = 0, l = children.length; i < l; i ++) {
+          displayObject.addChild( this.parsers[ children[i].tagName ].apply(this, [children[i], Markup.evaluateDataset(children[i])]) );
+        }
+        return displayObject;
+      },
+
+      AUDIO: function (el, dataset) {
+        var audio = new J.Sound({});
       }
     };
 
@@ -5666,25 +5696,35 @@ TWEEN.Interpolation = {
     var elements = section.querySelectorAll('*');
     for (i=0, length=elements.length;i<length; ++i) {
       if (this.parsers[elements[i].tagName]) {
-        var element = this.parsers[elements[i].tagName].apply(this, [elements[i]]);
-        console.log(element);
-        children.push(element);
+        var el = this.parsers[elements[i].tagName].apply(this, [elements[i], Markup.evaluateDataset(elements[i])]);
+        children.push(el);
       }
     }
 
     // Create scene on engine and append all children parsed
+    var dataset = Markup.evaluateDataset(section);
     this.engine.createScene(function(scene) {
+      // Expand dataset to call methods / assign properties
+      for (var attr in dataset) {
+        console.log(attr, dataset[attr]);
+        if (typeof(scene[attr])==="function") {
+          scene[attr](dataset[attr]);
+        } else {
+          scene[attr] = dataset[attr];
+        }
+      }
+
       for (i=0,length=children.length; i<length; ++i) {
         scene.addChild(children[i]);
       }
     });
   };
 
-  Markup.prototype.evaluateDataset = function(element) {
+  Markup.evaluateDataset = function(el) {
     var value, matches, attr, attributeName,
-        attributes = element.attributes,
-        width = this.canvas.width,
-        height = this.canvas.height,
+        attributes = el.attributes,
+        //width = this.canvas.width,
+        //height = this.canvas.height,
         obj = {};
 
     for (var key in attributes) {
@@ -5695,7 +5735,7 @@ TWEEN.Interpolation = {
         continue;
       }
 
-      value = attr.value;
+      value = (attr.value === '') ? true : attr.value;
       attributeName = attr.name;
 
       if (attributeName.indexOf('data-') === 0) {
@@ -6874,11 +6914,4 @@ TWEEN.Interpolation = {
   J.Events.TOUCH_END = 'touchend';
 
   J.Touch = Touch;
-})(Joy);
-
-(function (J) {
-  J.Transition = J.Object.extend({
-  });
-
-  //J.Transition.
 })(Joy);
