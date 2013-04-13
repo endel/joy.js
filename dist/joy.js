@@ -1035,6 +1035,38 @@
  */
 (function(J){
   /**
+   * @class Range
+   * @constructor
+   * @param {Number} min
+   * @param {Number} max
+   */
+  var Range = function(min, max) {
+    if (typeof(min)==="object") {
+      min = min.min;
+      max = min.max;
+    }
+
+    this.min = min || 0;
+    this.max = max || this.min || 0;
+  };
+
+  /**
+   * Get a random value between this range.
+   * @method random
+   * @return {Number}
+   */
+  Range.prototype.random = function () {
+    return this.min + (Math.random() * (this.max - this.min));
+  };
+
+  J.Range = Range;
+})(Joy);
+
+/**
+ * @module Joy
+ */
+(function(J){
+  /**
    * @class Vector2d
    * @constructor
    * @param {Number} x
@@ -6859,30 +6891,45 @@ TWEEN.Interpolation = {
      */
     init: function (options) {
       /**
-       * @property position
-       * @type {Vector2d}
+       * Emit new particles each frame?
+       * @property emit
+       * @type {Boolean}
        */
-      this.position = options.position || new J.Vector2d(options.x, options.y);
+      this.emit = (typeof(options.active)==="undefined") ? true : options.emit;
 
       /**
-       * @property scale
-       * @type {Vector2d}
+       * Active particles list.
+       * @property particles
+       * @type Array
        */
-      this.scale = options.scale || new Vector2d(1, 1);
+      this.particles = [];
 
       /**
        * Particle variations to emitt.
        * @property particles
        * @type {Array}
        */
-      this.particles = (typeof(options.particle)!=="undefined") ? [options.particle] : options.particles;
+      this.sources = (typeof(options.source)!=="undefined") ? [options.source] : options.sources;
 
       /**
-       * Particles time to live. In seconds.
+       * The minimum number of particles that will be spawned every second.
+       * @property min
+       * @type {Number}
+       */
+      this.emission = (typeof(options.emission)!=="undefined") ? new J.Range(options.emission) : new J.Range(1, 5);
+
+      /**
+       * Enerty
        * @property ttl
        * @type {Number}
        */
-      this.ttl = options.ttl || 1;
+      this.energy = (typeof(options.energy)!=="undefined") ? new J.Range(options.energy) : new J.Range(1, 2);
+
+      /**
+       * @property position
+       * @type {Vector2d}
+       */
+      this.position = options.position || new J.Vector2d(options.x, options.y);
 
       // position         The position of the particle.
       // velocity         The velocity of the particle.
@@ -6897,8 +6944,17 @@ TWEEN.Interpolation = {
       this._super(options);
     },
 
-    render: function () {
+    emit: function (numberOfParticles) {
 
+    },
+
+    clear: function () {
+      this.particles = [];
+    },
+
+    render: function () {
+      if (this.emit) {
+      }
     }
   });
 
@@ -6921,5 +6977,4 @@ TWEEN.Interpolation = {
 
   J.Particle = Particle;
 })(Joy);
-
 
