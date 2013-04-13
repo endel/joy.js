@@ -4,7 +4,7 @@
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 3/14/2013
+ * @build 4/12/2013
  */
 
 (function(global) {
@@ -2487,35 +2487,6 @@
   });
 
   J.Parallax = Parallax;
-})(Joy);
-
-/**
- * TODO:
- * module Joy
- */
-(function(J) {
-  var ParticleEmitter = J.DisplayObject.extend({
-    /**
-     * class ParticleEmitter
-     * constructor
-     * param {Object} options
-     */
-    init: function (options) {
-
-      // position         The position of the particle.
-      // velocity         The velocity of the particle.
-      // energy           The energy of the particle.
-      // startEnergy      The starting energy of the particle.
-      // size             The size of the particle.
-      // rotation         The rotation of the particle.
-      // angularVelocity  The angular velocity of the particle.
-      // color            The color of the particle.
-
-      this._super(options);
-    }
-  });
-
-  J.ParticleEmitter = ParticleEmitter;
 })(Joy);
 
 /**
@@ -6876,9 +6847,79 @@ TWEEN.Interpolation = {
   J.Touch = Touch;
 })(Joy);
 
-(function (J) {
-  J.Transition = J.Object.extend({
+/**
+ * module Joy
+ */
+(function(J) {
+  var ParticleEmitter = J.DisplayObject.extend({;
+    /**
+     * class ParticleEmitter
+     * constructor
+     * param {Object} options
+     */
+    init: function (options) {
+      /**
+       * @property position
+       * @type {Vector2d}
+       */
+      this.position = options.position || new J.Vector2d(options.x, options.y);
+
+      /**
+       * @property scale
+       * @type {Vector2d}
+       */
+      this.scale = options.scale || new Vector2d(1, 1);
+
+      /**
+       * Particle variations to emitt.
+       * @property particles
+       * @type {Array}
+       */
+      this.particles = (typeof(options.particle)!=="undefined") ? [options.particle] : options.particles;
+
+      /**
+       * Particles time to live. In seconds.
+       * @property ttl
+       * @type {Number}
+       */
+      this.ttl = options.ttl || 1;
+
+      // position         The position of the particle.
+      // velocity         The velocity of the particle.
+      // energy           The energy of the particle.
+      // startEnergy      The starting energy of the particle.
+      // size             The size of the particle.
+      // rotation         The rotation of the particle.
+      // angularVelocity  The angular velocity of the particle.
+
+      // color            The color of the particle.
+
+      this._super(options);
+    },
+
+    render: function () {
+
+    }
   });
 
-  //J.Transition.
+  J.ParticleEmitter = ParticleEmitter;
 })(Joy);
+
+/**
+ * module Joy
+ */
+(function(J) {
+  var Particle = J.DisplayObject.extend({;
+    /**
+     * class Particle
+     * constructor
+     * param {Object} options
+     */
+    init: function (options) {
+    }
+  });
+
+  J.Particle = Particle;
+})(Joy);
+
+
