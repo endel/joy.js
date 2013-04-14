@@ -17,31 +17,88 @@
             engine.createScene(function (scene) {
               scene.background("#BFE5E5");
 
+
               var emitter = new Joy.ParticleEmitter({
                 emission: {min: 10, max: 50},
                 lifetime: 5,
-                particleLifetime: {min: 1, max: 2},
+                particleLifetime: {min: 5, max: 10},
                 position: new Joy.Vector2d(500, 500),
                 sources: [
                   new Joy.Sprite("../shared-assets/particles/red-sphere.png"),
                   new Joy.Sprite("../shared-assets/particles/yellow-sphere.png"),
                 ],
                 start: {
-                  x: {min: "-5", max: "+5"},
-                  y: {min: "-5", max: "+5"},
                   alpha: 1,
                   scale: {min: 0.1, max: 0.3}
                 },
                 end: {
-                  y: {min: "-25", max: "-20"},
+                  position: {
+                    y: {min: "-100", max: "-150"},
+                    x: {min: "-10", max: "+10"}
+                  },
                   alpha: 0,
-                  scale: {min: 0.1, max: 0.3}
+                  scale: {
+                    x: {min: 2, max: 2},
+                    y: {min: 2, max: 2}
+                  }
                 }
               });
-
               scene.addChild(emitter);
+
+              var emitter2 = new Joy.ParticleEmitter({
+                emission: {min: 10, max: 50},
+                particleLifetime: {min: 5, max: 10},
+                position: new Joy.Vector2d(200, 200),
+                sources: [
+                  new Joy.Sprite("../shared-assets/particles/green-star.png"),
+                  new Joy.Sprite("../shared-assets/particles/yellow-star.png"),
+                ],
+                ease: Joy.TweenManager.Easing.Sinusoidal.Out,
+                start: {
+                  alpha: 1,
+                  scale: {min: 0.1, max: 0.2}
+                },
+                end: {
+                  position: {
+                    y: {min: "-100", max: "+100"},
+                    x: {min: "-100", max: "+100"}
+                  },
+                  alpha: 0,
+                  rotation: {min: "-100", max: "+100"},
+                  scale: {
+                    x: {min: 2, max: 3},
+                    y: {min: 2, max: 3},
+                  }
+                }
+              });
+              scene.addChild(emitter2);
+
+
+              var emitter3 = new Joy.ParticleEmitter({
+                emission: {min: 10, max: 50},
+                lifetime: 10,
+                particleLifetime: {min: 5, max: 10},
+                position: new Joy.Vector2d(600, 200),
+                sources: [
+                  new Joy.Sprite("../shared-assets/particles/green-star.png"),
+                  new Joy.Sprite("../shared-assets/particles/yellow-star.png"),
+                ],
+                ease: Joy.TweenManager.Easing.Bezier,
+                start: {
+                  alpha: 1,
+                  scale: {min: 0.1, max: 0.2}
+                },
+                end: {
+                  position: {
+                    y: {min: "-50", max: "+50"},
+                    x: {min: "-50", max: "+50"}
+                  },
+                  alpha: 0,
+                  rotation: {min: "-100", max: "+100"}
+                }
+              });
+              scene.addChild(emitter3);
             });
-          }
         </script>
     </body>
 

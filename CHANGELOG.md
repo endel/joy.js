@@ -1,6 +1,8 @@
 0.1.2.dev (not released)
 ===
 
+  - Integrated particle system
+  - Accept options when attaching behaviours to objects.
   - Added `Joy.SpriteAnimation` class, allowing to define `framesPerSecond`
     attribute for each `SpriteSheet`'s animation set.
 

@@ -13,6 +13,7 @@ Current version: 0.1.1 ([CHANGELOG](CHANGELOG.md))
   - Reusable object behaviours
   - Collision detection
   - Scene graph
+  - Particle System
   - Audio (provided by [howler.js](https://github.com/goldfire/howler.js))
   - Tweens (provided by [tween.js](https://github.com/sole/tween.js))
   - Device feature detection

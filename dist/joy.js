@@ -4,7 +4,7 @@
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 4/13/2013
+ * @build 4/14/2013
  */
 
 (function(global) {
@@ -730,9 +730,9 @@
    * @constructor
    */
   var Triggerable = J.Object.extend({
-    init: function() {
-      this._handlers = {};
-      this._behaviours = [];
+    init: function(options) {
+      this._handlers = (options && options._handlers) || {};
+      this._behaviours = (options && options._behaviours) || [];
     },
 
     /**
@@ -741,10 +741,12 @@
      * @param {Behaviour}
      * @return {Triggerable} this
      */
-    behave: function (Behaviour) {
-      this._behaviours.push(Behaviour);
+    behave: function (Behaviour, options) {
+      if (typeof(Behaviour)==="string") { Behaviour = J.Behaviour.get(Behaviour); }
 
-      var behaviour = new Behaviour();
+      this._behaviours.push(Behaviour);
+      var behaviour = new Behaviour(options);
+
       for (var i in behaviour) {
         if (typeof(Joy.Events[i])==="string") {
           this.bind(Joy.Events[i], behaviour[i]);
@@ -1053,14 +1055,17 @@
    * @param {Number} min
    * @param {Number} max
    */
-  var Range = function(min, max) {
+  var Range = function(_min, _max) {
+    var min = _min,
+        max = _max;
+
     if (typeof(min)==="object") {
-      min = min.min;
-      max = min.max;
+      min = _min.min || 0;
+      max = _min.max || 0;
     }
 
-    this.min = min || 0;
-    this.max = max || this.min || 0;
+    this.min = parseFloat(min || 0, 10);
+    this.max = parseFloat(max || this.min || 0, 10);
   };
 
   /**
@@ -1069,13 +1074,60 @@
    * @return {Number}
    */
   Range.prototype.random = function () {
-    return this.min + (Math.random() * (this.max - this.min));
+    return Range.random(this.min, this.max);
   };
 
+  /**
+   * Get a random integer value between this range
+   * @method randomInt
+   * @return {Number}
+   */
+  Range.prototype.randomInt = function () {
+    return Range.randomInt(this.min, this.max);
+  };
+
+  /**
+   * Parse range object or string
+   *
+   * @example by given string
+   *      var range = new Joy.Range("1..10");
+   *
+   * @example by given object
+   *      var range = new Joy.Range({min: 1, max: 10});
+   *
+   * @example by single number
+   *      var range = new Joy.Range(5);
+   *
+   * @param {String | Object | Number} range
+   * @return {Range}
+   */
+  Range.parse = function (obj) {
+    if (typeof(obj)==="string") {
+      var data = obj.split("..");
+      return new Range(data[0], data[1]);
+    } else {
+      return new Range(obj);
+    }
+  };
+
+  /**
+   * Get a random floating value between min and max
+   * @param {Number} min
+   * @param {Number} max
+   * @return {Number}
+   * @static
+   */
   Range.random = function (min, max) {
     return ((Math.random() * (max - min + 1)) + min);
   };
 
+  /**
+   * Get a random integer value between min and max
+   * @param {Number} min
+   * @param {Number} max
+   * @return {Number}
+   * @static
+   */
   Range.randomInt = function (min, max) {
     return (Math.floor((Math.random() * (max - min + 1)) + min));
   };
@@ -1952,7 +2004,7 @@
        */
       this.flipY = options.flipY || false;
 
-      this._super();
+      this._super(options);
 
       // Bind UPDATE event to check collisions
       if (this.collider) {
@@ -2566,6 +2618,148 @@
   });
 
   J.Parallax = Parallax;
+})(Joy);
+
+/**
+ * module Joy
+ */
+(function(J) {
+  var ParticleEmitter = J.DisplayObject.extend({
+    /**
+     * class ParticleEmitter
+     * constructor
+     * param {Object} options
+     */
+    init: function (options) {
+      this._super(options);
+
+      /**
+       * Emit new particles each frame?
+       * @property emit
+       * @type {Boolean}
+       */
+      this.emit = (typeof(options.emit)==="undefined") ? true : options.emit;
+
+      /*
+       * Active particles list.
+       * @property particles
+       * @type Array
+      this.particles = [];
+       */
+
+      /**
+       * Particle variations to emitt.
+       * @property particles
+       * @type {Array}
+       */
+      this.sources = (typeof(options.source)!=="undefined") ? [options.source] : options.sources;
+
+      /**
+       * The minimum/maximum number of particles that will be spawned every second.
+       * @property emission
+       * @type {Number}
+       */
+      this.emission = (typeof(options.emission)!=="undefined") ? new J.Range(options.emission) : new J.Range(1, 5);
+
+      /**
+       * Tweening easing function.
+       * @property ease
+       * @type {Function}
+       * @default Joy.Tween.Easing.Linear
+       */
+      this.ease = options.ease || J.TweenManager.Easing.Linear;
+
+      /**
+       * Particles start options.
+       * @property start
+       * @type {Obejct}
+       */
+      this.start = options.start || {};
+
+      /**
+       * Particles end options.
+       * @property end
+       * @type {Obejct}
+       */
+      this.end = options.end || {};
+
+      /**
+       * Minimum/maximum time to live of each generated particle.
+       * @property particleLifetime
+       * @type {Number}
+       */
+      this.particleLifetime = (typeof(options.particleLifetime)!=="undefined") ? new J.Range(options.particleLifetime) : new J.Range(1, 2);
+
+      /**
+       * Minimum/maximum time to live of particle emitter.
+       * @property particleLifetime
+       * @type {Number}
+       */
+      Object.defineProperty(this, 'lifetime', {
+        get: function () {
+          return this._lifetime;
+        },
+        set: function (lifetime) {
+          this._lifetime = ((typeof(lifetime)!=="undefined") ? new J.Range(lifetime) : new J.Range(-1)).random();
+        },
+        configurable: true
+      });
+      this.lifetime = options.lifetime || Infinity;
+      this._ttl = Infinity;
+
+      // Propagate ADDED event to sources, to activate scene loader.
+      this.bind(J.Events.ADDED, function () {
+        for (var i = 0, l = this.sources.length; i < l; i ++) {
+          this.sources[i].trigger(J.Events.ADDED);
+        }
+      });
+
+      this.bind(J.Events.SCENE_ACTIVE, this._activate);
+    },
+
+    _activate: function () {
+      this._ttl = Date.now() + (this.lifetime * 1000);
+    },
+
+    /**
+     * Emit {qty} particles.
+     * @method emit
+     * @param {Number} qty
+     * @return {ParticleEmitter} this
+     */
+    _emit: function (qty) {
+      var particle;
+
+      for (var i = 0; i < qty; i += 1) {
+        particle = this.sources[ J.Range.randomInt(0, this.sources.length - 1) ].clone();
+        particle.behave('Particle', {
+          emitter: this,
+          ease: this.ease,
+          start: this.start,
+          end: this.end,
+          ttl: this.particleLifetime.random()
+        });
+        this.parent.addChild(particle);
+      }
+
+      return this;
+    },
+
+    //clear: function () {
+      //this.particles = [];
+    //},
+
+    render: function () {
+      this._super();
+
+      if (!this.emit || Date.now() > this._ttl) { return; }
+
+      // TODO: check emission rate
+      this._emit(1);
+    }
+  });
+
+  J.ParticleEmitter = ParticleEmitter;
 })(Joy);
 
 /**
@@ -5360,6 +5554,17 @@ TWEEN.Interpolation = {
     this.behaviours[name] = Behaviour.extend(object);
   };
 
+  /**
+   * Get a behaviour reference
+   * @method define
+   * @param {String} name
+   * @return {Behaviour}
+   * @static
+   */
+  Behaviour.get = function (name) {
+    return this.behaviours[name];
+  };
+
   Joy.Behaviour = Behaviour;
 })(Joy);
 
@@ -5514,6 +5719,57 @@ TWEEN.Interpolation = {
 
   J.Behaviour.Movimentation = Movimentation;
 })(Joy);
+
+/**
+ * module Joy
+ */
+(function(J) {
+  function parseProperties(parent, props) {
+    var properties = {};
+
+    // Position
+    properties.position = new J.Vector2d();
+    properties.position.x = parent.position.x + J.Range.parse((props.position && props.position.x) || {}).randomInt();
+    properties.position.y = parent.position.y + J.Range.parse((props.position && props.position.y) || {}).randomInt();
+
+    // Scale
+    properties.scale = new J.Vector2d();
+    properties.scale.x = J.Range.parse((props.scale && props.scale.x) || parent.scale.x).randomInt();
+    properties.scale.y = J.Range.parse((props.scale && props.scale.y) || parent.scale.y).randomInt();
+
+    // Other attributes
+    properties.alpha = J.Range.parse(typeof(props.alpha)==="undefined" ? parent.alpha : props.alpha).randomInt();
+    properties.rotation = J.Range.parse(typeof(props.rotation)==="undefined" ? parent.rotation : props.rotation).randomInt();
+
+    return properties;
+  }
+
+  J.Behaviour.define('Particle', {
+    init: function (options) {
+      this.particleOptions = options;
+    },
+
+    ADDED: function () {
+      var lastTween,
+          start = parseProperties(this.particleOptions.emitter, this.particleOptions.start || {}),
+          end = parseProperties(this.particleOptions.emitter, this.particleOptions.end || {});
+
+
+      for (var prop in start) {
+        this[prop] = start[prop];
+        if (typeof(end[prop])==="object") {
+          J.Tween(start[prop], this.particleOptions.ttl * 1000).to(end[prop]).start();
+          delete end[prop];
+        }
+      }
+
+      // When last tween complete, destroy the particle.
+      J.Tween(this, this.particleOptions.ttl * 1000).to(end).onComplete(this.destroy).start();
+    }
+
+  });
+})(Joy);
+
 
 /**
  * @module Joy.Behaviour
@@ -6963,109 +7219,3 @@ TWEEN.Interpolation = {
 
   J.Touch = Touch;
 })(Joy);
-
-/**
- * module Joy
- */
-(function(J) {
-  var ParticleEmitter = J.DisplayObject.extend({;
-    /**
-     * class ParticleEmitter
-     * constructor
-     * param {Object} options
-     */
-    init: function (options) {
-      /**
-       * Emit new particles each frame?
-       * @property emit
-       * @type {Boolean}
-       */
-      this.emit = (typeof(options.active)==="undefined") ? true : options.emit;
-
-      /**
-       * Active particles list.
-       * @property particles
-       * @type Array
-       */
-      this.particles = [];
-
-      /**
-       * Particle variations to emitt.
-       * @property particles
-       * @type {Array}
-       */
-      this.sources = (typeof(options.source)!=="undefined") ? [options.source] : options.sources;
-
-      /**
-       * The minimum/maximum number of particles that will be spawned every second.
-       * @property emission
-       * @type {Number}
-       */
-      this.emission = (typeof(options.emission)!=="undefined") ? new J.Range(options.emission) : new J.Range(1, 5);
-
-      /**
-       * Minimum/maximum time to live of particle emitter.
-       * @property particleLifetime
-       * @type {Number}
-       */
-      this.lifetime = (typeof(options.lifetime)!=="undefined") ? new J.Range(options.lifetime) : new J.Range(-1);
-
-      /**
-       * Minimum/maximum time to live of each generated particle.
-       * @property particleLifetime
-       * @type {Number}
-       */
-      this.particleLifetime = (typeof(options.particleLifetime)!=="undefined") ? new J.Range(options.particleLifetime) : new J.Range(1, 2);
-
-      // Simulate new ttl each second
-      var that = this;
-      window.setTimeout(function () {that.simulate(new Date().getTime());}, 1000);
-
-      this._super(options);
-    },
-
-    /**
-     * Emit {qty} particles.
-     * @method emit
-     * @param {Number} qty
-     * @return {ParticleEmitter} this
-     */
-    emit: function (qty) {
-      var particle;
-
-      for (var i = 0; i < qty; i += 1) {
-        particle = this.sources[ J.Range.random(0, this.sources.length) ].clone();
-        this.parent.addChild(particle);
-        this.particles.push(particle);
-      }
-      return this;
-    },
-
-    simulate: function (time) {
-    };
-
-    clear: function () {
-      this.particles = [];
-    },
-
-    render: function () {
-      if (this.emit) {
-        this.ttl.random()
-      }
-    }
-  });
-
-  J.ParticleEmitter = ParticleEmitter;
-})(Joy);
-
-/**
- * module Joy
- */
-(function(J) {
-  J.Behaviour.define('Particle', {
-    init: function () {
-
-    }
-  });
-})(Joy);
-
