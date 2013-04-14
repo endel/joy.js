@@ -11,6 +11,9 @@
   <canvas id="joy" width='800' height='600' style="border: 1px solid #666;">
     <section>
       <img src="../../shared-assets/joyjs.png" width="247" height="280" data-value="Hello!" />
+      <button></button>
+      <div></div>
+      <audio src="../../shared-assets/"></audio>
     </section>
 
     <section>
@@ -22,6 +25,12 @@
     var engine = new Joy.Engine({
       canvas2d: document.getElementById('joy'),
       markup: true
+    });
+
+    var MyBehaviour = Joy.Behaviour.extend({
+      init: function () {
+        this.behave(Joy.Behaviour.Movimentation);
+      }
     });
   </script>
 </body>

@@ -245,6 +245,7 @@
    * Engine context. Start your application from here.
    *
    * @class Engine
+   * @param {CanvasElement | Object} options
    * @constructor
    */
   var Engine = function(options) {
@@ -257,12 +258,17 @@
      */
     this.paused = false;
 
-    if (options.canvas2d) {
-      this.context = new Joy.Context.Context2d({canvas: options.canvas2d});
+    if (typeof(options.tagName) === "string" && options.tagName === "CANVAS") {
+      options = {canvas: options};
+      var dataset = Joy.Markup.evaluateDataset(options.canvas);
+      for (var attr in dataset) {
+        options[attr] = dataset[attr];
+      }
+      console.log("Options! ", options);
     }
 
-    if (options.canvas3d) {
-      // OMG, there is no 3d yet (and shouldn't for long time...)
+    if (options.canvas) {
+      this.context = new Joy.Context.Context2d({canvas: options.canvas});
     }
 
     // Create canvas and context, if it isn't set.
@@ -285,6 +291,12 @@
     // 2 on Retina Display
     this.context.canvas.style.width = (this.context.canvas.width / window.devicePixelRatio) + "px";
     this.context.canvas.style.height = (this.context.canvas.height / window.devicePixelRatio) + "px";
+
+    if (options.fullscreen) {
+      window.onresize = function (e) {
+        // TODO: resize container and all children elements
+      };
+    }
 
     // TODO: Implement on-init engine trigger
     // Enable mouse events, if module is included
@@ -357,7 +369,8 @@
     this.sceneLoader = null;
     this.setSceneLoader(J.Engine.defaultSceneLoader);
 
-    if (options.markup) {
+    // Parse <canvas> markup when it's not empty
+    if (this.context.canvas.children.length > 0) {
       this.markup = new J.Markup(this).parse();
     }
 
@@ -490,7 +503,7 @@
 
   /**
    * @method gotoScene
-   * @param {Scene} scene
+   * @param {Scene | String} scene reference or scene id
    * @param {Number} fadeMilliseconds (default=1000)
    * @param {String | Color} color (default=#000)
    * @return {Engine} this
@@ -1057,6 +1070,14 @@
    */
   Range.prototype.random = function () {
     return this.min + (Math.random() * (this.max - this.min));
+  };
+
+  Range.random = function (min, max) {
+    return ((Math.random() * (max - min + 1)) + min);
+  };
+
+  Range.randomInt = function (min, max) {
+    return (Math.floor((Math.random() * (max - min + 1)) + min));
   };
 
   J.Range = Range;
@@ -1747,6 +1768,15 @@
       this.smooth = (typeof(options.smooth) === "undefined") ? true : options.smooth;
 
       /**
+       * Is this destroyed? When true, this DisplayObject will be removed from
+       * the container in the next loop.
+       * @property destroyed
+       * @default false
+       * @type {Boolean}
+       */
+      this.destroyed = false;
+
+      /**
        * @attribute width
        * @type {Number}
        * @default 0
@@ -1932,6 +1962,17 @@
 
     setContext: function(ctx) {
       this.ctx = ctx;
+    },
+
+    /**
+     * Mark this DisplayObject as destroyed.
+     * It will be removed from the container in the next loop.
+     * @method destroy
+     * @return {DisplayObject} this
+     */
+    destroy: function () {
+      this.destroyed = true;
+      return this;
     },
 
     /**
@@ -2165,6 +2206,12 @@
      * @method render
      */
     render: function() {
+      // Remove DisplayObject from container
+      if (this.destroyed && this.parent) {
+        this.parent.removeChild(this);
+        return;
+      }
+
       if (this._hasContextOperations) {
         for (var operation in this._contextOperations) {
           if (this._contextOperations[operation] instanceof Array) {
@@ -5294,6 +5341,25 @@ TWEEN.Interpolation = {
    * @module Joy.Behaviour
    */
   var Behaviour = J.Object.extend({});
+
+  /**
+   * @property behaviours
+   * @type {Array}
+   * @static
+   */
+  Behaviour.behaviours = {};
+
+  /**
+   * Define a behaviour globally
+   * @method define
+   * @param {String} name
+   * @param {Object} object
+   * @static
+   */
+  Behaviour.define = function (name, object) {
+    this.behaviours[name] = Behaviour.extend(object);
+  };
+
   Joy.Behaviour = Behaviour;
 })(Joy);
 
@@ -5326,7 +5392,7 @@ TWEEN.Interpolation = {
    *     })
    */
 
-  var Button = J.Behaviour.extend({
+  J.Behaviour.define('Button', {
     INIT: function (options) {
       /**
        * @attribute isOver
@@ -5348,7 +5414,6 @@ TWEEN.Interpolation = {
     }
   });
 
-  J.Behaviour.Button = Button;
 })(Joy);
 
 
@@ -5635,16 +5700,26 @@ TWEEN.Interpolation = {
      * @type {Object}
      */
     this.parsers = {
-      IMG: function (element) {
-        console.log("IMG dataset: ", this.evaluateDataset(element));
-        return new J.Sprite(this.evaluateDataset(element));
+      IMG: function (el, dataset) {
+        return new J.Sprite(dataset);
       },
-      LABEL: function (element) {
-        var dataset = this.evaluateDataset(element);
-        dataset.text = element.innerHTML;
+
+      LABEL: function (el, dataset) {
+        dataset.text = el.innerHTML;
         return new J.Text(dataset);
       },
-      AUDIO: function (element) {
+
+      DIV: function (el, dataset) {
+        var displayObject = new J.DisplayObjectContainer(dataset);
+        var children = el.querySelector('*');
+        for (var i = 0, l = children.length; i < l; i ++) {
+          displayObject.addChild( this.parsers[ children[i].tagName ].apply(this, [children[i], Markup.evaluateDataset(children[i])]) );
+        }
+        return displayObject;
+      },
+
+      AUDIO: function (el, dataset) {
+        var audio = new J.Sound({});
       }
     };
 
@@ -5669,25 +5744,35 @@ TWEEN.Interpolation = {
     var elements = section.querySelectorAll('*');
     for (i=0, length=elements.length;i<length; ++i) {
       if (this.parsers[elements[i].tagName]) {
-        var element = this.parsers[elements[i].tagName].apply(this, [elements[i]]);
-        console.log(element);
-        children.push(element);
+        var el = this.parsers[elements[i].tagName].apply(this, [elements[i], Markup.evaluateDataset(elements[i])]);
+        children.push(el);
       }
     }
 
     // Create scene on engine and append all children parsed
+    var dataset = Markup.evaluateDataset(section);
     this.engine.createScene(function(scene) {
+      // Expand dataset to call methods / assign properties
+      for (var attr in dataset) {
+        console.log(attr, dataset[attr]);
+        if (typeof(scene[attr])==="function") {
+          scene[attr](dataset[attr]);
+        } else {
+          scene[attr] = dataset[attr];
+        }
+      }
+
       for (i=0,length=children.length; i<length; ++i) {
         scene.addChild(children[i]);
       }
     });
   };
 
-  Markup.prototype.evaluateDataset = function(element) {
+  Markup.evaluateDataset = function(el) {
     var value, matches, attr, attributeName,
-        attributes = element.attributes,
-        width = this.canvas.width,
-        height = this.canvas.height,
+        attributes = el.attributes,
+        //width = this.canvas.width,
+        //height = this.canvas.height,
         obj = {};
 
     for (var key in attributes) {
@@ -5698,7 +5783,7 @@ TWEEN.Interpolation = {
         continue;
       }
 
-      value = attr.value;
+      value = (attr.value === '') ? true : attr.value;
       attributeName = attr.name;
 
       if (attributeName.indexOf('data-') === 0) {
@@ -6919,17 +7004,45 @@ TWEEN.Interpolation = {
       this.emission = (typeof(options.emission)!=="undefined") ? new J.Range(options.emission) : new J.Range(1, 5);
 
       /**
-       * Minimum/maximum time to live of each generated particle.
-       * @property ttl
+       * Minimum/maximum time to live of particle emitter.
+       * @property particleLifetime
        * @type {Number}
        */
-      this.ttl = (typeof(options.ttl)!=="undefined") ? new J.Range(options.ttl) : new J.Range(1, 2);
+      this.lifetime = (typeof(options.lifetime)!=="undefined") ? new J.Range(options.lifetime) : new J.Range(-1);
+
+      /**
+       * Minimum/maximum time to live of each generated particle.
+       * @property particleLifetime
+       * @type {Number}
+       */
+      this.particleLifetime = (typeof(options.particleLifetime)!=="undefined") ? new J.Range(options.particleLifetime) : new J.Range(1, 2);
+
+      // Simulate new ttl each second
+      var that = this;
+      window.setTimeout(function () {that.simulate(new Date().getTime());}, 1000);
 
       this._super(options);
     },
 
-    emit: function () {
+    /**
+     * Emit {qty} particles.
+     * @method emit
+     * @param {Number} qty
+     * @return {ParticleEmitter} this
+     */
+    emit: function (qty) {
+      var particle;
+
+      for (var i = 0; i < qty; i += 1) {
+        particle = this.sources[ J.Range.random(0, this.sources.length) ].clone();
+        this.parent.addChild(particle);
+        this.particles.push(particle);
+      }
+      return this;
     },
+
+    simulate: function (time) {
+    };
 
     clear: function () {
       this.particles = [];
@@ -6949,16 +7062,10 @@ TWEEN.Interpolation = {
  * module Joy
  */
 (function(J) {
-  var Particle = J.DisplayObject.extend({;
-    /**
-     * class Particle
-     * constructor
-     * param {Object} options
-     */
-    init: function (options) {
+  J.Behaviour.define('Particle', {
+    init: function () {
+
     }
   });
-
-  J.Particle = Particle;
 })(Joy);
 
