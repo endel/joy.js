@@ -18,14 +18,25 @@
               scene.background("#BFE5E5");
 
               var emitter = new Joy.ParticleEmitter({
-                min: 10,
-                max: 50,
+                emission: {min: 10, max: 50},
+                lifetime: 5,
+                particleLifetime: {min: 1, max: 2},
                 position: new Joy.Vector2d(500, 500),
                 sources: [
                   new Joy.Sprite("../shared-assets/particles/red-sphere.png"),
                   new Joy.Sprite("../shared-assets/particles/yellow-sphere.png"),
                 ],
-                minScale:
+                start: {
+                  x: {min: "-5", max: "+5"},
+                  y: {min: "-5", max: "+5"},
+                  alpha: 1,
+                  scale: {min: 0.1, max: 0.3}
+                },
+                end: {
+                  y: {min: "-25", max: "-20"},
+                  alpha: 0,
+                  scale: {min: 0.1, max: 0.3}
+                }
               });
 
               scene.addChild(emitter);

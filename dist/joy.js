@@ -4,7 +4,7 @@
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 4/12/2013
+ * @build 4/13/2013
  */
 
 (function(global) {
@@ -6912,40 +6912,23 @@ TWEEN.Interpolation = {
       this.sources = (typeof(options.source)!=="undefined") ? [options.source] : options.sources;
 
       /**
-       * The minimum number of particles that will be spawned every second.
-       * @property min
+       * The minimum/maximum number of particles that will be spawned every second.
+       * @property emission
        * @type {Number}
        */
       this.emission = (typeof(options.emission)!=="undefined") ? new J.Range(options.emission) : new J.Range(1, 5);
 
       /**
-       * Enerty
+       * Minimum/maximum time to live of each generated particle.
        * @property ttl
        * @type {Number}
        */
-      this.energy = (typeof(options.energy)!=="undefined") ? new J.Range(options.energy) : new J.Range(1, 2);
-
-      /**
-       * @property position
-       * @type {Vector2d}
-       */
-      this.position = options.position || new J.Vector2d(options.x, options.y);
-
-      // position         The position of the particle.
-      // velocity         The velocity of the particle.
-      // energy           The energy of the particle.
-      // startEnergy      The starting energy of the particle.
-      // size             The size of the particle.
-      // rotation         The rotation of the particle.
-      // angularVelocity  The angular velocity of the particle.
-
-      // color            The color of the particle.
+      this.ttl = (typeof(options.ttl)!=="undefined") ? new J.Range(options.ttl) : new J.Range(1, 2);
 
       this._super(options);
     },
 
-    emit: function (numberOfParticles) {
-
+    emit: function () {
     },
 
     clear: function () {
@@ -6954,6 +6937,7 @@ TWEEN.Interpolation = {
 
     render: function () {
       if (this.emit) {
+        this.ttl.random()
       }
     }
   });
