@@ -1,10 +1,10 @@
 /* 
- * joy.js v0.1.1 
+ * joy.js v0.2.0 
  * http://joyjs.org
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 4/14/2013
+ * @build 4/15/2013
  */
 
 (function(global) {
@@ -264,7 +264,6 @@
       for (var attr in dataset) {
         options[attr] = dataset[attr];
       }
-      console.log("Options! ", options);
     }
 
     if (options.canvas) {
@@ -738,16 +737,25 @@
     /**
      * Behave like a {Behaviour}
      * @method behave
-     * @param {Behaviour}
+     * @param {String | Behaviour} behaviour
      * @return {Triggerable} this
      */
     behave: function (Behaviour, options) {
-      if (typeof(Behaviour)==="string") { Behaviour = J.Behaviour.get(Behaviour); }
+      var i;
 
-      this._behaviours.push(Behaviour);
+      // Split behaviours if string was given
+      if (typeof(Behaviour)==="string") {
+        var last, behaviours = Behaviour.split(",");
+        for (i = 0, l = behaviours.length; i < l; i ++) {
+          last = this.behave(J.Behaviour.get(behaviours[i].replace(" ", '')), options);
+        }
+        return last;
+      }
+
+      this._behaviours.push(Behaviour.id);
       var behaviour = new Behaviour(options);
 
-      for (var i in behaviour) {
+      for (i in behaviour) {
         if (typeof(Joy.Events[i])==="string") {
           this.bind(Joy.Events[i], behaviour[i]);
 
@@ -762,7 +770,7 @@
     /**
      * This object behaves as {target} behaviour?
      * @method hasBehaviour
-     * @param {Behaviour} target
+     * @param {String} behaviourName
      * @return {Boolean}
      */
     hasBehaviour: function (behaviour) {
@@ -5550,19 +5558,21 @@ TWEEN.Interpolation = {
    * @param {Object} object
    * @static
    */
-  Behaviour.define = function (name, object) {
-    this.behaviours[name] = Behaviour.extend(object);
+  Behaviour.define = function (id, object) {
+    this.behaviours[id] = Behaviour.extend(object);
+    this.behaviours[id].id = id;
+    return this.behaviours[name];
   };
 
   /**
    * Get a behaviour reference
    * @method define
-   * @param {String} name
+   * @param {String} id
    * @return {Behaviour}
    * @static
    */
-  Behaviour.get = function (name) {
-    return this.behaviours[name];
+  Behaviour.get = function (id) {
+    return this.behaviours[id];
   };
 
   Joy.Behaviour = Behaviour;
@@ -5637,7 +5647,7 @@ TWEEN.Interpolation = {
    *     player = new Joy.DisplayObject(...);
    *
    *     // Append movimentation behaviour to DisplayObject
-   *     player.behave(Joy.Behaviour.Movimentation);
+   *     player.behave('Movimentation');
    *
    *     // Configure attributes
    *     player.maxVelocity.x = 8;
@@ -5645,7 +5655,7 @@ TWEEN.Interpolation = {
    *     player.friction.x = 1;
    *
    */
-  var Movimentation = J.Behaviour.extend({
+  J.Behaviour.Movimentation = J.Behaviour.define('Movimentation', {
     INIT: function (options) {
       /**
        * Current object's velocity
@@ -5716,8 +5726,6 @@ TWEEN.Interpolation = {
       this.position.y += this.velocity.y;
     }
   });
-
-  J.Behaviour.Movimentation = Movimentation;
 })(Joy);
 
 /**
@@ -5778,12 +5786,10 @@ TWEEN.Interpolation = {
   /**
    * TODO: Wouldn't it be nice?
    */
-  var Physics = J.Behaviour.extend({
+  J.Behaviour.define('Physics', {
     INIT: function (options) {},
     UPDATE: function () {}
   });
-
-  J.Behaviour.Physics = Physics;
 })(Joy);
 
 /**

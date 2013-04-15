@@ -1,7 +1,10 @@
-0.1.2.dev (not released)
+0.2.0
 ===
 
+  - Use 'canvas' instead of 'canvas2d' when instantiating Joy.Engine with a dom canvas
+    element.
   - Integrated particle system
+  - Define behaviour identification as string instead of class references.
   - Accept options when attaching behaviours to objects.
   - Added `Joy.SpriteAnimation` class, allowing to define `framesPerSecond`
     attribute for each `SpriteSheet`'s animation set.

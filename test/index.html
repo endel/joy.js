@@ -18,6 +18,7 @@
   <script type="text/javascript" src="unit/text.js"></script>
   <script type="text/javascript" src="unit/markup.js"></script>
   <script type="text/javascript" src="unit/behaviour/triggers.js"></script>
+  <script type="text/javascript" src="unit/behaviour/behaviour.js"></script>
   <script type="text/javascript" src="unit/tilemap.js"></script>
   <script type="text/javascript" src="unit/util/color.js"></script>
   <script type="text/javascript" src="unit/util/math.js"></script>
@@ -40,11 +41,7 @@
       releaseEngine(r);
     }
     function getEngine() {
-      var canvas = document.createElement('canvas');
-      document.body.appendChild(canvas);
-      canvas.width = 320;
-      canvas.width = 240;
-      return new Joy.Engine({canvas2d: canvas});
+      return new Joy.Engine({width: 320, height: 240});
     }
 
     function releaseEngine(e) {

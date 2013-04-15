@@ -36,6 +36,7 @@ module.exports = function(grunt) {
           'lib/geom/**.js',
           'lib/vendor/**.js',
           'lib/modules/**.js',
+          'lib/behaviour/behaviour.js',
           'lib/**/**.js'
         ],
         dest: 'dist/joy.js'
