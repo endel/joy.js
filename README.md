@@ -2,7 +2,7 @@
 
 A Joyful 2D HTML5 Game Engine, designed to be easy to use.
 
-Current version: 0.1.1 ([CHANGELOG](CHANGELOG.md))
+Current version: 0.2.0 ([CHANGELOG](CHANGELOG.md))
 
 ## Features
 
