@@ -1,0 +1,65 @@
+{ "height":10,
+ "layers":[
+        {
+         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 14, 15, 12, 0, 0, 0, 0, 0, 0, 13, 14, 18, 0, 0, 0, 0, 7, 12, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 13, 14, 14, 15, 19, 2, 19, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 27, 11, 27, 19, 2, 3, 6, 0, 0, 1, 3, 3, 3, 2, 20, 11, 10, 10, 8, 8, 10, 12, 0, 0, 7, 8, 8, 11, 8, 9, 8, 10, 8, 11, 11, 9, 19, 2, 5, 20, 11, 8, 8, 11, 8, 8, 27],
+         "height":10,
+         "name":"Camade de Tiles 1",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":15,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 59, 0, 0, 0, 0, 0, 0, 0, 0, 55, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 56, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 59, 0, 0, 0, 0, 60, 0, 57, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+         "height":10,
+         "name":"Camade de Tiles 2",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":15,
+         "x":0,
+         "y":0
+        }],
+ "orientation":"orthogonal",
+ "properties":
+    {
+
+    },
+ "tileheight":64,
+ "tilesets":[
+        {
+         "firstgid":1,
+         "image":"..\/..\/Dropbox\/endel.dreyer@gmail.com\/Dropbox\/Rufus and the Magic Mushrooms\/Tiles\/tiles-map.png",
+         "imageheight":584,
+         "imagewidth":384,
+         "margin":0,
+         "name":"tiles-map",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tileheight":64,
+         "tilewidth":64
+        }, 
+        {
+         "firstgid":55,
+         "image":"..\/..\/Dropbox\/endel.dreyer@gmail.com\/Dropbox\/Rufus and the Magic Mushrooms\/Tiles\/tiles-obj.png",
+         "imageheight":128,
+         "imagewidth":256,
+         "margin":0,
+         "name":"tiles-obj",
+         "properties":
+            {
+
+            },
+         "spacing":0,
+         "tileheight":64,
+         "tilewidth":64
+        }],
+ "tilewidth":64,
+ "version":1,
+ "width":15
+}

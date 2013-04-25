@@ -1,0 +1,6065 @@
+{
+    "project": {
+        "name": "joy.js",
+        "description": "A joyful JavaScript game engine",
+        "version": "0.1.1",
+        "url": "http://joyjs.org",
+        "nocode": "true",
+        "themedir": "../joy.js-site/default/"
+    },
+    "files": {
+        "lib/behaviour/behaviour.js": {
+            "name": "lib/behaviour/behaviour.js",
+            "modules": {
+                "Joy.Behaviour": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/behaviour/button.js": {
+            "name": "lib/behaviour/button.js",
+            "modules": {},
+            "classes": {
+                "Button": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/behaviour/movimentation.js": {
+            "name": "lib/behaviour/movimentation.js",
+            "modules": {},
+            "classes": {
+                "Movimentation": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/behaviour/physics.js": {
+            "name": "lib/behaviour/physics.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/collider/rect_collider.js": {
+            "name": "lib/collider/rect_collider.js",
+            "modules": {
+                "Joy": 1
+            },
+            "classes": {
+                "RectCollider": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/collider/tilemap_collider.js": {
+            "name": "lib/collider/tilemap_collider.js",
+            "modules": {},
+            "classes": {
+                "TilemapCollider": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/consts/composite_operation.js": {
+            "name": "lib/consts/composite_operation.js",
+            "modules": {},
+            "classes": {
+                "CompositeOperation": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/consts/events.js": {
+            "name": "lib/consts/events.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/core/context/context2d.js": {
+            "name": "lib/core/context/context2d.js",
+            "modules": {},
+            "classes": {
+                "Context2d": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/core/engine.js": {
+            "name": "lib/core/engine.js",
+            "modules": {},
+            "classes": {
+                "Engine": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/core/object.js": {
+            "name": "lib/core/object.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/core/support.js": {
+            "name": "lib/core/support.js",
+            "modules": {},
+            "classes": {
+                "Support": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/core/triggerable.js": {
+            "name": "lib/core/triggerable.js",
+            "modules": {},
+            "classes": {
+                "Triggerable": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/geom/circle.js": {
+            "name": "lib/geom/circle.js",
+            "modules": {},
+            "classes": {
+                "Circle": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/geom/rect.js": {
+            "name": "lib/geom/rect.js",
+            "modules": {},
+            "classes": {
+                "Rect": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/init/markup.js": {
+            "name": "lib/init/markup.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/init/package.js": {
+            "name": "lib/init/package.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/input/keyboard.js": {
+            "name": "lib/input/keyboard.js",
+            "modules": {},
+            "classes": {
+                "Keyboard": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/input/mouse.js": {
+            "name": "lib/input/mouse.js",
+            "modules": {},
+            "classes": {
+                "Mouse": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/input/touch.js": {
+            "name": "lib/input/touch.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/math/math.js": {
+            "name": "lib/math/math.js",
+            "modules": {},
+            "classes": {
+                "Math": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/math/matrix2d.js": {
+            "name": "lib/math/matrix2d.js",
+            "modules": {},
+            "classes": {
+                "Matrix2D": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/math/vector2d.js": {
+            "name": "lib/math/vector2d.js",
+            "modules": {},
+            "classes": {
+                "Vector2d": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/modules/sound.js": {
+            "name": "lib/modules/sound.js",
+            "modules": {},
+            "classes": {
+                "Sound": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/modules/tween.js": {
+            "name": "lib/modules/tween.js",
+            "modules": {},
+            "classes": {
+                "TweenManager": 1,
+                "Tween": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/render/display_object.js": {
+            "name": "lib/render/display_object.js",
+            "modules": {},
+            "classes": {
+                "DisplayObject": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/render/display_object_container.js": {
+            "name": "lib/render/display_object_container.js",
+            "modules": {},
+            "classes": {
+                "DisplayObjectContainer": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/render/font.js": {
+            "name": "lib/render/font.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/render/parallax.js": {
+            "name": "lib/render/parallax.js",
+            "modules": {},
+            "classes": {
+                "Parallax": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/render/particle_emitter.js": {
+            "name": "lib/render/particle_emitter.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/render/scene.js": {
+            "name": "lib/render/scene.js",
+            "modules": {},
+            "classes": {
+                "Scene": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/render/sprite.js": {
+            "name": "lib/render/sprite.js",
+            "modules": {},
+            "classes": {
+                "Sprite": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/render/sprite_sheet.js": {
+            "name": "lib/render/sprite_sheet.js",
+            "modules": {},
+            "classes": {
+                "SpriteSheet": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/render/text.js": {
+            "name": "lib/render/text.js",
+            "modules": {},
+            "classes": {
+                "Text": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/render/tilemap.js": {
+            "name": "lib/render/tilemap.js",
+            "modules": {},
+            "classes": {
+                "Tilemap": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/render/tileset.js": {
+            "name": "lib/render/tileset.js",
+            "modules": {},
+            "classes": {
+                "Tileset": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/render/viewport.js": {
+            "name": "lib/render/viewport.js",
+            "modules": {},
+            "classes": {
+                "Viewport": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/util/color.js": {
+            "name": "lib/util/color.js",
+            "modules": {},
+            "classes": {
+                "Color": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/util/loader.js": {
+            "name": "lib/util/loader.js",
+            "modules": {},
+            "classes": {
+                "Loader": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/util/shader.js": {
+            "name": "lib/util/shader.js",
+            "modules": {},
+            "classes": {
+                "Shader": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/util/utils.js": {
+            "name": "lib/util/utils.js",
+            "modules": {},
+            "classes": {
+                "Utils": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/vendor/howler.js": {
+            "name": "lib/vendor/howler.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/vendor/tween.js": {
+            "name": "lib/vendor/tween.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/joy.js": {
+            "name": "lib/joy.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "Joy.Behaviour": {
+            "name": "Joy.Behaviour",
+            "submodules": {},
+            "classes": {
+                "Button": 1,
+                "Movimentation": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "lib/behaviour/movimentation.js",
+            "line": 5
+        },
+        "Joy": {
+            "name": "Joy",
+            "submodules": {},
+            "classes": {
+                "RectCollider": 1,
+                "TilemapCollider": 1,
+                "CompositeOperation": 1,
+                "Context2d": 1,
+                "Engine": 1,
+                "Support": 1,
+                "Triggerable": 1,
+                "Circle": 1,
+                "Rect": 1,
+                "Keyboard": 1,
+                "Mouse": 1,
+                "Math": 1,
+                "Matrix2D": 1,
+                "Vector2d": 1,
+                "Sound": 1,
+                "TweenManager": 1,
+                "Tween": 1,
+                "DisplayObject": 1,
+                "DisplayObjectContainer": 1,
+                "Parallax": 1,
+                "Scene": 1,
+                "Sprite": 1,
+                "SpriteSheet": 1,
+                "Text": 1,
+                "Tilemap": 1,
+                "Tileset": 1,
+                "Viewport": 1,
+                "Color": 1,
+                "Loader": 1,
+                "Shader": 1,
+                "Utils": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "lib/util/utils.js",
+            "line": 5,
+            "static": 1
+        }
+    },
+    "classes": {
+        "Button": {
+            "name": "Button",
+            "shortname": "Button",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy.Behaviour",
+            "namespace": "",
+            "file": "lib/behaviour/button.js",
+            "line": 5,
+            "description": "Built-in behaviour that handles OVER/OUT/CLICK events from mouse.\nMay be appended to any DisplayObject, by `behave` method.",
+            "is_constructor": 1,
+            "example": [
+                "\n    play = new Joy.DisplayObject(...);\n\n    // Append Button behavior into a HUD instance.\n    play.behave(Joy.Behaviour.Button);\n\n    // Bind event handlers\n    play.bind(Joy.Events.CLICK, function() {\n      console.log(\"Mouse is mine!\");\n    })\n    play.bind(Joy.Events.MOUSE_OVER, function() {\n      console.log(\"Mouse is mine!\");\n    })\n    play.bind(Joy.Events.MOUSE_OUT, function() {\n      console.log(\"Mouse is leaving me!\");\n    })"
+            ]
+        },
+        "Movimentation": {
+            "name": "Movimentation",
+            "shortname": "Movimentation",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy.Behaviour",
+            "namespace": "",
+            "file": "lib/behaviour/movimentation.js",
+            "line": 5,
+            "description": "Built-in behaviour that have acceleration / friction / velocity control.\nMay be appended to any DisplayObject, by `DisplayObject#behave` method.",
+            "is_constructor": 1,
+            "example": [
+                "\n    player = new Joy.DisplayObject(...);\n\n    // Append movimentation behaviour to DisplayObject\n    player.behave(Joy.Behaviour.Movimentation);\n\n    // Configure attributes\n    player.maxVelocity.x = 8;\n    player.acceleration.x = 2;\n    player.friction.x = 1;\n"
+            ]
+        },
+        "RectCollider": {
+            "name": "RectCollider",
+            "shortname": "RectCollider",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/collider/rect_collider.js",
+            "line": 5,
+            "params": [
+                {
+                    "name": "position",
+                    "description": "",
+                    "type": "Vector2d"
+                },
+                {
+                    "name": "width",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "height",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "is_constructor": 1
+        },
+        "TilemapCollider": {
+            "name": "TilemapCollider",
+            "shortname": "TilemapCollider",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/collider/tilemap_collider.js",
+            "line": 5,
+            "params": [
+                {
+                    "name": "tilemap",
+                    "description": "",
+                    "type": "Tilemap"
+                }
+            ],
+            "is_constructor": 1
+        },
+        "CompositeOperation": {
+            "name": "CompositeOperation",
+            "shortname": "CompositeOperation",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/consts/composite_operation.js",
+            "line": 5,
+            "description": "Used on `DisplayObject#composite`",
+            "static": 1
+        },
+        "Context2d": {
+            "name": "Context2d",
+            "shortname": "Context2d",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/core/context/context2d.js",
+            "line": 5,
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object"
+                }
+            ]
+        },
+        "Engine": {
+            "name": "Engine",
+            "shortname": "Engine",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/core/engine.js",
+            "line": 9,
+            "description": "Engine context. Start your application from here.",
+            "is_constructor": 1
+        },
+        "Support": {
+            "name": "Support",
+            "shortname": "Support",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/core/support.js",
+            "line": 27,
+            "description": "Browser support configuration and constants."
+        },
+        "Triggerable": {
+            "name": "Triggerable",
+            "shortname": "Triggerable",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/core/triggerable.js",
+            "line": 5,
+            "description": "Event triggering and handling.",
+            "is_constructor": 1
+        },
+        "Circle": {
+            "name": "Circle",
+            "shortname": "Circle",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/geom/circle.js",
+            "line": 6,
+            "extends": "DisplayObject",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "radius",
+                            "description": "",
+                            "type": "Number",
+                            "optional": true
+                        },
+                        {
+                            "name": "color",
+                            "description": "",
+                            "type": "Color, String",
+                            "optional": true
+                        }
+                    ]
+                }
+            ]
+        },
+        "Rect": {
+            "name": "Rect",
+            "shortname": "Rect",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/geom/rect.js",
+            "line": 6,
+            "extends": "DisplayObject",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "color",
+                            "description": "",
+                            "type": "Color, String",
+                            "optional": true
+                        }
+                    ]
+                }
+            ]
+        },
+        "Keyboard": {
+            "name": "Keyboard",
+            "shortname": "Keyboard",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/input/keyboard.js",
+            "line": 5,
+            "static": 1,
+            "readonly": ""
+        },
+        "Mouse": {
+            "name": "Mouse",
+            "shortname": "Mouse",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/input/mouse.js",
+            "line": 5,
+            "static": 1,
+            "readonly": ""
+        },
+        "Math": {
+            "name": "Math",
+            "shortname": "Math",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/math/math.js",
+            "line": 2
+        },
+        "Matrix2D": {
+            "name": "Matrix2D",
+            "shortname": "Matrix2D",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/math/matrix2d.js",
+            "line": 5,
+            "description": "Based on [EaselJS](https://github.com/CreateJS/EaselJS/) Matrix2D implementation.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "m11",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "m12",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "m21",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "m22",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "dx",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "dy",
+                    "description": "",
+                    "type": "Number"
+                }
+            ]
+        },
+        "Vector2d": {
+            "name": "Vector2d",
+            "shortname": "Vector2d",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/math/vector2d.js",
+            "line": 5,
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "x",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "y",
+                    "description": "",
+                    "type": "Number"
+                }
+            ]
+        },
+        "Sound": {
+            "name": "Sound",
+            "shortname": "Sound",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/modules/sound.js",
+            "line": 5,
+            "description": "OBS:\nAudio library are provided by [howler.js](https://github.com/goldfire/howler.js)."
+        },
+        "TweenManager": {
+            "name": "TweenManager",
+            "shortname": "TweenManager",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/modules/tween.js",
+            "line": 5,
+            "description": "OBS: Tweens are provided by [tween.js](https://github.com/sole/tween.js).\n\nAlias to TWEEN"
+        },
+        "Tween": {
+            "name": "Tween",
+            "shortname": "Tween",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/modules/tween.js",
+            "line": 34,
+            "description": "Create a new tween.\n\nOBS: Tweens are provided by [tween.js](https://github.com/sole/tween.js).\n\nAlias to TWEEN.Tween",
+            "params": [
+                {
+                    "name": "target",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "duration",
+                    "description": "(in milliseconds)",
+                    "type": "Number"
+                }
+            ],
+            "is_constructor": 1
+        },
+        "DisplayObject": {
+            "name": "DisplayObject",
+            "shortname": "DisplayObject",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/render/display_object.js",
+            "line": 7,
+            "description": "Base class for rendering.",
+            "extends": "Triggerable",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object"
+                }
+            ]
+        },
+        "DisplayObjectContainer": {
+            "name": "DisplayObjectContainer",
+            "shortname": "DisplayObjectContainer",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/render/display_object_container.js",
+            "line": 6,
+            "extends": "DisplayObject",
+            "is_constructor": 1
+        },
+        "Parallax": {
+            "name": "Parallax",
+            "shortname": "Parallax",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/render/parallax.js",
+            "line": 6,
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object"
+                }
+            ]
+        },
+        "Scene": {
+            "name": "Scene",
+            "shortname": "Scene",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/render/scene.js",
+            "line": 6,
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object"
+                }
+            ]
+        },
+        "Sprite": {
+            "name": "Sprite",
+            "shortname": "Sprite",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/render/sprite.js",
+            "line": 5,
+            "extends": "DisplayObjectContainer",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "data",
+                    "description": "src (String) or",
+                    "type": "String | Object"
+                },
+                {
+                    "name": "width",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "height",
+                    "description": "",
+                    "type": "Number"
+                }
+            ]
+        },
+        "SpriteSheet": {
+            "name": "SpriteSheet",
+            "shortname": "SpriteSheet",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/render/sprite_sheet.js",
+            "line": 5,
+            "description": "Handles spritesheet animations",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "animations",
+                    "description": "",
+                    "type": "Object"
+                }
+            ]
+        },
+        "Text": {
+            "name": "Text",
+            "shortname": "Text",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/render/text.js",
+            "line": 63,
+            "extends": "DisplayObject",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "any attribute may be initialized by option",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "text",
+                            "description": "default - \"\"",
+                            "type": "String",
+                            "optional": true
+                        },
+                        {
+                            "name": "font",
+                            "description": "default - \"Normal 12px Verdana\"",
+                            "type": "String",
+                            "optional": true
+                        },
+                        {
+                            "name": "align",
+                            "description": "default - \"left\"",
+                            "type": "String",
+                            "optional": true
+                        },
+                        {
+                            "name": "baseline",
+                            "description": "default - Joy.Text.BASELINE.TOP",
+                            "type": "String",
+                            "optional": true
+                        },
+                        {
+                            "name": "color",
+                            "description": "default - #000000",
+                            "type": "String",
+                            "optional": true
+                        }
+                    ]
+                }
+            ],
+            "is_constructor": 1
+        },
+        "Tilemap": {
+            "name": "Tilemap",
+            "shortname": "Tilemap",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/render/tilemap.js",
+            "line": 6,
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object"
+                }
+            ]
+        },
+        "Tileset": {
+            "name": "Tileset",
+            "shortname": "Tileset",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/render/tileset.js",
+            "line": 6,
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "src",
+                            "description": "",
+                            "type": "String",
+                            "optional": true
+                        },
+                        {
+                            "name": "width",
+                            "description": "tile width",
+                            "type": "Number",
+                            "optional": true
+                        },
+                        {
+                            "name": "height",
+                            "description": "tile height",
+                            "type": "Number",
+                            "optional": true
+                        }
+                    ]
+                }
+            ]
+        },
+        "Viewport": {
+            "name": "Viewport",
+            "shortname": "Viewport",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/render/viewport.js",
+            "line": 6,
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "follow",
+                            "description": "",
+                            "type": "DisplayObject"
+                        },
+                        {
+                            "name": "width",
+                            "description": "",
+                            "type": "Number"
+                        },
+                        {
+                            "name": "height",
+                            "description": "",
+                            "type": "Number"
+                        }
+                    ]
+                }
+            ]
+        },
+        "Color": {
+            "name": "Color",
+            "shortname": "Color",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/util/color.js",
+            "line": 5,
+            "params": [
+                {
+                    "name": "hexOrRed",
+                    "description": "hexadecimal color (String), or red (Number)",
+                    "type": "String | Number"
+                },
+                {
+                    "name": "green",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "blue",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "alpha",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "example": [
+                "\n    // color name\n    var color = new Joy.Color(\"red\");",
+                "\n    // hexadecimal\n    var color = new Joy.Color(\"#fff\");",
+                "\n    // rgb\n    var color = new Joy.Color(255, 50, 255);",
+                "\n    // rgba\n    var color = new Joy.Color(255, 50, 255, 100);"
+            ],
+            "is_constructor": 1
+        },
+        "Loader": {
+            "name": "Loader",
+            "shortname": "Loader",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/util/loader.js",
+            "line": 6
+        },
+        "Shader": {
+            "name": "Shader",
+            "shortname": "Shader",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/util/shader.js",
+            "line": 5
+        },
+        "Utils": {
+            "name": "Utils",
+            "shortname": "Utils",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Joy",
+            "namespace": "",
+            "file": "lib/util/utils.js",
+            "line": 5,
+            "static": 1
+        }
+    },
+    "classitems": [
+        {
+            "file": "lib/behaviour/button.js",
+            "line": 32,
+            "itemtype": "attribute",
+            "name": "isOver",
+            "type": "{Boolean}",
+            "class": "Button",
+            "module": "Joy.Behaviour"
+        },
+        {
+            "file": "lib/behaviour/movimentation.js",
+            "line": 26,
+            "description": "Current object's velocity",
+            "itemtype": "attribute",
+            "name": "velocity",
+            "type": "{Vector2d}",
+            "readonly": "",
+            "class": "Movimentation",
+            "module": "Joy.Behaviour"
+        },
+        {
+            "file": "lib/behaviour/movimentation.js",
+            "line": 34,
+            "itemtype": "attribute",
+            "name": "maxVelocity",
+            "type": "{Vector2d}",
+            "default": "Joy.Vector2d(500,500)",
+            "class": "Movimentation",
+            "module": "Joy.Behaviour"
+        },
+        {
+            "file": "lib/behaviour/movimentation.js",
+            "line": 41,
+            "description": "Normalized velocity vector, with values between -1 and 1.",
+            "itemtype": "attribute",
+            "name": "direction",
+            "type": "{Vector2d}",
+            "readonly": "",
+            "class": "Movimentation",
+            "module": "Joy.Behaviour"
+        },
+        {
+            "file": "lib/behaviour/movimentation.js",
+            "line": 51,
+            "description": "Acceleration by frame, in pixels.",
+            "itemtype": "attribute",
+            "name": "acceleration",
+            "type": "{Vector2d}",
+            "class": "Movimentation",
+            "module": "Joy.Behaviour"
+        },
+        {
+            "file": "lib/behaviour/movimentation.js",
+            "line": 59,
+            "description": "Friction for velocity.",
+            "itemtype": "attribute",
+            "name": "friction",
+            "type": "{Vector2d}",
+            "class": "Movimentation",
+            "module": "Joy.Behaviour"
+        },
+        {
+            "file": "lib/behaviour/physics.js",
+            "line": 5,
+            "description": "TODO: Wouldn't it be nice?",
+            "class": "RectCollider",
+            "module": "Joy.Behaviour"
+        },
+        {
+            "file": "lib/collider/rect_collider.js",
+            "line": 30,
+            "description": "Is this DisplayObject colliding with {Object}?",
+            "params": [
+                {
+                    "name": "UNKNOWN",
+                    "description": "",
+                    "type": "DisplayObject, Circle, Rectangle"
+                }
+            ],
+            "return": {
+                "description": "is colliding",
+                "type": "Boolean"
+            },
+            "class": "RectCollider",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/collider/rect_collider.js",
+            "line": 44,
+            "itemtype": "method",
+            "name": "clone",
+            "return": {
+                "description": "",
+                "type": "RectCollider"
+            },
+            "class": "RectCollider",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/consts/composite_operation.js",
+            "line": 11,
+            "itemtype": "attribute",
+            "name": "SOURCE_OVER",
+            "static": 1,
+            "final": 1,
+            "type": "{String}",
+            "class": "CompositeOperation",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/consts/composite_operation.js",
+            "line": 19,
+            "itemtype": "attribute",
+            "name": "SOURCE_IN",
+            "static": 1,
+            "final": 1,
+            "type": "{String}",
+            "class": "CompositeOperation",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/consts/composite_operation.js",
+            "line": 27,
+            "itemtype": "attribute",
+            "name": "SOURCE_OUT",
+            "static": 1,
+            "final": 1,
+            "type": "{String}",
+            "class": "CompositeOperation",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/consts/composite_operation.js",
+            "line": 35,
+            "itemtype": "attribute",
+            "name": "SOURCE_ATOP",
+            "static": 1,
+            "final": 1,
+            "type": "{String}",
+            "class": "CompositeOperation",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/consts/composite_operation.js",
+            "line": 43,
+            "itemtype": "attribute",
+            "name": "LIGHTER",
+            "static": 1,
+            "final": 1,
+            "type": "{String}",
+            "class": "CompositeOperation",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/consts/composite_operation.js",
+            "line": 51,
+            "itemtype": "attribute",
+            "name": "XOR",
+            "static": 1,
+            "final": 1,
+            "type": "{String}",
+            "class": "CompositeOperation",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/consts/composite_operation.js",
+            "line": 59,
+            "itemtype": "attribute",
+            "name": "DESTINATION_OVER",
+            "static": 1,
+            "final": 1,
+            "type": "{String}",
+            "class": "CompositeOperation",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/consts/composite_operation.js",
+            "line": 67,
+            "itemtype": "attribute",
+            "name": "DESTINATION_IN",
+            "static": 1,
+            "final": 1,
+            "type": "{String}",
+            "class": "CompositeOperation",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/consts/composite_operation.js",
+            "line": 75,
+            "itemtype": "attribute",
+            "name": "DESTINATION_OUT",
+            "static": 1,
+            "final": 1,
+            "type": "{String}",
+            "class": "CompositeOperation",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/consts/composite_operation.js",
+            "line": 83,
+            "itemtype": "attribute",
+            "name": "DESTINATION_ATOP",
+            "static": 1,
+            "final": 1,
+            "type": "{String}",
+            "class": "CompositeOperation",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/consts/composite_operation.js",
+            "line": 91,
+            "itemtype": "attribute",
+            "name": "DESTINATION_COPY",
+            "static": 1,
+            "final": 1,
+            "type": "{String}",
+            "class": "CompositeOperation",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/consts/events.js",
+            "line": 6,
+            "description": "Triggered when DisplayObject is initialized.",
+            "itemtype": "attribute",
+            "name": "Events.INIT",
+            "type": "{String}",
+            "static": 1,
+            "readonly": "",
+            "class": "Context2d",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/consts/events.js",
+            "line": 15,
+            "description": "Triggered when scene is loaded.",
+            "itemtype": "attribute",
+            "name": "Events.SCENE_ACTIVE",
+            "type": "{String}",
+            "static": 1,
+            "readonly": "",
+            "class": "Context2d",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/consts/events.js",
+            "line": 24,
+            "description": "Triggered when DisplayObject is added into DisplayObjectContainer.",
+            "itemtype": "attribute",
+            "name": "Events.ADDED",
+            "type": "{String}",
+            "static": 1,
+            "readonly": "",
+            "class": "Context2d",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/consts/events.js",
+            "line": 33,
+            "description": "Triggered when DisplayObject is removed from DisplayObjectContainer.",
+            "itemtype": "attribute",
+            "name": "Events.REMOVED",
+            "type": "{String}",
+            "static": 1,
+            "readonly": "",
+            "class": "Context2d",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/consts/events.js",
+            "line": 42,
+            "description": "Triggered at every frame.",
+            "itemtype": "attribute",
+            "name": "Events.UPDATE",
+            "type": "{String}",
+            "static": 1,
+            "readonly": "",
+            "class": "Context2d",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/consts/events.js",
+            "line": 51,
+            "description": "Triggered on collision update.",
+            "itemtype": "attribute",
+            "name": "Events.COLLISION",
+            "type": "{String}",
+            "static": 1,
+            "readonly": "",
+            "class": "Context2d",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/consts/events.js",
+            "line": 60,
+            "description": "Triggered at the moment collision starts.",
+            "itemtype": "attribute",
+            "name": "Events.COLLISION_START",
+            "type": "{String}",
+            "static": 1,
+            "readonly": "",
+            "class": "Context2d",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/consts/events.js",
+            "line": 69,
+            "description": "Triggered at the moment collision ends.",
+            "itemtype": "attribute",
+            "name": "Events.COLLISION_EXIT",
+            "type": "{String}",
+            "static": 1,
+            "readonly": "",
+            "class": "Context2d",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/core/context/context2d.js",
+            "line": 20,
+            "description": "Clears the entire screen.",
+            "itemtype": "method",
+            "name": "clear",
+            "class": "Context2d",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/core/context/context2d.js",
+            "line": 29,
+            "description": "Render everything in the buffer to the screen.",
+            "itemtype": "method",
+            "name": "render",
+            "class": "Context2d",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/core/engine.js",
+            "line": 18,
+            "description": "Is engine paused?",
+            "itemtype": "attribute",
+            "name": "paused",
+            "type": "{Boolean}",
+            "class": "Engine",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/core/engine.js",
+            "line": 79,
+            "itemtype": "attribute",
+            "name": "currentScene",
+            "type": "{Scene}",
+            "class": "Engine",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/core/engine.js",
+            "line": 114,
+            "description": "Scene that will show when your current scene is loading.",
+            "itemtype": "property",
+            "name": "sceneLoader",
+            "type": "{Scene}",
+            "class": "Engine",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/core/engine.js",
+            "line": 132,
+            "description": "Create a new scene",
+            "itemtype": "method",
+            "name": "createScene",
+            "params": [
+                {
+                    "name": "setupMethod",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "example": [
+                "\n    // Creating a scene with setup\n    engine.createScene(function(scene) {\n       scene.addChild(...);\n    });"
+            ],
+            "return": {
+                "description": "",
+                "type": "Engine"
+            },
+            "class": "Engine",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/core/engine.js",
+            "line": 157,
+            "description": "Create a new scene loader.\nThe first scene loader created will be the default to appear whenever a loader is requested.",
+            "itemtype": "method",
+            "name": "setSceneLoader",
+            "params": [
+                {
+                    "name": "setupMethod",
+                    "description": "or target loader scene",
+                    "type": "Function | Scene"
+                },
+                {
+                    "name": "fadeMilliseconds",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "fadeColor",
+                    "description": "",
+                    "type": "String | Color"
+                }
+            ],
+            "example": [
+                "\n\n    //\n    // Setup custom scene loader\n    //\n    engine.setSceneLoader(function(scene) {\n       scene.addChild(...).bind(Joy.Events.UPDATE, function () {\n         console.log(scene.loader.percentage);\n       });\n    });\n\n    //\n    // Set based on created scene\n    //\n    // => Set your first scene loader\n    var firstLoader = engine.setSceneLoader(function(scene) {\n       scene.addChild(...).bind(Joy.Events.UPDATE, function () {\n         console.log(scene.loader.percentage);\n       });\n    });\n\n    // => Change the loader\n    var secondLoader = engine.setSceneLoader(function(scene) {\n       scene.addChild(...);\n    });\n    // => Change it again, using the first one\n    engine.setSceneLoader(firstLoader);"
+            ],
+            "return": {
+                "description": "sceneLoader",
+                "type": "Scene"
+            },
+            "class": "Engine",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/core/engine.js",
+            "line": 216,
+            "description": "Pause engine",
+            "itemtype": "method",
+            "name": "pause",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "Engine",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/core/engine.js",
+            "line": 227,
+            "description": "Resume if engine is paused.",
+            "itemtype": "method",
+            "name": "resume",
+            "class": "Engine",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/core/engine.js",
+            "line": 236,
+            "itemtype": "method",
+            "name": "gotoNextScene",
+            "params": [
+                {
+                    "name": "fadeMilliseconds",
+                    "description": "(default=1000)",
+                    "type": "Number"
+                },
+                {
+                    "name": "color",
+                    "description": "(default=#000)",
+                    "type": "String | Color"
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "Engine"
+            },
+            "class": "Engine",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/core/engine.js",
+            "line": 249,
+            "itemtype": "method",
+            "name": "gotoScene",
+            "params": [
+                {
+                    "name": "scene",
+                    "description": "",
+                    "type": "Scene"
+                },
+                {
+                    "name": "fadeMilliseconds",
+                    "description": "(default=1000)",
+                    "type": "Number"
+                },
+                {
+                    "name": "color",
+                    "description": "(default=#000)",
+                    "type": "String | Color"
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "Engine"
+            },
+            "class": "Engine",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/core/engine.js",
+            "line": 294,
+            "description": "Call window's requestAnimationFrame.",
+            "itemtype": "method",
+            "name": "onEnterFrame",
+            "class": "Engine",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/core/engine.js",
+            "line": 309,
+            "description": "Inspect application frame rate. Call window's requestAnimationFrame",
+            "itemtype": "method",
+            "name": "onEnterFrameDebug",
+            "class": "Engine",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/core/object.js",
+            "line": 1,
+            "description": "Simple JavaScript Inheritance - http://ejohn.org/blog/simple-javascript-inheritance/\nBy John Resig http://ejohn.org/\nMIT Licensed.",
+            "class": "Support",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/core/support.js",
+            "line": 32,
+            "description": "Device supports touch events?",
+            "itemtype": "attribute",
+            "name": "touch",
+            "type": "{Boolean}",
+            "static": 1,
+            "readonly": "",
+            "class": "Support",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/core/support.js",
+            "line": 41,
+            "description": "Device supports Retina Display?",
+            "itemtype": "attribute",
+            "name": "retina",
+            "type": "{Boolean}",
+            "static": 1,
+            "readonly": "",
+            "class": "Support",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/core/support.js",
+            "line": 56,
+            "description": "window.onEnterFrame",
+            "class": "Support",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/core/triggerable.js",
+            "line": 17,
+            "description": "Behave like a {Behaviour}",
+            "itemtype": "method",
+            "name": "behave",
+            "params": [
+                {
+                    "name": "UNKNOWN",
+                    "description": "",
+                    "type": "Behaviour"
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "Triggerable"
+            },
+            "class": "Triggerable",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/core/triggerable.js",
+            "line": 39,
+            "description": "This object behaves as {target} behaviour?",
+            "itemtype": "method",
+            "name": "hasBehaviour",
+            "params": [
+                {
+                    "name": "target",
+                    "description": "",
+                    "type": "Behaviour"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "Triggerable",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/core/triggerable.js",
+            "line": 49,
+            "description": "Bind event handler",
+            "itemtype": "method",
+            "name": "bind",
+            "params": [
+                {
+                    "name": "type",
+                    "description": "event type",
+                    "type": "String"
+                },
+                {
+                    "name": "handler",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "Triggerable"
+            },
+            "class": "Triggerable",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/core/triggerable.js",
+            "line": 75,
+            "description": "Remove event handlers",
+            "itemtype": "method",
+            "name": "unbind",
+            "params": [
+                {
+                    "name": "type",
+                    "description": "event type",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "Triggerable"
+            },
+            "class": "Triggerable",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/core/triggerable.js",
+            "line": 94,
+            "description": "Triggers event type",
+            "itemtype": "method",
+            "name": "trigger",
+            "params": [
+                {
+                    "name": "type",
+                    "description": "event type",
+                    "type": "String"
+                },
+                {
+                    "name": "arguments",
+                    "description": "arguments for callback",
+                    "type": "Array"
+                },
+                {
+                    "name": "delay",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "optional": 1,
+            "class": "Triggerable",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/core/triggerable.js",
+            "line": 123,
+            "description": "Register default method handler.",
+            "itemtype": "method",
+            "name": "register",
+            "params": [
+                {
+                    "name": "type",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "bindCallback",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "unbindCallback",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "static": 1,
+            "class": "Triggerable",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/geom/rect.js",
+            "line": 17,
+            "itemtype": "attribute",
+            "name": "color",
+            "type": "{String}",
+            "class": "Rect",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/geom/rect.js",
+            "line": 26,
+            "itemtype": "method",
+            "name": "colorize",
+            "params": [
+                {
+                    "name": "color",
+                    "description": "",
+                    "type": "Color | String"
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "Rect"
+            },
+            "class": "Rect",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/init/markup.js",
+            "line": 1,
+            "description": "TODO:\n\nmodule Joy",
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/init/markup.js",
+            "line": 11,
+            "description": "Analyses HTML `canvas` tag contents, and add those childs\nto Joy contexting pipeline.\n\nTODO: This feature is extremely experimental.\n\nDependency: Sizzle\n\nclass Markup\nconstructor",
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/init/package.js",
+            "line": 1,
+            "description": "module Joy",
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/init/package.js",
+            "line": 5,
+            "description": "Reads a stand-alone package.\n\nTODO: Not implemented yet.\n\nclass Package",
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 11,
+            "description": "Enter keycode",
+            "itemtype": "attribute",
+            "name": "ENTER",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 20,
+            "description": "SPACE keycode",
+            "itemtype": "attribute",
+            "name": "SPACE",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 29,
+            "description": "BACKSPACE keycode",
+            "itemtype": "attribute",
+            "name": "BACKSPACE",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 38,
+            "description": "TAB keycode",
+            "itemtype": "attribute",
+            "name": "TAB",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 47,
+            "description": "SHIFT keycode",
+            "itemtype": "attribute",
+            "name": "SHIFT",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 56,
+            "description": "CTRL keycode",
+            "itemtype": "attribute",
+            "name": "CTRL",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 65,
+            "description": "ALT keycode",
+            "itemtype": "attribute",
+            "name": "ALT",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 74,
+            "description": "PAUSE keycode",
+            "itemtype": "attribute",
+            "name": "PAUSE",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 83,
+            "description": "CAPSLOCK keycode",
+            "itemtype": "attribute",
+            "name": "CAPSLOCK",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 92,
+            "description": "ESCAPE keycode",
+            "itemtype": "attribute",
+            "name": "ESCAPE",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 101,
+            "description": "PAGEUP keycode",
+            "itemtype": "attribute",
+            "name": "PAGEUP",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 110,
+            "description": "PAGEDOWN keycode",
+            "itemtype": "attribute",
+            "name": "PAGEDOWN",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 119,
+            "description": "END keycode",
+            "itemtype": "attribute",
+            "name": "END",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 128,
+            "description": "HOME keycode",
+            "itemtype": "attribute",
+            "name": "HOME",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 137,
+            "description": "LEFT keycode",
+            "itemtype": "attribute",
+            "name": "LEFT",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 146,
+            "description": "UP keycode",
+            "itemtype": "attribute",
+            "name": "UP",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 155,
+            "description": "RIGHT keycode",
+            "itemtype": "attribute",
+            "name": "RIGHT",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 164,
+            "description": "DOWN keycode",
+            "itemtype": "attribute",
+            "name": "DOWN",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 173,
+            "description": "INSERT keycode",
+            "itemtype": "attribute",
+            "name": "INSERT",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 182,
+            "description": "DELETE keycode",
+            "itemtype": "attribute",
+            "name": "DELETE",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 191,
+            "description": "KEY_0 keycode",
+            "itemtype": "attribute",
+            "name": "KEY_0",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 200,
+            "description": "KEY_1 keycode",
+            "itemtype": "attribute",
+            "name": "KEY_1",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 209,
+            "description": "KEY_2 keycode",
+            "itemtype": "attribute",
+            "name": "KEY_2",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 218,
+            "description": "KEY_3 keycode",
+            "itemtype": "attribute",
+            "name": "KEY_3",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 227,
+            "description": "KEY_4 keycode",
+            "itemtype": "attribute",
+            "name": "KEY_4",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 236,
+            "description": "KEY_5 keycode",
+            "itemtype": "attribute",
+            "name": "KEY_5",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 245,
+            "description": "KEY_6 keycode",
+            "itemtype": "attribute",
+            "name": "KEY_6",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 254,
+            "description": "KEY_7 keycode",
+            "itemtype": "attribute",
+            "name": "KEY_7",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 263,
+            "description": "KEY_8 keycode",
+            "itemtype": "attribute",
+            "name": "KEY_8",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 272,
+            "description": "KEY_9 keycode",
+            "itemtype": "attribute",
+            "name": "KEY_9",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 281,
+            "description": "KEY_A keycode",
+            "itemtype": "attribute",
+            "name": "KEY_A",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 290,
+            "description": "KEY_B keycode",
+            "itemtype": "attribute",
+            "name": "KEY_B",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 299,
+            "description": "KEY_C keycode",
+            "itemtype": "attribute",
+            "name": "KEY_C",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 308,
+            "description": "KEY_D keycode",
+            "itemtype": "attribute",
+            "name": "KEY_D",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 317,
+            "description": "KEY_E keycode",
+            "itemtype": "attribute",
+            "name": "KEY_E",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 326,
+            "description": "KEY_F keycode",
+            "itemtype": "attribute",
+            "name": "KEY_F",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 335,
+            "description": "KEY_G keycode",
+            "itemtype": "attribute",
+            "name": "KEY_G",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 344,
+            "description": "KEY_H keycode",
+            "itemtype": "attribute",
+            "name": "KEY_H",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 353,
+            "description": "KEY_I keycode",
+            "itemtype": "attribute",
+            "name": "KEY_I",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 362,
+            "description": "KEY_J keycode",
+            "itemtype": "attribute",
+            "name": "KEY_J",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 371,
+            "description": "KEY_K keycode",
+            "itemtype": "attribute",
+            "name": "KEY_K",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 380,
+            "description": "KEY_L keycode",
+            "itemtype": "attribute",
+            "name": "KEY_L",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 389,
+            "description": "KEY_M keycode",
+            "itemtype": "attribute",
+            "name": "KEY_M",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 398,
+            "description": "KEY_N keycode",
+            "itemtype": "attribute",
+            "name": "KEY_N",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 407,
+            "description": "KEY_O keycode",
+            "itemtype": "attribute",
+            "name": "KEY_O",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 416,
+            "description": "KEY_P keycode",
+            "itemtype": "attribute",
+            "name": "KEY_P",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 425,
+            "description": "KEY_Q keycode",
+            "itemtype": "attribute",
+            "name": "KEY_Q",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 434,
+            "description": "KEY_R keycode",
+            "itemtype": "attribute",
+            "name": "KEY_R",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 443,
+            "description": "KEY_S keycode",
+            "itemtype": "attribute",
+            "name": "KEY_S",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 452,
+            "description": "KEY_T keycode",
+            "itemtype": "attribute",
+            "name": "KEY_T",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 461,
+            "description": "KEY_U keycode",
+            "itemtype": "attribute",
+            "name": "KEY_U",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 470,
+            "description": "KEY_V keycode",
+            "itemtype": "attribute",
+            "name": "KEY_V",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 479,
+            "description": "KEY_W keycode",
+            "itemtype": "attribute",
+            "name": "KEY_W",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 488,
+            "description": "KEY_X keycode",
+            "itemtype": "attribute",
+            "name": "KEY_X",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 497,
+            "description": "KEY_Y keycode",
+            "itemtype": "attribute",
+            "name": "KEY_Y",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 506,
+            "description": "KEY_Z keycode",
+            "itemtype": "attribute",
+            "name": "KEY_Z",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 515,
+            "description": "SELECT keycode",
+            "itemtype": "attribute",
+            "name": "SELECT",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 524,
+            "description": "NUMPAD0 keycode",
+            "itemtype": "attribute",
+            "name": "NUMPAD0",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 533,
+            "description": "NUMPAD1 keycode",
+            "itemtype": "attribute",
+            "name": "NUMPAD1",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 542,
+            "description": "NUMPAD2 keycode",
+            "itemtype": "attribute",
+            "name": "NUMPAD2",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 551,
+            "description": "NUMPAD3 keycode",
+            "itemtype": "attribute",
+            "name": "NUMPAD3",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 560,
+            "description": "NUMPAD4 keycode",
+            "itemtype": "attribute",
+            "name": "NUMPAD4",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 569,
+            "description": "NUMPAD5 keycode",
+            "itemtype": "attribute",
+            "name": "NUMPAD5",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 578,
+            "description": "NUMPAD6 keycode",
+            "itemtype": "attribute",
+            "name": "NUMPAD6",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 587,
+            "description": "NUMPAD7 keycode",
+            "itemtype": "attribute",
+            "name": "NUMPAD7",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 596,
+            "description": "NUMPAD8 keycode",
+            "itemtype": "attribute",
+            "name": "NUMPAD8",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 605,
+            "description": "NUMPAD9 keycode",
+            "itemtype": "attribute",
+            "name": "NUMPAD9",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 614,
+            "description": "MULTIPLY keycode",
+            "itemtype": "attribute",
+            "name": "MULTIPLY",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 623,
+            "description": "ADD keycode",
+            "itemtype": "attribute",
+            "name": "ADD",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 632,
+            "description": "SUBTRACT keycode",
+            "itemtype": "attribute",
+            "name": "SUBTRACT",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 641,
+            "description": "DECIMALPOINT keycode",
+            "itemtype": "attribute",
+            "name": "DECIMALPOINT",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 650,
+            "description": "DIVIDE keycode",
+            "itemtype": "attribute",
+            "name": "DIVIDE",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 659,
+            "description": "F1 keycode",
+            "itemtype": "attribute",
+            "name": "F1",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 668,
+            "description": "F2 keycode",
+            "itemtype": "attribute",
+            "name": "F2",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 677,
+            "description": "F3 keycode",
+            "itemtype": "attribute",
+            "name": "F3",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 686,
+            "description": "F4 keycode",
+            "itemtype": "attribute",
+            "name": "F4",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 695,
+            "description": "F5 keycode",
+            "itemtype": "attribute",
+            "name": "F5",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 704,
+            "description": "F6 keycode",
+            "itemtype": "attribute",
+            "name": "F6",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 713,
+            "description": "F7 keycode",
+            "itemtype": "attribute",
+            "name": "F7",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 722,
+            "description": "F8 keycode",
+            "itemtype": "attribute",
+            "name": "F8",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 731,
+            "description": "F9 keycode",
+            "itemtype": "attribute",
+            "name": "F9",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 740,
+            "description": "F10 keycode",
+            "itemtype": "attribute",
+            "name": "F10",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 749,
+            "description": "F11 keycode",
+            "itemtype": "attribute",
+            "name": "F11",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 758,
+            "description": "F12 keycode",
+            "itemtype": "attribute",
+            "name": "F12",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 767,
+            "description": "NUMLOCK keycode",
+            "itemtype": "attribute",
+            "name": "NUMLOCK",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 776,
+            "description": "SCROLLLOCK keycode",
+            "itemtype": "attribute",
+            "name": "SCROLLLOCK",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 785,
+            "description": "SEMICOLON keycode",
+            "itemtype": "attribute",
+            "name": "SEMICOLON",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 794,
+            "description": "EQUALSIGN keycode",
+            "itemtype": "attribute",
+            "name": "EQUALSIGN",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 803,
+            "description": "COMMA keycode",
+            "itemtype": "attribute",
+            "name": "COMMA",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 812,
+            "description": "DASH keycode",
+            "itemtype": "attribute",
+            "name": "DASH",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 821,
+            "description": "PERIOD keycode",
+            "itemtype": "attribute",
+            "name": "PERIOD",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 830,
+            "description": "FORWARDSLASH keycode",
+            "itemtype": "attribute",
+            "name": "FORWARDSLASH",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 839,
+            "description": "GRAVEACCENT keycode",
+            "itemtype": "attribute",
+            "name": "GRAVEACCENT",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 848,
+            "description": "OPENBRACKET keycode",
+            "itemtype": "attribute",
+            "name": "OPENBRACKET",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 857,
+            "description": "BACKSLASH keycode",
+            "itemtype": "attribute",
+            "name": "BACKSLASH",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 866,
+            "description": "CLOSEBRAKET keycode",
+            "itemtype": "attribute",
+            "name": "CLOSEBRAKET",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 875,
+            "description": "SINGLEQUOTE keycode",
+            "itemtype": "attribute",
+            "name": "SINGLEQUOTE",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 885,
+            "description": "Events.KEY_DOWN",
+            "type": "{String}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 893,
+            "description": "Events.KEY_UP",
+            "type": "{String}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 901,
+            "description": "Events.KEY_PRESS",
+            "type": "{String}",
+            "static": 1,
+            "final": 1,
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/keyboard.js",
+            "line": 909,
+            "itemtype": "property",
+            "name": "repeatRate",
+            "type": "{Number}",
+            "default": "1",
+            "class": "Keyboard",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/mouse.js",
+            "line": 22,
+            "itemtype": "method",
+            "name": "isOver",
+            "params": [
+                {
+                    "name": "displayObject",
+                    "description": "",
+                    "type": "DisplayObject"
+                }
+            ],
+            "static": 1,
+            "return": {
+                "description": "",
+                "type": "Booelan"
+            },
+            "class": "Mouse",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/mouse.js",
+            "line": 58,
+            "description": "Events.MOUSE_DOWN",
+            "type": "{String}",
+            "static": 1,
+            "final": 1,
+            "class": "Mouse",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/mouse.js",
+            "line": 66,
+            "description": "Events.MOUSE_UP",
+            "type": "{String}",
+            "static": 1,
+            "final": 1,
+            "class": "Mouse",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/mouse.js",
+            "line": 74,
+            "description": "Events.MOUSE_MOVE",
+            "type": "{String}",
+            "static": 1,
+            "final": 1,
+            "class": "Mouse",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/mouse.js",
+            "line": 82,
+            "description": "Events.CLICK",
+            "type": "{String}",
+            "static": 1,
+            "final": 1,
+            "class": "Mouse",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/mouse.js",
+            "line": 90,
+            "description": "Events.DOUBLE_CLICK",
+            "type": "{String}",
+            "static": 1,
+            "final": 1,
+            "class": "Mouse",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/mouse.js",
+            "line": 98,
+            "description": "TODO: not implemented yet\n      only available attaching Joy.Behaviour.Button behaviour\n\nEvents.MOUSE_OVER",
+            "type": "{String}",
+            "static": 1,
+            "final": 1,
+            "class": "Mouse",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/mouse.js",
+            "line": 109,
+            "description": "TODO: not implemented yet\n      only available attaching Joy.Behaviour.Button behaviour\n\nEvents.MOUSE_OUT",
+            "type": "{String}",
+            "static": 1,
+            "final": 1,
+            "class": "Mouse",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/touch.js",
+            "line": 10,
+            "description": "Events.TOUCH_START",
+            "type": "{String}",
+            "static": 1,
+            "final": 1,
+            "class": "Math",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/touch.js",
+            "line": 18,
+            "description": "Events.TOUCH_MOVE",
+            "type": "{String}",
+            "static": 1,
+            "final": 1,
+            "class": "Math",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/input/touch.js",
+            "line": 26,
+            "description": "Events.TOUCH_END",
+            "type": "{String}",
+            "static": 1,
+            "final": 1,
+            "class": "Math",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/math/math.js",
+            "line": 6,
+            "itemtype": "method",
+            "name": "clamp",
+            "params": [
+                {
+                    "name": "number",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "low",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "high",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "static": 1,
+            "example": [
+                "\n    Math.clamp(5, 10, 20); // returns 10"
+            ],
+            "class": "Math",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/math/matrix2d.js",
+            "line": 32,
+            "description": "Generates matrix properties from the specified display object transform properties, and appends them with this matrix.\nFor example, you can use this to generate m11 matrix from m11 display object: var mtx = new Matrix2D();\nmtx.appendTransform(o.x, o.y, o.scaleX, o.scaleY, o.rotation);",
+            "itemtype": "method",
+            "name": "appendTransform",
+            "params": [
+                {
+                    "name": "x",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "y",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "scaleX",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "scaleY",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "rotation",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "skewX",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "skewY",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "pivotX",
+                    "description": "Optional.",
+                    "type": "Number"
+                },
+                {
+                    "name": "pivotY",
+                    "description": "Optional.",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "This matrix. Useful for chaining method calls.",
+                "type": "Matrix2D"
+            },
+            "class": "Matrix2D",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/math/matrix2d.js",
+            "line": 79,
+            "description": "Appends the specified matrix properties with this matrix. All parameters are required.",
+            "itemtype": "method",
+            "name": "append",
+            "params": [
+                {
+                    "name": "m11",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "m12",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "m21",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "m22",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "dx",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "dy",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "This matrix. Useful for chaining method calls.",
+                "type": "Matrix2D"
+            },
+            "class": "Matrix2D",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/math/matrix2d.js",
+            "line": 105,
+            "description": "Inverts the matrix, causing it to perform the opposite transformation.",
+            "itemtype": "method",
+            "name": "invert",
+            "return": {
+                "description": "this",
+                "type": "Matrix2D"
+            },
+            "class": "Matrix2D",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/math/matrix2d.js",
+            "line": 127,
+            "description": "Clone Matrix2D instance",
+            "return": {
+                "description": "",
+                "type": "Matrix2D"
+            },
+            "class": "Matrix2D",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/math/matrix2d.js",
+            "line": 135,
+            "description": "Reset matrix to it's identity",
+            "return": {
+                "description": "this",
+                "type": "Matrix2D"
+            },
+            "class": "Matrix2D",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/math/matrix2d.js",
+            "line": 145,
+            "description": "Multiplier for converting degrees to radians. Used internally by Matrix2D.",
+            "itemtype": "attribute",
+            "name": "DEG_TO_RAD",
+            "static": 1,
+            "readonly": "",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "Matrix2D",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/math/vector2d.js",
+            "line": 15,
+            "description": "Get the magnitude of this vector",
+            "itemtype": "attribute",
+            "name": "length",
+            "readonly": "",
+            "class": "Vector2d",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/math/vector2d.js",
+            "line": 24,
+            "description": "Get this vector with a magnitude of 1.",
+            "itemtype": "attribute",
+            "name": "normalized",
+            "readonly": "",
+            "class": "Vector2d",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/math/vector2d.js",
+            "line": 35,
+            "itemtype": "method",
+            "name": "set",
+            "params": [
+                {
+                    "name": "x",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "y",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Vector2d"
+            },
+            "class": "Vector2d",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/math/vector2d.js",
+            "line": 47,
+            "itemtype": "method",
+            "name": "sum",
+            "params": [
+                {
+                    "name": "vector2d",
+                    "description": "",
+                    "type": "Vector2d"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Vector2d"
+            },
+            "class": "Vector2d",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/math/vector2d.js",
+            "line": 58,
+            "itemtype": "method",
+            "name": "sum",
+            "params": [
+                {
+                    "name": "vector2d",
+                    "description": "",
+                    "type": "Vector2d"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Vector2d"
+            },
+            "class": "Vector2d",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/math/vector2d.js",
+            "line": 69,
+            "itemtype": "method",
+            "name": "scale",
+            "params": [
+                {
+                    "name": "x",
+                    "description": "(or x y)",
+                    "type": "Number"
+                },
+                {
+                    "name": "y",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Vector2d"
+            },
+            "class": "Vector2d",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/math/vector2d.js",
+            "line": 81,
+            "itemtype": "method",
+            "name": "clone",
+            "return": {
+                "description": "",
+                "type": "Vector2d"
+            },
+            "class": "Vector2d",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/math/vector2d.js",
+            "line": 89,
+            "description": "Return unit vector",
+            "return": {
+                "description": "",
+                "type": "Vector2d"
+            },
+            "class": "Vector2d",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/math/vector2d.js",
+            "line": 97,
+            "description": "Normalize this vector",
+            "return": {
+                "description": "",
+                "type": "Vector2d"
+            },
+            "class": "Vector2d",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/math/vector2d.js",
+            "line": 108,
+            "description": "Get the distance between this vector and the argument vector",
+            "params": [
+                {
+                    "name": "vector",
+                    "description": "",
+                    "type": "Vector2d"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "Vector2d",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/math/vector2d.js",
+            "line": 119,
+            "itemtype": "method",
+            "name": "toString",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "Vector2d",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/modules/tween.js",
+            "line": 14,
+            "itemtype": "method",
+            "name": "getAll",
+            "return": {
+                "description": "",
+                "type": "Array"
+            },
+            "class": "TweenManager",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/modules/tween.js",
+            "line": 18,
+            "itemtype": "method",
+            "name": "removeAll",
+            "class": "TweenManager",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/modules/tween.js",
+            "line": 21,
+            "params": [
+                {
+                    "name": "tween",
+                    "description": "",
+                    "type": "Tween"
+                }
+            ],
+            "itemtype": "method",
+            "name": "add",
+            "class": "TweenManager",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/modules/tween.js",
+            "line": 25,
+            "params": [
+                {
+                    "name": "tween",
+                    "description": "",
+                    "type": "Tween"
+                }
+            ],
+            "itemtype": "method",
+            "name": "remove",
+            "class": "TweenManager",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/modules/tween.js",
+            "line": 29,
+            "params": [
+                {
+                    "name": "time",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "itemtype": "method",
+            "name": "update",
+            "class": "TweenManager",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/modules/tween.js",
+            "line": 50,
+            "params": [
+                {
+                    "name": "UNKNOWN",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "itemtype": "method",
+            "name": "to",
+            "return": {
+                "description": "this",
+                "type": "Tween"
+            },
+            "class": "Tween",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/modules/tween.js",
+            "line": 56,
+            "params": [
+                {
+                    "name": "UNKNOWN",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "itemtype": "method",
+            "name": "start",
+            "return": {
+                "description": "this",
+                "type": "Tween"
+            },
+            "class": "Tween",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/modules/tween.js",
+            "line": 62,
+            "itemtype": "method",
+            "name": "stop",
+            "return": {
+                "description": "this",
+                "type": "Tween"
+            },
+            "class": "Tween",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/modules/tween.js",
+            "line": 67,
+            "params": [
+                {
+                    "name": "times",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "itemtype": "method",
+            "name": "repeat",
+            "return": {
+                "description": "this",
+                "type": "Tween"
+            },
+            "class": "Tween",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/modules/tween.js",
+            "line": 73,
+            "params": [
+                {
+                    "name": "amount",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "itemtype": "method",
+            "name": "delay",
+            "return": {
+                "description": "this",
+                "type": "Tween"
+            },
+            "class": "Tween",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/modules/tween.js",
+            "line": 79,
+            "params": [
+                {
+                    "name": "method",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "itemtype": "method",
+            "name": "easing",
+            "return": {
+                "description": "this",
+                "type": "Tween"
+            },
+            "class": "Tween",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/modules/tween.js",
+            "line": 85,
+            "params": [
+                {
+                    "name": "method",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "itemtype": "method",
+            "name": "interpolation",
+            "return": {
+                "description": "this",
+                "type": "Tween"
+            },
+            "class": "Tween",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/modules/tween.js",
+            "line": 91,
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "itemtype": "method",
+            "name": "onUpdate",
+            "return": {
+                "description": "this",
+                "type": "Tween"
+            },
+            "class": "Tween",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/modules/tween.js",
+            "line": 97,
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "itemtype": "method",
+            "name": "onComplete",
+            "return": {
+                "description": "this",
+                "type": "Tween"
+            },
+            "class": "Tween",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 18,
+            "itemtype": "attribute",
+            "name": "id",
+            "type": "{String}",
+            "default": "\"joy...\"",
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 25,
+            "itemtype": "attribute",
+            "name": "position",
+            "type": "{Vector2d}",
+            "default": "0,0",
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 36,
+            "itemtype": "attribute",
+            "name": "pivot",
+            "type": "{Vector2d}",
+            "default": "0,0",
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 43,
+            "itemtype": "attribute",
+            "name": "skewX",
+            "type": "{Number}",
+            "default": "0",
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 50,
+            "itemtype": "attribute",
+            "name": "scale",
+            "type": "{Vector2d}",
+            "default": "1,1",
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 57,
+            "itemtype": "attribute",
+            "name": "alpha",
+            "type": "{Number}",
+            "default": "1",
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 64,
+            "itemtype": "attribute",
+            "name": "rotation",
+            "type": "{Number}",
+            "default": "0",
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 71,
+            "itemtype": "attribute",
+            "name": "smooth",
+            "type": "{Boolean}",
+            "default": "false",
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 78,
+            "itemtype": "attribute",
+            "name": "width",
+            "type": "{Number}",
+            "default": "0",
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 85,
+            "itemtype": "attribute",
+            "name": "height",
+            "type": "{Number}",
+            "default": "0",
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 92,
+            "description": "Collider object. Can be a DisplayObject, or a geometry collider.",
+            "itemtype": "attribute",
+            "name": "collider",
+            "type": "{DisplayObject | RectCollider}",
+            "default": "this",
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 107,
+            "description": "Index of this DisplayObject on the DisplayObjectContainer",
+            "itemtype": "attribute",
+            "name": "index",
+            "type": "{Number}",
+            "readonly": "",
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 115,
+            "description": "Context that this DisplayObject will be rendered in",
+            "itemtype": "attribute",
+            "name": "ctx",
+            "type": "{Canvas2D}",
+            "readonly": "",
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 133,
+            "description": "Parent DisplayObject",
+            "itemtype": "attribute",
+            "name": "parent",
+            "readonly": "",
+            "type": "{DisplayObjectContainer}",
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 143,
+            "description": "Get scene where this DisplayObject is contained in",
+            "readonly": "",
+            "type": "{Scene}",
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 156,
+            "description": "Is this DisplayObject able for rendering?",
+            "itemtype": "attribute",
+            "name": "visible",
+            "type": "{Boolean}",
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 168,
+            "description": "Reference of the current transformation matrix.",
+            "itemtype": "attribute",
+            "name": "matrix",
+            "type": "{Matrix2D}",
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 177,
+            "itemtype": "attribute",
+            "name": "width",
+            "readonly": "",
+            "type": "{Number}",
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 186,
+            "itemtype": "attribute",
+            "name": "height",
+            "readonly": "",
+            "type": "{Number}",
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 195,
+            "itemtype": "attribute",
+            "name": "right",
+            "readonly": "",
+            "type": "{Number}",
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 204,
+            "itemtype": "attribute",
+            "name": "bottom",
+            "readonly": "",
+            "type": "{Number}",
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 213,
+            "itemtype": "attribute",
+            "name": "flipX",
+            "type": "{Boolean}",
+            "default": "false",
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 220,
+            "itemtype": "attribute",
+            "name": "flipY",
+            "type": "{Boolean}",
+            "default": "false",
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 239,
+            "itemtype": "method",
+            "name": "setScale",
+            "params": [
+                {
+                    "name": "x",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "y",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 249,
+            "itemtype": "method",
+            "name": "allowCollisionFrom",
+            "params": [
+                {
+                    "name": "target",
+                    "description": "",
+                    "type": "DisplayObject | Array"
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "DisplayObject"
+            },
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 266,
+            "itemtype": "method",
+            "name": "translate",
+            "params": [
+                {
+                    "name": "x",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "y",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 277,
+            "itemtype": "method",
+            "name": "rotate",
+            "params": [
+                {
+                    "name": "angle",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 285,
+            "itemtype": "method",
+            "name": "transform",
+            "params": [
+                {
+                    "name": "m11",
+                    "description": "The m1,1 value in the matrix.",
+                    "type": "Number"
+                },
+                {
+                    "name": "m12",
+                    "description": "The m1,2 value in the matrix.",
+                    "type": "Number"
+                },
+                {
+                    "name": "m21",
+                    "description": "The m2,1 value in the matrix.",
+                    "type": "Number"
+                },
+                {
+                    "name": "m22",
+                    "description": "The m2,2 value in the matrix.",
+                    "type": "Number"
+                },
+                {
+                    "name": "dx",
+                    "description": "The delta x (dx) value in the matrix.",
+                    "type": "Number"
+                },
+                {
+                    "name": "dy",
+                    "description": "The delta y (dy) value in the matrix.",
+                    "type": "Number"
+                }
+            ],
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 299,
+            "description": "Apply composite operation on DisplayObject's canvas.",
+            "itemtype": "method",
+            "name": "blend",
+            "params": [
+                {
+                    "name": "compositeOperation",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "DisplayObject"
+            },
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 310,
+            "itemtype": "method",
+            "name": "fillStyle",
+            "params": [
+                {
+                    "name": "color",
+                    "description": "",
+                    "type": "Color, String"
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "DisplayObject"
+            },
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 321,
+            "itemtype": "method",
+            "name": "fillRect",
+            "params": [
+                {
+                    "name": "x",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "y",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "width",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "height",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "DisplayObject"
+            },
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 335,
+            "description": "Register shadow context operations",
+            "itemtype": "method",
+            "name": "shadow",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "shadow options",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "color",
+                            "description": "shadow color",
+                            "type": "Color, String",
+                            "optional": true
+                        },
+                        {
+                            "name": "offsetX",
+                            "description": "shadow x offset",
+                            "type": "Number",
+                            "optional": true
+                        },
+                        {
+                            "name": "offsetY",
+                            "description": "shadow y offset",
+                            "type": "Number",
+                            "optional": true
+                        },
+                        {
+                            "name": "blur",
+                            "description": "shadow blur ratio",
+                            "type": "Number",
+                            "optional": true
+                        }
+                    ]
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "DisplayObject"
+            },
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 359,
+            "description": "Update canvas context, based on DisplayObject transformation variables",
+            "itemtype": "method",
+            "name": "updateContext",
+            "return": {
+                "description": "this",
+                "type": "DisplayObject"
+            },
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 394,
+            "description": "Is this DisplayObject colliding with {Object}?",
+            "params": [
+                {
+                    "name": "UNKNOWN",
+                    "description": "",
+                    "type": "DisplayObject, Circle, Rectangle"
+                }
+            ],
+            "return": {
+                "description": "is colliding",
+                "type": "Boolean"
+            },
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 408,
+            "description": "Called on UPDATE, triggers COLLISION_ENTER, COLLISION_EXIT and COLLISION events.",
+            "itemtype": "method",
+            "name": "checkCollisions",
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 445,
+            "itemtype": "method",
+            "name": "willCollideAt",
+            "params": [
+                {
+                    "name": "projection",
+                    "description": "",
+                    "type": "Vector2d"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "DisplayObject, null"
+            },
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 465,
+            "description": "Apply all custom context operations.",
+            "itemtype": "method",
+            "name": "render",
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 486,
+            "description": "Get a clone of the current transformation",
+            "itemtype": "method",
+            "name": "getMatrix",
+            "return": {
+                "description": "",
+                "type": "Matrix2D"
+            },
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object.js",
+            "line": 495,
+            "description": "Return DisplayObject boundaries as a rectangle.",
+            "return": {
+                "description": "",
+                "type": "Rect"
+            },
+            "class": "DisplayObject",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object_container.js",
+            "line": 14,
+            "itemtype": "attribute",
+            "name": "children",
+            "type": "{Array}",
+            "class": "DisplayObjectContainer",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object_container.js",
+            "line": 20,
+            "description": "Number of children displayObject's attached to the container.",
+            "itemtype": "attribute",
+            "name": "numChildren",
+            "type": "{Number}",
+            "readonly": "",
+            "class": "DisplayObjectContainer",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object_container.js",
+            "line": 97,
+            "itemtype": "method",
+            "name": "broadcast",
+            "params": [
+                {
+                    "name": "UNKNOWN",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "DisplayObjectContainer"
+            },
+            "class": "DisplayObjectContainer",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object_container.js",
+            "line": 109,
+            "description": "Swap index of two children",
+            "itemtype": "method",
+            "name": "swapChildren",
+            "params": [
+                {
+                    "name": "child1",
+                    "description": "",
+                    "type": "DisplayObject"
+                },
+                {
+                    "name": "child2",
+                    "description": "",
+                    "type": "DisplayObject"
+                }
+            ],
+            "class": "DisplayObjectContainer",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object_container.js",
+            "line": 132,
+            "description": "Add a display object in the list.",
+            "itemtype": "method",
+            "name": "addChild",
+            "params": [
+                {
+                    "name": "UNKNOWN",
+                    "description": "",
+                    "type": "DisplayObject | DisplayObjectContainer"
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "DisplayObjectContainer"
+            },
+            "class": "DisplayObjectContainer",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object_container.js",
+            "line": 151,
+            "description": "Search for a child by id attribute",
+            "itemtype": "method",
+            "name": "getChildById",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "DisplayObject"
+            },
+            "class": "DisplayObjectContainer",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object_container.js",
+            "line": 165,
+            "itemtype": "method",
+            "name": "getChildAt",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "DisplayObject"
+            },
+            "class": "DisplayObjectContainer",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object_container.js",
+            "line": 174,
+            "description": "Remove target child",
+            "params": [
+                {
+                    "name": "displayObject",
+                    "description": "",
+                    "type": "DisplayObject"
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "DisplayObjectContainer"
+            },
+            "class": "DisplayObjectContainer",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/display_object_container.js",
+            "line": 187,
+            "description": "Remove child at specific index",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "DisplayObjectContainer"
+            },
+            "class": "DisplayObjectContainer",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/parallax.js",
+            "line": 14,
+            "description": "Viewport that parallax effect will be based on.",
+            "itemtype": "attribute",
+            "name": "viewport",
+            "type": "{Viewport}",
+            "class": "Parallax",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/parallax.js",
+            "line": 21,
+            "description": "Distance between each parallax child.",
+            "itemtype": "attribute",
+            "name": "distance",
+            "type": "{Number}",
+            "class": "Parallax",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/parallax.js",
+            "line": 28,
+            "description": "Amount of velocity that will increase by child.",
+            "itemtype": "attribute",
+            "name": "velocity",
+            "type": "{Number}",
+            "class": "Parallax",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/particle_emitter.js",
+            "line": 1,
+            "description": "TODO:\nmodule Joy",
+            "class": "Scene",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/particle_emitter.js",
+            "line": 7,
+            "description": "class ParticleEmitter\nconstructor\nparam {Object} options",
+            "class": "Scene",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/scene.js",
+            "line": 22,
+            "type": "{Loader}",
+            "class": "Scene",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/scene.js",
+            "line": 27,
+            "description": "Is the scene on paused state?",
+            "itemtype": "attribute",
+            "name": "paused",
+            "type": "{Boolean}",
+            "class": "Scene",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/scene.js",
+            "line": 34,
+            "description": "List of active shaders on the scene.",
+            "itemtype": "attribute",
+            "name": "shaders",
+            "type": "{Array}",
+            "class": "Scene",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/scene.js",
+            "line": 41,
+            "itemtype": "attribute",
+            "name": "viewport",
+            "type": "{Viewport}",
+            "class": "Scene",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/scene.js",
+            "line": 48,
+            "description": "Set background",
+            "itemtype": "method",
+            "name": "background",
+            "params": [
+                {
+                    "name": "color",
+                    "description": "",
+                    "type": "Color, String"
+                }
+            ],
+            "class": "Scene",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/scene.js",
+            "line": 59,
+            "itemtype": "method",
+            "name": "pause",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "blur",
+                            "description": "radius for gaussian blur filter (optional)",
+                            "type": "Number"
+                        }
+                    ]
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "Scene"
+            },
+            "class": "Scene",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/scene.js",
+            "line": 107,
+            "itemtype": "method",
+            "name": "fadeOut",
+            "params": [
+                {
+                    "name": "milliseconds",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "color",
+                    "description": "",
+                    "type": "String, Color"
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "Scene"
+            },
+            "class": "Scene",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/scene.js",
+            "line": 135,
+            "itemtype": "method",
+            "name": "fadeIn",
+            "params": [
+                {
+                    "name": "milliseconds",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "color",
+                    "description": "",
+                    "type": "String, Color"
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "Scene"
+            },
+            "class": "Scene",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/scene.js",
+            "line": 163,
+            "description": "Experimental: add post-processing pixel effect.",
+            "itemtype": "method",
+            "name": "addShader",
+            "params": [
+                {
+                    "name": "shader",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "options",
+                    "description": "shader options (optional)",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "Scene"
+            },
+            "class": "Scene",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/sprite.js",
+            "line": 37,
+            "itemtype": "method",
+            "name": "load",
+            "params": [
+                {
+                    "name": "src",
+                    "description": "image source",
+                    "type": "String"
+                }
+            ],
+            "class": "Sprite",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/sprite_sheet.js",
+            "line": 25,
+            "itemtype": "attribute",
+            "name": "currentFrame",
+            "type": "{Number}",
+            "class": "SpriteSheet",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/sprite_sheet.js",
+            "line": 31,
+            "description": "Frames per second.",
+            "itemtype": "attribute",
+            "name": "framesPerSecond",
+            "alias": "fps",
+            "type": "{Number}",
+            "class": "SpriteSheet",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/sprite_sheet.js",
+            "line": 47,
+            "itemtype": "attribute",
+            "name": "currentAnimation",
+            "type": "{String}",
+            "readonly": "",
+            "class": "SpriteSheet",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/sprite_sheet.js",
+            "line": 87,
+            "description": "Add animation to sprite sheet.",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "frames",
+                    "description": "",
+                    "type": "Array"
+                }
+            ],
+            "example": [
+                "\n spriteSheet.addAnimation(\"walking\", [0, 32]);"
+            ],
+            "return": {
+                "description": "this",
+                "type": "SpriteSheet"
+            },
+            "class": "SpriteSheet",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/sprite_sheet.js",
+            "line": 125,
+            "description": "Play specified animation by name",
+            "params": [
+                {
+                    "name": "animationName",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "this",
+                "type": "SpriteSheet"
+            },
+            "class": "SpriteSheet",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/sprite_sheet.js",
+            "line": 141,
+            "description": "Stop current animation",
+            "itemtype": "method",
+            "name": "stop",
+            "return": {
+                "description": "this",
+                "type": "SpriteSheet"
+            },
+            "class": "SpriteSheet",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/text.js",
+            "line": 5,
+            "itemtype": "property",
+            "name": "BASELINE",
+            "static": 1,
+            "class": "Text",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/text.js",
+            "line": 10,
+            "itemtype": "property",
+            "name": "BASELINE.TOP",
+            "type": "{String}",
+            "static": 1,
+            "class": "Text",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/text.js",
+            "line": 17,
+            "itemtype": "property",
+            "name": "BASELINE.HANGING",
+            "type": "{String}",
+            "static": 1,
+            "class": "Text",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/text.js",
+            "line": 24,
+            "itemtype": "property",
+            "name": "BASELINE.MIDDLE",
+            "type": "{String}",
+            "static": 1,
+            "class": "Text",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/text.js",
+            "line": 31,
+            "itemtype": "property",
+            "name": "BASELINE.ALPHABETIC",
+            "type": "{String}",
+            "static": 1,
+            "class": "Text",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/text.js",
+            "line": 38,
+            "itemtype": "property",
+            "name": "BASELINE.IDEOGRAPHIC",
+            "type": "{String}",
+            "static": 1,
+            "class": "Text",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/text.js",
+            "line": 45,
+            "itemtype": "property",
+            "name": "BASELINE.BOTTOM",
+            "type": "{String}",
+            "static": 1,
+            "class": "Text",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/text.js",
+            "line": 83,
+            "description": "Text to be displayed",
+            "itemtype": "attribute",
+            "name": "text",
+            "default": "\"\"",
+            "type": "{String}",
+            "class": "Text",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/text.js",
+            "line": 91,
+            "description": "Font family and size",
+            "itemtype": "attribute",
+            "name": "font",
+            "default": "\"Normal 12px Verdana\"",
+            "type": "{String}",
+            "class": "Text",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/text.js",
+            "line": 99,
+            "description": "Text horizontal alignment",
+            "itemtype": "attribute",
+            "name": "align",
+            "default": "\"left\"",
+            "type": "{String}",
+            "class": "Text",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/text.js",
+            "line": 107,
+            "description": "Text vertical baseline",
+            "itemtype": "attribute",
+            "name": "baseline",
+            "default": "Joy.Text.BASELINE.TOP",
+            "type": "{String}",
+            "class": "Text",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/text.js",
+            "line": 115,
+            "description": "Color of the text",
+            "itemtype": "attribute",
+            "name": "color",
+            "default": "\"#000000\"",
+            "type": "{String, Color}",
+            "class": "Text",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/text.js",
+            "line": 145,
+            "itemtype": "method",
+            "name": "useStroke",
+            "class": "Text",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/text.js",
+            "line": 154,
+            "itemtype": "method",
+            "name": "useFill",
+            "class": "Text",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/text.js",
+            "line": 174,
+            "itemtype": "method",
+            "name": "getMeasure",
+            "return": {
+                "description": "text metrics",
+                "type": "TextMetrics"
+            },
+            "class": "Text",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/tilemap.js",
+            "line": 17,
+            "itemtype": "attribute",
+            "name": "tileset",
+            "type": "{Tileset}",
+            "class": "Tilemap",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/tilemap.js",
+            "line": 23,
+            "itemtype": "attribute",
+            "name": "lines",
+            "type": "{Number}",
+            "class": "Tilemap",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/tilemap.js",
+            "line": 29,
+            "itemtype": "attribute",
+            "name": "columns",
+            "type": "{Number}",
+            "class": "Tilemap",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/tilemap.js",
+            "line": 35,
+            "itemtype": "attribute",
+            "name": "data",
+            "type": "{Array}",
+            "class": "Tilemap",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/tilemap.js",
+            "line": 51,
+            "itemtype": "attribute",
+            "name": "height",
+            "readonly": "",
+            "type": "{Number}",
+            "class": "Tilemap",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/tilemap.js",
+            "line": 60,
+            "itemtype": "attribute",
+            "name": "width",
+            "readonly": "",
+            "type": "{Number}",
+            "class": "Tilemap",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/viewport.js",
+            "line": 19,
+            "itemtype": "attribute",
+            "name": "position",
+            "type": "{Vector2d}",
+            "class": "Viewport",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/viewport.js",
+            "line": 26,
+            "description": "Current viewport translation offset",
+            "itemtype": "attribute",
+            "name": "translation",
+            "type": "{Vector2d}",
+            "class": "Viewport",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/viewport.js",
+            "line": 33,
+            "description": "Container DisplayObject",
+            "itemtype": "attribute",
+            "name": "scene",
+            "type": "{DisplayObjectContainer}",
+            "class": "Viewport",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/viewport.js",
+            "line": 43,
+            "itemtype": "attribute",
+            "name": "hud",
+            "type": "{DisplayObjectContainer}",
+            "class": "Viewport",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/viewport.js",
+            "line": 50,
+            "itemtype": "attribute",
+            "name": "active",
+            "type": "{Boolean}",
+            "readonly": "",
+            "class": "Viewport",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/viewport.js",
+            "line": 62,
+            "description": "Add head up display on the viewport.",
+            "itemtype": "method",
+            "name": "addHud",
+            "params": [
+                {
+                    "name": "UNKNOWN",
+                    "description": "",
+                    "type": "DisplayObject"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Viewport"
+            },
+            "class": "Viewport",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/viewport.js",
+            "line": 73,
+            "itemtype": "attribute",
+            "name": "width",
+            "type": "{Number}",
+            "class": "Viewport",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/viewport.js",
+            "line": 79,
+            "itemtype": "attribute",
+            "name": "height",
+            "type": "{Number}",
+            "class": "Viewport",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/viewport.js",
+            "line": 85,
+            "description": "DisplayObject that will be followed.",
+            "itemtype": "attribute",
+            "name": "follow",
+            "type": "{DisplayObject}",
+            "class": "Viewport",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/viewport.js",
+            "line": 108,
+            "itemtype": "method",
+            "name": "setSize",
+            "params": [
+                {
+                    "name": "width",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "height",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Viewport"
+            },
+            "class": "Viewport",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/viewport.js",
+            "line": 128,
+            "description": "TODO: not supported yet\nmethod setDeadzone\nparam {Number} width\nparam {Number} height\nreturn {Viewport} this",
+            "class": "Viewport",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/render/viewport.js",
+            "line": 165,
+            "description": "Restore context translation",
+            "itemtype": "method",
+            "name": "reset",
+            "return": {
+                "description": "this",
+                "type": "Viewport"
+            },
+            "class": "Viewport",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/util/color.js",
+            "line": 37,
+            "description": "Get color definition as CSS string.",
+            "itemtype": "method",
+            "name": "toString",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "Color",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/util/loader.js",
+            "line": 15,
+            "description": "Loaded percentage",
+            "itemtype": "property",
+            "name": "percentage",
+            "type": "{Number}",
+            "class": "Loader",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/util/loader.js",
+            "line": 24,
+            "description": "Is loading?",
+            "itemtype": "property",
+            "name": "loading",
+            "type": "{Boolean}",
+            "class": "Loader",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/util/shader.js",
+            "line": 10,
+            "description": "Process",
+            "itemtype": "method",
+            "name": "process",
+            "params": [
+                {
+                    "name": "ctx",
+                    "description": "",
+                    "type": "CanvasRenderingContext2D"
+                },
+                {
+                    "name": "method",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "static": 1,
+            "class": "Shader",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/util/shader.js",
+            "line": 236,
+            "description": "Noise pixel shader",
+            "itemtype": "method",
+            "name": "noise",
+            "params": [
+                {
+                    "name": "imageData",
+                    "description": "",
+                    "type": "ImageData"
+                }
+            ],
+            "static": 1,
+            "class": "Shader",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/util/utils.js",
+            "line": 11,
+            "itemtype": "method",
+            "name": "applyFriction",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "velocity",
+                    "type": "Number"
+                },
+                {
+                    "name": "f",
+                    "description": "friction",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "Utils",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/vendor/howler.js",
+            "line": 38,
+            "description": "Get/set the global volume for all sounds.",
+            "params": [
+                {
+                    "name": "vol",
+                    "description": "Volume from 0.0 to 1.0.",
+                    "type": "Float"
+                }
+            ],
+            "return": {
+                "description": "Returns self or current volume.",
+                "type": "Object/Float"
+            },
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/vendor/howler.js",
+            "line": 74,
+            "description": "Mute all sounds.",
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/vendor/howler.js",
+            "line": 95,
+            "description": "Unmute all sounds.",
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/vendor/howler.js",
+            "line": 174,
+            "description": "Load an audio file.",
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/vendor/howler.js",
+            "line": 252,
+            "description": "Get/set the URLs to be pulled from to play in this source.",
+            "params": [
+                {
+                    "name": "urls",
+                    "description": "Arry of URLs to load from",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "Returns self or the current URLs",
+                "type": "Object"
+            },
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/vendor/howler.js",
+            "line": 271,
+            "description": "Play a sound from the current time (0 by default).",
+            "params": [
+                {
+                    "name": "sprite",
+                    "description": "(optional) Plays from the specified position in the sound sprite definition.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/vendor/howler.js",
+            "line": 337,
+            "description": "Pause playback and save the current position.",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "(optional) Used only for HTML5 Audio to pause specific node.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/vendor/howler.js",
+            "line": 382,
+            "description": "Stop playback and reset to start.",
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/vendor/howler.js",
+            "line": 425,
+            "description": "Mute this sound.",
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/vendor/howler.js",
+            "line": 454,
+            "description": "Unmute this sound.",
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/vendor/howler.js",
+            "line": 483,
+            "description": "Get/set volume of this sound.",
+            "params": [
+                {
+                    "name": "vol",
+                    "description": "Volume from 0.0 to 1.0.",
+                    "type": "Float"
+                }
+            ],
+            "return": {
+                "description": "Returns self or current volume.",
+                "type": "Object/Float"
+            },
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/vendor/howler.js",
+            "line": 519,
+            "description": "Get/set whether to loop the sound.",
+            "params": [
+                {
+                    "name": "loop",
+                    "description": "To loop or not to loop, that is the question.",
+                    "type": "Boolean"
+                }
+            ],
+            "return": {
+                "description": "Returns self or current looping value.",
+                "type": "Object/Boolean"
+            },
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/vendor/howler.js",
+            "line": 536,
+            "description": "Get/set sound sprite definition.",
+            "params": [
+                {
+                    "name": "sprite",
+                    "description": "Example: {spriteName: [offset, duration]}",
+                    "type": "Object"
+                },
+                {
+                    "name": "offset",
+                    "description": "Where to begin playback in milliseconds",
+                    "type": "Integer"
+                },
+                {
+                    "name": "duration",
+                    "description": "How long to play in milliseconds",
+                    "type": "Integer"
+                }
+            ],
+            "return": {
+                "description": "Returns current sprite sheet or self.",
+                "type": "Object"
+            },
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/vendor/howler.js",
+            "line": 555,
+            "description": "Get/set the position of playback.",
+            "params": [
+                {
+                    "name": "pos",
+                    "description": "The position to move current playback to.",
+                    "type": "Float"
+                }
+            ],
+            "return": {
+                "description": "Returns self or current playback position.",
+                "type": "Object/Float"
+            },
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/vendor/howler.js",
+            "line": 598,
+            "description": "Fade in the current sound.",
+            "params": [
+                {
+                    "name": "to",
+                    "description": "Volume to fade to (0.0 to 1.0).",
+                    "type": "Float"
+                },
+                {
+                    "name": "len",
+                    "description": "Time in milliseconds to fade.",
+                    "type": "Number"
+                },
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/vendor/howler.js",
+            "line": 639,
+            "description": "Fade out the current sound and pause when finished.",
+            "params": [
+                {
+                    "name": "to",
+                    "description": "Volume to fade to (0.0 to 1.0).",
+                    "type": "Float"
+                },
+                {
+                    "name": "len",
+                    "description": "Time in milliseconds to fade.",
+                    "type": "Number"
+                },
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/vendor/howler.js",
+            "line": 679,
+            "description": "Get an HTML5 Audio node by ID.",
+            "return": {
+                "description": "Audio node.",
+                "type": "Object"
+            },
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/vendor/howler.js",
+            "line": 698,
+            "description": "Get the first active audio node (HTML5 audio use only).",
+            "return": {
+                "description": "Audio node.",
+                "type": "Object"
+            },
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/vendor/howler.js",
+            "line": 720,
+            "description": "Get the first inactive audio node (HTML5 audio use only).\nIf there is none, create a new one and add it to the pool.",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "Function to call when the audio node is ready.",
+                    "type": "Function"
+                }
+            ],
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/vendor/howler.js",
+            "line": 753,
+            "description": "If there are more than 5 inactive audio nodes in the pool, clear out the rest.",
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/vendor/howler.js",
+            "line": 781,
+            "description": "Call/set custom events.",
+            "params": [
+                {
+                    "name": "fn",
+                    "description": "Function to call.",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/vendor/howler.js",
+            "line": 804,
+            "description": "Buffer a sound from URL (or from cache) and decode to audio source (Web Audio API).",
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "The Howl object for the sound to load.",
+                    "type": "Object"
+                },
+                {
+                    "name": "url",
+                    "description": "The path to the sound file.",
+                    "type": "String"
+                }
+            ],
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/vendor/howler.js",
+            "line": 831,
+            "description": "Finishes loading the Web Audio API sound and fies the loaded event",
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "The Howl object for the sound to load.",
+                    "type": "Object"
+                },
+                {
+                    "name": "buffer",
+                    "description": "The decoded buffer sound source.",
+                    "type": "Objecct"
+                }
+            ],
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/vendor/howler.js",
+            "line": 849,
+            "description": "Load the sound back into the buffer source.",
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "The sound to load.",
+                    "type": "Object"
+                }
+            ],
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/vendor/tween.js",
+            "line": 1,
+            "author": "egraether / http://egraether.com/",
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/joy.js",
+            "line": 12,
+            "itemtype": "attribute",
+            "name": "debug",
+            "type": "{Boolean}",
+            "static": 1,
+            "default": "false",
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/joy.js",
+            "line": 20,
+            "itemtype": "attribute",
+            "name": "deltaTime",
+            "type": "{Number}",
+            "default": "1",
+            "static": 1,
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/joy.js",
+            "line": 28,
+            "itemtype": "method",
+            "name": "ready",
+            "static": 1,
+            "class": "",
+            "module": "Joy"
+        },
+        {
+            "file": "lib/joy.js",
+            "line": 37,
+            "itemtype": "method",
+            "name": "generateUniqueId",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "",
+            "module": "Joy"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "param name missing: {DisplayObject, Circle, Rectangle}",
+            "line": " lib/collider/rect_collider.js:30"
+        },
+        {
+            "message": "param name missing: {Behaviour}",
+            "line": " lib/core/triggerable.js:17"
+        },
+        {
+            "message": "param name missing: {Object}",
+            "line": " lib/modules/tween.js:50"
+        },
+        {
+            "message": "param name missing: {Object}",
+            "line": " lib/modules/tween.js:56"
+        },
+        {
+            "message": "param name missing: {DisplayObject, Circle, Rectangle}",
+            "line": " lib/render/display_object.js:394"
+        },
+        {
+            "message": "param name missing: {String}",
+            "line": " lib/render/display_object_container.js:97"
+        },
+        {
+            "message": "param name missing: {DisplayObject | DisplayObjectContainer}",
+            "line": " lib/render/display_object_container.js:132"
+        },
+        {
+            "message": "unknown tag: alias",
+            "line": " lib/render/sprite_sheet.js:31"
+        },
+        {
+            "message": "param name missing: {DisplayObject}",
+            "line": " lib/render/viewport.js:62"
+        },
+        {
+            "message": "Missing item type\nTODO: Wouldn't it be nice?",
+            "line": " lib/behaviour/physics.js:5"
+        },
+        {
+            "message": "Missing item type\nIs this DisplayObject colliding with {Object}?",
+            "line": " lib/collider/rect_collider.js:30"
+        },
+        {
+            "message": "Missing item type\nSimple JavaScript Inheritance - http://ejohn.org/blog/simple-javascript-inheritance/\nBy John Resig http://ejohn.org/\nMIT Licensed.",
+            "line": " lib/core/object.js:1"
+        },
+        {
+            "message": "Missing item type\nwindow.onEnterFrame",
+            "line": " lib/core/support.js:56"
+        },
+        {
+            "message": "Missing item type\nTODO:\n\nmodule Joy",
+            "line": " lib/init/markup.js:1"
+        },
+        {
+            "message": "Missing item type\nAnalyses HTML `canvas` tag contents, and add those childs\nto Joy contexting pipeline.\n\nTODO: This feature is extremely experimental.\n\nDependency: Sizzle\n\nclass Markup\nconstructor",
+            "line": " lib/init/markup.js:11"
+        },
+        {
+            "message": "Missing item type\nmodule Joy",
+            "line": " lib/init/package.js:1"
+        },
+        {
+            "message": "Missing item type\nReads a stand-alone package.\n\nTODO: Not implemented yet.\n\nclass Package",
+            "line": " lib/init/package.js:5"
+        },
+        {
+            "message": "Missing item type\nEvents.KEY_DOWN",
+            "line": " lib/input/keyboard.js:885"
+        },
+        {
+            "message": "Missing item type\nEvents.KEY_UP",
+            "line": " lib/input/keyboard.js:893"
+        },
+        {
+            "message": "Missing item type\nEvents.KEY_PRESS",
+            "line": " lib/input/keyboard.js:901"
+        },
+        {
+            "message": "Missing item type\nEvents.MOUSE_DOWN",
+            "line": " lib/input/mouse.js:58"
+        },
+        {
+            "message": "Missing item type\nEvents.MOUSE_UP",
+            "line": " lib/input/mouse.js:66"
+        },
+        {
+            "message": "Missing item type\nEvents.MOUSE_MOVE",
+            "line": " lib/input/mouse.js:74"
+        },
+        {
+            "message": "Missing item type\nEvents.CLICK",
+            "line": " lib/input/mouse.js:82"
+        },
+        {
+            "message": "Missing item type\nEvents.DOUBLE_CLICK",
+            "line": " lib/input/mouse.js:90"
+        },
+        {
+            "message": "Missing item type\nTODO: not implemented yet\n      only available attaching Joy.Behaviour.Button behaviour\n\nEvents.MOUSE_OVER",
+            "line": " lib/input/mouse.js:98"
+        },
+        {
+            "message": "Missing item type\nTODO: not implemented yet\n      only available attaching Joy.Behaviour.Button behaviour\n\nEvents.MOUSE_OUT",
+            "line": " lib/input/mouse.js:109"
+        },
+        {
+            "message": "Missing item type\nEvents.TOUCH_START",
+            "line": " lib/input/touch.js:10"
+        },
+        {
+            "message": "Missing item type\nEvents.TOUCH_MOVE",
+            "line": " lib/input/touch.js:18"
+        },
+        {
+            "message": "Missing item type\nEvents.TOUCH_END",
+            "line": " lib/input/touch.js:26"
+        },
+        {
+            "message": "Missing item type\nClone Matrix2D instance",
+            "line": " lib/math/matrix2d.js:127"
+        },
+        {
+            "message": "Missing item type\nReset matrix to it's identity",
+            "line": " lib/math/matrix2d.js:135"
+        },
+        {
+            "message": "Missing item type\nReturn unit vector",
+            "line": " lib/math/vector2d.js:89"
+        },
+        {
+            "message": "Missing item type\nNormalize this vector",
+            "line": " lib/math/vector2d.js:97"
+        },
+        {
+            "message": "Missing item type\nGet the distance between this vector and the argument vector",
+            "line": " lib/math/vector2d.js:108"
+        },
+        {
+            "message": "Missing item type\nGet scene where this DisplayObject is contained in",
+            "line": " lib/render/display_object.js:143"
+        },
+        {
+            "message": "Missing item type\nIs this DisplayObject colliding with {Object}?",
+            "line": " lib/render/display_object.js:394"
+        },
+        {
+            "message": "Missing item type\nReturn DisplayObject boundaries as a rectangle.",
+            "line": " lib/render/display_object.js:495"
+        },
+        {
+            "message": "Missing item type\nRemove target child",
+            "line": " lib/render/display_object_container.js:174"
+        },
+        {
+            "message": "Missing item type\nRemove child at specific index",
+            "line": " lib/render/display_object_container.js:187"
+        },
+        {
+            "message": "Missing item type\nTODO:\nmodule Joy",
+            "line": " lib/render/particle_emitter.js:1"
+        },
+        {
+            "message": "Missing item type\nclass ParticleEmitter\nconstructor\nparam {Object} options",
+            "line": " lib/render/particle_emitter.js:7"
+        },
+        {
+            "message": "Missing item type",
+            "line": " lib/render/scene.js:22"
+        },
+        {
+            "message": "Missing item type\nAdd animation to sprite sheet.",
+            "line": " lib/render/sprite_sheet.js:87"
+        },
+        {
+            "message": "Missing item type\nPlay specified animation by name",
+            "line": " lib/render/sprite_sheet.js:125"
+        },
+        {
+            "message": "Missing item type\nTODO: not supported yet\nmethod setDeadzone\nparam {Number} width\nparam {Number} height\nreturn {Viewport} this",
+            "line": " lib/render/viewport.js:128"
+        },
+        {
+            "message": "Missing item type\nGet/set the global volume for all sounds.",
+            "line": " lib/vendor/howler.js:38"
+        },
+        {
+            "message": "Missing item type\nMute all sounds.",
+            "line": " lib/vendor/howler.js:74"
+        },
+        {
+            "message": "Missing item type\nUnmute all sounds.",
+            "line": " lib/vendor/howler.js:95"
+        },
+        {
+            "message": "Missing item type\nLoad an audio file.",
+            "line": " lib/vendor/howler.js:174"
+        },
+        {
+            "message": "Missing item type\nGet/set the URLs to be pulled from to play in this source.",
+            "line": " lib/vendor/howler.js:252"
+        },
+        {
+            "message": "Missing item type\nPlay a sound from the current time (0 by default).",
+            "line": " lib/vendor/howler.js:271"
+        },
+        {
+            "message": "Missing item type\nPause playback and save the current position.",
+            "line": " lib/vendor/howler.js:337"
+        },
+        {
+            "message": "Missing item type\nStop playback and reset to start.",
+            "line": " lib/vendor/howler.js:382"
+        },
+        {
+            "message": "Missing item type\nMute this sound.",
+            "line": " lib/vendor/howler.js:425"
+        },
+        {
+            "message": "Missing item type\nUnmute this sound.",
+            "line": " lib/vendor/howler.js:454"
+        },
+        {
+            "message": "Missing item type\nGet/set volume of this sound.",
+            "line": " lib/vendor/howler.js:483"
+        },
+        {
+            "message": "Missing item type\nGet/set whether to loop the sound.",
+            "line": " lib/vendor/howler.js:519"
+        },
+        {
+            "message": "Missing item type\nGet/set sound sprite definition.",
+            "line": " lib/vendor/howler.js:536"
+        },
+        {
+            "message": "Missing item type\nGet/set the position of playback.",
+            "line": " lib/vendor/howler.js:555"
+        },
+        {
+            "message": "Missing item type\nFade in the current sound.",
+            "line": " lib/vendor/howler.js:598"
+        },
+        {
+            "message": "Missing item type\nFade out the current sound and pause when finished.",
+            "line": " lib/vendor/howler.js:639"
+        },
+        {
+            "message": "Missing item type\nGet an HTML5 Audio node by ID.",
+            "line": " lib/vendor/howler.js:679"
+        },
+        {
+            "message": "Missing item type\nGet the first active audio node (HTML5 audio use only).",
+            "line": " lib/vendor/howler.js:698"
+        },
+        {
+            "message": "Missing item type\nGet the first inactive audio node (HTML5 audio use only).\nIf there is none, create a new one and add it to the pool.",
+            "line": " lib/vendor/howler.js:720"
+        },
+        {
+            "message": "Missing item type\nIf there are more than 5 inactive audio nodes in the pool, clear out the rest.",
+            "line": " lib/vendor/howler.js:753"
+        },
+        {
+            "message": "Missing item type\nCall/set custom events.",
+            "line": " lib/vendor/howler.js:781"
+        },
+        {
+            "message": "Missing item type\nBuffer a sound from URL (or from cache) and decode to audio source (Web Audio API).",
+            "line": " lib/vendor/howler.js:804"
+        },
+        {
+            "message": "Missing item type\nFinishes loading the Web Audio API sound and fies the loaded event",
+            "line": " lib/vendor/howler.js:831"
+        },
+        {
+            "message": "Missing item type\nLoad the sound back into the buffer source.",
+            "line": " lib/vendor/howler.js:849"
+        },
+        {
+            "message": "Missing item type",
+            "line": " lib/vendor/tween.js:1"
+        }
+    ]
+}

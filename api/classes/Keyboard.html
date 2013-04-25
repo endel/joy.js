@@ -1,0 +1,5655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Keyboard - joy.js</title>
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.8.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.8.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="..&#x2F;assets/css/logo.png" title="joy.js"></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.1.1</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="..&#x2F;classes/Button.html">Button</a></li>
+            
+                <li><a href="..&#x2F;classes/Circle.html">Circle</a></li>
+            
+                <li><a href="..&#x2F;classes/Color.html">Color</a></li>
+            
+                <li><a href="..&#x2F;classes/CompositeOperation.html">CompositeOperation</a></li>
+            
+                <li><a href="..&#x2F;classes/Context2d.html">Context2d</a></li>
+            
+                <li><a href="..&#x2F;classes/DisplayObject.html">DisplayObject</a></li>
+            
+                <li><a href="..&#x2F;classes/DisplayObjectContainer.html">DisplayObjectContainer</a></li>
+            
+                <li><a href="..&#x2F;classes/Engine.html">Engine</a></li>
+            
+                <li><a href="..&#x2F;classes/Keyboard.html">Keyboard</a></li>
+            
+                <li><a href="..&#x2F;classes/Loader.html">Loader</a></li>
+            
+                <li><a href="..&#x2F;classes/Math.html">Math</a></li>
+            
+                <li><a href="..&#x2F;classes/Matrix2D.html">Matrix2D</a></li>
+            
+                <li><a href="..&#x2F;classes/Mouse.html">Mouse</a></li>
+            
+                <li><a href="..&#x2F;classes/Movimentation.html">Movimentation</a></li>
+            
+                <li><a href="..&#x2F;classes/Parallax.html">Parallax</a></li>
+            
+                <li><a href="..&#x2F;classes/Rect.html">Rect</a></li>
+            
+                <li><a href="..&#x2F;classes/RectCollider.html">RectCollider</a></li>
+            
+                <li><a href="..&#x2F;classes/Scene.html">Scene</a></li>
+            
+                <li><a href="..&#x2F;classes/Shader.html">Shader</a></li>
+            
+                <li><a href="..&#x2F;classes/Sound.html">Sound</a></li>
+            
+                <li><a href="..&#x2F;classes/Sprite.html">Sprite</a></li>
+            
+                <li><a href="..&#x2F;classes/SpriteSheet.html">SpriteSheet</a></li>
+            
+                <li><a href="..&#x2F;classes/Support.html">Support</a></li>
+            
+                <li><a href="..&#x2F;classes/Text.html">Text</a></li>
+            
+                <li><a href="..&#x2F;classes/Tilemap.html">Tilemap</a></li>
+            
+                <li><a href="..&#x2F;classes/TilemapCollider.html">TilemapCollider</a></li>
+            
+                <li><a href="..&#x2F;classes/Tileset.html">Tileset</a></li>
+            
+                <li><a href="..&#x2F;classes/Triggerable.html">Triggerable</a></li>
+            
+                <li><a href="..&#x2F;classes/Tween.html">Tween</a></li>
+            
+                <li><a href="..&#x2F;classes/TweenManager.html">TweenManager</a></li>
+            
+                <li><a href="..&#x2F;classes/Utils.html">Utils</a></li>
+            
+                <li><a href="..&#x2F;classes/Vector2d.html">Vector2d</a></li>
+            
+                <li><a href="..&#x2F;classes/Viewport.html">Viewport</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+                <li><a href="..&#x2F;modules/Joy.html">Joy</a></li>
+            
+                <li><a href="..&#x2F;modules/Joy.Behaviour.html">Joy.Behaviour</a></li>
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1>Keyboard Class</h1>
+<div class="box meta">
+    
+
+    
+
+    
+
+    
+        
+            Module: <a href="../modules/Joy.html">Joy</a>
+        
+    
+
+    
+</div>
+
+
+
+<div class="box intro">
+    
+</div>
+
+
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+        
+        
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
+        
+        
+            <li class="api-class-tab attrs"><a href="#attrs">Attributes</a></li>
+        
+        
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+            
+
+            
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties">
+                        
+                            <li class="index-item property">
+                                <a href="#property_repeatRate">repeatRate</a>
+
+                                
+                                
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+            
+                <div class="index-section attrs">
+                    <h3>Attributes</h3>
+
+                    <ul class="index-list attrs">
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_ADD">ADD</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_ALT">ALT</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_BACKSLASH">BACKSLASH</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_BACKSPACE">BACKSPACE</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_CAPSLOCK">CAPSLOCK</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_CLOSEBRAKET">CLOSEBRAKET</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_COMMA">COMMA</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_CTRL">CTRL</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_DASH">DASH</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_DECIMALPOINT">DECIMALPOINT</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_DELETE">DELETE</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_DIVIDE">DIVIDE</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_DOWN">DOWN</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_END">END</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_ENTER">ENTER</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_EQUALSIGN">EQUALSIGN</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_ESCAPE">ESCAPE</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_F1">F1</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_F10">F10</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_F11">F11</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_F12">F12</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_F2">F2</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_F3">F3</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_F4">F4</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_F5">F5</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_F6">F6</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_F7">F7</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_F8">F8</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_F9">F9</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_FORWARDSLASH">FORWARDSLASH</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_GRAVEACCENT">GRAVEACCENT</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_HOME">HOME</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_INSERT">INSERT</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_0">KEY_0</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_1">KEY_1</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_2">KEY_2</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_3">KEY_3</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_4">KEY_4</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_5">KEY_5</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_6">KEY_6</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_7">KEY_7</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_8">KEY_8</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_9">KEY_9</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_A">KEY_A</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_B">KEY_B</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_C">KEY_C</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_D">KEY_D</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_E">KEY_E</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_F">KEY_F</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_G">KEY_G</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_H">KEY_H</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_I">KEY_I</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_J">KEY_J</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_K">KEY_K</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_L">KEY_L</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_M">KEY_M</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_N">KEY_N</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_O">KEY_O</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_P">KEY_P</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_Q">KEY_Q</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_R">KEY_R</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_S">KEY_S</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_T">KEY_T</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_U">KEY_U</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_V">KEY_V</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_W">KEY_W</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_X">KEY_X</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_Y">KEY_Y</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_KEY_Z">KEY_Z</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_LEFT">LEFT</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_MULTIPLY">MULTIPLY</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_NUMLOCK">NUMLOCK</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_NUMPAD0">NUMPAD0</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_NUMPAD1">NUMPAD1</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_NUMPAD2">NUMPAD2</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_NUMPAD3">NUMPAD3</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_NUMPAD4">NUMPAD4</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_NUMPAD5">NUMPAD5</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_NUMPAD6">NUMPAD6</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_NUMPAD7">NUMPAD7</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_NUMPAD8">NUMPAD8</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_NUMPAD9">NUMPAD9</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_OPENBRACKET">OPENBRACKET</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_PAGEDOWN">PAGEDOWN</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_PAGEUP">PAGEUP</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_PAUSE">PAUSE</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_PERIOD">PERIOD</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_RIGHT">RIGHT</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_SCROLLLOCK">SCROLLLOCK</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_SELECT">SELECT</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_SEMICOLON">SEMICOLON</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_SHIFT">SHIFT</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_SINGLEQUOTE">SINGLEQUOTE</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_SPACE">SPACE</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_SUBTRACT">SUBTRACT</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_TAB">TAB</a>
+                            </li>
+                        
+                            <li class="index-item attr">
+                                <a href="#attr_UP">UP</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+            
+        </div>
+
+        
+
+        
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+                
+                    <div id="property_repeatRate" class="property item">
+    <h3 class="name"><code>repeatRate</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+    
+        <p><strong>Default:</strong> 1</p>
+    
+
+    
+
+    
+</div>
+
+                
+            </div>
+        
+
+        
+            <div id="attrs" class="api-class-tabpanel">
+                <h2 class="off-left">Attributes</h2>
+
+                
+                    <div id="attr_ADD" class="attr item">
+    <a name="config_ADD"></a> 
+    <h3 class="name"><code>ADD</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>ADD keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_ALT" class="attr item">
+    <a name="config_ALT"></a> 
+    <h3 class="name"><code>ALT</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>ALT keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_BACKSLASH" class="attr item">
+    <a name="config_BACKSLASH"></a> 
+    <h3 class="name"><code>BACKSLASH</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>BACKSLASH keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_BACKSPACE" class="attr item">
+    <a name="config_BACKSPACE"></a> 
+    <h3 class="name"><code>BACKSPACE</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>BACKSPACE keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_CAPSLOCK" class="attr item">
+    <a name="config_CAPSLOCK"></a> 
+    <h3 class="name"><code>CAPSLOCK</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>CAPSLOCK keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_CLOSEBRAKET" class="attr item">
+    <a name="config_CLOSEBRAKET"></a> 
+    <h3 class="name"><code>CLOSEBRAKET</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>CLOSEBRAKET keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_COMMA" class="attr item">
+    <a name="config_COMMA"></a> 
+    <h3 class="name"><code>COMMA</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>COMMA keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_CTRL" class="attr item">
+    <a name="config_CTRL"></a> 
+    <h3 class="name"><code>CTRL</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>CTRL keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_DASH" class="attr item">
+    <a name="config_DASH"></a> 
+    <h3 class="name"><code>DASH</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>DASH keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_DECIMALPOINT" class="attr item">
+    <a name="config_DECIMALPOINT"></a> 
+    <h3 class="name"><code>DECIMALPOINT</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>DECIMALPOINT keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_DELETE" class="attr item">
+    <a name="config_DELETE"></a> 
+    <h3 class="name"><code>DELETE</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>DELETE keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_DIVIDE" class="attr item">
+    <a name="config_DIVIDE"></a> 
+    <h3 class="name"><code>DIVIDE</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>DIVIDE keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_DOWN" class="attr item">
+    <a name="config_DOWN"></a> 
+    <h3 class="name"><code>DOWN</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>DOWN keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_END" class="attr item">
+    <a name="config_END"></a> 
+    <h3 class="name"><code>END</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>END keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_ENTER" class="attr item">
+    <a name="config_ENTER"></a> 
+    <h3 class="name"><code>ENTER</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Enter keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_EQUALSIGN" class="attr item">
+    <a name="config_EQUALSIGN"></a> 
+    <h3 class="name"><code>EQUALSIGN</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>EQUALSIGN keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_ESCAPE" class="attr item">
+    <a name="config_ESCAPE"></a> 
+    <h3 class="name"><code>ESCAPE</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>ESCAPE keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_F1" class="attr item">
+    <a name="config_F1"></a> 
+    <h3 class="name"><code>F1</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>F1 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_F10" class="attr item">
+    <a name="config_F10"></a> 
+    <h3 class="name"><code>F10</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>F10 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_F11" class="attr item">
+    <a name="config_F11"></a> 
+    <h3 class="name"><code>F11</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>F11 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_F12" class="attr item">
+    <a name="config_F12"></a> 
+    <h3 class="name"><code>F12</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>F12 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_F2" class="attr item">
+    <a name="config_F2"></a> 
+    <h3 class="name"><code>F2</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>F2 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_F3" class="attr item">
+    <a name="config_F3"></a> 
+    <h3 class="name"><code>F3</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>F3 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_F4" class="attr item">
+    <a name="config_F4"></a> 
+    <h3 class="name"><code>F4</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>F4 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_F5" class="attr item">
+    <a name="config_F5"></a> 
+    <h3 class="name"><code>F5</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>F5 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_F6" class="attr item">
+    <a name="config_F6"></a> 
+    <h3 class="name"><code>F6</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>F6 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_F7" class="attr item">
+    <a name="config_F7"></a> 
+    <h3 class="name"><code>F7</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>F7 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_F8" class="attr item">
+    <a name="config_F8"></a> 
+    <h3 class="name"><code>F8</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>F8 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_F9" class="attr item">
+    <a name="config_F9"></a> 
+    <h3 class="name"><code>F9</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>F9 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_FORWARDSLASH" class="attr item">
+    <a name="config_FORWARDSLASH"></a> 
+    <h3 class="name"><code>FORWARDSLASH</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>FORWARDSLASH keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_GRAVEACCENT" class="attr item">
+    <a name="config_GRAVEACCENT"></a> 
+    <h3 class="name"><code>GRAVEACCENT</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>GRAVEACCENT keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_HOME" class="attr item">
+    <a name="config_HOME"></a> 
+    <h3 class="name"><code>HOME</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>HOME keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_INSERT" class="attr item">
+    <a name="config_INSERT"></a> 
+    <h3 class="name"><code>INSERT</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>INSERT keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_0" class="attr item">
+    <a name="config_KEY_0"></a> 
+    <h3 class="name"><code>KEY_0</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_0 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_1" class="attr item">
+    <a name="config_KEY_1"></a> 
+    <h3 class="name"><code>KEY_1</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_1 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_2" class="attr item">
+    <a name="config_KEY_2"></a> 
+    <h3 class="name"><code>KEY_2</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_2 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_3" class="attr item">
+    <a name="config_KEY_3"></a> 
+    <h3 class="name"><code>KEY_3</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_3 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_4" class="attr item">
+    <a name="config_KEY_4"></a> 
+    <h3 class="name"><code>KEY_4</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_4 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_5" class="attr item">
+    <a name="config_KEY_5"></a> 
+    <h3 class="name"><code>KEY_5</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_5 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_6" class="attr item">
+    <a name="config_KEY_6"></a> 
+    <h3 class="name"><code>KEY_6</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_6 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_7" class="attr item">
+    <a name="config_KEY_7"></a> 
+    <h3 class="name"><code>KEY_7</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_7 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_8" class="attr item">
+    <a name="config_KEY_8"></a> 
+    <h3 class="name"><code>KEY_8</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_8 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_9" class="attr item">
+    <a name="config_KEY_9"></a> 
+    <h3 class="name"><code>KEY_9</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_9 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_A" class="attr item">
+    <a name="config_KEY_A"></a> 
+    <h3 class="name"><code>KEY_A</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_A keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_B" class="attr item">
+    <a name="config_KEY_B"></a> 
+    <h3 class="name"><code>KEY_B</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_B keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_C" class="attr item">
+    <a name="config_KEY_C"></a> 
+    <h3 class="name"><code>KEY_C</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_C keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_D" class="attr item">
+    <a name="config_KEY_D"></a> 
+    <h3 class="name"><code>KEY_D</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_D keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_E" class="attr item">
+    <a name="config_KEY_E"></a> 
+    <h3 class="name"><code>KEY_E</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_E keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_F" class="attr item">
+    <a name="config_KEY_F"></a> 
+    <h3 class="name"><code>KEY_F</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_F keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_G" class="attr item">
+    <a name="config_KEY_G"></a> 
+    <h3 class="name"><code>KEY_G</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_G keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_H" class="attr item">
+    <a name="config_KEY_H"></a> 
+    <h3 class="name"><code>KEY_H</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_H keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_I" class="attr item">
+    <a name="config_KEY_I"></a> 
+    <h3 class="name"><code>KEY_I</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_I keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_J" class="attr item">
+    <a name="config_KEY_J"></a> 
+    <h3 class="name"><code>KEY_J</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_J keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_K" class="attr item">
+    <a name="config_KEY_K"></a> 
+    <h3 class="name"><code>KEY_K</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_K keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_L" class="attr item">
+    <a name="config_KEY_L"></a> 
+    <h3 class="name"><code>KEY_L</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_L keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_M" class="attr item">
+    <a name="config_KEY_M"></a> 
+    <h3 class="name"><code>KEY_M</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_M keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_N" class="attr item">
+    <a name="config_KEY_N"></a> 
+    <h3 class="name"><code>KEY_N</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_N keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_O" class="attr item">
+    <a name="config_KEY_O"></a> 
+    <h3 class="name"><code>KEY_O</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_O keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_P" class="attr item">
+    <a name="config_KEY_P"></a> 
+    <h3 class="name"><code>KEY_P</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_P keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_Q" class="attr item">
+    <a name="config_KEY_Q"></a> 
+    <h3 class="name"><code>KEY_Q</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_Q keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_R" class="attr item">
+    <a name="config_KEY_R"></a> 
+    <h3 class="name"><code>KEY_R</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_R keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_S" class="attr item">
+    <a name="config_KEY_S"></a> 
+    <h3 class="name"><code>KEY_S</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_S keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_T" class="attr item">
+    <a name="config_KEY_T"></a> 
+    <h3 class="name"><code>KEY_T</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_T keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_U" class="attr item">
+    <a name="config_KEY_U"></a> 
+    <h3 class="name"><code>KEY_U</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_U keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_V" class="attr item">
+    <a name="config_KEY_V"></a> 
+    <h3 class="name"><code>KEY_V</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_V keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_W" class="attr item">
+    <a name="config_KEY_W"></a> 
+    <h3 class="name"><code>KEY_W</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_W keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_X" class="attr item">
+    <a name="config_KEY_X"></a> 
+    <h3 class="name"><code>KEY_X</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_X keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_Y" class="attr item">
+    <a name="config_KEY_Y"></a> 
+    <h3 class="name"><code>KEY_Y</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_Y keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_KEY_Z" class="attr item">
+    <a name="config_KEY_Z"></a> 
+    <h3 class="name"><code>KEY_Z</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>KEY_Z keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_LEFT" class="attr item">
+    <a name="config_LEFT"></a> 
+    <h3 class="name"><code>LEFT</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>LEFT keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_MULTIPLY" class="attr item">
+    <a name="config_MULTIPLY"></a> 
+    <h3 class="name"><code>MULTIPLY</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>MULTIPLY keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_NUMLOCK" class="attr item">
+    <a name="config_NUMLOCK"></a> 
+    <h3 class="name"><code>NUMLOCK</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>NUMLOCK keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_NUMPAD0" class="attr item">
+    <a name="config_NUMPAD0"></a> 
+    <h3 class="name"><code>NUMPAD0</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>NUMPAD0 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_NUMPAD1" class="attr item">
+    <a name="config_NUMPAD1"></a> 
+    <h3 class="name"><code>NUMPAD1</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>NUMPAD1 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_NUMPAD2" class="attr item">
+    <a name="config_NUMPAD2"></a> 
+    <h3 class="name"><code>NUMPAD2</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>NUMPAD2 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_NUMPAD3" class="attr item">
+    <a name="config_NUMPAD3"></a> 
+    <h3 class="name"><code>NUMPAD3</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>NUMPAD3 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_NUMPAD4" class="attr item">
+    <a name="config_NUMPAD4"></a> 
+    <h3 class="name"><code>NUMPAD4</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>NUMPAD4 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_NUMPAD5" class="attr item">
+    <a name="config_NUMPAD5"></a> 
+    <h3 class="name"><code>NUMPAD5</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>NUMPAD5 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_NUMPAD6" class="attr item">
+    <a name="config_NUMPAD6"></a> 
+    <h3 class="name"><code>NUMPAD6</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>NUMPAD6 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_NUMPAD7" class="attr item">
+    <a name="config_NUMPAD7"></a> 
+    <h3 class="name"><code>NUMPAD7</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>NUMPAD7 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_NUMPAD8" class="attr item">
+    <a name="config_NUMPAD8"></a> 
+    <h3 class="name"><code>NUMPAD8</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>NUMPAD8 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_NUMPAD9" class="attr item">
+    <a name="config_NUMPAD9"></a> 
+    <h3 class="name"><code>NUMPAD9</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>NUMPAD9 keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_OPENBRACKET" class="attr item">
+    <a name="config_OPENBRACKET"></a> 
+    <h3 class="name"><code>OPENBRACKET</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>OPENBRACKET keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_PAGEDOWN" class="attr item">
+    <a name="config_PAGEDOWN"></a> 
+    <h3 class="name"><code>PAGEDOWN</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>PAGEDOWN keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_PAGEUP" class="attr item">
+    <a name="config_PAGEUP"></a> 
+    <h3 class="name"><code>PAGEUP</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>PAGEUP keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_PAUSE" class="attr item">
+    <a name="config_PAUSE"></a> 
+    <h3 class="name"><code>PAUSE</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>PAUSE keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_PERIOD" class="attr item">
+    <a name="config_PERIOD"></a> 
+    <h3 class="name"><code>PERIOD</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>PERIOD keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_RIGHT" class="attr item">
+    <a name="config_RIGHT"></a> 
+    <h3 class="name"><code>RIGHT</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>RIGHT keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_SCROLLLOCK" class="attr item">
+    <a name="config_SCROLLLOCK"></a> 
+    <h3 class="name"><code>SCROLLLOCK</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>SCROLLLOCK keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_SELECT" class="attr item">
+    <a name="config_SELECT"></a> 
+    <h3 class="name"><code>SELECT</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>SELECT keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_SEMICOLON" class="attr item">
+    <a name="config_SEMICOLON"></a> 
+    <h3 class="name"><code>SEMICOLON</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>SEMICOLON keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_SHIFT" class="attr item">
+    <a name="config_SHIFT"></a> 
+    <h3 class="name"><code>SHIFT</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>SHIFT keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_SINGLEQUOTE" class="attr item">
+    <a name="config_SINGLEQUOTE"></a> 
+    <h3 class="name"><code>SINGLEQUOTE</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>SINGLEQUOTE keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_SPACE" class="attr item">
+    <a name="config_SPACE"></a> 
+    <h3 class="name"><code>SPACE</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>SPACE keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_SUBTRACT" class="attr item">
+    <a name="config_SUBTRACT"></a> 
+    <h3 class="name"><code>SUBTRACT</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>SUBTRACT keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_TAB" class="attr item">
+    <a name="config_TAB"></a> 
+    <h3 class="name"><code>TAB</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>TAB keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="attr_UP" class="attr item">
+    <a name="config_UP"></a> 
+    <h3 class="name"><code>UP</code></h3>
+    <span class="type">Number</span>
+
+    
+
+    
+
+    
+        <span class="flag final">final</span>
+    
+
+    
+        <span class="flag static">static</span>
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+            
+        
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>UP keycode</p>
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+            </div>
+        
+
+        
+    </div>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="..&#x2F;assets/js/yui-prettify.js"></script>
+<script src="..&#x2F;assets/../api.js"></script>
+<script src="..&#x2F;assets/js/api-filter.js"></script>
+<script src="..&#x2F;assets/js/api-list.js"></script>
+<script src="..&#x2F;assets/js/api-search.js"></script>
+<script src="..&#x2F;assets/js/apidocs.js"></script>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37130673-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+</body>
+</html>

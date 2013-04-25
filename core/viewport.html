@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>joy.js - Viewport</title>
+    <meta charset="utf-8">
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/assets/css/pygments.css" rel="stylesheet" media="screen">
+
+    <meta property="og:title" content="joy.js - Viewport" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://joyjs.org" />
+    <meta property="og:image" content="https://secure.gravatar.com/avatar/d8d3a8e2b57f725437d8f87e3e069b50?s=420&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png" />
+    <meta property="og:site_name" content="joy.js" />
+    <meta property="og:description" content="A joyful 2d game engine written in JavaScript." />
+    <meta property="twitter:card" content="summary" />
+    <meta property="twitter:site" content="@joyjs_" />
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon.png" />
+
+    <script src="/assets/js/jquery.js"></script>
+    <script src="/assets/js/bootstrap.min.js"> </script>
+
+    <script src="/assets/js/joy.min.js"></script>
+
+    <meta name="keywords" content="html5, game, engine, joy, joy.js">
+    <meta name="description" content="A joyful 2d game engine written in JavaScript.">
+
+    <style type="text/css">
+      @font-face { font-family: 'Aachen'; src: url('/assets/font/aachen_bt.ttf'); }
+      body {  padding-bottom: 30px; }
+      h1, h2, h3, h4, h5, h6 { font-family: 'Aachen'; }
+      a { color: #f16529; }
+      a:hover { color: #e44d26 !important; }
+
+      section.headline { background-color: #333; padding: 20px 0; color: #ccc; }
+      section.headline h1, section.headline h2, section.headline h3, section.headline h4, section.headline h5, section.headline h6 { color: #fff; }
+      section.headline .span1 a { position: relative; top: 8px; }
+
+      .nav-pills > li > a:hover { background-color: #ebebeb !important; }
+
+      .section3 { background-color: #fff; padding: 30px 0; }
+      canvas { border: 1px solid #ebebeb; }
+      .fb-like { position: relative; top: -2px; }
+      footer { text-align: center; }
+      .center { text-align: center; }
+    </style>
+  </head>
+
+    <body>
+      <!-- Github ribbon -->
+      <a href="https://github.com/joy/joy.js"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_white_ffffff.png" alt="Fork me on GitHub"></a>
+
+
+
+<section class="headline">
+  <div class="container">
+
+    <div class="row">
+      <div class="span1">
+        <a href="/"><img src="/assets/img/logo.png" /></a>
+      </div>
+
+      <div class="span10">
+        <h1>A Joyful HTML5 2D Game Engine</h1>
+        <p class="lead">Viewport</p>
+      </div>
+
+      <div class="span1">
+        <iframe src="http://ghbtns.com/github-btn.html?user=joy&repo=joy.js&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+        <iframe src="http://ghbtns.com/github-btn.html?user=joy&repo=joy.js&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+
+        <a href="https://twitter.com/share" class="twitter-share-button" data-text="joy.js - A Joyful HTML5 2D Game Engine" data-url="http://joyjs.org" data-via="endel" data-lang="en">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+        <span id="fb-root"></span>
+        <span class="fb-like" data-href="http://joyjs.org" data-send="false" data-layout="button_count" data-width="110" data-show-faces="true"></span>
+        <script>(function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/pt_BR/all.js#xfbml=1&appId=421625021224006";
+        fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+        </script>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="section3">
+  <div class="container">
+    <div class="row">
+      <div class="span2">
+
+        <h3>Core</h3>
+        <ul>
+          
+            <li><a href="/core/keyboard.html">Keyboard</a></li>
+          
+            <li><a href="/core/mouse.html">Mouse</a></li>
+          
+            <li><a href="/core/sprites.html">Sprites</a></li>
+          
+            <li><a href="/core/hierarchy.html">Hierarchy</a></li>
+          
+            <li><a href="/core/sprite_sheet.html">Sprite Sheets</a></li>
+          
+            <li><a href="/core/text.html">Text</a></li>
+          
+            <li><a href="/core/transformations.html">Transformations</a></li>
+          
+            <li><a href="/core/tilemap.html">Tilemap</a></li>
+          
+            <li><a href="/core/viewport.html">Viewport</a></li>
+          
+            <li><a href="/core/scenes.html">Scenes</a></li>
+          
+            <li><a href="/core/particle-system.html">Particle system</a></li>
+          
+            <li><a href="/core/composite-operation.html">Composite operation</a></li>
+          
+            <li><a href="/core/sound.html">Sound library</a></li>
+          
+        </ul>
+
+        <h3>Demos</h3>
+
+        <ul>
+          
+            <li><a href="/demo/platformer-prototype.html">Platformer prototype</a></li>
+          
+        </ul>
+      </div>
+
+      <div class="span10">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="https://github.com/joy/joy.js/archive/master.zip" target="_blank">Download</a></li>
+          <li><a href="/api/">API</a></li>
+          <li><a href="https://github.com/joy/joy.js">Source code</a></li>
+        </ul>
+
+
+        <canvas id="example" width="780" height="487"></canvas>
+
+        <h4>Actions</h4>
+
+<ul>
+  <li><a href="javascript:swapTarget();">Swap target to follow</a></li>
+  <li><a href="javascript:swapScale();">Change viewport scale</a></li>
+</ul>
+
+<h3>Source code</h3>
+
+<div class="highlight"><pre><code class="js"><span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">10</span><span class="p">];</span>
+<span class="kd">var</span> <span class="nx">rufus</span><span class="p">,</span> <span class="nx">dummyRect</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">tilemap</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Joy</span><span class="p">.</span><span class="nx">Tilemap</span><span class="p">({</span>
+  <span class="nx">tileset</span><span class="o">:</span> <span class="k">new</span> <span class="nx">Joy</span><span class="p">.</span><span class="nx">Tileset</span><span class="p">({</span>
+    <span class="nx">src</span><span class="o">:</span> <span class="s2">&quot;/assets/examples/rufus/tilesets/bright.png&quot;</span><span class="p">,</span>
+    <span class="nx">width</span><span class="o">:</span> <span class="mi">64</span><span class="p">,</span>
+    <span class="nx">height</span><span class="o">:</span> <span class="mi">64</span>
+  <span class="p">}),</span>
+  <span class="nx">columns</span><span class="o">:</span> <span class="mi">60</span><span class="p">,</span>
+  <span class="nx">lines</span><span class="o">:</span> <span class="mi">10</span><span class="p">,</span>
+  <span class="nx">data</span><span class="o">:</span> <span class="nx">map</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">engine</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Joy</span><span class="p">.</span><span class="nx">Engine</span><span class="p">({</span>
+  <span class="nx">debug</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nx">canvas</span><span class="o">:</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;example&#39;</span><span class="p">)</span>
+<span class="p">});</span>
+
+<span class="nx">engine</span><span class="p">.</span><span class="nx">createScene</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">scene</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">background</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Joy</span><span class="p">.</span><span class="nx">Rect</span><span class="p">({</span>
+    <span class="nx">position</span><span class="o">:</span> <span class="nx">scene</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">position</span><span class="p">,</span>
+    <span class="nx">width</span><span class="o">:</span> <span class="nx">engine</span><span class="p">.</span><span class="nx">width</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="nx">height</span><span class="o">:</span> <span class="nx">engine</span><span class="p">.</span><span class="nx">height</span> <span class="o">*</span> <span class="mi">2</span>
+  <span class="p">});</span>
+  <span class="nx">background</span><span class="p">.</span><span class="nx">colorize</span><span class="p">(</span><span class="s2">&quot;#BFE5E5&quot;</span><span class="p">);</span>
+  <span class="nx">scene</span><span class="p">.</span><span class="nx">addChild</span><span class="p">(</span><span class="nx">background</span><span class="p">);</span>
+
+  <span class="nx">Joy</span><span class="p">.</span><span class="nx">Behaviour</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="s1">&#39;RufusBehaviour&#39;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">INIT</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">maxVelocity</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Joy</span><span class="p">.</span><span class="nx">Vector2d</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">friction</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">maxVelocity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">grounded</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">},</span>
+
+    <span class="nx">UPDATE</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="c1">// Play idle animation</span>
+      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">grounded</span> <span class="o">&amp;&amp;</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s2">&quot;idle&quot;</span><span class="p">);</span>
+      <span class="p">}</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">grounded</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">acceleration</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+
+    <span class="nx">KEY_UP</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">evt</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">acceleration</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">},</span>
+
+    <span class="nx">KEY_DOWN</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">evt</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// console.log(&quot;Grounded: &quot;, this.grounded);</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">evt</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">==</span> <span class="nx">Joy</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">SPACE</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">direction</span><span class="p">.</span><span class="nx">y</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s2">&quot;jumping&quot;</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">grounded</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">acceleration</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="p">.</span><span class="nx">y</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+
+    <span class="nx">COLLISION</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">other</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">other</span> <span class="k">instanceof</span> <span class="nx">Joy</span><span class="p">.</span><span class="nx">Tilemap</span> <span class="o">&amp;&amp;</span>
+          <span class="k">this</span><span class="p">.</span><span class="nx">willCollideAt</span><span class="p">(</span><span class="k">new</span> <span class="nx">Joy</span><span class="p">.</span><span class="nx">Vector2d</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">collider</span><span class="p">.</span><span class="nx">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">collider</span><span class="p">.</span><span class="nx">height</span><span class="p">))</span> <span class="o">&amp;&amp;</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">direction</span><span class="p">.</span><span class="nx">y</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">grounded</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">acceleration</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+
+    <span class="nx">COLLISION_EXIT</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">other</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">other</span> <span class="k">instanceof</span> <span class="nx">Joy</span><span class="p">.</span><span class="nx">Tilemap</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">grounded</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+
+    <span class="nx">KEY_PRESS</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">evt</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">evt</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">==</span> <span class="nx">Joy</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">LEFT</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">willCollideAt</span><span class="p">(</span><span class="k">new</span> <span class="nx">Joy</span><span class="p">.</span><span class="nx">Vector2d</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">collider</span><span class="p">.</span><span class="nx">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)))</span> <span class="p">{</span>
+          <span class="k">this</span><span class="p">.</span><span class="nx">acceleration</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span>
+          <span class="k">this</span><span class="p">.</span><span class="nx">flipX</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+          <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">grounded</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s2">&quot;walking&quot;</span><span class="p">);</span>
+          <span class="p">}</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+          <span class="k">this</span><span class="p">.</span><span class="nx">acceleration</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+          <span class="k">this</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+
+      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">evt</span><span class="p">.</span><span class="nx">keyCode</span> <span class="o">==</span> <span class="nx">Joy</span><span class="p">.</span><span class="nx">Keyboard</span><span class="p">.</span><span class="nx">RIGHT</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">willCollideAt</span><span class="p">(</span><span class="k">new</span> <span class="nx">Joy</span><span class="p">.</span><span class="nx">Vector2d</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">collider</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">collider</span><span class="p">.</span><span class="nx">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)))</span> <span class="p">{</span>
+          <span class="k">this</span><span class="p">.</span><span class="nx">acceleration</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+          <span class="k">this</span><span class="p">.</span><span class="nx">flipX</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+          <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">grounded</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s2">&quot;walking&quot;</span><span class="p">);</span>
+          <span class="p">}</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+          <span class="k">this</span><span class="p">.</span><span class="nx">acceleration</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+          <span class="k">this</span><span class="p">.</span><span class="nx">velocity</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+
+  <span class="nx">rufus</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Joy</span><span class="p">.</span><span class="nx">SpriteSheet</span><span class="p">({</span>
+    <span class="nx">x</span><span class="o">:</span> <span class="nx">engine</span><span class="p">.</span><span class="nx">width</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">520</span><span class="p">,</span>
+    <span class="nx">y</span><span class="o">:</span> <span class="nx">engine</span><span class="p">.</span><span class="nx">height</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="nx">src</span><span class="o">:</span> <span class="s2">&quot;/assets/examples/rufus/spritesheets/rufus.png&quot;</span><span class="p">,</span>
+    <span class="nx">width</span><span class="o">:</span> <span class="mi">120</span><span class="p">,</span>
+    <span class="nx">height</span><span class="o">:</span> <span class="mi">120</span><span class="p">,</span>
+    <span class="nx">animations</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;walking&quot;</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
+      <span class="s2">&quot;idle&quot;</span><span class="o">:</span> <span class="p">[</span><span class="mi">31</span><span class="p">,</span> <span class="mi">39</span><span class="p">],</span>
+      <span class="s2">&quot;jumping&quot;</span><span class="o">:</span> <span class="p">[</span><span class="mi">40</span><span class="p">,</span> <span class="mi">59</span><span class="p">],</span>
+      <span class="s2">&quot;falling&quot;</span><span class="o">:</span> <span class="p">[</span><span class="mi">60</span><span class="p">,</span> <span class="mi">67</span><span class="p">],</span>
+    <span class="p">}</span>
+  <span class="p">}).</span><span class="nx">behave</span><span class="p">(</span><span class="s1">&#39;Movimentation, RufusBehaviour&#39;</span><span class="p">);</span>
+
+  <span class="kd">var</span> <span class="nx">backgroundParallax</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Joy</span><span class="p">.</span><span class="nx">Parallax</span><span class="p">({</span>
+    <span class="nx">id</span><span class="o">:</span> <span class="s2">&quot;Parallax&quot;</span><span class="p">,</span>
+    <span class="nx">distance</span><span class="o">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="nx">velocity</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="nx">children</span><span class="o">:</span> <span class="p">[</span>
+      <span class="k">new</span> <span class="nx">Joy</span><span class="p">.</span><span class="nx">Sprite</span><span class="p">(</span><span class="s2">&quot;/assets/examples/rufus/background/parallax-3.png&quot;</span><span class="p">),</span>
+      <span class="k">new</span> <span class="nx">Joy</span><span class="p">.</span><span class="nx">Sprite</span><span class="p">(</span><span class="s2">&quot;/assets/examples/rufus/background/parallax-2.png&quot;</span><span class="p">)</span>
+    <span class="p">]</span>
+  <span class="p">});</span>
+
+  <span class="kd">var</span> <span class="nx">foregroundParallax</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Joy</span><span class="p">.</span><span class="nx">Parallax</span><span class="p">({</span>
+    <span class="nx">distance</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nx">velocity</span><span class="o">:</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="nx">children</span><span class="o">:</span> <span class="p">[</span>
+      <span class="k">new</span> <span class="nx">Joy</span><span class="p">.</span><span class="nx">Sprite</span><span class="p">(</span><span class="s2">&quot;/assets/examples/rufus/background/parallax-1.png&quot;</span><span class="p">)</span>
+    <span class="p">]</span>
+  <span class="p">});</span>
+
+  <span class="nx">rufus</span><span class="p">.</span><span class="nx">collider</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Joy</span><span class="p">.</span><span class="nx">RectCollider</span><span class="p">(</span><span class="k">new</span> <span class="nx">Joy</span><span class="p">.</span><span class="nx">Vector2d</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">45</span><span class="p">);</span>
+  <span class="nx">rufus</span><span class="p">.</span><span class="nx">allowCollisionFrom</span><span class="p">(</span><span class="nx">tilemap</span><span class="p">);</span>
+  <span class="nx">rufus</span><span class="p">.</span><span class="nx">play</span><span class="p">(</span><span class="s2">&quot;walking&quot;</span><span class="p">);</span>
+
+  <span class="nx">dummyRect</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Joy</span><span class="p">.</span><span class="nx">Rect</span><span class="p">({</span><span class="nx">x</span><span class="o">:</span> <span class="mi">500</span><span class="p">,</span> <span class="nx">y</span><span class="o">:</span> <span class="mi">200</span><span class="p">,</span> <span class="nx">width</span><span class="o">:</span> <span class="mi">50</span><span class="p">,</span> <span class="nx">height</span><span class="o">:</span> <span class="mi">50</span><span class="p">,</span> <span class="nx">color</span><span class="o">:</span> <span class="s2">&quot;#000&quot;</span><span class="p">});</span>
+
+  <span class="nx">scene</span><span class="p">.</span><span class="nx">addChild</span><span class="p">(</span><span class="nx">backgroundParallax</span><span class="p">);</span>
+  <span class="nx">scene</span><span class="p">.</span><span class="nx">addChild</span><span class="p">(</span><span class="nx">tilemap</span><span class="p">);</span>
+  <span class="nx">scene</span><span class="p">.</span><span class="nx">addChild</span><span class="p">(</span><span class="nx">rufus</span><span class="p">);</span>
+  <span class="nx">scene</span><span class="p">.</span><span class="nx">addChild</span><span class="p">(</span><span class="nx">dummyRect</span><span class="p">);</span>
+  <span class="nx">scene</span><span class="p">.</span><span class="nx">addChild</span><span class="p">(</span><span class="nx">foregroundParallax</span><span class="p">);</span>
+
+  <span class="nx">scene</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">setup</span><span class="p">({</span>
+    <span class="nx">follow</span><span class="o">:</span> <span class="nx">rufus</span><span class="p">,</span>
+    <span class="nx">width</span><span class="o">:</span> <span class="nx">engine</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span>
+    <span class="nx">height</span><span class="o">:</span> <span class="nx">engine</span><span class="p">.</span><span class="nx">height</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">targets</span> <span class="o">=</span> <span class="p">[</span> <span class="nx">rufus</span><span class="p">,</span> <span class="nx">dummyRect</span> <span class="p">];</span>
+
+<span class="kd">function</span> <span class="nx">swapTarget</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">engine</span><span class="p">.</span><span class="nx">currentScene</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">follow</span> <span class="o">==</span> <span class="nx">rufus</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">engine</span><span class="p">.</span><span class="nx">currentScene</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">follow</span> <span class="o">=</span> <span class="nx">dummyRect</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nx">engine</span><span class="p">.</span><span class="nx">currentScene</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">follow</span> <span class="o">=</span> <span class="nx">rufus</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">swapScale</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">engine</span><span class="p">.</span><span class="nx">currentScene</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">width</span> <span class="o">==</span> <span class="nx">engine</span><span class="p">.</span><span class="nx">width</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">engine</span><span class="p">.</span><span class="nx">currentScene</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">setSize</span><span class="p">(</span><span class="nx">engine</span><span class="p">.</span><span class="nx">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">engine</span><span class="p">.</span><span class="nx">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nx">engine</span><span class="p">.</span><span class="nx">currentScene</span><span class="p">.</span><span class="nx">viewport</span><span class="p">.</span><span class="nx">setSize</span><span class="p">(</span><span class="nx">engine</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">engine</span><span class="p">.</span><span class="nx">height</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+        <script type="text/javascript" charset="utf-8">
+          var code = document.querySelector('code.js');
+          if (code) {
+            eval(code.textContent);
+          }
+        </script>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+    <footer class="container">
+      <p>
+         <strong>joy.js v0.1.1</strong> HTML5 2D Game Engine &copy; 2013 <a href="http://endel.me">@endel</a>
+      </p>
+
+    </footer>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-37130673-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+  </body>
+</html>
+
