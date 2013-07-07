@@ -1,3 +1,7 @@
+0.2.1
+===
+  - Fixed issue with sprite loaders. (issue #5)
+
 0.2.0
 ===
 

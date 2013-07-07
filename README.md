@@ -2,7 +2,9 @@
 
 A Joyful 2D HTML5 Game Engine, designed to be easy to use.
 
-Current version: 0.2.0 ([CHANGELOG](CHANGELOG.md))
+Any question, bug, or feature request may be submited via [issues](https://github.com/joy/joy.js/issues).
+
+Current version: 0.2.1 ([CHANGELOG](CHANGELOG.md))
 
 ## Features
 
@@ -23,7 +25,6 @@ Current version: 0.2.0 ([CHANGELOG](CHANGELOG.md))
 
   - [Examples](http://joyjs.org)
   - [API](http://joyjs.org/api/)
-  - [Google Group](https://groups.google.com/forum/#!forum/joyjs)
   - Follow [@joyjs_](https://twitter.com/joyjs_) on twitter for updates
 
 ## TODO (enchancements / features)

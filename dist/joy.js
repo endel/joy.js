@@ -1,10 +1,10 @@
 /* 
- * joy.js v0.2.0 
+ * joy.js v0.2.1 
  * http://joyjs.org
  * 
  * @copyright 2012-2013 Endel Dreyer 
  * @license MIT
- * @build 4/15/2013
+ * @build 7/6/2013
  */
 
 (function(global) {
@@ -1371,6 +1371,18 @@
       Object.defineProperty(this, 'loading', {
         get: function () {
           return this.assets.length !== this.loaded;
+        },
+        configurable: true
+      });
+
+      /**
+       * Completed?
+       * @property loading
+       * @type {Boolean}
+       */
+      Object.defineProperty(this, 'completed', {
+        get: function () {
+          return (this.assets.length > 0) && !this.loading;
         },
         configurable: true
       });
@@ -2992,7 +3004,8 @@
       var self = this;
 
       // Append sprite to scene loader
-      if (this.scene && this.scene.loader) {
+      // TODO: sprite loaders should be in layer outside the Scenes.
+      if (this.scene && this.scene.loader && !this.scene.loader.completed) {
         this.scene.loader.add(this.image);
       }
 
