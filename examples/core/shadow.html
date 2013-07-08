@@ -4,12 +4,13 @@
         <title>Joy Example</title>
         <link href='http://fonts.googleapis.com/css?family=Merienda' rel='stylesheet' type='text/css'>
 
-        <script type="text/javascript" src="../../dist/sizzle.js"></script>
         <script type="text/javascript" src="../../dist/joy.js"></script>
         <script type="text/javascript">
             function setup() {
-              Joy.debug = true;
-              var engine = new Joy.Engine({ canvas2d: document.getElementById("joy") })
+              var engine = new Joy.Engine({
+                canvas: document.getElementById("joy"),
+                debug: true
+              })
               var scene = engine.createScene();
 
               var text = new Joy.Text({

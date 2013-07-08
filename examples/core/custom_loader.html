@@ -9,6 +9,13 @@
   <body style="margin: 0; padding: 0;">
     <script type="text/javascript">
         var engine = new Joy.Engine({width: 320, height: 240});
+        engine.setSceneLoader(function(scene) {
+          var progress = new Joy.Text({font: "24px Tahoma", color: "red"});
+          progress.bind(Joy.Events.UPDATE, function () {
+            this.text = scene.loader.percentage;
+          });
+          scene.addChild(progress)
+        })
 
         engine.createScene(function(scene) {
           scene.addChild(new Joy.Sprite({
@@ -22,21 +29,6 @@
           }));
         });
 
-        engine.createScene(function(scene) {
-          scene.addChild(new Joy.Sprite({
-            x: engine.width / 2,
-            y: engine.height / 2,
-            src: "../shared-assets/joyjs-text.png",
-            smooth: true
-          }).bind('load', function (){
-            this.pivot.x = (this.width / 2);
-            this.pivot.y = (this.height / 2);
-          }));
-        });
     </script>
-    <ul>
-      <li><a href="#" onclick="engine.gotoNextScene(1000, '#000');">engine.gotoNextScene()</a></li>
-    </ul>
   </body>
 </html>
-
