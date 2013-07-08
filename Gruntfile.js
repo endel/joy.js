@@ -10,6 +10,7 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+
     meta: {
       name: "joy.js",
       banner: '/* \n' +
@@ -21,6 +22,7 @@ module.exports = function(grunt) {
         ' * @build <%= grunt.template.today("m/d/yyyy") %>\n' +
         ' */\n\n'
     },
+
     concat: {
       options: {
         banner: '<%= meta.banner %>'
@@ -42,6 +44,7 @@ module.exports = function(grunt) {
         dest: 'dist/joy.js'
       }
     },
+
     uglify: {
       exportAll: {
         src: 'dist/joy.js',
@@ -51,12 +54,18 @@ module.exports = function(grunt) {
         }
       }
     },
+
     qunit: {
       all: ['test/index.html']
     },
+
     jshint: {
       all: [
         'Gruntfile.js',
+
+        //
+        // Core
+        //
         'lib/joy.js',
         'lib/behaviour/**.js',
         'lib/collider/**.js',
@@ -66,10 +75,16 @@ module.exports = function(grunt) {
         'lib/init/**.js',
         'lib/input/**.js',
         'lib/math/*.js',
-        'lib/modules/**.js',
         'lib/render/*.js',
         'lib/transitions/*.js',
         'lib/util/*.js'
+
+        //
+        // 3rd party modules
+        //
+        'bower_components/howler/howler.js',
+        'bower_components/tweenjs/src/Tween.js',
+        'lib/modules/**.js',
       ],
       options: {
         "browser": true,
@@ -77,6 +92,7 @@ module.exports = function(grunt) {
         // "es5": true
       }
     },
+
     watch: {
       scripts: {
         files: '<%= concat.dist.src %>',
@@ -86,6 +102,7 @@ module.exports = function(grunt) {
         }
       }
     },
+
     yuidoc: {
       compile: {
         name: '<%= pkg.name %>',
@@ -100,6 +117,7 @@ module.exports = function(grunt) {
         }
       }
     }
+
   });
 
   // Default task.

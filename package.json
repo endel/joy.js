@@ -25,9 +25,6 @@
   "scripts": {
     "test": "grunt travis --verbose"
   },
-  "dependencies": {
-    "sizzle": "1.1.0"
-  },
   "devDependencies": {
     "grunt": "0.4.0",
     "grunt-contrib-watch": "~0.3.1",
