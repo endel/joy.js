@@ -1,5 +1,5 @@
 {
-  "name": "joy.editor.js",
+  "name": "joy.js",
   "version": "0.2.1",
   "main": "dist/joy.js",
   "dependencies": {
