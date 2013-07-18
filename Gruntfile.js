@@ -77,14 +77,14 @@ module.exports = function(grunt) {
         'lib/math/*.js',
         'lib/render/*.js',
         'lib/transitions/*.js',
-        'lib/util/*.js'
+        'lib/util/*.js',
 
         //
         // 3rd party modules
         //
         'bower_components/howler/howler.js',
         'bower_components/tweenjs/src/Tween.js',
-        'lib/modules/**.js',
+        'lib/modules/**.js'
       ],
       options: {
         "browser": true,
