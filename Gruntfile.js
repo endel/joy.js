@@ -29,6 +29,9 @@ module.exports = function(grunt) {
       },
       dist: {
         src: [
+          //
+          // Core
+          //
           'lib/joy.js',
           'lib/consts/*.js',
           'lib/core/**.js',
@@ -37,8 +40,15 @@ module.exports = function(grunt) {
           'lib/render/*.js',
           'lib/geom/**.js',
           'lib/vendor/**.js',
-          'lib/modules/**.js',
           'lib/behaviour/behaviour.js',
+
+          //
+          // 3rd party modules
+          //
+          'bower_components/howler/howler.js',
+          'bower_components/tweenjs/src/Tween.js',
+          'lib/modules/**.js',
+
           'lib/**/**.js'
         ],
         dest: 'dist/joy.js'
@@ -60,32 +70,7 @@ module.exports = function(grunt) {
     },
 
     jshint: {
-      all: [
-        'Gruntfile.js',
-
-        //
-        // Core
-        //
-        'lib/joy.js',
-        'lib/behaviour/**.js',
-        'lib/collider/**.js',
-        'lib/consts/*.js',
-        'lib/core/**.js',
-        'lib/geom/**.js',
-        'lib/init/**.js',
-        'lib/input/**.js',
-        'lib/math/*.js',
-        'lib/render/*.js',
-        'lib/transitions/*.js',
-        'lib/util/*.js'
-
-        //
-        // 3rd party modules
-        //
-        'bower_components/howler/howler.js',
-        'bower_components/tweenjs/src/Tween.js',
-        'lib/modules/**.js',
-      ],
+      all: ['Gruntfile.js', 'lib/**.js'],
       options: {
         "browser": true,
         "evil" : true // TODO: don't allow eval! (used on markup.js)
