@@ -10,9 +10,9 @@
         var engine = new Joy.Engine({ debug: true, width: document.width - 5, height: document.height - 5 });
         var scene = engine.createScene();
 
-        var ClickableBehaviour = Joy.Behaviour.extend({
+        Joy.Behaviour.define("clickable", {
           INIT: function () {
-            this.behave(Joy.Behaviour.Movimentation);
+            this.behave('movimentation');
             this.friction.x = 0.1;
             this.friction.y = 0.1;
           },
@@ -38,12 +38,12 @@
           this.pivot.x = (this.width / 2);
           this.pivot.y = (this.height / 2);
         });
-        sprite.behave(ClickableBehaviour);
+        sprite.behave("clickable");
 
         var spriteChild = new Joy.Sprite(spriteUrl);
         spriteChild.id = "child";
         spriteChild.position.x = 120;
-        spriteChild.behave(ClickableBehaviour);
+        spriteChild.behave("clickable");
 
         var rotateButton = new Joy.Text({
           x: engine.width / 2, y: 20,

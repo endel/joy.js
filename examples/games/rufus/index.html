@@ -2,7 +2,6 @@
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <title>Rufus and the Magic Mushrooms</title>
-        <script type="text/javascript" src="../../../dist/sizzle.js"></script>
         <script type="text/javascript" src="../../../dist/joy.js"></script>
         <style type="text/css">
           body { margin: 0; padding: 0; zoom: 100%; }
@@ -27,7 +26,7 @@
             data: maps[0]
           });
 
-          var engine = new Joy.Engine({debug: true, width: document.width, height: document.height});
+          var engine = new Joy.Engine({debug: true, width: 800, height: 600});
           var scene = engine.createScene();
 
           var background = new Joy.Rect({
@@ -38,9 +37,9 @@
           background.colorize("#BFE5E5");
           scene.addChild(background);
 
-          var RufusBehaviour = Joy.Behaviour.extend({
+          Joy.Behaviour.define('rufus', {
             INIT: function() {
-              this.behave(Joy.Behaviour.Movimentation);
+              this.behave('movimentation');
               this.maxVelocity = new Joy.Vector2d(2, 2);
               this.friction.x = 0.1;
               this.maxVelocity.y = 10;
@@ -143,7 +142,7 @@
               "jumping": [40, 59],
               "falling": [60, 67],
             }
-          }).behave(RufusBehaviour);
+          }).behave('rufus');
 
           var backgroundParallax = new Joy.Parallax({
             id: "Parallax",
@@ -169,7 +168,7 @@
           var leftButton = new Joy.Sprite("assets/menu/button-restart.png").bind('load', function () {
             this.position.x = 0;
             this.position.y = (engine.height/2) - this.height;
-            this.behave(Joy.Behaviour.Button);
+            this.behave('button');
            }).bind(Joy.Events.MOUSE_DOWN, function (e) {
              rufus.moveLeft();
            }).bind(Joy.Events.MOUSE_UP, function (e) {
@@ -186,7 +185,7 @@
           }).bind('load', function () {
             this.position.x = this.width;
             this.position.y = (engine.height/2) - this.height;
-            this.behave(Joy.Behaviour.Button);
+            this.behave('button');
            }).bind(Joy.Events.MOUSE_DOWN, function (e) {
              rufus.moveRight();
            }).bind(Joy.Events.MOUSE_UP, function (e) {
@@ -219,5 +218,3 @@
       </script>
     </body>
 </html>
-
-

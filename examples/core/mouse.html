@@ -10,10 +10,10 @@
         var engine = new Joy.Engine({ debug: true, width: document.width - 5, height: document.height - 5 });
         engine.createScene(function(scene) {
 
-          var MyMouseBehaviour = Joy.Behaviour.extend({
+          Joy.Behaviour.define("my-mouse-behaviour", {
             INIT: function () {
               // Add button behaviour, to handle MOUSE_OVER and MOUSE_OUT events
-              this.behave(Joy.Behaviour.Button);
+              this.behave("button");
             },
 
             // When mouse enters
@@ -48,7 +48,7 @@
             this.pivot.x = (this.width / 2);
             this.pivot.y = (this.height / 2);
             // Add clickable behaviour
-          }).behave(MyMouseBehaviour);
+          }).behave("my-mouse-behaviour");
 
           scene.addChild(logo);
         });

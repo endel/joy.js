@@ -10,10 +10,10 @@
 <body>
   <canvas id="joy" width='800' height='600' style="border: 1px solid #666;">
     <section>
-      <img src="../../shared-assets/joyjs.png" width="247" height="280" data-value="Hello!" />
+      <img src="../../shared-assets/joyjs.png" width="247" height="280" data-value="Hello!" behaviour="test" />
       <button></button>
       <div></div>
-      <audio src="../../shared-assets/"></audio>
+      <!-- <audio src="../../shared&#45;assets/"></audio> -->
     </section>
 
     <section>
@@ -22,18 +22,21 @@
   </canvas>
 
   <script type="text/javascript">
-    var engine = new Joy.Engine({
-      canvas2d: document.getElementById('joy'),
-      markup: true
+
+    Joy.Behaviour.define("test", {
+      INIT: function () {
+        this.behave('movimentation');
+      },
+      UPDATE: function() {
+        this.velocity.x = 0.1;
+      }
     });
 
-    var MyBehaviour = Joy.Behaviour.extend({
-      init: function () {
-        this.behave(Joy.Behaviour.Movimentation);
-      }
+    var engine = new Joy.Engine({
+      canvas: document.getElementById('joy'),
+      markup: true
     });
   </script>
 </body>
 
 </html>
-

@@ -1,3 +1,10 @@
+0.3.0
+===
+
+  - Behaviours are now "included" via string name. ( .behave("movimentation") )
+  - Remove grunt dependency, now using browserify.
+
+
 0.2.1
 ===
   - Fixed issue with sprite loaders. (issue #5)

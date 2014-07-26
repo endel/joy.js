@@ -2,14 +2,13 @@
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <title>Joy Example</title>
-        <script type="text/javascript" src="../../dist/sizzle.js"></script>
         <script type="text/javascript" src="../../dist/joy.js"></script>
         <script type="text/javascript">
 
             function setup() {
               Joy.debug = true;
               var engine = new Joy.Engine({
-                canvas2d: document.getElementById("joy")
+                canvas: document.getElementById("joy")
               })
 
               engine.createScene(function (scene) {

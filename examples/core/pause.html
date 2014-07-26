@@ -23,7 +23,7 @@
             function setup() {
               var c = document.getElementById("joy");
 
-              var BouncyBehaviour = Joy.Behaviour.extend({
+              Joy.Behaviour.define("bouncy", {
                 UPDATE: function () {
                   this.position.x += this.speed * this.hDir * Joy.deltaTime;
                   this.position.y += this.speed * this.vDir * Joy.deltaTime;
@@ -50,7 +50,7 @@
 
               var spriteSmall = new Joy.Sprite({
                 x: 10, y: 10, src: spriteUrl
-              }).behave(BouncyBehaviour);
+              }).behave("bouncy");
               spriteSmall.hDir = 1;
               spriteSmall.vDir = 1;
               spriteSmall.speed = 2;
@@ -58,14 +58,14 @@
 
               var spriteNormal = new Joy.Sprite({
                 x: 10, y: 10, src: spriteUrl
-              }).behave(BouncyBehaviour);
+              }).behave("bouncy");
               spriteNormal.hDir = -1;
               spriteNormal.vDir = 1;
               spriteNormal.speed = 1;
 
               var spriteBig = new Joy.Sprite({
                 x: 10, y: 10, src: spriteUrl
-              }).behave(BouncyBehaviour);
+              }).behave("bouncy");
               spriteBig.hDir = 1;
               spriteBig.vDir = -1;
               spriteBig.speed = 0.5;
