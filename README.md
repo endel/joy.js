@@ -1,4 +1,4 @@
-# joy.js [![Build Status](https://secure.travis-ci.org/joy/joy.js.png)](http://travis-ci.org/joy/joy.js)
+# joy.js
 
 A Joyful 2D HTML5 Game Engine, designed to be easy to use.
 
