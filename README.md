@@ -25,7 +25,6 @@ Current version: 0.3.0 ([CHANGELOG](CHANGELOG.md))
 
   - [Examples](http://joyjs.org)
   - [API](http://joyjs.org/api/)
-  - Follow [@joyjs_](https://twitter.com/joyjs_) on twitter for updates
 
 ## TODO (enchancements / features)
 
@@ -36,11 +35,6 @@ Current version: 0.3.0 ([CHANGELOG](CHANGELOG.md))
 
 
 ## Contributing
-
-We use [npm](https://npmjs.org) modules, such as [grunt](https://github.com/gruntjs/grunt) and
-[qunit](https://github.com/gruntjs/grunt-contrib-qunit)  during development process.
-If you're under Windows platform, please take a look at
-[this](https://gist.github.com/2489540) guide to setup your environment.
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
