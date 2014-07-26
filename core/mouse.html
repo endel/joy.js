@@ -94,41 +94,41 @@
 
         <h3>Core</h3>
         <ul>
-          
+
             <li><a href="/core/keyboard.html">Keyboard</a></li>
-          
+
             <li><a href="/core/mouse.html">Mouse</a></li>
-          
+
             <li><a href="/core/sprites.html">Sprites</a></li>
-          
+
             <li><a href="/core/hierarchy.html">Hierarchy</a></li>
-          
+
             <li><a href="/core/sprite_sheet.html">Sprite Sheets</a></li>
-          
+
             <li><a href="/core/text.html">Text</a></li>
-          
+
             <li><a href="/core/transformations.html">Transformations</a></li>
-          
+
             <li><a href="/core/tilemap.html">Tilemap</a></li>
-          
+
             <li><a href="/core/viewport.html">Viewport</a></li>
-          
+
             <li><a href="/core/scenes.html">Scenes</a></li>
-          
+
             <li><a href="/core/particle-system.html">Particle system</a></li>
-          
+
             <li><a href="/core/composite-operation.html">Composite operation</a></li>
-          
+
             <li><a href="/core/sound.html">Sound library</a></li>
-          
+
         </ul>
 
         <h3>Demos</h3>
 
         <ul>
-          
+
             <li><a href="/demo/platformer-prototype.html">Platformer prototype</a></li>
-          
+
         </ul>
       </div>
 
@@ -153,7 +153,7 @@
 
   <span class="c1">// Create custom mouse behaviour, to be attached on any DisplayObject</span>
   <span class="c1">// Button behaviours can handle MOUSE_OVER and MOUSE_OUT events.</span>
-  <span class="nx">Joy</span><span class="p">.</span><span class="nx">Behaviour</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="s1">&#39;MyMouseBehaviour&#39;</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">Joy</span><span class="p">.</span><span class="nx">Behaviour</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="s1">&#39;my-mouse-behaviour&#39;</span><span class="p">,</span> <span class="p">{</span>
     <span class="c1">// When mouse enters</span>
     <span class="nx">MOUSE_OVER</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
       <span class="k">new</span> <span class="nx">Joy</span><span class="p">.</span><span class="nx">Tween</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="p">).</span><span class="nx">to</span><span class="p">({</span>
@@ -199,7 +199,7 @@
     <span class="k">this</span><span class="p">.</span><span class="nx">pivot</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
     <span class="k">this</span><span class="p">.</span><span class="nx">pivot</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">);</span>
     <span class="c1">// Add clickable behaviour</span>
-  <span class="p">}).</span><span class="nx">behave</span><span class="p">(</span><span class="s1">&#39;Button, MyMouseBehaviour&#39;</span><span class="p">);</span>
+  <span class="p">}).</span><span class="nx">behave</span><span class="p">(</span><span class="s1">&#39;button, my-mouse-behaviour&#39;</span><span class="p">);</span>
 
   <span class="nx">scene</span><span class="p">.</span><span class="nx">addChild</span><span class="p">(</span><span class="nx">logo</span><span class="p">);</span>
 <span class="p">});</span>
@@ -220,7 +220,7 @@
 
     <footer class="container">
       <p>
-         <strong>joy.js v0.1.1</strong> HTML5 2D Game Engine &copy; 2013 <a href="http://endel.me">@endel</a>
+         <strong>joy.js v0.3.0</strong> HTML5 2D Game Engine &copy; 2013 <a href="http://endel.me">@endel</a>
       </p>
 
     </footer>

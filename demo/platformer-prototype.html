@@ -94,41 +94,41 @@
 
         <h3>Core</h3>
         <ul>
-          
+
             <li><a href="/core/keyboard.html">Keyboard</a></li>
-          
+
             <li><a href="/core/mouse.html">Mouse</a></li>
-          
+
             <li><a href="/core/sprites.html">Sprites</a></li>
-          
+
             <li><a href="/core/hierarchy.html">Hierarchy</a></li>
-          
+
             <li><a href="/core/sprite_sheet.html">Sprite Sheets</a></li>
-          
+
             <li><a href="/core/text.html">Text</a></li>
-          
+
             <li><a href="/core/transformations.html">Transformations</a></li>
-          
+
             <li><a href="/core/tilemap.html">Tilemap</a></li>
-          
+
             <li><a href="/core/viewport.html">Viewport</a></li>
-          
+
             <li><a href="/core/scenes.html">Scenes</a></li>
-          
+
             <li><a href="/core/particle-system.html">Particle system</a></li>
-          
+
             <li><a href="/core/composite-operation.html">Composite operation</a></li>
-          
+
             <li><a href="/core/sound.html">Sound library</a></li>
-          
+
         </ul>
 
         <h3>Demos</h3>
 
         <ul>
-          
+
             <li><a href="/demo/platformer-prototype.html">Platformer prototype</a></li>
-          
+
         </ul>
       </div>
 
@@ -155,7 +155,7 @@
   <span class="nx">scene</span><span class="p">.</span><span class="nx">addChild</span><span class="p">(</span><span class="nx">background</span><span class="p">);</span>
 
   <span class="c1">// Player Behaviour</span>
-  <span class="nx">Joy</span><span class="p">.</span><span class="nx">Behaviour</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="s1">&#39;Player&#39;</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">Joy</span><span class="p">.</span><span class="nx">Behaviour</span><span class="p">.</span><span class="nx">define</span><span class="p">(</span><span class="s1">&#39;player&#39;</span><span class="p">,</span> <span class="p">{</span>
 
     <span class="c1">// When this behaviour is attached to a DisplayObject...</span>
     <span class="nx">INIT</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
@@ -267,7 +267,7 @@
       <span class="s2">&quot;jumping&quot;</span><span class="o">:</span> <span class="p">[</span><span class="mi">40</span><span class="p">,</span> <span class="mi">59</span><span class="p">],</span>
       <span class="s2">&quot;falling&quot;</span><span class="o">:</span> <span class="p">[</span><span class="mi">60</span><span class="p">,</span> <span class="mi">67</span><span class="p">],</span>
     <span class="p">}</span>
-  <span class="p">}).</span><span class="nx">behave</span><span class="p">(</span><span class="s1">&#39;Movimentation, Player&#39;</span><span class="p">);</span>
+  <span class="p">}).</span><span class="nx">behave</span><span class="p">(</span><span class="s1">&#39;movimentation, player&#39;</span><span class="p">);</span>
 
   <span class="c1">// Background parallax</span>
   <span class="kd">var</span> <span class="nx">backgroundParallax</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Joy</span><span class="p">.</span><span class="nx">Parallax</span><span class="p">({</span>
@@ -329,7 +329,7 @@
 
     <footer class="container">
       <p>
-         <strong>joy.js v0.1.1</strong> HTML5 2D Game Engine &copy; 2013 <a href="http://endel.me">@endel</a>
+         <strong>joy.js v0.3.0</strong> HTML5 2D Game Engine &copy; 2013 <a href="http://endel.me">@endel</a>
       </p>
 
     </footer>
